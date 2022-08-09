@@ -18,7 +18,7 @@ namespace Infrastructure.Configurations
             builder.HasKey(availabilityRequest => availabilityRequest.Id);
             builder.Property(availabilityRequest => availabilityRequest.Address).IsRequired();
             builder.HasMany(availabilityRequest => availabilityRequest.AvailableTimes).WithOne()
-                .HasForeignKey(availableTime => availableTime.AvailabilityRequestId).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(availableTime => availableTime.AvailabilityRequestId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

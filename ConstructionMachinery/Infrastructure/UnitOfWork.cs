@@ -9,9 +9,16 @@ namespace Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public Task Commit()
+        private ConstructionMachineryDbContext _constructionMachineryDbContext;
+
+        public UnitOfWork(ConstructionMachineryDbContext constructionMachineryDbContext)
         {
-            throw new NotImplementedException();
+            _constructionMachineryDbContext = constructionMachineryDbContext;
+        }
+
+        public async Task Commit()
+        {
+            await _constructionMachineryDbContext.SaveChangesAsync();
         }
     }
 }

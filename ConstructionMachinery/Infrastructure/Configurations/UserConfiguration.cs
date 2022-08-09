@@ -21,7 +21,7 @@ namespace Infrastructure.Configurations
             builder.HasMany(user => user.Adverts).WithOne().HasForeignKey(adverts => adverts.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(user => user.AvailabilityRequests).WithOne()
                 .HasForeignKey(availabilityRequest => availabilityRequest.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(user => user.Reviews).WithOne().HasForeignKey(review => review.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(user => user.Reviews).WithOne().HasForeignKey(review => review.UserId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

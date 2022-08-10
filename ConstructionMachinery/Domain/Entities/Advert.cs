@@ -16,5 +16,16 @@ namespace Domain.Entities
         public List<Image> Images { get; set; }
         public List<AvailableTime> AvailableTimes { get; set; }
         public List<Review> Reviews { get; set; }
+
+        public void CopyFrom(Advert advert)
+        {
+            Name = advert.Name;
+            Description = advert.Description;
+            Price = advert.Price;
+            UserId = advert.UserId;
+            Images = advert.Images;
+            AvailableTimes = advert.AvailableTimes;
+            Reviews = advert.Reviews;
+        }
     }
 }

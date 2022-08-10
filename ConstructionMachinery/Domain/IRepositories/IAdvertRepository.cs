@@ -14,6 +14,8 @@ namespace Domain.IRepositories
         Task Create(Advert advert);
         Task Update(Advert advert);
         Task Remove(int id);
+        Task<List<Advert>> GetByName(string name);
         Task<List<Advert>> GetByUserId(int id);
+        Task<Advert> GetForUpdate(int id);
     }
 }

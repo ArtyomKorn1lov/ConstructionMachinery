@@ -9,9 +9,11 @@ namespace Domain.IRepositories
 {
     public interface IRequestRepository
     {
-        Task<AvailabilityRequest> GetByUserId(int id);
-        Task<AvailabilityRequest> GetByAdvertId(int id);
+        Task<List<AvailabilityRequest>> GetByUserId(int id);
+        Task<List<AvailabilityRequest>> GetByAdvertId(int id);
         Task Create(AvailabilityRequest availabilityRequest);
+        Task Confirm(AvailabilityRequest availabilityRequest);
         Task Remove(int id);
+        Task<AvailabilityRequest> GetById(int id);
     }
 }

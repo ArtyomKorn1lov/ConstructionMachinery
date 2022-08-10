@@ -13,5 +13,13 @@ namespace Domain.Entities
         public int RequestStateId { get; set; }
         public int UserId { get; set; }
         public List<AvailableTime> AvailableTimes { get; set; }
+
+        public void CopyFrom(AvailabilityRequest availabilityRequest)
+        {
+            Address = availabilityRequest.Address;
+            RequestStateId = availabilityRequest.RequestStateId;
+            UserId = availabilityRequest.UserId;
+            AvailableTimes = availabilityRequest.AvailableTimes;
+        }
     }
 }

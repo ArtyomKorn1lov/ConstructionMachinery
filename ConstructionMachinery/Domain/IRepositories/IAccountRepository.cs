@@ -9,7 +9,7 @@ namespace Domain.IRepositories
 {
     public interface IAccountRepository
     {
-        Task<User> GetAuthoriseModel(string email, string password);
+        Task<User> GetLoginModel(string email, string password);
         Task<User> GetRegisterModel(string email);
         Task Create(User user);
         Task Update(User user);

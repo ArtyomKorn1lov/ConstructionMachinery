@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
             _constructionMachineryDbContext = constructionMachineryDbContext;
         }
 
-        public async Task<User> GetAuthoriseModel(string email, string password)
+        public async Task<User> GetLoginModel(string email, string password)
         {
             return await _constructionMachineryDbContext.Set<User>().FirstOrDefaultAsync(user => user.Email == email && user.Password == password);
         }

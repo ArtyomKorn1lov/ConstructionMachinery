@@ -639,7 +639,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "Microsoft.EntityFrameworkCore": "6.0.8"
         },
         "compile": {
           "bin/placeholder/Application.dll": {}
@@ -1982,5 +1983,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Обнаружено понижение версии пакета Microsoft.EntityFrameworkCore с 6.0.8 на 6.0.7. Чтобы выбрать другую версию, создайте ссылку на пакет напрямую из проекта. \r\n Infrastructure -> Application -> Microsoft.EntityFrameworkCore (>= 6.0.8) \r\n Infrastructure -> Microsoft.EntityFrameworkCore (>= 6.0.7)",
+      "libraryId": "Microsoft.EntityFrameworkCore",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

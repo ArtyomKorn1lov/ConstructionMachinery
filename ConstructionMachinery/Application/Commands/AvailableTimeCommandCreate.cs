@@ -9,7 +9,6 @@ namespace Application.Commands
     public class AvailableTimeCommandCreate
     {
         public DateTime Date { get; set; }
-        public int AdvertId { get; set; }
         public int AvailabilityStateId { get; set; }
     }
 }

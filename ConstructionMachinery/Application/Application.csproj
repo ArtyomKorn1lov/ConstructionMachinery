@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="CommandsConverters\" />
-    <Folder Include="IServices\" />
   </ItemGroup>
 
   <ItemGroup>

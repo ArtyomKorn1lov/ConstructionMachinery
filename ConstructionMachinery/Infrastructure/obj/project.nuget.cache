@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "CEr2vCt4onOLiVDeP5WUpZnVZ3ELy7vVcpQSl24MG8vl5K58M6OTpqbDj5qcOfWR2WLVsGFHPWH8mdnHBdnAdA==",
-  "success": false,
+  "dgSpecHash": "BQhNgSud1Do+LN51zAoC/4CNhELrVgv/LZ78BX6WpG2Cuft1B1AfSn/Y0lhx9a+G0xlbv4iqSbe0NoxIAs/mHA==",
+  "success": true,
   "projectFilePath": "C:\\Данные\\Travelline\\ConstructionMachinery\\ConstructionMachinery\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Duke\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
@@ -48,15 +48,5 @@
     "C:\\Users\\Duke\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
     "C:\\Users\\Duke\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1605",
-      "level": "Error",
-      "message": "Обнаружено понижение версии пакета Microsoft.EntityFrameworkCore с 6.0.8 на 6.0.7. Чтобы выбрать другую версию, создайте ссылку на пакет напрямую из проекта. \r\n Infrastructure -> Application -> Microsoft.EntityFrameworkCore (>= 6.0.8) \r\n Infrastructure -> Microsoft.EntityFrameworkCore (>= 6.0.7)",
-      "libraryId": "Microsoft.EntityFrameworkCore",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

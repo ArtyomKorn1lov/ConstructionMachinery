@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories
             await _constructionMachineryDbContext.Set<AvailabilityRequest>().AddAsync(availabilityRequest);
         }
 
-        public async Task<List<AvailabilityRequest>> GetByAdvertUserId(int id)
+        public async Task<List<AvailabilityRequest>> GetByAdvertId(int id)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)

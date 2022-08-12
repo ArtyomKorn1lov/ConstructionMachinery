@@ -15,11 +15,13 @@ namespace Application.Services
     {
         private IRequestRepository _requestRepository;
         private IAccountRepository _accountRepository;
+        private IAdvertRepository _advertRepository;
 
-        public RequestService(IRequestRepository requestRepository, IAccountRepository accountRepository)
+        public RequestService(IRequestRepository requestRepository, IAccountRepository accountRepository , IAdvertRepository advertRepository)
         {
             _requestRepository = requestRepository;
             _accountRepository = accountRepository;
+            _advertRepository = advertRepository;
         }
 
         public async Task<bool> Confirm(int id, int stateId)
@@ -60,10 +62,13 @@ namespace Application.Services
             try
             {
                 List<AvailabilityRequest> requests = await _requestRepository.GetByUserId(id);
+                if (requests == null)
+                    return null;
                 List<AvailabilityRequestCommandForCustomer> commandForCustomers = new List<AvailabilityRequestCommandForCustomer>();
                 foreach (AvailabilityRequest request in requests)
                 {
-                    commandForCustomers.Add(RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request, await GetPhoneByUser(request.UserId)));
+                    commandForCustomers.Add(RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request, 
+                        await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId)));
                 }
                 return commandForCustomers;
             }
@@ -77,7 +82,19 @@ namespace Application.Services
         {
             try
             {
-                return null
+                List<Advert> adverts = await _advertRepository.GetByUserId(id);
+                if (adverts == null)
+                    return null;
+                List<AvailabilityRequest> requests = await GetByAdvertId(adverts);
+                if (requests == null)
+                    return null;
+                List<AvailabilityRequestCommandForLandlord> commandForLandlords = new List<AvailabilityRequestCommandForLandlord>();
+                foreach(AvailabilityRequest request in requests)
+                {
+                    commandForLandlords.Add(RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
+                        await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId)));
+                }
+                return commandForLandlords;
             }
             catch
             {
@@ -98,10 +115,40 @@ namespace Application.Services
             }
         }
 
-        public async Task<string> GetPhoneByUser(int id)
+        public async Task<string> GetPhoneForCustomer(int id)
+        {
+            Advert advert = await _advertRepository.GetById(id);
+            User user = await _accountRepository.GetById(advert.Id);
+            return user.Phone;
+        }
+
+        public async Task<string> GetLandLordName(int id)
+        {
+            Advert advert = await _advertRepository.GetById(id);
+            User user = await _accountRepository.GetById(advert.Id);
+            return user.Name;
+        }
+
+        public async Task<string> GetPhoneForLandlord(int id)
         {
             User user = await _accountRepository.GetById(id);
             return user.Phone;
+        }
+
+        public async Task<string> GetCustomerName(int id)
+        {
+            User user = await _accountRepository.GetById(id);
+            return user.Name;
+        }
+
+        public async Task<List<AvailabilityRequest>> GetByAdvertId(List<Advert> adverts)
+        {
+            List<AvailabilityRequest> requests = new List<AvailabilityRequest>();
+            foreach(Advert advert in adverts)
+            {
+                requests.Concat(await _requestRepository.GetByAdvertId(advert.Id)).ToList();
+            }
+            return requests;
         }
     }
 }

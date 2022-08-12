@@ -22,7 +22,8 @@ namespace Application.CommandsConverters
             };
         }
 
-        public static AvailabilityRequestCommandForCustomer AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(AvailabilityRequest request, string phone)
+        public static AvailabilityRequestCommandForCustomer AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(AvailabilityRequest request,
+            string phone, string landlordName)
         {
             if (request == null)
                 return null;
@@ -31,6 +32,7 @@ namespace Application.CommandsConverters
                 Id = request.Id,
                 Address = request.Address,
                 Phone = phone,
+                LandlordName = landlordName,
                 RequestStateId = request.RequestStateId,
                 UserId = request.UserId,
                 AvailableTimeCommands = request.AvailableTimes.Select(availableTime => new AvailableTimeCommand
@@ -43,7 +45,8 @@ namespace Application.CommandsConverters
             };
         }
         
-        public static AvailabilityRequestCommandForLandlord AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(AvailabilityRequest request, string phone)
+        public static AvailabilityRequestCommandForLandlord AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(AvailabilityRequest request, 
+            string phone, string customerName)
         {
             if (request == null)
                 return null;
@@ -52,6 +55,7 @@ namespace Application.CommandsConverters
                 Id = request.Id,
                 Address = request.Address,
                 Phone = phone,
+                CustomerName = customerName,
                 UserId = request.UserId,
                 AvailableTimeCommands = request.AvailableTimes.Select(availableTime => new AvailableTimeCommand
                 {

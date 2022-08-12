@@ -2,7 +2,7 @@
 
 namespace WebAPI.Controllers
 {
-    public class HomeController : Controller
+    public class RequestController : Controller
     {
         public IActionResult Index()
         {

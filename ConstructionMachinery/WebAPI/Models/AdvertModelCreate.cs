@@ -6,6 +6,6 @@
         public string Description { get; set; }
         public int Price { get; set; }
         public int UserId { get; set; }
-        public List<AvailableTimeModelCreate> AvailableTimeCommandCreates { get; set; }
+        public List<AvailableTimeModelCreate> AvailableTimeModelsCreates { get; set; }
     }
 }

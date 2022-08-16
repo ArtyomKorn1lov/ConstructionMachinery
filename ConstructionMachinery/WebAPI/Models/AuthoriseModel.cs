@@ -3,12 +3,10 @@
     public class AuthoriseModel
     {
         public string Name { get; set; }
-        public string Type { get; set; }
 
-        public AuthoriseModel(string name, string type)
+        public AuthoriseModel(string name)
         {
             Name = name;
-            Type = type;
         }
     }
 }

@@ -128,5 +128,22 @@ namespace Application.Services
                 return false;
             }
         }
+
+        public async Task<int> GetIdByEmail(string email)
+        {
+            try
+            {
+                if (email == null)
+                    return 0;
+                User user = await _accountRepository.GetRegisterModel(email);
+                if (user == null)
+                    return 0;
+                return user.Id;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }

@@ -1,0 +1,15 @@
+h4 {
+    margin-top: 17px;
+}
+
+.google_container {
+    display: flex;
+    justify-content: center;
+}
+
+.google_element {
+    margin-top: 27px;
+    padding: 11px;
+    border: 2px solid #D9D9D9;
+    border-radius: 5px;
+}

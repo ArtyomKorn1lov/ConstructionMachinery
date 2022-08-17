@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ViETN/uPpux97GUdHUtf2kt/dWd+iISYOX5iA6rpM+v464XS9ap0gnnyyBYDcZCc5rAfWXfOBfcinD80eG6kUw==",
+  "dgSpecHash": "I7UTyGEtypOx1NUYVgkyqnnSQ7lkfQ4d/KkGj5e+zEee1wVms14vcDA2dD9xxT1VlVhDabXGGbhqWAuocOvrrA==",
   "success": true,
-  "projectFilePath": "C:\\Артём данные\\Travelline\\ConstructionMachinery\\ConstructionMachinery\\Application\\Application.csproj",
+  "projectFilePath": "C:\\Данные\\Travelline\\ConstructionMachinery\\ConstructionMachinery\\Application\\Application.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

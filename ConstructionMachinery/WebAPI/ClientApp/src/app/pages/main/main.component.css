@@ -22,7 +22,7 @@
 }
 
 .technique-type_element h4 {
-    color: #000000;
+    color: var(--color-secondary-button);
     text-align: center;
     font-weight: 600;
 }

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     padding: 29px 36px;
-    background: #000000;
+    background: var(--color-secondary-button);
 }
 
 .footer_contact-container {

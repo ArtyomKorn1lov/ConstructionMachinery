@@ -5,6 +5,14 @@
     padding: 0;
 }
 
+:root {
+    --color-primary-text: #D9D9D9;
+    --color-primary-button: #E4A400;
+    --color-secondary-button: #000000;
+    --margin-top-button: 24px;
+    --padding-button: 13px;
+}
+
 body {
     background: #373737;
 }
@@ -26,7 +34,7 @@ p {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    color: #D9D9D9;
+    color: var(--color-primary-text);
 }
 
 h6 {
@@ -34,7 +42,7 @@ h6 {
     font-style: normal;
     font-weight: normal;
     font-size: 22px;
-    color: #D9D9D9;
+    color: var(--color-primary-text);
 }
 
 h5 {
@@ -42,7 +50,7 @@ h5 {
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
-    color: #D9D9D9; 
+    color: var(--color-primary-text); 
 }
 
 h4 {
@@ -50,7 +58,7 @@ h4 {
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
-    color: #D9D9D9;
+    color: var(--color-primary-text);
 }
 
 .micro-text {
@@ -58,7 +66,7 @@ h4 {
     font-style: normal;
     font-weight: normal;
     font-size: 10px;
-    color: #D9D9D9;
+    color: var(--color-primary-text);
 }
 
 .page_flex-element {
@@ -99,33 +107,33 @@ h4 {
     font-size: 16px;
     margin-top: 27px;
     padding: 0px 20px;
-    color: #D9D9D9;
+    color: var(--color-primary-text);
 }
 
-.authorise_input::-moz-placeholder { color: #D9D9D9; }
+.authorise_input::-moz-placeholder { color: var(--color-primary-text); }
 
-.authorise_input::-webkit-input-placeholder { color: #D9D9D9; }
+.authorise_input::-webkit-input-placeholder { color: var(--color-primary-text); }
 
-.authorise-yellow {
-    background: #E4A400;
+.primary-authorise {
+    background: var(--color-primary-button);
     border-radius: 5px;
     border: 0;
-    margin-top: 24px;
-    padding: 13px;
+    margin-top: var(--margin-top-button);
+    padding: var(--padding-button);
 }
 
-.authorise-yellow h5 {
-    color: #000000;
+.primary-authorise h5 {
+    color: var(--color-secondary-button);
     text-align: center;
     font-weight: 600;
 }
 
-.authorise-black {
-    background: #000000;
+.secondary-authorise {
+    background: var(--color-secondary-button);
     border-radius: 5px;
     border: 0;
-    margin-top: 24px;
-    padding: 13px;
+    margin-top: var(--margin-top-button);
+    padding: var(--padding-button);
 }
 
 .back_container {

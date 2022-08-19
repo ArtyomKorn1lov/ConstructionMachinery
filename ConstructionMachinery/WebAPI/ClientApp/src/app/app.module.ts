@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MainComponent } from './pages/main/main.component';
-import { AuthoriseComponent } from './pages/authorise/authorise.component';
+import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { RegistrationComponent } from './pages/registration/registration.compone
     HeaderComponent,
     FooterComponent,
     MainComponent,
-    AuthoriseComponent,
+    AuthorizeComponent,
     RegistrationComponent
   ],
   imports: [
@@ -24,7 +24,7 @@ import { RegistrationComponent } from './pages/registration/registration.compone
     AppRoutingModule,
     RouterModule.forRoot([
       { path: '', component: MainComponent },
-      { path: 'authorise', component: AuthoriseComponent },
+      { path: 'authorize', component: AuthorizeComponent },
       { path: 'registration', component: RegistrationComponent }
     ]),
   ],

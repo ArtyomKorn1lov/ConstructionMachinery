@@ -1,37 +1,41 @@
 .header {
     display: flex;
-    padding: 19px 28px;
     flex-direction: column;
+    padding: 19px 28px;
     background: var(--color-secondary-button);
 }
 
-.header_logo-container {
+.header--sidenav {
+    padding: 20px;
+}
+
+.header--logo-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 10px;
 }
 
-.header_seach-form {
+.header--seach-form {
     display: inline-flex;
-    border: 1px solid black;
-    background: var(--color-primary-text);
-    border-radius: 5px;
     padding: 10px;
+    border: 1px solid black;  
+    border-radius: 5px;
+    background: var(--color-primary-text);
 }
 
-.header_search-icon {
+.header--search-icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;
     order: -1;
 }
 
-.header_seach {
+.header--seach {
     margin-left: 20px;
     width: 300px;
     font-size: 16px;
+    border: 0; 
     color: var(--color-secondary-button);
     background: transparent;
-    border: 0; 
 }

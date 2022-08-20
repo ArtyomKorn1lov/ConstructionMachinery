@@ -1,96 +1,20 @@
-<div class="page">
-    <app-header></app-header>
-    <div class="page_container">
-        <div class="page_flex-element">
-            <div class="content">
-                <img class="technique-image" src="assets/main-page-technique.png">
-                <div class="content_elements">
-                    <h6>Предлагаем в аренду следующие виды спецтехники:</h6>
-                    <div class="technique-type_list">
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type1.png">
-                                <h4>Автовышки</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type2.png">
-                                <h4>Автокраны</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type3.png">
-                                <h4>Бетононасосы</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type4.png">
-                                <h4>Бульдозеры</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type5.png">
-                                <h4>Гидромолоты</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type6.png">
-                                <h4>Грунторезы</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type7.png">
-                                <h4>Компрессоры</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type8.png">
-                                <h4>Манипуляторы</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type9.png">
-                                <h4>Минипогрузчики</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type10.png">
-                                <h4>Полуприцепы</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type11.png">
-                                <h4>Самосвалы</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type12.png">
-                                <h4>Тралы</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type13.png">
-                                <h4>Фронтальные погрузчики</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type14.png">
-                                <h4>Экскаваторы</h4>
-                            </div>
-                        </div>
-                        <div class="technique-type_group">
-                            <div class="technique-type_element">
-                                <img src="assets/type15.png">
-                                <h4>Экскаваторы-погрузчики JCB</h4>
-                            </div>
-                            <div class="technique-type_element">
-                                <img src="assets/type16.png">
-                                <h4>Ямобуры</h4>
-                            </div>
-                        </div>
+<div class="page--flex-element">
+    <div class="content">
+        <img class="technique-image" src="assets/main-page-technique.png">
+        <div class="content--elements">
+            <h6>Предлагаем в аренду следующие виды спецтехники:</h6>
+            <div class="technique-type--list" *ngFor="let technique of techniqueObject.techniqueList">
+                <div class="technique-type--group">
+                    <div class="technique-type--element">
+                        <img src={{technique.first_url}}>
+                        <h4>{{technique.first_name}}</h4>
+                    </div>
+                    <div class="technique-type--element">
+                        <img src={{technique.second_url}}>
+                        <h4>{{technique.second_name}}</h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <app-footer></app-footer>
 </div>

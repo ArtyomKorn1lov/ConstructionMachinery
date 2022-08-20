@@ -129,7 +129,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<int> GetIdByEmail(string email)
+        public async Task<int> GetByEmail(string email)
         {
             try
             {

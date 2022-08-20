@@ -57,11 +57,12 @@ namespace WebAPI.ModelsConverters
                 Address = model.Address,
                 RequestStateId = model.RequestStateId,
                 UserId = model.UserId,
-                AvailableTimeCommandForCreateRequests = model.AvailableTimeModelForCreateRequests.Select(command => new AvailableTimeCommandForCreateRequest {
+                AvailableTimeCommandForCreateRequests = model.AvailableTimeModelForCreateRequests.Select(command => new AvailableTimeCommandForCreateRequest
+                {
                     Id = command.Id,
                     AvailabilityStateId = command.AvailabilityStateId
                 }).ToList()
-            }
+            };
         }
     }
 }

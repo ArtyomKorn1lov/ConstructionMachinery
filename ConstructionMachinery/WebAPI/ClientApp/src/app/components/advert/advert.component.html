@@ -1,0 +1,15 @@
+<div class="advert--container" *ngFor="let advert of advertList">
+    <div class="advert--line"></div>
+    <div class="advert--content">
+        <img src="assets/advert-image.png">
+        <div class="advert--elements">
+            <div class="advert--text-container">
+                <h5 class="medium-header">{{advert.name}}</h5>
+                <p class="micro-text">от {{advert.price}} ₽ / час</p>
+            </div>
+            <button class="primary--authorize">
+                <p class="primary-text">Арендовать</p>
+            </button>
+        </div>
+    </div>
+</div>

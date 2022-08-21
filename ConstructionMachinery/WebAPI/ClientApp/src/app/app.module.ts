@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,9 @@ import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { AdvertListComponent } from './pages/advert-list/advert-list.component';
+import { AdvertComponent } from './components/advert/advert.component';
 
 @NgModule({
   declarations: [
@@ -19,16 +23,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FooterComponent,
     MainComponent,
     AuthorizeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    NavigationComponent,
+    AdvertListComponent,
+    AdvertComponent
   ],
   imports: [
     BrowserModule,
     MatSidenavModule,
+    FormsModule,
     AppRoutingModule,
     RouterModule.forRoot([
       { path: '', component: MainComponent },
       { path: 'authorize', component: AuthorizeComponent },
-      { path: 'registration', component: RegistrationComponent }
+      { path: 'registration', component: RegistrationComponent },
+      { path: 'advert-list', component: AdvertListComponent }
     ]),
     BrowserAnimationsModule,
   ],

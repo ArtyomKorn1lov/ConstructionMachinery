@@ -160,7 +160,6 @@ body {
 
 .authorize--input {
     height: 45px;
-    margin-top: 27px;
     padding: 0px 20px;
     font-size: 16px;
     border: 2px solid rgba(255, 255, 255, 0.5);
@@ -208,6 +207,10 @@ body {
     opacity: 0.8;
 }
 
+.back--container + .technique-image {
+    margin-top: 0px;
+}
+
 .select-filter {
     margin-top: 26px;
     padding: 9px;
@@ -240,6 +243,45 @@ body {
     font-weight: 600;
     color: var(--color-option-select);
 }
+
+.authorize--input + .small-header {
+    margin-top: 16px;
+}
+
+.advert--textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    height: 120px;
+    padding: 20px 20px;
+    font-size: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    color: var(--color-primary-text);
+    background: transparent;
+}
+
+.advert--textarea + .small-header {
+    margin-top: 16px;
+}
+
+.edit--button {
+    margin-top: var(--margin-top-button);
+    padding: var(--padding-button);
+    opacity: 0.8;
+    border-radius: 5px;
+    border: 2px solid var(--color-primary-button);
+    background: transparent;
+}
+
+.edit--button .medium-header {
+    text-align: center;
+    font-weight: 600;
+    color: var(--color-primary-button);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AdvertModelList } from 'src/app/models/AdvertModelList';
 
 @Component({
@@ -8,7 +8,8 @@ import { AdvertModelList } from 'src/app/models/AdvertModelList';
 })
 export class AdvertComponent implements OnInit {
 
-  public advertList: AdvertModelList[] = []
+  @Input() page: string | undefined;
+  public advertList: AdvertModelList[] = [];
 
   constructor() { }
 

@@ -19,14 +19,18 @@
 .advert--image {
     border-radius: 5px;
     object-fit: cover;
-    width: 100px;
-    height: 100px;
+    min-width: 129px;
+    height: 124px;
 }
 
 .advert--elements {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.advert--image + .advert--elements {
+    margin-left: 17px;
 }
 
 .advert--text-container {
@@ -38,6 +42,6 @@
 }
 
 .micro-text {
-    margin-top: 6px;
+    margin-top: 10px;
     font-size: 12px;
 }

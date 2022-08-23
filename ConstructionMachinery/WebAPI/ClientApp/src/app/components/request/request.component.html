@@ -1,0 +1,14 @@
+<p class="micro-text">Показано {{requests.length}} заявок</p>
+<div class="request--container" *ngFor="let request of requests">
+    <div class="request--line"></div>
+    <div class="request--content">
+        <img class="request--image" src="assets/main-page-technique.png">
+        <div class="request--elements">
+            <p class="primary-text">Заявка №{{request.id}}</p>
+            <h5 class="medium-header">{{request.name}}</h5>
+        </div>
+    </div>
+    <button class="edit--button">
+        <h5 class="medium-header">Открыть</h5>
+    </button>
+</div>

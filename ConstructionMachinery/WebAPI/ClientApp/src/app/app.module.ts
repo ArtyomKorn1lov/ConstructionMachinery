@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormField } from '@angular/material/form-field';
 import { MatHint } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
@@ -26,6 +28,12 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { PrivateAreaComponent } from './pages/private-area/private-area.component';
 import { AdvertInfoComponent } from './pages/advert-info/advert-info.component';
 import { MyAdvertsComponent } from './pages/my-adverts/my-adverts.component';
+import { LeaseRegistrationComponent } from './pages/lease-registration/lease-registration.component';
+import { ConfirmListComponent } from './pages/confirm-list/confirm-list.component';
+import { RequestComponent } from './components/request/request.component';
+import { MyRequestsComponent } from './pages/my-requests/my-requests.component';
+import { ConfirmListInfoComponent } from './pages/confirm-list-info/confirm-list-info.component';
+import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.component';
 
 @NgModule({
   declarations: [
@@ -44,12 +52,20 @@ import { MyAdvertsComponent } from './pages/my-adverts/my-adverts.component';
     PrivateAreaComponent,
     AdvertInfoComponent,
     MyAdvertsComponent,
+    LeaseRegistrationComponent,
+    ConfirmListComponent,
+    RequestComponent,
+    MyRequestsComponent,
+    ConfirmListInfoComponent,
+    MyRequestInfoComponent,
   ],
   imports: [
     BrowserModule,
     MatSidenavModule,
     MatDatepickerModule,
     FormsModule,
+    MatInputModule,
+    HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([
       { path: '', component: MainComponent },
@@ -60,8 +76,13 @@ import { MyAdvertsComponent } from './pages/my-adverts/my-adverts.component';
       { path: 'advert-create/time', component: AdvertCreateTimeComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'private-area', component: PrivateAreaComponent },
-      { path: 'advert-info', component: AdvertInfoComponent },
-      { path: 'my-adverts', component: MyAdvertsComponent }
+      { path: 'advert-list/info', component: AdvertInfoComponent },
+      { path: 'my-adverts', component: MyAdvertsComponent },
+      { path: 'lease-registration', component: LeaseRegistrationComponent },
+      { path: 'confirm-list', component: ConfirmListComponent },
+      { path: 'my-requests', component: MyRequestsComponent },
+      { path: 'confirm-list/info', component: ConfirmListInfoComponent },
+      { path: 'my-requests/info', component: MyRequestInfoComponent}
     ]),
     BrowserAnimationsModule,
   ],

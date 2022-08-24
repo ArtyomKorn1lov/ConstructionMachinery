@@ -55,5 +55,11 @@ namespace Infrastructure.Repositories
             if (availabilityRequest != null)
                 _constructionMachineryDbContext.Set<AvailabilityRequest>().Remove(availabilityRequest);
         }
+
+        public async Task UpdateTime(int id, int state)
+        {
+            AvailableTime availableTime = await _constructionMachineryDbContext.Set<AvailableTime>().FirstOrDefaultAsync(availableTime => availableTime.Id == id);
+            availableTime.AvailabilityStateId = state;
+        }
     }
 }

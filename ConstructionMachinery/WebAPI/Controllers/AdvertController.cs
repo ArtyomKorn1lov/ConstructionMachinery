@@ -14,11 +14,13 @@ namespace WebAPI.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private IAdvertService _advertService;
+        private IAccountService _accountService;
 
-        public AdvertController(IUnitOfWork unitOfWork, IAdvertService advertService)
+        public AdvertController(IUnitOfWork unitOfWork, IAdvertService advertService, IAccountService accountService)
         {
             _unitOfWork = unitOfWork;
             _advertService = advertService;
+            _accountService = accountService;
         }
 
         [HttpGet("advert-list")]
@@ -32,7 +34,6 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [Authorize]
         [HttpGet("by-id/{id}")]
         public async Task<AdvertModelInfo> GetById(int id)
         {
@@ -42,12 +43,24 @@ namespace WebAPI.Controllers
             return advert;
         }
 
-        [Authorize]
         [HttpGet("by-name/{name}")]
         public async Task<List<AdvertModelList>> GetByName(string name)
         {
             List<AdvertCommandList> advertCommands = await _advertService.GetByName(name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand => 
+                AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
+            if (advertModels == null)
+                return null;
+            return advertModels;
+        }
+
+        [Authorize]
+        [HttpGet("by-user")]
+        public async Task<List<AdvertModelList>> GetByUser()
+        {
+            int userId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId);
+            List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
                 return null;

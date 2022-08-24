@@ -53,6 +53,7 @@ namespace WebAPI.Controllers
             {
                 if (model == null)
                     return Ok("error");
+                model.UserId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
                 if(await _requestService.Create(RequestModelConverter.availabilityRequestModelCreateConvertCommand(model)))
                 {
                     await _unitOfWork.Commit();

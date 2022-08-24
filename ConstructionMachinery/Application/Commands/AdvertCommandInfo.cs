@@ -13,5 +13,6 @@ namespace Application.Commands
         public string Description { get; set; }
         public int Price { get; set; }
         public string UserName { get; set; }
+        public List<AvailableTimeCommand> AvailableTimes { get; set; }
     }
 }

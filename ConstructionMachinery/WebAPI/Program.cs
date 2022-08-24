@@ -1,4 +1,9 @@
+using Application;
 using Infrastructure;
+using Application.Services;
+using Application.IServices;
+using Infrastructure.Repositories;
+using Domain.IRepositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAdvertService, AdvertService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAdvertRepository, AdvertRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => 

@@ -50,7 +50,14 @@ namespace Application.CommandsConverters
                 Name = advert.Name,
                 Description = advert.Description,
                 Price = advert.Price,
-                UserName = name
+                UserName = name,
+                AvailableTimes = advert.AvailableTimes.Select(availableTime => new AvailableTimeCommand
+                {
+                    Id = availableTime.Id,
+                    Date = availableTime.Date,
+                    AdvertId = availableTime.AdvertId,
+                    AvailabilityStateId = availableTime.AvailabilityStateId
+                }).ToList(),
             };
         }
 

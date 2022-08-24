@@ -47,6 +47,8 @@ namespace Application.Services
                 {
                     AvailabilityRequest entityRequest = RequestCommandConverter.AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(request);
                     await _requestRepository.Create(entityRequest);
+                    foreach (AvailableTimeCommandForCreateRequest time in request.AvailableTimeCommandForCreateRequests)
+                        await _requestRepository.UpdateTime(time.Id, time.AvailabilityStateId);
                     return true;
                 }
                 return false;

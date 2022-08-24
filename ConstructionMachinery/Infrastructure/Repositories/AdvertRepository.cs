@@ -30,7 +30,8 @@ namespace Infrastructure.Repositories
 
         public async Task<Advert> GetById(int id)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().FirstOrDefaultAsync(advert => advert.Id == id);
+            return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.AvailableTimes).FirstOrDefaultAsync(advert => advert.Id == id);
         }
 
         public async Task<List<Advert>> GetByName(string name)

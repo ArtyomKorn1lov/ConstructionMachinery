@@ -84,11 +84,11 @@ namespace WebAPI.Controllers
             }
         }
 
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(string userEmail)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userEmail),
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));

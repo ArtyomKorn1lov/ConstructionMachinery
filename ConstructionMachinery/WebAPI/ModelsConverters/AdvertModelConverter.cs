@@ -27,7 +27,14 @@ namespace WebAPI.ModelsConverters
                 Name = command.Name,
                 Description = command.Description,
                 Price = command.Price,
-                UserName = command.UserName
+                UserName = command.UserName,
+                AvailableTimes = command.AvailableTimes.Select(command => new AvailableTimeModel
+                {
+                    Id = command.Id,
+                    Date = command.Date,
+                    AvailabilityStateId = command.AvailabilityStateId,
+                    AdvertId = command.AdvertId
+                }).ToList(),
             };
         }
 

@@ -11,3 +11,13 @@
 .primary--authorize {
     margin-top: 31px;
 }
+
+.day--list {
+    display: flex;
+    flex-direction: column;
+}
+
+.time--list {
+    display: flex;
+    width: 100%;
+}

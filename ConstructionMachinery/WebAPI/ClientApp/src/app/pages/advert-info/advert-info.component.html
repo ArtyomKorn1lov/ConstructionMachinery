@@ -16,6 +16,24 @@
                 <h5 class="medium-header">Описание</h5>
                 <p class="primary-text">{{advert.description}}</p>
             </div>
+            <div class="vector"></div>
+            <div class="title-info">
+                <h5 class="medium-header">Доступное время</h5>
+                <div class="day--list" *ngFor="let day of days">
+                    <h5 class="medium-header">{{day.day}} число</h5>
+                    <div class="time--list">
+                        <div *ngFor="let time of day.times">
+                            <p *ngIf="time.availabilityStateId == 1" class="primary-text" style="color: #44FF44; margin-left: 15px;">
+                                {{time.date.getHours()}}:00</p>
+                            <p *ngIf="time.availabilityStateId == 2" class="primary-text" style="color: #FF4444; margin-left: 15px;">
+                                {{time.date.getHours()}}:00</p>
+                            <p *ngIf="time.availabilityStateId == 3" class="primary-text" style="color: #FFFF44; margin-left: 15px;">
+                                {{time.date.getHours()}}:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="vector"></div>
             <button class="primary--authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>

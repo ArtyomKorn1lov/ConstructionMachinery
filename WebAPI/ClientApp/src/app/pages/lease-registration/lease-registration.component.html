@@ -1,0 +1,21 @@
+<div class="page--flex-element">
+    <div class="content">
+        <div class="back--container">
+            <img src="assets/back-cursor.png">
+            <h5 class="medium-header">Оформление аренды:</h5>
+        </div>
+        <div class="content--elements">
+            <h4 class="small-header">Адрес доставки</h4>
+            <input type="text" class="authorize--input" placeholder="Введите адрес">
+            <h4 class="small-header">Выберете время заказа</h4>
+            <div class="select--container" *ngFor="let time of times">
+                <select class="select-filter" [(ngModel)]="currentTime">
+                    <option class="select-filter--option" value={{time.date}}>{{time.date.getDate()}} числа {{time.date.getHours()}} часов</option>
+                </select>
+            </div>
+            <button class="primary--authorize">
+                <h5 class="medium-header">Отправить заявку</h5>
+            </button>
+        </div>
+    </div>
+</div>

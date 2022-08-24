@@ -1,0 +1,21 @@
+.big-header {
+    margin-bottom: 26px;
+}
+
+.menu--container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 19px;
+}
+
+.menu--hyperlink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu--vector {
+    border: 1px solid rgba(22, 22, 22, 0.3);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    margin-top: 19px;
+}

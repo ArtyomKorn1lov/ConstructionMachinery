@@ -1,0 +1,14 @@
+<div class="page--flex-element">
+    <div class="content">
+        <img class="technique-image" src="assets/main-page-technique.png">
+        <div class="content--elements">
+            <h6 class="big-header">Список объявлений:</h6>
+            <select class="select-filter" [(ngModel)]="filter">
+                <option class="select-filter--option" value="all">Все объявления</option>
+                <option class="select-filter--option" value="max">По возрастанию цены</option>
+                <option class="select-filter--option" value="min">По убыванию цены</option>
+            </select>
+            <app-advert [page]="'list'"></app-advert>
+        </div>
+    </div>
+</div>

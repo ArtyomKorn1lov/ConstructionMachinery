@@ -5,6 +5,9 @@ using Application;
 using WebAPI.Models;
 using WebAPI.ModelsConverters;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -75,7 +78,7 @@ namespace WebAPI.Controllers
             {
                 if(await _requestService.Confirm(id, stateId))
                 {
-                    _unitOfWork.Commit();
+                    await _unitOfWork.Commit();
                     return Ok("success");
                 }
                 return Ok("error");
@@ -94,7 +97,7 @@ namespace WebAPI.Controllers
             {
                 if(await _requestService.Remove(id))
                 {
-                    _unitOfWork.Commit();
+                    await _unitOfWork.Commit();
                     return Ok("success");
                 }
                 return Ok("error");

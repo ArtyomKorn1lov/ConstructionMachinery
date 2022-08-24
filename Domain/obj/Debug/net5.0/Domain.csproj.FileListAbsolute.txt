@@ -1,0 +1,24 @@
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\bin\Debug\net5.0\Domain.deps.json
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\bin\Debug\net5.0\Domain.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\bin\Debug\net5.0\Domain.pdb
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.csproj.AssemblyReference.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.AssemblyInfoInputs.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.AssemblyInfo.cs
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.csproj.CoreCompileInputs.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\refint\Domain.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.pdb
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Domain\obj\Debug\net5.0\ref\Domain.dll
+C:\Данные\Travelline\ConstructionMachinery\Domain\bin\Debug\net5.0\Domain.deps.json
+C:\Данные\Travelline\ConstructionMachinery\Domain\bin\Debug\net5.0\Domain.dll
+C:\Данные\Travelline\ConstructionMachinery\Domain\bin\Debug\net5.0\Domain.pdb
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.csproj.AssemblyReference.cache
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.AssemblyInfoInputs.cache
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.AssemblyInfo.cs
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.csproj.CoreCompileInputs.cache
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.dll
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\refint\Domain.dll
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\Domain.pdb
+C:\Данные\Travelline\ConstructionMachinery\Domain\obj\Debug\net5.0\ref\Domain.dll

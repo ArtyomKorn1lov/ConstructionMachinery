@@ -9,6 +9,8 @@ using Application.Commands;
 using WebAPI.ModelsConverters;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {

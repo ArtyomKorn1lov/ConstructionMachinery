@@ -11,7 +11,7 @@ export class AdvertService {
   constructor(private http: HttpClient) { }
 
   public GetAll(): Observable<AdvertModelList[]> {
-    return this.http.get<AdvertModelList[]>(`api/advert/advert-list`);
+    return this.http.get<AdvertModelList[]>(`api/advert/adverts`);
   }
 
 }

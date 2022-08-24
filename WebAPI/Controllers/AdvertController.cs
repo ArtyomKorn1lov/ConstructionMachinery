@@ -5,6 +5,9 @@ using WebAPI.Models;
 using Application.Commands;
 using WebAPI.ModelsConverters;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -23,7 +26,7 @@ namespace WebAPI.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("advert-list")]
+        [HttpGet("adverts")]
         public async Task<List<AdvertModelList>> GetAll()
         {
             List<AdvertCommandList> advertCommands = await _advertService.GetAll();

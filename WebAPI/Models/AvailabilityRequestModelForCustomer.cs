@@ -1,4 +1,6 @@
-﻿namespace WebAPI.Models
+﻿using System.Collections.Generic;
+
+namespace WebAPI.Models
 {
     public class AvailabilityRequestModelForCustomer
     {

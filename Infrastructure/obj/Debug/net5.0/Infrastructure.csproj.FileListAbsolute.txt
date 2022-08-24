@@ -1,0 +1,40 @@
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.csproj.AssemblyReference.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.AssemblyInfoInputs.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.AssemblyInfo.cs
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.deps.json
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.runtimeconfig.json
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.runtimeconfig.dev.json
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.pdb
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Application.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Domain.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Application.pdb
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Domain.pdb
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.csproj.CopyComplete
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\refint\Infrastructure.dll
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.pdb
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.genruntimeconfig.cache
+C:\Данные\Travelline\Временный проект\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\ref\Infrastructure.dll
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.deps.json
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.runtimeconfig.json
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.runtimeconfig.dev.json
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.dll
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Infrastructure.pdb
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Application.dll
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Domain.dll
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Application.pdb
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\bin\Debug\net5.0\Domain.pdb
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.csproj.AssemblyReference.cache
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.AssemblyInfoInputs.cache
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.AssemblyInfo.cs
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.csproj.CopyComplete
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.dll
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\refint\Infrastructure.dll
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.pdb
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\Infrastructure.genruntimeconfig.cache
+C:\Данные\Travelline\ConstructionMachinery\Infrastructure\obj\Debug\net5.0\ref\Infrastructure.dll

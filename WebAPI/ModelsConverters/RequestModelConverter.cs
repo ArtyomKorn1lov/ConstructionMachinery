@@ -1,5 +1,6 @@
 ﻿using WebAPI.Models;
 using Application.Commands;
+using System.Linq;
 
 namespace WebAPI.ModelsConverters
 {

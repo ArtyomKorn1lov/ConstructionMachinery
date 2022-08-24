@@ -15,13 +15,13 @@ export class AdvertComponent implements OnInit {
   constructor(private advertService: AdvertService) { }
 
   public async ngOnInit(): Promise<void> {
-    this.advertList.push(new AdvertModelList(1, "Автовышка АПТ-32", 1200));
+    /*this.advertList.push(new AdvertModelList(1, "Автовышка АПТ-32", 1200));
     this.advertList.push(new AdvertModelList(1, "Кран ТТ-22", 2000));
     this.advertList.push(new AdvertModelList(1, "Камаз АН246", 1500));
-    this.advertList.push(new AdvertModelList(1, "Ямобур 65-36", 1900));
-    /*await this.advertService.GetAll().subscribe(data => {
+    this.advertList.push(new AdvertModelList(1, "Ямобур 65-36", 1900));*/
+    await this.advertService.GetAll().subscribe(data => {
       this.advertList = data;
-    });*/
+    });
   }
 
 }

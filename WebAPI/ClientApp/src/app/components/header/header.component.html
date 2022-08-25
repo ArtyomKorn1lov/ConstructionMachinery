@@ -1,8 +1,8 @@
 <div class="header">
     <div class="header--logo-container">
         <img (click)="SidenavEvent()" src="assets/menu.png">
-        <img src="assets/logo.png">
-        <img src="assets/account.png">
+        <img [routerLink]="['/']" src="assets/logo.png">
+        <img [routerLink]="['/authorize']" src="assets/account.png">
     </div>
     <form class="header--seach-form">
         <input type="search" class="header--seach" placeholder="Найти лучшую технику">

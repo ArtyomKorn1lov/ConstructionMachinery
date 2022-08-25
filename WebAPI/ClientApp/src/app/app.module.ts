@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,10 +11,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormField } from '@angular/material/form-field';
-import { MatHint } from '@angular/material/form-field';
-import { MatLabel } from '@angular/material/form-field';
-import { MatError } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
@@ -65,6 +63,9 @@ import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.
     MatDatepickerModule,
     FormsModule,
     MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([

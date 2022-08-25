@@ -7,8 +7,22 @@
         <div class="content--elements">
             <h5 class="big-header">Выберете доступное время для аренды</h5>
             <h5 class="small-header">Дни</h5>
-            <input class="authorize--input" type="date">
-            <h5 class="small-header">Время</h5>
+            <mat-form-field class="date-picker--field" appearance="fill">
+                <mat-label class="date-picker">Введите диапазон дней</mat-label>
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                  <input class="date-picker" matStartDate formControlName="start" placeholder="Начальный день">
+                  <input class="date-picker" matEndDate formControlName="end" placeholder="Конечный">
+                </mat-date-range-input>
+                <mat-hint class="date-picker">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error class="date-picker" *ngIf="range.controls.start.hasError('matStartDateInvalid')">Ошибка в начальной дате</mat-error>
+                <mat-error class="date-picker" *ngIf="range.controls.end.hasError('matEndDateInvalid')">Ошибка в конечной дате</mat-error>
+            </mat-form-field>
+            <h5 class="small-header">Время аренды</h5>
+            <h5 class="small-header">Начальное время</h5>
+            <input class="authorize--input" type="time">
+            <h5 class="small-header">Конечное время</h5>
             <input class="authorize--input" type="time">
             <button class="primary--authorize">
                 <h5 class="medium-header">Выложить объявление</h5>

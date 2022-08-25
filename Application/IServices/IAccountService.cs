@@ -9,6 +9,7 @@ namespace Application.IServices
 {
     public interface IAccountService
     {
+        string HashPassword(string password);
         Task<bool> GetLoginResult(string email, string password);
         Task<bool> GetRegisterResult(string email);
         Task<bool> Create(UserCreateCommand user);

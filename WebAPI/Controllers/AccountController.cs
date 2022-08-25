@@ -38,6 +38,7 @@ namespace WebAPI.Controllers
                     {
                         return Ok("authorize");
                     }
+                    model.Password = _accountService.HashPassword(model.Password);
                     bool result = await _accountService.GetLoginResult(model.Email, model.Password);
                     if (result)
                     {
@@ -67,6 +68,7 @@ namespace WebAPI.Controllers
                     }
                     if (await _accountService.GetRegisterResult(model.Email))
                     {
+                        model.Password = _accountService.HashPassword(model.Password);
                         UserCreateCommand userCreateCommand = UserModelConverter.RegisterModelConvertToUserCreateCommand(model);
                         if (await _accountService.Create(userCreateCommand))
                         {
@@ -79,6 +81,24 @@ namespace WebAPI.Controllers
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
                 }
                 return Ok("error");
+            }
+            catch
+            {
+                return BadRequest("error");
+            }
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                if (IsUserAuthorized().Name == null)
+                {
+                    return Ok("error");
+                }
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Ok("success");
             }
             catch
             {
@@ -129,6 +149,7 @@ namespace WebAPI.Controllers
                 {
                     return Ok("error");
                 }
+                user.Password = _accountService.HashPassword(user.Password);
                 UserUpdateCommand userCommand = UserModelConverter.UserUpdateModelConvertToUserUpdateCommand(user);
                 if (await _accountService.Update(userCommand))
                 {

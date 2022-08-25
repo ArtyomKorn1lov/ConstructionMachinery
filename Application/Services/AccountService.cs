@@ -8,6 +8,7 @@ using Application.IServices;
 using Domain.IRepositories;
 using Domain.Entities;
 using Application.CommandsConverters;
+using System.Security.Cryptography;
 
 namespace Application.Services
 {
@@ -22,7 +23,9 @@ namespace Application.Services
 
         public string HashPassword(string password)
         {
-            throw new NotImplementedException();
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hash);
         }
 
         public async Task<bool> Create(UserCreateCommand user)

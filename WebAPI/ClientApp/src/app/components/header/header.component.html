@@ -2,7 +2,10 @@
     <div class="header--logo-container">
         <img (click)="SidenavEvent()" src="assets/menu.png">
         <img [routerLink]="['/']" src="assets/logo.png">
-        <img [routerLink]="['/authorize']" src="assets/account.png">
+        <img *ngIf="model.name == ' '" [routerLink]="['/authorize']" src="assets/account.png">
+        <div *ngIf="model.name != ' '" class="account-ellipse" [routerLink]="['/profile']">
+            <h6 class="big-header">{{model.name[0]}}</h6>
+        </div>
     </div>
     <form class="header--seach-form">
         <input type="search" class="header--seach" placeholder="Найти лучшую технику">

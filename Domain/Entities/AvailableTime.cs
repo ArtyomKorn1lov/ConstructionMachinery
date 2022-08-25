@@ -10,7 +10,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public int AvailabilityRequestId { get; set; }
+        public int? AvailabilityRequestId { get; set; }
         public int AdvertId { get; set; }
         public int AvailabilityStateId { get; set; }
     }

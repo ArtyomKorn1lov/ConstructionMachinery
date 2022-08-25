@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { count } from 'rxjs';
+import { AdvertService } from 'src/app/services/advert.service';
 import { AdvertModelInfo } from 'src/app/models/AdvertModelInfo';
 import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
@@ -11,12 +11,11 @@ import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 })
 export class AdvertInfoComponent implements OnInit {
 
-  public advert: AdvertModelInfo = new AdvertModelInfo(1, "Автовышка АПТ-32", "Автомобиль, оснащённый устройством для подъёма и перемещения рабочих с инструментом и материалами и используемый при монтаже и обслуживании линий электропередач, линий связи и контактных сетей, ремонте и обслуживании зданий и сооружений, обслуживании средств наружной рекламы, уходе за городскими зелёными насаждениями и т. п.",
-    1200, "Артём");
+  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", []);
   public times: AvailableTimeModel[] = [];
   public days: AvailableDayModel[] = [];
 
-  constructor() { }
+  constructor(private advertService: AdvertService) { }
 
   public SortByDay(): void {
     let day = 0;
@@ -35,7 +34,10 @@ export class AdvertInfoComponent implements OnInit {
     this.days.push(new AvailableDayModel(day, sortTimes));
   }
 
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
+    await this.advertService.GetById(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
+      this.advert = data;
+    });
     this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T09:00:00'), 1, 1));
     this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T10:00:00'), 1, 1));
     this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T11:00:00'), 1, 1));

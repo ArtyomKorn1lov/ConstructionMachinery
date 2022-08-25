@@ -8,7 +8,7 @@
                 <h5 class="medium-header">{{advert.name}}</h5>
                 <p class="micro-text">от {{advert.price}} ₽ / час</p>
             </div>
-            <button *ngIf="page == 'list'" class="primary--authorize">
+            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary--authorize">
                 <p class="primary-text">Арендовать</p>
             </button>
             <button *ngIf="page != 'list'" class="primary--authorize">

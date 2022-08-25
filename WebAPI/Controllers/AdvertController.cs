@@ -78,6 +78,7 @@ namespace WebAPI.Controllers
             {
                 if(advertModel == null)
                     return Ok("error");
+                advertModel.UserId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
                 if (await _advertService.Create(AdvertModelConverter.AdvertModelCreateConvertAdvertCommandCreate(advertModel)))
                 {
                     await _unitOfWork.Commit();

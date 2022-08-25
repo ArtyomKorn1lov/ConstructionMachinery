@@ -28,6 +28,10 @@ namespace Application.Services
             {
                 if(advert != null)
                 {
+                    for(int count = 0; count < advert.AvailableTimeCommandCreates.Count; count++)
+                    {
+                        advert.AvailableTimeCommandCreates[count].AvailabilityStateId = 1;
+                    }
                     await _advertRepository.Create(AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert));
                     return true;
                 }

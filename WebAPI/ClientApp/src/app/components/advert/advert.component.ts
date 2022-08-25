@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AdvertModelList } from 'src/app/models/AdvertModelList';
 import { AdvertService } from 'src/app/services/advert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-advert',
@@ -11,14 +12,18 @@ export class AdvertComponent implements OnInit {
 
   @Input() page: string | undefined;
   public advertList: AdvertModelList[] = [];
+  private infoRoute: string = "advert-list/info";
 
-  constructor(private advertService: AdvertService) { }
+  constructor(private advertService: AdvertService, private router: Router) { }
+
+  public GetAdvertInfo(id: number) {
+    this.advertService.SetIdInLocalStorage(id);
+    this.router.navigateByUrl(this.infoRoute);
+    return;
+  }
 
   public async ngOnInit(): Promise<void> {
-    /*this.advertList.push(new AdvertModelList(1, "Автовышка АПТ-32", 1200));
-    this.advertList.push(new AdvertModelList(1, "Кран ТТ-22", 2000));
-    this.advertList.push(new AdvertModelList(1, "Камаз АН246", 1500));
-    this.advertList.push(new AdvertModelList(1, "Ямобур 65-36", 1900));*/
+    this.advertService.ClearLocalStorage();
     await this.advertService.GetAll().subscribe(data => {
       this.advertList = data;
     });

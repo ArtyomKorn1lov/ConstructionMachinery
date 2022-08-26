@@ -49,6 +49,7 @@ $ConstructionMachineryApp-theme: mat.define-light-theme((
     --color-background: #373737;
     --color-option: #232323;
     --color-option-select: #161616;
+    --color-hover-primary: #966c03;
 }
 
 body {
@@ -182,6 +183,10 @@ body {
     background: var(--color-primary-button);
 }
 
+.primary--authorize:hover {
+    background-image: radial-gradient(ellipse farthest-corner at 50% 50%, var(--color-hover-primary), var(--color-hover-primary));
+}
+
 .primary--authorize .medium-header {
     text-align: center;
     font-weight: 600;
@@ -196,12 +201,20 @@ body {
     background: var(--color-secondary-button);
 }
 
+.secondary--authorize:hover {
+    background-image: radial-gradient(ellipse farthest-corner at 50% 50%, var(--color-option), var(--color-option));
+}
+
 .back--container {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 15px 25px;
     background: #232323;
+}
+
+.back--container:hover {
+    background-image: radial-gradient(ellipse farthest-corner at 50% 50%, var(--color-secondary-button), var(--color-secondary-button));
 }
 
 .back--container .medium-header {
@@ -275,6 +288,10 @@ body {
     border-radius: 5px;
     border: 2px solid var(--color-primary-button);
     background: transparent;
+}
+
+.edit--button:hover {
+    background-image: radial-gradient(ellipse farthest-corner at 50% 50%, var(--color-option-select), var(--color-option-select));
 }
 
 .edit--button .medium-header {

@@ -12,21 +12,30 @@ export class AdvertComponent implements OnInit {
 
   @Input() page: string | undefined;
   public advertList: AdvertModelList[] = [];
-  private infoRoute: string = "advert-list/info";
+  private targetRoute: string = "advert-info";
 
   constructor(private advertService: AdvertService, private router: Router) { }
 
   public GetAdvertInfo(id: number) {
     this.advertService.SetIdInLocalStorage(id);
-    this.router.navigateByUrl(this.infoRoute);
+    if(this.page == undefined)
+      this.advertService.SetPageInLocalStorage('list');
+    else
+      this.advertService.SetPageInLocalStorage(this.page);
+    this.router.navigateByUrl(this.targetRoute);
     return;
   }
 
   public async ngOnInit(): Promise<void> {
     this.advertService.ClearLocalStorage();
-    await this.advertService.GetAll().subscribe(data => {
-      this.advertList = data;
-    });
+    if(this.page == 'list')
+      await this.advertService.GetAll().subscribe(data => {
+        this.advertList = data;
+      });
+    if(this.page == 'my')
+      await this.advertService.GetByUser().subscribe(data => {
+        this.advertList = data;
+      });
   }
 
 }

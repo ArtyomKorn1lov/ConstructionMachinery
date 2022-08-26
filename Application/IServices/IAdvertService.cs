@@ -17,5 +17,6 @@ namespace Application.IServices
         Task<List<AdvertCommandList>> GetByName(string name);
         Task<List<AdvertCommandList>> GetByUserId(int id);
         Task<AdvertCommandUpdate> GetForUpdate(int id);
+        Task<int> GetUserIdByAdvert(int id);
     }
 }

@@ -124,9 +124,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-id/{id}")]
-        public async Task<UserModel> GetById(int id)
+        [HttpGet("user")]
+        public async Task<UserModel> GetById()
         {
+            int id = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
             UserCommand userCommand = await _accountService.GetById(id);
             UserModel userModel = UserModelConverter.UserCommandConvertToUserModel(userCommand);
             if (userModel == null)

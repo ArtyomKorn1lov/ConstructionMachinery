@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  public user: UserModel = new UserModel(1, "Артём", "temka.kornilov@mail.ru", "89027434477");
+  public user: UserModel = new UserModel(0, "", "", "");
   private targetRoute: string = "/";
 
   constructor(private accountService: AccountService, private router: Router) { }
@@ -29,7 +29,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
+    await this.accountService.GetUserProfile().subscribe(data => {
+      this.user = data;
+    });
   }
 
 }

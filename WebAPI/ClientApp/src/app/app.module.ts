@@ -77,7 +77,7 @@ import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.
       { path: 'advert-create/time', component: AdvertCreateTimeComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'private-area', component: PrivateAreaComponent },
-      { path: 'advert-list/info', component: AdvertInfoComponent },
+      { path: 'advert-info', component: AdvertInfoComponent },
       { path: 'my-adverts', component: MyAdvertsComponent },
       { path: 'lease-registration', component: LeaseRegistrationComponent },
       { path: 'confirm-list', component: ConfirmListComponent },

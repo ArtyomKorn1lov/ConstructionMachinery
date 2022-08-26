@@ -11,7 +11,7 @@
             <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary--authorize">
                 <p class="primary-text">Арендовать</p>
             </button>
-            <button *ngIf="page != 'list'" class="primary--authorize">
+            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'my'" class="primary--authorize">
                 <p class="primary-text">Подробнее</p>
             </button>
         </div>

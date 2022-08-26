@@ -10,23 +10,35 @@ import { AdvertModelCreate } from '../models/AdvertModelCreate';
 })
 export class AdvertService {
 
-  private advertCreate: AdvertModelCreate | undefined; 
+  private advertCreate: AdvertModelCreate | undefined;
 
   constructor(private http: HttpClient) { }
 
   public ClearLocalStorage(): void {
     localStorage.removeItem('advertId');
+    localStorage.removeItem('page');
   }
 
   public SetIdInLocalStorage(id: number): void {
     localStorage.setItem('advertId', id.toString());
   }
 
+  public SetPageInLocalStorage(page: string): void {
+    localStorage.setItem('page', page);
+  }
+
   public GetIdFromLocalStorage(): number {
     let id = localStorage.getItem('advertId');
-    if(id == null) 
+    if (id == null)
       return 0;
     return parseInt(id);
+  }
+
+  public GetPageFromLocalStorage(): string {
+    let page = localStorage.getItem('page');
+    if (page == null)
+      return '';
+    return page;
   }
 
   public SetAdvertCreateInService(advert: AdvertModelCreate): void {
@@ -34,7 +46,7 @@ export class AdvertService {
   }
 
   public GetAdvertCreateFromService(): AdvertModelCreate {
-    if(this.advertCreate == undefined)
+    if (this.advertCreate == undefined)
       return new AdvertModelCreate("", "", 0, 0, []);
     return this.advertCreate;
   }
@@ -49,6 +61,14 @@ export class AdvertService {
 
   public CreateAdvert(advert: AdvertModelCreate): Observable<string> {
     return this.http.post(`api/advert/create`, advert, { responseType: 'text' });
+  }
+
+  public GetByUser(): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user`);
+  }
+
+  public Remove(id: number): Observable<string> {
+    return this.http.delete(`api/advert/remove/${id}`, { responseType: 'text' })
   }
 
 }

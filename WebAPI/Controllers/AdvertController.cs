@@ -98,7 +98,9 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if(await _advertService.Update(AdvertModelConverter.AdvertModelUpdateConvertAdvertCommandUpdate(advertModel)))
+                if (advertModel == null)
+                    return Ok("error");
+                if (await _advertService.Update(AdvertModelConverter.AdvertModelUpdateConvertAdvertCommandUpdate(advertModel)))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");
@@ -122,12 +124,22 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpDelete("remove/(id)")]
+        [HttpDelete("remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             try
             {
-                if(await _advertService.Remove(id))
+                int advertUserId = await _advertService.GetUserIdByAdvert(id);
+                int userId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+                if(advertUserId == 0)
+                {
+                    return Ok("error");
+                }
+                if(advertUserId != userId)
+                {
+                    return Ok("error");
+                }
+                if (await _advertService.Remove(id))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");

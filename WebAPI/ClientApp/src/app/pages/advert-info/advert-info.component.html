@@ -1,6 +1,6 @@
 <div class="page--flex-element">
     <div class="content">
-        <div class="back--container">
+        <div (click)="Back()" class="back--container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Информация об объявлении</h5>
         </div>
@@ -20,7 +20,7 @@
             <div class="title-info">
                 <h5 class="medium-header">Доступное время</h5>
                 <div class="day--list" *ngFor="let day of days">
-                    <h5 class="medium-header">{{day.day}}.{{times[0].date.getMonth()}}.{{times[0].date.getFullYear()}}</h5>
+                    <h5 class="medium-header">{{day.day}}.{{month}}.{{year}}</h5>
                     <div class="time--list">
                         <div *ngFor="let time of day.times">
                             <p *ngIf="time.availabilityStateId == 1" class="primary-text" style="color: #44FF44; margin-left: 15px;">
@@ -34,8 +34,11 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button class="primary--authorize">
+            <button *ngIf="page == 'list'" class="primary--authorize">
                 <h5 class="medium-header">Арендовать</h5>
+            </button>
+            <button (click)="Remove()" *ngIf="page == 'my'" class="primary--authorize">
+                <h5 class="medium-header">Снять с публикации</h5>
             </button>
         </div>
     </div>

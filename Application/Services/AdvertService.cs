@@ -113,6 +113,19 @@ namespace Application.Services
             }
         }
 
+        public async Task<int> GetUserIdByAdvert(int id)
+        {
+            try
+            {
+                Advert advert = await _advertRepository.GetById(id);
+                return advert.UserId;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public async Task<bool> Remove(int id)
         {
             try

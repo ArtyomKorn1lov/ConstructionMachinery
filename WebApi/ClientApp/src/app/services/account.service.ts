@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { RegisterModel } from '../models/RegisterModel';
 import { LoginModel } from '../models/LoginModel';
 import { AuthoriseModel } from '../models/AuthoriseModel';
+import { UserModel } from '../models/UserModel';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class AccountService {
 
   public IsUserAuthorized(): Observable<AuthoriseModel> {
     return this.http.get<AuthoriseModel>(`api/account/is-authorized`);
+  }
+
+  public GetUserProfile(): Observable<UserModel> {
+    return this.http.get<UserModel>(`api/account/user`);
   }
 
 }

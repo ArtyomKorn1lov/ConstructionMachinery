@@ -44,7 +44,6 @@ export class AdvertCreateTimeComponent implements OnInit {
     }
     var startHour = parseInt(this.startTime);
     var endHour = parseInt(this.endTime);
-    console.log(startHour);
     if(startHour > endHour) {
       alert("Неверный диапазон времени");
       return;
@@ -56,6 +55,7 @@ export class AdvertCreateTimeComponent implements OnInit {
       return;
     }
     this.advert.availableTimeModelsCreates = this.availiableTime;
+    console.log(this.advert.availableTimeModelsCreates);
     this.advertService.CreateAdvert(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
@@ -88,7 +88,7 @@ export class AdvertCreateTimeComponent implements OnInit {
     for(let count = 0; count < dates.length; count++) {
       while(currenthour <= endTime) {
         dates[count].setHours(currenthour);
-        this.availiableTime.push(new AvailableTimeModelCreate(dates[count], 0));
+        this.availiableTime.push(new AvailableTimeModelCreate(new Date(dates[count]), 0));
         currenthour++;
       }
       currenthour = startTime;

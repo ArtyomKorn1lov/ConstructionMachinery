@@ -32,6 +32,7 @@ export class AuthorizeComponent implements OnInit {
     await this.accountService.Login(model).subscribe(data => {
       if(data == "success") {
         console.log(data);
+        //location.reload();
         alert(data);
         this.router.navigateByUrl(this.targetRoute)
         return;

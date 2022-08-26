@@ -6,6 +6,11 @@
 
 .navigation--hyperlink {
     margin-top: 16px;
+    border-radius: 5px;
+}
+
+.navigation--hyperlink:hover {
+    background-image: radial-gradient(ellipse farthest-corner at 50% 50%, var(--color-option-select), var(--color-option-select));
 }
 
 .navigation--vector {

@@ -5,6 +5,8 @@
 .menu--container {
     display: flex;
     flex-direction: column;
+    border-radius: 5px;
+    padding: 5px;
     margin-top: 19px;
 }
 
@@ -12,6 +14,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.menu--container:hover {
+    background-image: radial-gradient(ellipse farthest-corner at 50% 50%, var(--color-option-select), var(--color-option-select));
 }
 
 .menu--vector {

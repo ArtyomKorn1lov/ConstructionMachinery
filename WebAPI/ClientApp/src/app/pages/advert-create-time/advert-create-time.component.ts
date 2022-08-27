@@ -85,6 +85,7 @@ export class AdvertCreateTimeComponent implements OnInit {
 
   public FillAvailiableTime(dates: Date[], startTime: number, endTime: number): void {
     var currenthour = startTime;
+    var now_utc = new Date();
     for(let count = 0; count < dates.length; count++) {
       while(currenthour <= endTime) {
         dates[count].setHours(currenthour);

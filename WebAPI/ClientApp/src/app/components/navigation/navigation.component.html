@@ -1,7 +1,7 @@
 <div class="navigation">
-    <a [routerLink]="['/advert-list']" class="navigation--hyperlink">Объявления</a>
+    <a (click)="SidenavEvent()" [routerLink]="['/advert-list']" class="navigation--hyperlink">Объявления</a>
     <div class="navigation--vector"></div>
-    <a [routerLink]="['/private-area']" class="navigation--hyperlink">Личный кабинет</a>
+    <a (click)="SidenavEvent()" [routerLink]="['/private-area']" class="navigation--hyperlink">Личный кабинет</a>
     <div class="navigation--vector"></div>
     <a class="navigation--hyperlink">Контакты</a>
     <div class="navigation--vector"></div>
@@ -9,5 +9,5 @@
     <div class="navigation--vector"></div>
     <a class="navigation--hyperlink">Документы</a>
     <div class="navigation--vector"></div>
-    <a [routerLink]="['/authorize']" class="forgot-password">Вход/Регистрация</a>
+    <a (click)="SidenavEvent()" [routerLink]="['/authorize']" class="forgot-password">Вход/Регистрация</a>
 </div>

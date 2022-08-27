@@ -24,58 +24,84 @@ export class AdvertInfoComponent implements OnInit {
   constructor(private advertService: AdvertService, private router: Router) { }
 
   public Back(): void {
-    if(this.page == 'list') {
+    if (this.page == 'list') {
       this.router.navigateByUrl(this.listRoute);
       return;
     }
-    if(this.page == 'my') {
+    if (this.page == 'my') {
       this.router.navigateByUrl(this.myRoute);
       return;
     }
     this.router.navigateByUrl('/');
   }
 
-  public SortByDay(): void {
-    let day = 0;
+  public PackageToDayModel(): void {
+    let day;
     var buffer;
-    var sortTimes: AvailableTimeModel[] = [];
-    for (let count = 0; count < this.advert.availableTimes.length; count++) {
-      buffer = new Date(this.advert.availableTimes[count].date);
-      if (sortTimes.length != 0 && day != buffer.getDate()) {
-        this.days.push(new AvailableDayModel(day, sortTimes));
-        day = buffer.getDate();
+    var sortTimes: AvailableTimeModel[];
+    for (let j = 0; j + 1 < this.advert.availableTimes.length; j++) {
+      buffer = new Date(this.advert.availableTimes[j].date);
+      if (!this.Contain(this.days, buffer)) {
         sortTimes = [];
+        for (let i = 0; i + 1 < this.advert.availableTimes.length; i++) {
+          day = new Date(this.advert.availableTimes[i].date);
+          if (buffer.getDate() == day.getDate())
+            sortTimes.push(this.advert.availableTimes[i]);
+        }
+        this.days.push(new AvailableDayModel(buffer, sortTimes));
       }
-      if (day != buffer.getDate()) {
-        day = buffer.getDate();
-      }
-      sortTimes.push(this.advert.availableTimes[count]);
     }
-    this.days.push(new AvailableDayModel(day, sortTimes));
-    if(buffer != null)
-    {
+    if (buffer != null) {
       this.month = buffer.getMonth();
       this.year = buffer.getFullYear();
     }
     this.ConvertToNormalDate();
-    console.log(this.days);
+  }
+
+  public Contain(list: AvailableDayModel[], elem: Date): Boolean {
+    var firstFormat = '';
+    var secondFormat = elem.getMonth() + '.' + elem.getDate() + '.' + elem.getFullYear();
+    var flag = false;
+    for (let count = 0; count < list.length; count++) {
+      firstFormat = list[count].day.getMonth() + '.' + list[count].day.getDate() + '.' + list[count].day.getFullYear();
+      if (firstFormat == secondFormat)
+      {
+        flag = true;
+      }
+    }
+    return flag;
   }
 
   public ConvertToNormalDate(): void {
-    for(let count_day = 0; count_day < this.days.length; count_day++) {
-      for(let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
+    for (let count_day = 0; count_day < this.days.length; count_day++) {
+      for (let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
         this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
       }
+      this.days[count_day].times = this.SortByHour(this.days[count_day].times);
     }
   }
 
+  public SortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
+    var time = new Date();
+    for(let i = 0; i < list.length; i++) {
+      for(let j = 0; j < list.length - i - 1; j++) {
+        if(list[j].date.getHours() > list[j+1].date.getHours()) {
+          time = list[j].date;
+          list[j].date = list[j+1].date;
+          list[j+1].date = time;
+        }
+      }
+    }
+    return list;
+  }
+
   public Remove(): void {
-    if(this.advert.id == 0) {
+    if (this.advert.id == 0) {
       alert("Ошибка удаления");
       return;
     }
     this.advertService.Remove(this.advert.id).subscribe(data => {
-      if(data == "success") {
+      if (data == "success") {
         alert(data);
         console.log(data);
         this.Back();
@@ -91,7 +117,7 @@ export class AdvertInfoComponent implements OnInit {
     this.page = this.advertService.GetPageFromLocalStorage();
     await this.advertService.GetById(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
       this.advert = data;
-      this.SortByDay();
+      this.PackageToDayModel();
     });
     /*this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T09:00:00'), 1, 1));
     this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T10:00:00'), 1, 1));

@@ -20,7 +20,7 @@
             <div class="title-info">
                 <h5 class="medium-header">Доступное время</h5>
                 <div class="day--list" *ngFor="let day of days">
-                    <h5 class="medium-header">{{day.day}}.{{month}}.{{year}}</h5>
+                    <h5 class="medium-header">{{day.day.getDate()}}.{{day.day.getMonth()}}.{{day.day.getFullYear()}}</h5>
                     <div class="time--list">
                         <div *ngFor="let time of day.times">
                             <p *ngIf="time.availabilityStateId == 1" class="primary-text" style="color: #44FF44; margin-left: 15px;">

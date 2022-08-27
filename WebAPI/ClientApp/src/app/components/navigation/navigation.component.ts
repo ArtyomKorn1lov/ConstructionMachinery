@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-navigarion',
@@ -7,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
+  @Output() event = new EventEmitter();
+
   constructor() { }
+
+  public SidenavEvent(): void {
+    this.event.emit();
+  }
 
   ngOnInit(): void {
   }

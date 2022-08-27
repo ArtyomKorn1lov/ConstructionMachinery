@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit {
   }
 
   public isAuthorized() {
-    console.log(this.model);
     return !!this.model.name;
   }
 

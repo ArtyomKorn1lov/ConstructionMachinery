@@ -2,8 +2,8 @@
     <div class="header--logo-container">
         <img (click)="SidenavEvent()" src="assets/menu.png">
         <img [routerLink]="['/']" src="assets/logo.png">
-        <img *ngIf="model.name == ' '" [routerLink]="['/authorize']" src="assets/account.png">
-        <div *ngIf="model.name != ' '" class="account-ellipse" [routerLink]="['/profile']">
+        <img *ngIf="!isAuthorized()" [routerLink]="['/authorize']" src="assets/account.png">
+        <div *ngIf="isAuthorized()" class="account-ellipse" [routerLink]="['/profile']">
             <h6 class="big-header">{{model.name[0]}}</h6>
         </div>
     </div>
@@ -12,4 +12,3 @@
         <img src="assets/search-icon.png" class="header--search-icon">
     </form>
 </div>
-

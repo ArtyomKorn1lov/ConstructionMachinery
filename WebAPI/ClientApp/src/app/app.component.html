@@ -1,6 +1,6 @@
 <mat-drawer-container style="display: flex;" class="page">
     <mat-drawer #drawer mode="over" class="sidenav">
-        <app-navigarion></app-navigarion>
+        <app-navigarion (event)="drawer.toggle()"></app-navigarion>
     </mat-drawer>
     <mat-drawer-content style="display: flex;">
         <app-header (event)="drawer.toggle()"></app-header>

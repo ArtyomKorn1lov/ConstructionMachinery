@@ -27,7 +27,7 @@ export class AdvertCreateTimeComponent implements OnInit {
 
   public Create(): void {
     if(this.range.value.start == null || this.range.value.start == undefined) {
-      alert("Выберете диапазон чисел");
+      alert("Выберите диапазон чисел");
       return;
     }
     if(this.range.value.end == null || this.range.value.end == undefined) {

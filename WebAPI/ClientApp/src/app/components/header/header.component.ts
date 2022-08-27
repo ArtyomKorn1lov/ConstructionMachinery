@@ -10,7 +10,7 @@ import { AuthoriseModel } from 'src/app/models/AuthoriseModel';
 export class HeaderComponent implements OnInit {
 
   @Output() event = new EventEmitter();
-  public model: AuthoriseModel = new AuthoriseModel(" ");
+  public model: AuthoriseModel = new AuthoriseModel("");
 
   constructor(private accountService: AccountService) { }
 
@@ -18,11 +18,15 @@ export class HeaderComponent implements OnInit {
     this.event.emit();
   }
 
+  public isAuthorized() {
+    console.log(this.model);
+    return !!this.model.name;
+  }
+
   public async ngOnInit(): Promise<void> {
     await this.accountService.IsUserAuthorized().subscribe(data => {
       this.model = data;
     });
-    console.log(this.model);
   }
 
 }

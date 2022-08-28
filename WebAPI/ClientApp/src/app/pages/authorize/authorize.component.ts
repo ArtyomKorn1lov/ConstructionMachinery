@@ -52,7 +52,8 @@ export class AuthorizeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
+    await this.accountService.GetAuthoriseModel();
   }
 
 }

@@ -1,28 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
-import { RegisterModel } from 'src/app/models/RegisterModel';
 import { Router } from '@angular/router';
+import { UserUpdateModel } from 'src/app/models/UserUpdateModel';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrls: ['./edit-profile.component.scss']
 })
-export class RegistrationComponent implements OnInit {
+export class EditProfileComponent implements OnInit {
 
-  public email: string | undefined;
+  public user: UserUpdateModel = new UserUpdateModel(0, "", "", "", "");
   public password: string | undefined;
   public confirm_password: string | undefined;
-  public name: string | undefined;
-  public phone: string | undefined;
-  private targetRoute: string = "/";
+  private targetRoute: string = "/profile";
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async Registration(): Promise<void> {
-    if (this.email == undefined || this.email.trim() == '') {
+  public async Edit(): Promise<void> {
+    if (this.user.email == undefined || this.user.email.trim() == '') {
       alert("Введите Email пользователя");
-      this.email = '';
+      this.user.email = '';
       return;
     }
     if (this.password == undefined || this.password.trim() == '') {
@@ -35,14 +33,14 @@ export class RegistrationComponent implements OnInit {
       this.confirm_password = '';
       return;
     }
-    if (this.name == undefined || this.name.trim() == '') {
+    if (this.user.name == undefined || this.user.name.trim() == '') {
       alert("Введите ФИО пользователя");
-      this.name = '';
+      this.user.name = '';
       return;
     }
-    if (this.phone == undefined || this.phone.trim() == '') {
+    if (this.user.phone == undefined || this.user.phone.trim() == '') {
       alert("Введите номер телефона");
-      this.phone = '';
+      this.user.phone = '';
       return;
     }
     if (this.confirm_password != this.password) {
@@ -51,37 +49,30 @@ export class RegistrationComponent implements OnInit {
       this.confirm_password = '';
       return;
     }
-    var model = new RegisterModel(this.name, this.email, this.phone, this.password);
-    await this.accountService.Registration(model).subscribe(data => {
+    this.user.password = this.password;
+    await this.accountService.Update(this.user).subscribe(data => {
       if (data == "success") {
         console.log(data);
         alert(data);
         this.router.navigateByUrl(this.targetRoute);
         return;
       }
-      if (data == "authorize") {
-        alert("Пользователь уже авторизован");
-        console.log(data);
-        this.email = '';
-        this.password = '';
-        this.confirm_password = '';
-        this.name = '';
-        this.phone = '';
-        return;
-      }
       alert("Некорректные логин и(или) пароль");
       console.log(data);
-      this.email = '';
       this.password = '';
       this.confirm_password = '';
-      this.name = '';
-      this.phone = '';
       return;
     });
   }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.GetAuthoriseModel();
+    await this.accountService.GetUserProfile().subscribe(data => {
+      this.user.id = data.id;
+      this.user.name = data.name;
+      this.user.email = data.email;
+      this.user.phone = data.phone;
+    });
   }
 
 }

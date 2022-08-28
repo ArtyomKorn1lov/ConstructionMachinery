@@ -1,12 +1,14 @@
 ﻿namespace WebAPI.Models
 {
-    public class AuthoriseModel
+    public class AuthorizeModel
     {
         public string Name { get; set; }
+        public string Email { get; set; }
 
-        public AuthoriseModel(string name)
+        public AuthorizeModel(string name, string email)
         {
             Name = name;
+            Email = email;
         }
     }
 }

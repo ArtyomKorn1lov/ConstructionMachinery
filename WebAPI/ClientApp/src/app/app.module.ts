@@ -32,6 +32,7 @@ import { RequestComponent } from './components/request/request.component';
 import { MyRequestsComponent } from './pages/my-requests/my-requests.component';
 import { ConfirmListInfoComponent } from './pages/confirm-list-info/confirm-list-info.component';
 import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.component';
+import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.
     MyRequestsComponent,
     ConfirmListInfoComponent,
     MyRequestInfoComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.
       { path: 'confirm-list', component: ConfirmListComponent },
       { path: 'my-requests', component: MyRequestsComponent },
       { path: 'confirm-list/info', component: ConfirmListInfoComponent },
-      { path: 'my-requests/info', component: MyRequestInfoComponent}
+      { path: 'my-requests/info', component: MyRequestInfoComponent},
+      { path: 'profile/edit', component: EditProfileComponent }
     ]),
     BrowserAnimationsModule,
   ],

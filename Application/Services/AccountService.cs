@@ -132,7 +132,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<int> GetByEmail(string email)
+        public async Task<int> GetIdByEmail(string email)
         {
             try
             {
@@ -146,6 +146,23 @@ namespace Application.Services
             catch
             {
                 return 0;
+            }
+        }
+
+        public async Task<UserCommand> GetUserByEmail(string email)
+        {
+            try
+            {
+                if (email == null)
+                    return null;
+                User user = await _accountRepository.GetRegisterModel(email);
+                if (user == null)
+                    return null;
+                return UserCommandConverter.UserEntityConvertToUserCommand(user);
+            }
+            catch
+            {
+                return null;
             }
         }
     }

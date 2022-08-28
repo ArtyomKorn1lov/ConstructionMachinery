@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         [HttpGet("for-customer")]
         public async Task<List<AvailabilityRequestModelForCustomer>> GetForCustomer()
         {
-            List<AvailabilityRequestCommandForCustomer> commands = await _requestService.GetForCustomer(await _accountService.GetByEmail(HttpContext.User.Identity.Name));
+            List<AvailabilityRequestCommandForCustomer> commands = await _requestService.GetForCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
             List<AvailabilityRequestModelForCustomer> models = commands.Select(command => RequestModelConverter.AvailabilityRequestForCustomerCommandConvertModel(command)).ToList();
             if (models == null)
                 return null;
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         [HttpGet("for-landlord")]
         public async Task<List<AvailabilityRequestModelForLandlord>> GetForLandlord()
         {
-            List<AvailabilityRequestCommandForLandlord> commadns = await _requestService.GetForLandlord(await _accountService.GetByEmail(HttpContext.User.Identity.Name));
+            List<AvailabilityRequestCommandForLandlord> commadns = await _requestService.GetForLandlord(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
             List<AvailabilityRequestModelForLandlord> models = commadns.Select(command => RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command)).ToList();
             if (models == null)
                 return null;
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
             {
                 if (model == null)
                     return Ok("error");
-                model.UserId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+                model.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
                 if(await _requestService.Create(RequestModelConverter.availabilityRequestModelCreateConvertCommand(model)))
                 {
                     await _unitOfWork.Commit();

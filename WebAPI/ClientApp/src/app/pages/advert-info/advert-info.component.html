@@ -34,10 +34,10 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button *ngIf="page == 'list'" class="primary--authorize">
+            <button *ngIf="page == 'list' && accountService.userFlag" class="primary--authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button (click)="Remove()" *ngIf="page == 'my'" class="primary--authorize">
+            <button (click)="Remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary--authorize">
                 <h5 class="medium-header">Снять с публикации</h5>
             </button>
         </div>

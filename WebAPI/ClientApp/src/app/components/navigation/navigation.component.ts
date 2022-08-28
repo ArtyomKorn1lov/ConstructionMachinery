@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-navigarion',
@@ -9,7 +10,7 @@ export class NavigationComponent implements OnInit {
 
   @Output() event = new EventEmitter();
 
-  constructor() { }
+  constructor(public accountService: AccountService) { }
 
   public SidenavEvent(): void {
     this.event.emit();

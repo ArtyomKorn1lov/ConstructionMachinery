@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { AdvertService } from 'src/app/services/advert.service';
+import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +16,7 @@ export class AdvertCreateComponent implements OnInit {
   public price: number | undefined; 
   private targetRoute: string = "/advert-create/time"
 
-  constructor(private advertService: AdvertService, private router: Router) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService) { }
 
   public CrossingToAvailiableTime(): void {
     if (this.name == undefined || this.name.trim() == '') {
@@ -35,6 +36,7 @@ export class AdvertCreateComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    await this.accountService.GetAuthoriseModel();
     this.advertService.SetAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, []));
   }
 

@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         [HttpGet("by-user")]
         public async Task<List<AdvertModelList>> GetByUser()
         {
-            int userId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+            int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
             List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
             {
                 if(advertModel == null)
                     return Ok("error");
-                advertModel.UserId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+                advertModel.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
                 if (await _advertService.Create(AdvertModelConverter.AdvertModelCreateConvertAdvertCommandCreate(advertModel)))
                 {
                     await _unitOfWork.Commit();
@@ -130,7 +130,7 @@ namespace WebAPI.Controllers
             try
             {
                 int advertUserId = await _advertService.GetUserIdByAdvert(id);
-                int userId = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
                 if(advertUserId == 0)
                 {
                     return Ok("error");

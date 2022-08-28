@@ -5,13 +5,29 @@ import { RegisterModel } from '../models/RegisterModel';
 import { LoginModel } from '../models/LoginModel';
 import { AuthoriseModel } from '../models/AuthoriseModel';
 import { UserModel } from '../models/UserModel';
+import { UserUpdateModel } from '../models/UserUpdateModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
+  public userFlag: boolean = false;
+  public authorize: AuthoriseModel = new AuthoriseModel("", "");
+
   constructor(private http: HttpClient) { }
+
+  public async GetAuthoriseModel(): Promise<void> {
+    await this.IsUserAuthorized().subscribe(data => {
+      this.authorize = data;
+      if(data != null)
+      {
+        this.userFlag = true;
+        return;
+      }
+      this.userFlag = false;
+    })
+  }
 
   public Registration(model: RegisterModel): Observable<string> {
     return this.http.post(`api/account/register`, model, { responseType: 'text' });
@@ -32,6 +48,10 @@ export class AccountService {
 
   public GetUserProfile(): Observable<UserModel> {
     return this.http.get<UserModel>(`api/account/user`);
+  }
+
+  public Update(model: UserUpdateModel): Observable<string> {
+    return this.http.put(`api/account/update`, model, { responseType: 'text' });
   }
 
 }

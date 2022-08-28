@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-lease-registration',
@@ -11,10 +12,11 @@ export class LeaseRegistrationComponent implements OnInit {
   public times: AvailableTimeModel[] = [];
   public currentTime: Date = new Date();
 
-  constructor() { }
+  constructor(private accountService: AccountService) { }
 
-  public ngOnInit(): void {
-    this.times.push(new AvailableTimeModel(1, new Date(), 1, 1))
+  public async ngOnInit(): Promise<void> {
+    this.times.push(new AvailableTimeModel(1, new Date(), 1, 1));
+    await this.accountService.GetAuthoriseModel();
   }
 
 }

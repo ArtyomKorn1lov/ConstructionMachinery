@@ -3,6 +3,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { AdvertModelInfo } from 'src/app/models/AdvertModelInfo';
 import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
+import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,7 +22,7 @@ export class AdvertInfoComponent implements OnInit {
   private listRoute: string = '/advert-list';
   private myRoute: string = '/my-adverts';
 
-  constructor(private advertService: AdvertService, private router: Router) { }
+  constructor(private advertService: AdvertService, private router: Router, public accountService: AccountService) { }
 
   public Back(): void {
     if (this.page == 'list') {
@@ -114,6 +115,7 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    await this.accountService.GetAuthoriseModel();
     this.page = this.advertService.GetPageFromLocalStorage();
     await this.advertService.GetById(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
       this.advert = data;

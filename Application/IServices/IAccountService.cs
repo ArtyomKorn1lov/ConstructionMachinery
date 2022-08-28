@@ -16,6 +16,7 @@ namespace Application.IServices
         Task<bool> Update(UserUpdateCommand user);
         Task<bool> Remove(int id);
         Task<UserCommand> GetById(int id);
-        Task<int> GetByEmail(string email);
+        Task<int> GetIdByEmail(string email);
+        Task<UserCommand> GetUserByEmail(string email);
     }
 }

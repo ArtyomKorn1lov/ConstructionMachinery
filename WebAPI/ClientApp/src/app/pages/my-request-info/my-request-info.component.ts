@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-my-request-info',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyRequestInfoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private accountService: AccountService) { }
 
-  ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
+    await this.accountService.GetAuthoriseModel();
   }
 
 }

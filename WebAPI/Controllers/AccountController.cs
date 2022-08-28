@@ -34,7 +34,8 @@ namespace WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (IsUserAuthorized().Name != null)
+                    AuthorizeModel authorize = await IsUserAuthorized();
+                    if (authorize != null)
                     {
                         return Ok("authorize");
                     }
@@ -62,7 +63,8 @@ namespace WebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (IsUserAuthorized().Name != null)
+                    AuthorizeModel authorize = await IsUserAuthorized();
+                    if (authorize != null)
                     {
                         return Ok("authorize");
                     }
@@ -93,7 +95,8 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (IsUserAuthorized().Name == null)
+                AuthorizeModel authorize = await IsUserAuthorized();
+                if (authorize == null)
                 {
                     return Ok("error");
                 }
@@ -117,9 +120,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("is-authorized")]
-        public AuthoriseModel IsUserAuthorized()
+        public async Task<AuthorizeModel> IsUserAuthorized()
         {
-            AuthoriseModel authorise = new AuthoriseModel(HttpContext.User.Identity.Name);
+            UserCommand user = await _accountService.GetUserByEmail(HttpContext.User.Identity.Name);
+            if (user == null)
+                return null;
+            AuthorizeModel authorise = new AuthorizeModel(user.Name, user.Email);
             return authorise;
         }
 
@@ -127,7 +133,7 @@ namespace WebAPI.Controllers
         [HttpGet("user")]
         public async Task<UserModel> GetById()
         {
-            int id = await _accountService.GetByEmail(HttpContext.User.Identity.Name);
+            int id = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
             UserCommand userCommand = await _accountService.GetById(id);
             UserModel userModel = UserModelConverter.UserCommandConvertToUserModel(userCommand);
             if (userModel == null)

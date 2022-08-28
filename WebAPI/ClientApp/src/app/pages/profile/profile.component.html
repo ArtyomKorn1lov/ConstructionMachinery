@@ -14,7 +14,7 @@
                 <img src="assets/lucide_phone.png">
                 <h5 class="medium-header">{{user.phone}}</h5>
             </div>
-            <button class="edit--button">
+            <button [routerLink]="['/profile/edit']" class="edit--button">
                 <h5 class="medium-header">Редактировать</h5>
             </button>
             <button (click)="Logout()" class="secondary--authorize">

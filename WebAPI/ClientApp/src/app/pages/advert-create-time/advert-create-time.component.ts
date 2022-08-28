@@ -4,6 +4,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { AvailableTimeModelCreate } from 'src/app/models/AvailableTimeModelCreate';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-advert-create-time',
@@ -23,7 +24,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
-  constructor(private advertService: AdvertService, private router: Router) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService) { }
 
   public Create(): void {
     if(this.range.value.start == null || this.range.value.start == undefined) {
@@ -97,6 +98,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    await this.accountService.GetAuthoriseModel();
     this.advert = this.advertService.GetAdvertCreateFromService();
     if(this.advert.name == "")
       this.router.navigateByUrl(this.createRoute);

@@ -145,6 +145,25 @@ namespace Application.Services
             }
         }
 
+        public async Task<List<AvailableTimeCommand>> GetAvailableTimesByAdvertId(int id, int userId)
+        {
+            try
+            {
+                Advert advert = await _advertRepository.GetById(id);
+                if (advert.UserId == userId)
+                    return null;
+                List<AvailableTime> times = await _requestRepository.GetTimesForRequestByAdvertId(id);
+                if (advert == null)
+                    return null;
+                List<AvailableTimeCommand> commands = times.Select(time => RequestCommandConverter.EntityConvertToAvailableTimeCommand(time)).ToList();
+                return commands;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> Remove(int id)
         {
             try
@@ -202,7 +221,7 @@ namespace Application.Services
             List<AvailableTime> times = new List<AvailableTime>();
             foreach(Advert advert in adverts)
             {
-                times = times.Concat(await _requestRepository.GetByAdvertId(advert.Id)).ToList();
+                times = times.Concat(await _requestRepository.GetTimesByAdvertId(advert.Id)).ToList();
             }
             List<AvailabilityRequest> requests = new List<AvailabilityRequest>();
             foreach (AvailableTime time in times)

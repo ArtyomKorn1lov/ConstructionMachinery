@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button *ngIf="page == 'list' && accountService.userFlag" class="primary--authorize">
+            <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag" class="primary--authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
             <button (click)="Remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary--authorize">

@@ -74,6 +74,17 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
+        [HttpGet("times/{id}")]
+        public async Task<List<AvailableTimeModel>> GetAvailableTimesByAdvertId(int id)
+        {
+            List<AvailableTimeCommand> commands = await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AvailableTimeModel> models = commands.Select(command => RequestModelConverter.CommandConvertToAvailableTimeModel(command)).ToList();
+            if (models == null)
+                return null;
+            return models;
+        }
+
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> Create(AvailabilityRequestModelCreate model)
         {

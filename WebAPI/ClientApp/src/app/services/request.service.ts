@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { AvailabilityRequestModel } from '../models/AvailabilityRequestModel';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
+import { AvailableTimeModel } from '../models/AvailableTimeModel';
+import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +42,15 @@ export class RequestService {
   }
 
   public GetForLandLord(id: number): Observable<AvailabilityRequestModelForLandlord> {
-    return this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`)
+    return this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`);
+  }
+
+  public GetAvailableTimesByAdvertId(id: number): Observable<AvailableTimeModel[]> {
+    return this.http.get<AvailableTimeModel[]>(`api/request/times/${id}`);
+  }
+
+  public Create(request: AvailabilityRequestModelCreate): Observable<string> {
+    return this.http.post(`api/request/create`, request, { responseType: 'text' });
   }
 
 }

@@ -79,5 +79,18 @@ namespace Application.CommandsConverters
                 name = advertName
             };
         }
+
+        public static AvailableTimeCommand EntityConvertToAvailableTimeCommand(AvailableTime time)
+        {
+            if (time == null)
+                return null;
+            return new AvailableTimeCommand
+            {
+                Id = time.Id,
+                Date = time.Date,
+                AdvertId = time.AdvertId,
+                AvailabilityStateId = time.AvailabilityStateId
+            };
+        }
     }
 }

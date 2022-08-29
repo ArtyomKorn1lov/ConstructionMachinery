@@ -78,22 +78,8 @@ export class AdvertInfoComponent implements OnInit {
       for (let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
         this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
       }
-      this.days[count_day].times = this.SortByHour(this.days[count_day].times);
+      this.days[count_day].times = this.advertService.SortByHour(this.days[count_day].times);
     }
-  }
-
-  public SortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
-    var time = new Date();
-    for(let i = 0; i < list.length; i++) {
-      for(let j = 0; j < list.length - i - 1; j++) {
-        if(list[j].date.getHours() > list[j+1].date.getHours()) {
-          time = list[j].date;
-          list[j].date = list[j+1].date;
-          list[j+1].date = time;
-        }
-      }
-    }
-    return list;
   }
 
   public Remove(): void {

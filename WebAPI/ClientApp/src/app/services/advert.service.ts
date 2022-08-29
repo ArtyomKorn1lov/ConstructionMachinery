@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AdvertModelList } from '../models/AdvertModelList';
 import { AdvertModelInfo } from '../models/AdvertModelInfo';
 import { AdvertModelCreate } from '../models/AdvertModelCreate';
+import { AvailableTimeModel } from '../models/AvailableTimeModel';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,20 @@ export class AdvertService {
     if (this.advertCreate == undefined)
       return new AdvertModelCreate("", "", 0, 0, []);
     return this.advertCreate;
+  }
+
+  public SortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
+    var time = new Date();
+    for(let i = 0; i < list.length; i++) {
+      for(let j = 0; j < list.length - i - 1; j++) {
+        if(list[j].date.getHours() > list[j+1].date.getHours()) {
+          time = list[j].date;
+          list[j].date = list[j+1].date;
+          list[j+1].date = time;
+        }
+      }
+    }
+    return list;
   }
 
   public GetAll(): Observable<AdvertModelList[]> {

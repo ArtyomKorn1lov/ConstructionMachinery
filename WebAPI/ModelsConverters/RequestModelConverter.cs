@@ -79,5 +79,18 @@ namespace WebAPI.ModelsConverters
                 name = command.name
             };
         }
+
+        public static AvailableTimeModel CommandConvertToAvailableTimeModel(AvailableTimeCommand command)
+        {
+            if (command == null)
+                return null;
+            return new AvailableTimeModel
+            {
+                Id = command.Id,
+                Date = command.Date,
+                AdvertId = command.AdvertId,
+                AvailabilityStateId = command.AdvertId
+            };
+        }
     }
 }

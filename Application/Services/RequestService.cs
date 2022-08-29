@@ -59,20 +59,18 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailabilityRequestCommandForCustomer>> GetForCustomer(int id)
+        public async Task<AvailabilityRequestCommandForCustomer> GetForCustomer(int id, int userId)
         {
             try
             {
-                List<AvailabilityRequest> requests = await _requestRepository.GetByUserId(id);
-                if (requests == null)
+                AvailabilityRequest request = await _requestRepository.GetById(id);
+                if (request == null)
                     return null;
-                List<AvailabilityRequestCommandForCustomer> commandForCustomers = new List<AvailabilityRequestCommandForCustomer>();
-                foreach (AvailabilityRequest request in requests)
-                {
-                    commandForCustomers.Add(RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request, 
-                        await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId)));
-                }
-                return commandForCustomers;
+                if (request.UserId != userId)
+                    return null;
+                AvailabilityRequestCommandForCustomer commandForCustomer = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request,
+                    await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId));
+                return commandForCustomer;
             }
             catch
             {
@@ -80,7 +78,50 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailabilityRequestCommandForLandlord>> GetForLandlord(int id)
+        public async Task<AvailabilityRequestCommandForLandlord> GetForLandlord(int id, int userId)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetByUserId(id);
+                AvailabilityRequest request = await _requestRepository.GetById(id);
+                if (request == null)
+                    return null;
+                if (await GetUserIdByAdvertId(request.AvailableTimes[0].AdvertId) != userId)
+                    return null;
+                if (request.RequestStateId != 3)
+                    return null;
+                AvailabilityRequestCommandForLandlord commandForLandlord = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
+                       await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId));
+                return commandForLandlord;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id)
+        {
+            try
+            {
+                List<AvailabilityRequest> requests = await _requestRepository.GetByUserId(id);
+                if (requests == null)
+                    return null;
+                List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
+                foreach (AvailabilityRequest request in requests)
+                {
+                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request,
+                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId)));
+                }
+                return commands;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id)
         {
             try
             {
@@ -90,13 +131,13 @@ namespace Application.Services
                 List<AvailabilityRequest> requests = await GetByAdvertId(adverts);
                 if (requests == null)
                     return null;
-                List<AvailabilityRequestCommandForLandlord> commandForLandlords = new List<AvailabilityRequestCommandForLandlord>();
-                foreach(AvailabilityRequest request in requests)
+                List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
+                foreach (AvailabilityRequest request in requests)
                 {
-                    commandForLandlords.Add(RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
-                        await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId)));
+                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request,
+                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId)));
                 }
-                return commandForLandlords;
+                return commands;
             }
             catch
             {
@@ -120,14 +161,14 @@ namespace Application.Services
         public async Task<string> GetPhoneForCustomer(int id)
         {
             Advert advert = await _advertRepository.GetById(id);
-            User user = await _accountRepository.GetById(advert.Id);
+            User user = await _accountRepository.GetById(advert.UserId);
             return user.Phone;
         }
 
         public async Task<string> GetLandLordName(int id)
         {
             Advert advert = await _advertRepository.GetById(id);
-            User user = await _accountRepository.GetById(advert.Id);
+            User user = await _accountRepository.GetById(advert.UserId);
             return user.Name;
         }
 
@@ -143,12 +184,30 @@ namespace Application.Services
             return user.Name;
         }
 
+        public async Task<string> GetAdvertNameById(int id)
+        {
+            Advert advert = await _advertRepository.GetById(id);
+            return advert.Name;
+        }
+
+        public async Task<int> GetUserIdByAdvertId(int id)
+        {
+            Advert advert = await _advertRepository.GetById(id);
+            User user = await _accountRepository.GetById(advert.UserId);
+            return user.Id;
+        }
+
         public async Task<List<AvailabilityRequest>> GetByAdvertId(List<Advert> adverts)
         {
-            List<AvailabilityRequest> requests = new List<AvailabilityRequest>();
+            List<AvailableTime> times = new List<AvailableTime>();
             foreach(Advert advert in adverts)
             {
-                requests.Concat(await _requestRepository.GetByAdvertId(advert.Id)).ToList();
+                times = times.Concat(await _requestRepository.GetByAdvertId(advert.Id)).ToList();
+            }
+            List<AvailabilityRequest> requests = new List<AvailabilityRequest>();
+            foreach (AvailableTime time in times)
+            {
+                requests.Add(await _requestRepository.GetById((int)time.AvailabilityRequestId));
             }
             return requests;
         }

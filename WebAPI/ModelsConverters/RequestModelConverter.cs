@@ -1,6 +1,7 @@
 ﻿using WebAPI.Models;
 using Application.Commands;
 using System.Linq;
+using WebApi.Models;
 
 namespace WebAPI.ModelsConverters
 {
@@ -13,6 +14,7 @@ namespace WebAPI.ModelsConverters
             return new AvailabilityRequestModelForCustomer
             {
                 Id = command.Id,
+                AvertName = command.AvertName,
                 Address = command.Address,
                 Phone = command.Phone,
                 LandlordName = command.LandlordName,
@@ -35,6 +37,7 @@ namespace WebAPI.ModelsConverters
             return new AvailabilityRequestModelForLandlord
             {
                 Id = command.Id,
+                AdvertName = command.AdvertName,
                 Address = command.Address,
                 Phone = command.Phone,
                 CustomerName = command.CustomerName,
@@ -49,7 +52,7 @@ namespace WebAPI.ModelsConverters
             };
         }
 
-        public static AvailabilityRequestCommandCreate availabilityRequestModelCreateConvertCommand(AvailabilityRequestModelCreate model)
+        public static AvailabilityRequestCommandCreate AvailabilityRequestModelCreateConvertCommand(AvailabilityRequestModelCreate model)
         {
             if (model == null)
                 return null;
@@ -63,6 +66,17 @@ namespace WebAPI.ModelsConverters
                     Id = command.Id,
                     AvailabilityStateId = command.AvailabilityStateId
                 }).ToList()
+            };
+        }
+
+        public static AvailabilityRequestListModel AvailabilityRequestListCommandConvertAvailabilityRequestListModel(AvailabilityRequestListCommand command)
+        {
+            if (command == null)
+                return null;
+            return new AvailabilityRequestListModel
+            {
+                Id = command.Id,
+                name = command.name
             };
         }
     }

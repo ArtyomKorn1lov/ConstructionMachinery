@@ -29,17 +29,17 @@ namespace Infrastructure.Repositories
             await _constructionMachineryDbContext.Set<AvailabilityRequest>().AddAsync(availabilityRequest);
         }
 
-        public async Task<List<AvailabilityRequest>> GetByAdvertId(int id)
+        public async Task<List<AvailableTime>> GetByAdvertId(int id)
         {
-            return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
-                .Include(availabilityRequest => availabilityRequest.AvailableTimes)
-                .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(availableTime => availableTime.AdvertId == id))
-                .ToListAsync();
+            return await _constructionMachineryDbContext.Set<AvailableTime>()
+                .Where(a => a.AdvertId == id && a.AvailabilityRequestId != null).ToListAsync();
         }
 
         public async Task<AvailabilityRequest> GetById(int id)
         {
-            return await _constructionMachineryDbContext.Set<AvailabilityRequest>().FirstOrDefaultAsync(availabilityRequest => availabilityRequest.Id == id);
+            return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
+                .Include(availabilityRequest => availabilityRequest.AvailableTimes)
+                .FirstOrDefaultAsync(availabilityRequest => availabilityRequest.Id == id);
         }
 
         public async Task<List<AvailabilityRequest>> GetByUserId(int id)

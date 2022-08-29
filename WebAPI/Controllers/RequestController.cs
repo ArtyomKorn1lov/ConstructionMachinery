@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using WebApi.Models;
 
 namespace WebAPI.Controllers
 {
@@ -27,11 +28,34 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("for-customer")]
-        public async Task<List<AvailabilityRequestModelForCustomer>> GetForCustomer()
+        [HttpGet("customer/{id}")]
+        public async Task<AvailabilityRequestModelForCustomer> GetForCustomer(int id)
         {
-            List<AvailabilityRequestCommandForCustomer> commands = await _requestService.GetForCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
-            List<AvailabilityRequestModelForCustomer> models = commands.Select(command => RequestModelConverter.AvailabilityRequestForCustomerCommandConvertModel(command)).ToList();
+            AvailabilityRequestCommandForCustomer command = await _requestService.GetForCustomer(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            AvailabilityRequestModelForCustomer model = RequestModelConverter.AvailabilityRequestForCustomerCommandConvertModel(command);
+            if (model == null)
+                return null;
+            return model;
+        }
+
+        [Authorize]
+        [HttpGet("landlord/{id}")]
+        public async Task<AvailabilityRequestModelForLandlord> GetForLandlord(int id)
+        {
+            AvailabilityRequestCommandForLandlord command = await _requestService.GetForLandlord(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            AvailabilityRequestModelForLandlord model = RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command);
+            if (model == null)
+                return null;
+            return model;
+        }
+
+        [Authorize]
+        [HttpGet("for-customer")]
+        public async Task<List<AvailabilityRequestListModel>> GetListForCustomer()
+        {
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AvailabilityRequestListModel> models = commands.Select(command => 
+                RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
                 return null;
             return models;
@@ -39,10 +63,11 @@ namespace WebAPI.Controllers
 
         [Authorize]
         [HttpGet("for-landlord")]
-        public async Task<List<AvailabilityRequestModelForLandlord>> GetForLandlord()
+        public async Task<List<AvailabilityRequestListModel>> GetListForLandlord()
         {
-            List<AvailabilityRequestCommandForLandlord> commadns = await _requestService.GetForLandlord(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
-            List<AvailabilityRequestModelForLandlord> models = commadns.Select(command => RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command)).ToList();
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AvailabilityRequestListModel> models = commands.Select(command =>
+                RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
                 return null;
             return models;
@@ -57,7 +82,7 @@ namespace WebAPI.Controllers
                 if (model == null)
                     return Ok("error");
                 model.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
-                if(await _requestService.Create(RequestModelConverter.availabilityRequestModelCreateConvertCommand(model)))
+                if(await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");

@@ -9,10 +9,12 @@ namespace Application.IServices
 {
     public interface IRequestService
     {
-        Task<List<AvailabilityRequestCommandForCustomer>> GetForCustomer(int id);
-        Task<List<AvailabilityRequestCommandForLandlord>> GetForLandlord(int id);
+        Task<AvailabilityRequestCommandForCustomer> GetForCustomer(int id, int userId);
+        Task<AvailabilityRequestCommandForLandlord> GetForLandlord(int id, int userId);
         Task<bool> Create(AvailabilityRequestCommandCreate request);
         Task<bool> Confirm(int id, int stateId);
         Task<bool> Remove(int id);
+        Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id);
+        Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id);
     }
 }

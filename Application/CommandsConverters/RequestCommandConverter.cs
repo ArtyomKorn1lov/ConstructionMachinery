@@ -23,13 +23,14 @@ namespace Application.CommandsConverters
         }
 
         public static AvailabilityRequestCommandForCustomer AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(AvailabilityRequest request,
-            string phone, string landlordName)
+            string advertName, string phone, string landlordName)
         {
             if (request == null)
                 return null;
             return new AvailabilityRequestCommandForCustomer
             {
                 Id = request.Id,
+                AvertName = advertName,
                 Address = request.Address,
                 Phone = phone,
                 LandlordName = landlordName,
@@ -45,8 +46,8 @@ namespace Application.CommandsConverters
             };
         }
         
-        public static AvailabilityRequestCommandForLandlord AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(AvailabilityRequest request, 
-            string phone, string customerName)
+        public static AvailabilityRequestCommandForLandlord AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(AvailabilityRequest request,
+            string advertName, string phone, string customerName)
         {
             if (request == null)
                 return null;
@@ -54,6 +55,7 @@ namespace Application.CommandsConverters
             {
                 Id = request.Id,
                 Address = request.Address,
+                AdvertName = advertName,
                 Phone = phone,
                 CustomerName = customerName,
                 UserId = request.UserId,
@@ -64,6 +66,17 @@ namespace Application.CommandsConverters
                     AdvertId = availableTime.AdvertId,
                     AvailabilityStateId = availableTime.AvailabilityStateId,
                 }).ToList()
+            };
+        }
+
+        public static AvailabilityRequestListCommand EntityConvertToAvailabilityRequestListCommand(AvailabilityRequest request, string advertName)
+        {
+            if (request == null)
+                return null;
+            return new AvailabilityRequestListCommand
+            {
+                Id = request.Id,
+                name = advertName
             };
         }
     }

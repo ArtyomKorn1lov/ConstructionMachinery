@@ -57,6 +57,20 @@ namespace Application.Services
             }
         }
 
+        public async Task<List<AdvertCommandList>> GetAllWithoutUserId(int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<AdvertCommandInfo> GetById(int id)
         {
             try
@@ -77,6 +91,20 @@ namespace Application.Services
             try
             {
                 List<Advert> adverts = await _advertRepository.GetByName(name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetByNameWithoutUserId(string name, int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetByNameWithoutUserId(name, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
                 return advertCommandList;
             }

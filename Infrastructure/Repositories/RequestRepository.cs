@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories
         public async Task<List<AvailableTime>> GetTimesByAdvertId(int id)
         {
             return await _constructionMachineryDbContext.Set<AvailableTime>()
-                .Where(a => a.AdvertId == id && a.AvailabilityRequestId != null).ToListAsync();
+                .Where(time => time.AdvertId == id && time.AvailabilityRequestId != null && time.AvailabilityStateId == 3).ToListAsync();
         }
 
         public async Task<List<AvailableTime>> GetTimesForRequestByAdvertId(int id)
@@ -55,16 +55,23 @@ namespace Infrastructure.Repositories
                 .Where(availabilityRequest => availabilityRequest.UserId == id).ToListAsync();
         }
 
+        public async Task<int> GetLastRequestId()
+        {
+            return await _constructionMachineryDbContext.Set<AvailabilityRequest>().MaxAsync(request => request.Id);
+        }
+
         public async Task Remove(int id)
         {
-            AvailabilityRequest availabilityRequest = await GetById(id);
+            AvailabilityRequest availabilityRequest = await _constructionMachineryDbContext.Set<AvailabilityRequest>()
+                .FirstOrDefaultAsync(availabilityRequest => availabilityRequest.Id == id);
             if (availabilityRequest != null)
                 _constructionMachineryDbContext.Set<AvailabilityRequest>().Remove(availabilityRequest);
         }
 
-        public async Task UpdateTime(int id, int state)
+        public async Task UpdateTime(int id, int requestId, int state)
         {
             AvailableTime availableTime = await _constructionMachineryDbContext.Set<AvailableTime>().FirstOrDefaultAsync(availableTime => availableTime.Id == id);
+            availableTime.AvailabilityRequestId = requestId;
             availableTime.AvailabilityStateId = state;
         }
     }

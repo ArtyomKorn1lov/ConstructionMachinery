@@ -60,12 +60,18 @@ namespace WebAPI.ModelsConverters
             {
                 Address = model.Address,
                 RequestStateId = model.RequestStateId,
-                UserId = model.UserId,
-                AvailableTimeCommandForCreateRequests = model.AvailableTimeModelForCreateRequests.Select(command => new AvailableTimeCommandForCreateRequest
-                {
-                    Id = command.Id,
-                    AvailabilityStateId = command.AvailabilityStateId
-                }).ToList()
+                UserId = model.UserId
+            };
+        }
+
+        public static AvailableTimeCommandForCreateRequest AvailableTimeModelForCreateRequestConvertToCommand(AvailableTimeModelForCreateRequest model)
+        {
+            if (model == null)
+                return null;
+            return new AvailableTimeCommandForCreateRequest
+            {
+                Id = model.Id,
+                AvailabilityStateId = model.AvailabilityStateId
             };
         }
 

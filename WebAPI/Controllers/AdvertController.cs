@@ -29,6 +29,16 @@ namespace WebAPI.Controllers
         [HttpGet("adverts")]
         public async Task<List<AdvertModelList>> GetAll()
         {
+            if(HttpContext.User.Identity.Name != null)
+            {
+                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetAllWithoutUserId(userId);
+                List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
+                AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
+                if (advertUserCommands == null)
+                    return null;
+                return advertUserModels;
+            }
             List<AdvertCommandList> advertCommands = await _advertService.GetAll();
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand => 
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
@@ -49,6 +59,16 @@ namespace WebAPI.Controllers
         [HttpGet("by-name/{name}")]
         public async Task<List<AdvertModelList>> GetByName(string name)
         {
+            if (HttpContext.User.Identity.Name != null)
+            {
+                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetByNameWithoutUserId(name, userId);
+                List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
+                AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
+                if (advertUserModels == null)
+                    return null;
+                return advertUserModels;
+            }
             List<AdvertCommandList> advertCommands = await _advertService.GetByName(name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand => 
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();

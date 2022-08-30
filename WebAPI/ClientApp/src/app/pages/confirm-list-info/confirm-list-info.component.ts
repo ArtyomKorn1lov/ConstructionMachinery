@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { RequestService } from 'src/app/services/request.service';
 import { AvailabilityRequestModelForLandlord } from 'src/app/models/AvailabilityRequestModelForLandlord';
+import { Router } from '@angular/router';
+import { ConfirmModel } from 'src/app/models/ConfirmModel';
 
 @Component({
   selector: 'app-confirm-list-info',
@@ -11,9 +13,25 @@ import { AvailabilityRequestModelForLandlord } from 'src/app/models/Availability
 export class ConfirmListInfoComponent implements OnInit {
 
   public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, []);
-  public date: Date = new Date()
+  public date: Date = new Date();
+  private targetRoute: string = "/confirm-list";
 
-  constructor(private accountService: AccountService, private requestService: RequestService) { }
+  constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
+
+  public Confirm(state: number): void {
+    var model: ConfirmModel = new ConfirmModel(this.request.id, state);
+    this.requestService.Confirm(model).subscribe(data => {
+      if (data == "success") {
+        console.log(data);
+        alert(data);
+        this.router.navigateByUrl(this.targetRoute);
+        return;
+      }
+      alert("Ошибка подтверждения запроса");
+      console.log(data);
+      return;
+    });
+  }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.GetAuthoriseModel();

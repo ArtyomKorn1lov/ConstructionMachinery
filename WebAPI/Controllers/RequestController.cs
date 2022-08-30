@@ -93,8 +93,15 @@ namespace WebAPI.Controllers
                 if (model == null)
                     return Ok("error");
                 model.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                model.RequestStateId = 3;
                 if(await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
                 {
+                    await _unitOfWork.Commit();
+                    int requestId = await _requestService.GetLastRequestId();
+                    if (requestId == 0)
+                        return Ok("error");
+                    List<AvailableTimeCommandForCreateRequest> times = model.AvailableTimeModelForCreateRequests.Select(time => RequestModelConverter.AvailableTimeModelForCreateRequestConvertToCommand(time)).ToList();
+                    await _requestService.UpdateTimes(requestId, times);
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
@@ -108,11 +115,13 @@ namespace WebAPI.Controllers
 
         [Authorize]
         [HttpPut("confirm")]
-        public async Task<IActionResult> Confirm(int id, int stateId)
+        public async Task<IActionResult> Confirm(ConfirmModel model)
         {
             try
             {
-                if(await _requestService.Confirm(id, stateId))
+                if (model.RequestStateId != 1 && model.RequestStateId != 2 && model.RequestStateId != 3)
+                    return Ok("error");
+                if (await _requestService.Confirm(model.Id, model.RequestStateId))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");
@@ -131,7 +140,8 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if(await _requestService.Remove(id))
+                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                if (await _requestService.Remove(id, userId))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");

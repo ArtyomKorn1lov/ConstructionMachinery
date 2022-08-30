@@ -29,7 +29,14 @@ namespace Application.Services
             try
             {
                 AvailabilityRequest request = await _requestRepository.GetById(id);
+                int availabilityStateId = 3;
+                if (stateId == 1)
+                    availabilityStateId = 2;
+                if (stateId == 2)
+                    availabilityStateId = 1;
                 request.RequestStateId = stateId;
+                for (int count = 0; count < request.AvailableTimes.Count; count++)
+                    request.AvailableTimes[count].AvailabilityStateId = availabilityStateId;
                 await _requestRepository.Confirm(request);
                 return true;
             }
@@ -47,8 +54,26 @@ namespace Application.Services
                 {
                     AvailabilityRequest entityRequest = RequestCommandConverter.AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(request);
                     await _requestRepository.Create(entityRequest);
-                    foreach (AvailableTimeCommandForCreateRequest time in request.AvailableTimeCommandForCreateRequests)
-                        await _requestRepository.UpdateTime(time.Id, time.AvailabilityStateId);
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateTimes(int requestId, List<AvailableTimeCommandForCreateRequest> times)
+        {
+            try
+            {
+                if (requestId == 0)
+                    return false;
+                if(times != null)
+                {
+                    foreach (AvailableTimeCommandForCreateRequest time in times)
+                        await _requestRepository.UpdateTime(time.Id, requestId, 3);
                     return true;
                 }
                 return false;
@@ -145,6 +170,18 @@ namespace Application.Services
             }
         }
 
+        public async Task<int> GetLastRequestId()
+        {
+            try
+            {
+                return await _requestRepository.GetLastRequestId();
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public async Task<List<AvailableTimeCommand>> GetAvailableTimesByAdvertId(int id, int userId)
         {
             try
@@ -164,12 +201,21 @@ namespace Application.Services
             }
         }
 
-        public async Task<bool> Remove(int id)
+        public async Task<bool> Remove(int id, int userId)
         {
             try
             {
-                await _requestRepository.Remove(id);
-                return true;
+                AvailabilityRequest request = await _requestRepository.GetById(id);
+                if (request.UserId != userId)
+                    return false;
+                if (request.AvailableTimes != null)
+                {
+                    foreach (AvailableTime time in request.AvailableTimes)
+                        await _requestRepository.UpdateTime(time.Id, request.Id, 1);
+                    await _requestRepository.Remove(id);
+                    return true;
+                }
+                return false;
             }
             catch
             {

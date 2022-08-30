@@ -28,6 +28,11 @@ namespace Infrastructure.Repositories
             return await _constructionMachineryDbContext.Set<Advert>().ToListAsync();
         }
 
+        public async Task<List<Advert>> GetAllWithoutUserId(int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).ToListAsync();
+        }
+
         public async Task<Advert> GetById(int id)
         {
             return await _constructionMachineryDbContext.Set<Advert>()
@@ -37,6 +42,11 @@ namespace Infrastructure.Repositories
         public async Task<List<Advert>> GetByName(string name)
         {
             return await _constructionMachineryDbContext.Set<Advert>().Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetByNameWithoutUserId(string name, int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id).ToListAsync();
         }
 
         public async Task<List<Advert>> GetByUserId(int id)

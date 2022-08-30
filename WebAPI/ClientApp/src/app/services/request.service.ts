@@ -6,6 +6,7 @@ import { AvailabilityRequestModelForCustomer } from 'src/app/models/Availability
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
 import { AvailableTimeModel } from '../models/AvailableTimeModel';
 import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
+import { ConfirmModel } from '../models/ConfirmModel';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,14 @@ export class RequestService {
 
   public Create(request: AvailabilityRequestModelCreate): Observable<string> {
     return this.http.post(`api/request/create`, request, { responseType: 'text' });
+  }
+
+  public Confirm(model: ConfirmModel): Observable<string> {
+    return this.http.put(`api/request/confirm`, model, { responseType: 'text' });
+  }
+
+  public Remove(id: number): Observable<string> {
+    return this.http.delete(`api/request/remove/${id}`, { responseType: 'text' });
   }
 
 }

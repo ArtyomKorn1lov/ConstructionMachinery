@@ -53,13 +53,13 @@ export class AdvertService {
   }
 
   public SortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
-    var time = new Date();
+    var time;
     for(let i = 0; i < list.length; i++) {
       for(let j = 0; j < list.length - i - 1; j++) {
         if(list[j].date.getHours() > list[j+1].date.getHours()) {
-          time = list[j].date;
-          list[j].date = list[j+1].date;
-          list[j+1].date = time;
+          time = list[j];
+          list[j] = list[j+1];
+          list[j+1] = time;
         }
       }
     }

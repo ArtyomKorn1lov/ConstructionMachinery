@@ -12,10 +12,11 @@
             <h5 class="small-header">Описание объявления</h5>
             <textarea [(ngModel)]="description" class="advert--textarea" placeholder="Введите описание"></textarea>
             <h5 class="small-header">Добавьте фотографий</h5>
-            <div class="advert--photo">
+            <div (click)="UploadImage()" class="advert--photo">
                 <img src="assets/photo.png">
                 <p class="primary-text">Добавить</p>
             </div>
+            <input (change)="Download($event)" id="SelectImage" type="file">
             <button (click)="CrossingToAvailiableTime()" class="primary--authorize">
                 <h5 class="medium-header">Продолжить</h5>
             </button>

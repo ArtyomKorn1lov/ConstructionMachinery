@@ -141,6 +141,18 @@ namespace Application.Services
             }
         }
 
+        public async Task<int> GetLastAdvertId()
+        {
+            try
+            {
+                return await _advertRepository.GetLastAdvertId();
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public async Task<int> GetUserIdByAdvert(int id)
         {
             try

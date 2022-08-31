@@ -18,14 +18,16 @@ namespace WebAPI.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private IImageService _imageService;
+        private IAdvertService _advertService;
         private IWebHostEnvironment _appEnvironment;
         private string _currentDirectory = "/Files/";
 
-        public ImageController(IUnitOfWork unitOfWork, IImageService imageService, IWebHostEnvironment appEnvironment)
+        public ImageController(IUnitOfWork unitOfWork, IImageService imageService, IWebHostEnvironment appEnvironment, IAdvertService advertService)
         {
             _unitOfWork = unitOfWork;
             _imageService = imageService;
             _appEnvironment = appEnvironment;
+            _advertService = advertService;
         }
 
         [Authorize]
@@ -36,23 +38,29 @@ namespace WebAPI.Controllers
             try
             {
                 IFormFile uploadImage = Request.Form.Files[0];
-                if(uploadImage != null)
+                if (uploadImage == null)
                 {
-                    string path = _currentDirectory + uploadImage.FileName;
-                    using (FileStream fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                    {
-                        await uploadImage.CopyToAsync(fileStream);
-                    }
-                    ImageModelCreate image = new ImageModelCreate
-                    {
-                        Path = path,
-                        AdvertId = 1
-                    };
-                    await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
-                    await _unitOfWork.Commit();
-                    return Ok("success");
+                    return Ok("error");
                 }
-                return Ok("error");
+                int advertId = await _advertService.GetLastAdvertId();
+                if (advertId == 0)
+                    return Ok("error");
+                string folderPath = _appEnvironment.WebRootPath + _currentDirectory + advertId.ToString();
+                Directory.CreateDirectory(folderPath);
+                //await _unitOfWork.Commit();
+                string path = folderPath + "/" + uploadImage.FileName;
+                using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await uploadImage.CopyToAsync(fileStream);
+                }
+                ImageModelCreate image = new ImageModelCreate
+                {
+                    Path = path,
+                    AdvertId = advertId
+                };
+                await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {

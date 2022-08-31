@@ -5,6 +5,7 @@ import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { AvailableTimeModelCreate } from 'src/app/models/AvailableTimeModelCreate';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-advert-create-time',
@@ -21,10 +22,11 @@ export class AdvertCreateTimeComponent implements OnInit {
   });
   public startTime: string | undefined;
   public endTime: string | undefined;
+  public image: File | undefined;
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
 
   public Create(): void {
     if(this.range.value.start == null || this.range.value.start == undefined) {
@@ -43,6 +45,11 @@ export class AdvertCreateTimeComponent implements OnInit {
       alert("Выберете диапазон времени");
       return;
     }
+    if(this.image == null || this.image == undefined)
+    {
+      alert("Не выбран файл");
+      return;
+    }
     var startHour = parseInt(this.startTime);
     var endHour = parseInt(this.endTime);
     if(startHour > endHour) {
@@ -56,12 +63,29 @@ export class AdvertCreateTimeComponent implements OnInit {
       return;
     }
     this.advert.availableTimeModelsCreates = this.availiableTime;
-    console.log(this.advert.availableTimeModelsCreates);
+    //console.log(this.advert.availableTimeModelsCreates);
+    var formData = new FormData();
+    formData.append('file', this.image);
     this.advertService.CreateAdvert(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
-        alert(data);
-        this.router.navigateByUrl(this.listRoute);
+        //alert(data);
+        //this.router.navigateByUrl(this.listRoute);
+        this.imageService.Create(formData).subscribe(data => {
+          if (data == "success") {
+            console.log(data);
+            alert(data);
+            this.router.navigateByUrl(this.listRoute);
+            return;
+          }
+          alert("Ошибка загрузки картинки");
+          console.log(data);
+          this.range.value.start = null;
+          this.range.value.end = null;
+          this.startTime = undefined;
+          this.endTime = undefined;
+          return;
+        });
         return;
       }
       alert("Ошибка создания объявления");
@@ -101,6 +125,9 @@ export class AdvertCreateTimeComponent implements OnInit {
     await this.accountService.GetAuthoriseModel();
     this.advert = this.advertService.GetAdvertCreateFromService();
     if(this.advert.name == "")
+      this.router.navigateByUrl(this.createRoute);
+    this.image = this.imageService.GetImageFromService();
+    if(this.image == undefined)
       this.router.navigateByUrl(this.createRoute);
   }
 

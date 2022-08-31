@@ -72,5 +72,10 @@ namespace Infrastructure.Repositories
             return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.AvailableTimes).FirstOrDefaultAsync(advert => advert.Id == id);
         }
+
+        public async Task<int> GetLastAdvertId()
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().MaxAsync(advert => advert.Id);
+        }
     }
 }

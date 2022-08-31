@@ -3,6 +3,7 @@ import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { AdvertService } from 'src/app/services/advert.service';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-advert-create',
@@ -14,9 +15,19 @@ export class AdvertCreateComponent implements OnInit {
   public name: string | undefined;
   public description: string = "";
   public price: number | undefined; 
-  private targetRoute: string = "/advert-create/time"
+  public image: File | undefined;
+  private targetRoute: string = "/advert-create/time";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
+
+  public UploadImage(): void {
+    document.getElementById("SelectImage")?.click();
+  }
+
+  public Download(event: any): void {
+    this.image = event.target.files[0];
+    console.log(this.image);
+  }
 
   public CrossingToAvailiableTime(): void {
     if (this.name == undefined || this.name.trim() == '') {
@@ -29,8 +40,14 @@ export class AdvertCreateComponent implements OnInit {
       this.price = undefined;
       return;
     }
+    if(this.image == null || this.image == undefined)
+    {
+      alert("Не выбран файл");
+      return;
+    }
     var advert = new AdvertModelCreate(this.name, this.description, this.price, 0, []);
     this.advertService.SetAdvertCreateInService(advert);
+    this.imageService.SetImageInService(this.image);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }

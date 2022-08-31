@@ -12,6 +12,12 @@ namespace Infrastructure.Repositories
     public class ImageRepository : IImageRepository
     {
         private ConstructionMachineryDbContext _constructionMachineryDbContext;
+
+        public ImageRepository(ConstructionMachineryDbContext constructionMachineryDbContext)
+        {
+            _constructionMachineryDbContext = constructionMachineryDbContext;
+        }
+
         public async Task Create(Image image)
         {
             await _constructionMachineryDbContext.Set<Image>().AddAsync(image);

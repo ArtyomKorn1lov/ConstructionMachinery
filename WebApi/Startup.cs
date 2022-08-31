@@ -34,9 +34,11 @@ namespace ConstructionMachinery
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAdvertRepository, AdvertRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAdvertService, AdvertService>();
             services.AddScoped<IRequestService, RequestService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

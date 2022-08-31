@@ -19,5 +19,6 @@ namespace Domain.IRepositories
         Task<List<Advert>> GetByNameWithoutUserId(string name, int id);
         Task<List<Advert>> GetByUserId(int id);
         Task<Advert> GetForUpdate(int id);
+        Task<int> GetLastAdvertId();
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace WebAPI.Controllers
 {
@@ -18,12 +20,16 @@ namespace WebAPI.Controllers
         private IUnitOfWork _unitOfWork;
         private IAdvertService _advertService;
         private IAccountService _accountService;
+        private IImageService _imageService;
+        private IWebHostEnvironment _appEnvironment;
 
-        public AdvertController(IUnitOfWork unitOfWork, IAdvertService advertService, IAccountService accountService)
+        public AdvertController(IUnitOfWork unitOfWork, IAdvertService advertService, IAccountService accountService, IWebHostEnvironment appEnvironment, IImageService imageService)
         {
             _unitOfWork = unitOfWork;
             _advertService = advertService;
             _accountService = accountService;
+            _appEnvironment = appEnvironment;
+            _imageService = imageService;
         }
 
         [HttpGet("adverts")]
@@ -159,9 +165,15 @@ namespace WebAPI.Controllers
                 {
                     return Ok("error");
                 }
+                List<ImageCommand> images = await _imageService.GetByAdvertId(id);
+                string path = null;
+                if (images.Count != 0)
+                    path = _appEnvironment.WebRootPath + images[0].RelativePath;
                 if (await _advertService.Remove(id))
                 {
                     await _unitOfWork.Commit();
+                    if (path != null)
+                        Directory.Delete(path, true);
                     return Ok("success");
                 }
                 return Ok("error");

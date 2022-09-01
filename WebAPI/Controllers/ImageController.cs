@@ -21,6 +21,7 @@ namespace WebAPI.Controllers
         private IAdvertService _advertService;
         private IWebHostEnvironment _appEnvironment;
         private string _currentDirectory = "/Files/";
+        private string _serverDirectory = "https://localhost:5001";
 
         public ImageController(IUnitOfWork unitOfWork, IImageService imageService, IWebHostEnvironment appEnvironment, IAdvertService advertService)
         {
@@ -47,15 +48,17 @@ namespace WebAPI.Controllers
                     return Ok("error");
                 string folderPath = _appEnvironment.WebRootPath + _currentDirectory + advertId.ToString();
                 Directory.CreateDirectory(folderPath);
-                //await _unitOfWork.Commit();
-                string path = folderPath + "/" + uploadImage.FileName;
+                string path = folderPath + "/" + advertId.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
                 using (FileStream fileStream = new FileStream(path, FileMode.Create))
                 {
                     await uploadImage.CopyToAsync(fileStream);
                 }
+                path = _serverDirectory + _currentDirectory + advertId.ToString() + "/" + advertId.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                string relativePath = _currentDirectory + advertId.ToString();
                 ImageModelCreate image = new ImageModelCreate
                 {
                     Path = path,
+                    RelativePath = relativePath,
                     AdvertId = advertId
                 };
                 await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
@@ -79,7 +82,7 @@ namespace WebAPI.Controllers
                 ImageCommand image = await _imageService.GetById(id);
                 if (image == null)
                     return Ok("error");
-                string path = _appEnvironment.WebRootPath + image.Path;
+                string path = _appEnvironment.WebRootPath + image.RelativePath;
                 await _imageService.Remove(id, path);
                 await _unitOfWork.Commit();
                 return Ok("success");

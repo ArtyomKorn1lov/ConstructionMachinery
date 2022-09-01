@@ -36,7 +36,14 @@ namespace Application.CommandsConverters
             {
                 Id = advert.Id,
                 Name = advert.Name,
-                Price = advert.Price
+                Price = advert.Price,
+                Images = advert.Images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList()
             };
         }
 
@@ -51,6 +58,13 @@ namespace Application.CommandsConverters
                 Description = advert.Description,
                 Price = advert.Price,
                 UserName = name,
+                Images = advert.Images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
                 AvailableTimes = advert.AvailableTimes.Select(availableTime => new AvailableTimeCommand
                 {
                     Id = availableTime.Id,

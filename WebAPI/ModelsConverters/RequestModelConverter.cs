@@ -20,6 +20,13 @@ namespace WebAPI.ModelsConverters
                 LandlordName = command.LandlordName,
                 RequestStateId = command.RequestStateId,
                 UserId = command.UserId,
+                Images = command.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
                 AvailableTimeModels = command.AvailableTimeCommands.Select(model => new AvailableTimeModel
                 {
                     Id = model.Id,
@@ -42,6 +49,13 @@ namespace WebAPI.ModelsConverters
                 Phone = command.Phone,
                 CustomerName = command.CustomerName,
                 UserId = command.UserId,
+                Images = command.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
                 AvailableTimeModels = command.AvailableTimeCommands.Select(model => new AvailableTimeModel
                 {
                     Id = model.Id,
@@ -82,7 +96,14 @@ namespace WebAPI.ModelsConverters
             return new AvailabilityRequestListModel
             {
                 Id = command.Id,
-                name = command.name
+                Name = command.Name,
+                Images = command.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList()
             };
         }
 

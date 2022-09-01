@@ -5,7 +5,7 @@
             <h5 class="medium-header">Исходящая заявка</h5>
         </div>
         <h6 class="big-header">Заявка №{{request.id}}</h6>
-        <img class="technique-image" src="assets/main-page-technique.png">
+        <img class="technique-image" src="{{request.images[0].path}}">
         <div class="content--elements">
             <div class="title-info">
                 <h6 class="big-header">{{request.advertName}}</h6>

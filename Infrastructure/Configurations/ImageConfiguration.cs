@@ -17,6 +17,7 @@ namespace Infrastructure.Configurations
 
             builder.HasKey(image => image.Id);
             builder.Property(image => image.Path).IsRequired();
+            builder.Property(image => image.RelativePath).IsRequired();
         }
     }
 }

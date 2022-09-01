@@ -9,6 +9,7 @@ namespace Application.Commands
     public class ImageCommandCreate
     {
         public string Path { get; set; }
+        public string RelativePath { get; set; }
         public int AdvertId { get; set; }
     }
 }

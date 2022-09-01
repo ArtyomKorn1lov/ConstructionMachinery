@@ -15,6 +15,7 @@ namespace Application.Services
     public class ImageService : IImageService
     {
         private IImageRepository _imageRepository;
+        private string _currentDirectory = "/Files/";
 
         public ImageService(IImageRepository imageRepository)
         {
@@ -76,7 +77,7 @@ namespace Application.Services
                 if (path == null)
                     return false;
                 await _imageRepository.Remove(id);
-                File.Delete(path);
+                Directory.Delete(path, true);
                 return true;
             }
             catch

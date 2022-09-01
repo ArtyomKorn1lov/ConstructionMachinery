@@ -12,7 +12,7 @@ import { ConfirmModel } from 'src/app/models/ConfirmModel';
 })
 export class ConfirmListInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, []);
+  public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, [], []);
   public date: Date = new Date();
   private targetRoute: string = "/confirm-list";
 

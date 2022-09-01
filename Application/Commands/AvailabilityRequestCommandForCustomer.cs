@@ -15,11 +15,7 @@ namespace Application.Commands
         public string LandlordName { get; set; }
         public int UserId { get; set; }
         public string Phone { get; set; }
+        public List<ImageCommand> Images { get; set; }
         public List<AvailableTimeCommand> AvailableTimeCommands { get; set; }
-
-        public static implicit operator AvailabilityRequestCommandForCustomer(List<AvailabilityRequestCommandForCustomer> v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

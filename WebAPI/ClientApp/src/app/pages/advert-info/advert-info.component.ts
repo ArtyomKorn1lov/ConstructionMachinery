@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AdvertInfoComponent implements OnInit {
 
-  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", []);
+  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [], []);
   //public times: AvailableTimeModel[] = [];
   public days: AvailableDayModel[] = [];
   public month: number = 0;

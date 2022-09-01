@@ -14,7 +14,14 @@ namespace WebAPI.ModelsConverters
             {
                 Id = commands.Id,
                 Name = commands.Name,
-                Price = commands.Price
+                Price = commands.Price,
+                Images = commands.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList()
             };
         }
 
@@ -29,6 +36,13 @@ namespace WebAPI.ModelsConverters
                 Description = command.Description,
                 Price = command.Price,
                 UserName = command.UserName,
+                Images = command.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
                 AvailableTimes = command.AvailableTimes.Select(command => new AvailableTimeModel
                 {
                     Id = command.Id,

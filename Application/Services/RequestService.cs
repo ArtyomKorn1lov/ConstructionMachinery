@@ -16,12 +16,14 @@ namespace Application.Services
         private IRequestRepository _requestRepository;
         private IAccountRepository _accountRepository;
         private IAdvertRepository _advertRepository;
+        private IImageRepository _imageRepository;
 
-        public RequestService(IRequestRepository requestRepository, IAccountRepository accountRepository , IAdvertRepository advertRepository)
+        public RequestService(IRequestRepository requestRepository, IAccountRepository accountRepository , IAdvertRepository advertRepository, IImageRepository imageRepository)
         {
             _requestRepository = requestRepository;
             _accountRepository = accountRepository;
             _advertRepository = advertRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<bool> Confirm(int id, int stateId)
@@ -94,7 +96,7 @@ namespace Application.Services
                 if (request.UserId != userId)
                     return null;
                 AvailabilityRequestCommandForCustomer commandForCustomer = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request,
-                    await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId));
+                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId));
                 return commandForCustomer;
             }
             catch
@@ -116,7 +118,7 @@ namespace Application.Services
                 if (request.RequestStateId != 3)
                     return null;
                 AvailabilityRequestCommandForLandlord commandForLandlord = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
-                       await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId));
+                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId));
                 return commandForLandlord;
             }
             catch
@@ -136,7 +138,7 @@ namespace Application.Services
                 foreach (AvailabilityRequest request in requests)
                 {
                     commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request,
-                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId)));
+                         await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId)));
                 }
                 return commands;
             }
@@ -160,7 +162,7 @@ namespace Application.Services
                 foreach (AvailabilityRequest request in requests)
                 {
                     commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request,
-                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId)));
+                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId)));
                 }
                 return commands;
             }

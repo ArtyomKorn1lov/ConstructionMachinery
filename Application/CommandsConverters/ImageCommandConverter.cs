@@ -18,6 +18,7 @@ namespace Application.CommandsConverters
             {
                 Id = image.Id,
                 Path = image.Path,
+                RelativePath = image.RelativePath,
                 AdvertId = image.AdvertId
             };
         }
@@ -29,6 +30,7 @@ namespace Application.CommandsConverters
             return new Image
             {
                 Path = image.Path,
+                RelativePath = image.RelativePath,
                 AdvertId = image.AdvertId
             };
         }

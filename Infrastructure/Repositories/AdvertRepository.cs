@@ -25,33 +25,33 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Advert>> GetAll()
         {
-            return await _constructionMachineryDbContext.Set<Advert>().ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).ToListAsync();
         }
 
         public async Task<List<Advert>> GetAllWithoutUserId(int id)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Images).ToListAsync();
         }
 
         public async Task<Advert> GetById(int id)
         {
             return await _constructionMachineryDbContext.Set<Advert>()
-                .Include(advert => advert.AvailableTimes).FirstOrDefaultAsync(advert => advert.Id == id);
+                .Include(advert => advert.AvailableTimes).Include(advert => advert.Images).FirstOrDefaultAsync(advert => advert.Id == id);
         }
 
         public async Task<List<Advert>> GetByName(string name)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).ToListAsync();
         }
 
         public async Task<List<Advert>> GetByNameWithoutUserId(string name, int id)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id).ToListAsync();
         }
 
         public async Task<List<Advert>> GetByUserId(int id)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId == id).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => advert.UserId == id).ToListAsync();
         }
 
         public async Task Remove(int id)
@@ -70,7 +70,7 @@ namespace Infrastructure.Repositories
         public async Task<Advert> GetForUpdate(int id)
         {
             return await _constructionMachineryDbContext.Set<Advert>()
-                .Include(advert => advert.AvailableTimes).FirstOrDefaultAsync(advert => advert.Id == id);
+                .Include(advert => advert.AvailableTimes).Include(advert => advert.Images).FirstOrDefaultAsync(advert => advert.Id == id);
         }
 
         public async Task<int> GetLastAdvertId()

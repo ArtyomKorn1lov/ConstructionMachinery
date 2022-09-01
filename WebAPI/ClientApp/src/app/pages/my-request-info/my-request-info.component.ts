@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class MyRequestInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, []);
+  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [], []);
   public date: Date = new Date();
   private targetRoute: string = "/my-requests"
 

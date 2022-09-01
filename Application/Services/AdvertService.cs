@@ -15,11 +15,13 @@ namespace Application.Services
     {
         private IAdvertRepository _advertRepository;
         private IAccountRepository _accountRepository;
+        private IRequestRepository _requestRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IAccountRepository accountRepository)
+        public AdvertService(IAdvertRepository advertRepository, IAccountRepository accountRepository, IRequestRepository requestRepository)
         {
             _advertRepository = advertRepository;
             _accountRepository = accountRepository;
+            _requestRepository = requestRepository;
         }
 
         public async Task<bool> Create(AdvertCommandCreate advert)
@@ -170,6 +172,14 @@ namespace Application.Services
         {
             try
             {
+                List<AvailableTime> times = await _requestRepository.GetTimesForRemoveRequestByAdvertId(id);
+                if(times.Count != 0)
+                {
+                    foreach(AvailableTime time in times)
+                    {
+                        await _requestRepository.Remove((int)time.AvailabilityRequestId);
+                    }
+                }
                 await _advertRepository.Remove(id);
                 return true;
             }

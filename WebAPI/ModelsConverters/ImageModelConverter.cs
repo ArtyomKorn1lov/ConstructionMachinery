@@ -12,6 +12,7 @@ namespace WebAPI.ModelsConverters
             return new ImageCommandCreate
             {
                 Path = image.Path,
+                RelativePath = image.RelativePath,
                 AdvertId = image.AdvertId
             };
         }
@@ -24,6 +25,7 @@ namespace WebAPI.ModelsConverters
             {
                 Id = image.Id,
                 Path = image.Path,
+                RelativePath = image.RelativePath,
                 AdvertId = image.AdvertId
             };
         }

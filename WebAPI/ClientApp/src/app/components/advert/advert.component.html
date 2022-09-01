@@ -2,7 +2,7 @@
 <div class="advert--container" *ngFor="let advert of advertList">
     <div class="advert--line"></div>
     <div class="advert--content">
-        <img class="advert--image" src="assets/main-page-technique.png">
+        <img class="advert--image" src="{{advert.images[0].path}}">
         <div class="advert--elements">
             <div class="advert--text-container">
                 <h5 class="medium-header">{{advert.name}}</h5>

@@ -74,5 +74,11 @@ namespace Infrastructure.Repositories
             availableTime.AvailabilityRequestId = requestId;
             availableTime.AvailabilityStateId = state;
         }
+
+        public async Task<List<AvailableTime>> GetTimesForRemoveRequestByAdvertId(int id)
+        {
+            return await _constructionMachineryDbContext.Set<AvailableTime>()
+                .Where(a => a.AdvertId == id && a.AvailabilityRequestId != null).ToListAsync();
+        }
     }
 }

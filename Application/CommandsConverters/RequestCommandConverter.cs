@@ -23,7 +23,7 @@ namespace Application.CommandsConverters
         }
 
         public static AvailabilityRequestCommandForCustomer AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(AvailabilityRequest request,
-            string advertName, string phone, string landlordName)
+            List<Image> images, string advertName, string phone, string landlordName)
         {
             if (request == null)
                 return null;
@@ -36,6 +36,13 @@ namespace Application.CommandsConverters
                 LandlordName = landlordName,
                 RequestStateId = request.RequestStateId,
                 UserId = request.UserId,
+                Images = images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
                 AvailableTimeCommands = request.AvailableTimes.Select(availableTime => new AvailableTimeCommand
                 {
                     Id = availableTime.Id,
@@ -47,7 +54,7 @@ namespace Application.CommandsConverters
         }
         
         public static AvailabilityRequestCommandForLandlord AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(AvailabilityRequest request,
-            string advertName, string phone, string customerName)
+            List<Image> images, string advertName, string phone, string customerName)
         {
             if (request == null)
                 return null;
@@ -59,6 +66,13 @@ namespace Application.CommandsConverters
                 Phone = phone,
                 CustomerName = customerName,
                 UserId = request.UserId,
+                Images = images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
                 AvailableTimeCommands = request.AvailableTimes.Select(availableTime => new AvailableTimeCommand
                 {
                     Id = availableTime.Id,
@@ -69,14 +83,21 @@ namespace Application.CommandsConverters
             };
         }
 
-        public static AvailabilityRequestListCommand EntityConvertToAvailabilityRequestListCommand(AvailabilityRequest request, string advertName)
+        public static AvailabilityRequestListCommand EntityConvertToAvailabilityRequestListCommand(AvailabilityRequest request, string advertName, List<Image> images)
         {
             if (request == null)
                 return null;
             return new AvailabilityRequestListCommand
             {
                 Id = request.Id,
-                name = advertName
+                Name = advertName,
+                Images = images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList()
             };
         }
 

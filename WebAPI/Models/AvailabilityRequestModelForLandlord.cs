@@ -10,6 +10,7 @@ namespace WebAPI.Models
         public string Phone { get; set; }
         public string CustomerName { get; set; }
         public int UserId { get; set; }
+        public List<ImageModel> Images { get; set; }
         public List<AvailableTimeModel> AvailableTimeModels { get; set; }
     }
 }

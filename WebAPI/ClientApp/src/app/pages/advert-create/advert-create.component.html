@@ -11,10 +11,16 @@
             <input [(ngModel)]="price" class="authorize--input" type="number" placeholder="Введите цену">
             <h5 class="small-header">Описание объявления</h5>
             <textarea [(ngModel)]="description" class="advert--textarea" placeholder="Введите описание"></textarea>
-            <h5 class="small-header">Добавьте фотографий</h5>
-            <div (click)="UploadImage()" class="advert--photo">
-                <img src="assets/photo.png">
-                <p class="primary-text">Добавить</p>
+            <h5 class="small-header">Добавьте фотографию</h5>
+            <div class="photo-container">
+                <div *ngIf="image == undefined" (click)="UploadImage()" class="photo-download">
+                    <img src="assets/photo.png">
+                    <p class="primary-text">Добавить</p>
+                </div>
+                <div *ngIf="image != undefined" (click)="UploadImage()" class="photo-download">
+                    <img src="assets/photo.png">
+                    <p class="primary-text">Изменить</p>
+                </div>
             </div>
             <input (change)="Download($event)" id="SelectImage" type="file">
             <button (click)="CrossingToAvailiableTime()" class="primary--authorize">

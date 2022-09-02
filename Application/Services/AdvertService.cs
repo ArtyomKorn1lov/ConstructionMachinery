@@ -33,6 +33,7 @@ namespace Application.Services
                     for(int count = 0; count < advert.AvailableTimeCommandCreates.Count; count++)
                     {
                         advert.AvailableTimeCommandCreates[count].AvailabilityStateId = 1;
+                        advert.AvailableTimeCommandCreates[count].Date = advert.AvailableTimeCommandCreates[count].Date.ToLocalTime();
                     }
                     await _advertRepository.Create(AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert));
                     return true;

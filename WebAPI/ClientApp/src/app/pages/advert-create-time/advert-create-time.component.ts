@@ -58,7 +58,7 @@ export class AdvertCreateTimeComponent implements OnInit {
     }
     var dates = this.GetDatesInRange(this.range.value.start, this.range.value.end);
     this.FillAvailiableTime(dates, startHour, endHour);
-    if(this.availiableTime == [] || this.advert == undefined) {
+    if(this.availiableTime == undefined || this.advert == undefined) {
       alert("Ошибка заполнения доступного времени");
       return;
     }

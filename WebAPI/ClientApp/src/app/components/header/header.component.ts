@@ -10,7 +10,7 @@ import { AuthoriseModel } from 'src/app/models/AuthoriseModel';
 export class HeaderComponent implements OnInit {
 
   @Output() event = new EventEmitter();
-  public visibility: boolean = true;
+  public visibility: boolean = false;
 
   constructor(public accountService: AccountService) { }
 
@@ -22,8 +22,12 @@ export class HeaderComponent implements OnInit {
     return !!this.model.name;
   }*/
 
-  public InputClick(): void {
-    this.visibility = !this.visibility;
+  public FocusIn(): void {
+    this.visibility = true;
+  }
+
+  public FocusOut(): void {
+    this.visibility = false;
   }
 
   public async ngOnInit(): Promise<void> {

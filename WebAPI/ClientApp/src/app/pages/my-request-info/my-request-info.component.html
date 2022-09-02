@@ -25,9 +25,9 @@
                     <div class="request-info--title">
                         <h5 class="medium-header">Состояние заявки:</h5>
                     </div>
-                    <h5 *ngIf="request.requestStateId == 3" class="medium-header">Ожидается подтверждение</h5>
-                    <h5 *ngIf="request.requestStateId == 2" class="medium-header">Отказано</h5>
-                    <h5 *ngIf="request.requestStateId == 1" class="medium-header">Подтверждено</h5>
+                    <h5 style="color: #FFFF44;" *ngIf="request.requestStateId == 3" class="medium-header">Ожидается подтверждение</h5>
+                    <h5 style="color: #FF4444;" *ngIf="request.requestStateId == 2" class="medium-header">Отказано</h5>
+                    <h5 style="color: #44FF44;" *ngIf="request.requestStateId == 1" class="medium-header">Подтверждено</h5>
                 </div>
                 <div class="request-info--container">
                     <div class="request-info--title">

@@ -6,12 +6,12 @@
         <div class="advert--elements">
             <div class="advert--text-container">
                 <h5 class="medium-header">{{advert.name}}</h5>
-                <p class="micro-text">от {{advert.price}} ₽ / час</p>
+                <h4 class="small-header">от {{advert.price}} ₽ / час</h4>
             </div>
             <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary--authorize">
                 <p class="primary-text">Арендовать</p>
             </button>
-            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'my'" class="primary--authorize">
+            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'my'" class="edit--button">
                 <p class="primary-text">Подробнее</p>
             </button>
         </div>

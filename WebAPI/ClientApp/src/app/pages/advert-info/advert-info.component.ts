@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 export class AdvertInfoComponent implements OnInit {
 
   public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [], []);
-  //public times: AvailableTimeModel[] = [];
   public days: AvailableDayModel[] = [];
   public month: number = 0;
   public year: number = 0;
@@ -40,11 +39,11 @@ export class AdvertInfoComponent implements OnInit {
     let day;
     var buffer;
     var sortTimes: AvailableTimeModel[];
-    for (let j = 0; j + 1 < this.advert.availableTimes.length; j++) {
+    for (let j = 0; j < this.advert.availableTimes.length; j++) {
       buffer = new Date(this.advert.availableTimes[j].date);
       if (!this.Contain(this.days, buffer)) {
         sortTimes = [];
-        for (let i = 0; i + 1 < this.advert.availableTimes.length; i++) {
+        for (let i = 0; i < this.advert.availableTimes.length; i++) {
           day = new Date(this.advert.availableTimes[i].date);
           if (buffer.getDate() == day.getDate())
             sortTimes.push(this.advert.availableTimes[i]);
@@ -57,6 +56,7 @@ export class AdvertInfoComponent implements OnInit {
       this.year = buffer.getFullYear();
     }
     this.ConvertToNormalDate();
+    this.SortByDate();
   }
 
   public Contain(list: AvailableDayModel[], elem: Date): Boolean {
@@ -65,8 +65,7 @@ export class AdvertInfoComponent implements OnInit {
     var flag = false;
     for (let count = 0; count < list.length; count++) {
       firstFormat = list[count].day.getMonth() + '.' + list[count].day.getDate() + '.' + list[count].day.getFullYear();
-      if (firstFormat == secondFormat)
-      {
+      if (firstFormat == secondFormat) {
         flag = true;
       }
     }
@@ -79,6 +78,29 @@ export class AdvertInfoComponent implements OnInit {
         this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
       }
       this.days[count_day].times = this.advertService.SortByHour(this.days[count_day].times);
+    }
+  }
+
+  public SortByDate(): void {
+    var date;
+    for(let i = 0; i < this.days.length; i++) {
+      for(let j = 0; j < this.days.length - i - 1; j++) {
+        if(this.days[j].day.getFullYear() > this.days[j+1].day.getFullYear()) {
+          date = this.days[j];
+          this.days[j] = this.days[j+1];
+          this.days[j+1] = date;
+        }
+        else if(this.days[j].day.getMonth() > this.days[j+1].day.getMonth()) {
+          date = this.days[j];
+          this.days[j] = this.days[j+1];
+          this.days[j+1] = date;
+        }
+        else if(this.days[j].day.getDate() > this.days[j+1].day.getDate()) {
+          date = this.days[j];
+          this.days[j] = this.days[j+1];
+          this.days[j+1] = date;
+        }
+      }
     }
   }
 
@@ -107,33 +129,6 @@ export class AdvertInfoComponent implements OnInit {
       this.advert = data;
       this.PackageToDayModel();
     });
-    /*this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T09:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T10:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T11:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T12:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T13:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T14:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T15:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T16:00:00'), 1, 3));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-25T17:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T09:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T10:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T11:00:00'), 1, 3));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T12:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T13:00:00'), 1, 3));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T14:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T15:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T16:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-26T17:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T09:00:00'), 1, 3));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T10:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T11:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T12:00:00'), 1, 3));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T13:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T14:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T15:00:00'), 1, 1));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T16:00:00'), 1, 2));
-    this.times.push(new AvailableTimeModel(1, new Date('2022-07-27T17:00:00'), 1, 3));*/
   }
 
 }

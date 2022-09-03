@@ -1,18 +1,19 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div class="content--elements">
+        <div class="content__elements">
             <h6 class="big-header">Войти в личный кабинет</h6>
-            <input [(ngModel)]="email" class="authorize--input" type="email" placeholder="Email">
-            <input [(ngModel)]="password" class="authorize--input" type="password" placeholder="Пароль">
-            <button (click)="Login()" class="primary--authorize">
+            <input [(ngModel)]="email" class="authorize-input" type="email" placeholder="Email">
+            <input [(ngModel)]="password" class="authorize-input" type="password" placeholder="Пароль">
+            <button (click)="Login()" class="primary-authorize">
                 <h5 class="medium-header">Войти</h5>
             </button>
-            <button [routerLink]="['/registration']" class="secondary--authorize">
+            <button [routerLink]="['/registration']" class="secondary-authorize">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>
-            <div class="social-network--container">
-                <div class="social-network--element">
-                    <img src="assets/google.png">
+            <div class="social-network">
+                <div class="social-network__element">
+                    <h5 class="medium-header">Авторизация через Google</h5>
+                    <img class="google-image" src="assets/google.png">
                 </div>
             </div>
         </div>

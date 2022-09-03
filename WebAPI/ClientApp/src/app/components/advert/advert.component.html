@@ -1,17 +1,17 @@
 <p class="micro-text">Показано {{advertList.length}} объявления</p>
-<div class="advert--container" *ngFor="let advert of advertList">
-    <div class="advert--line"></div>
-    <div class="advert--content">
-        <img class="advert--image" src="{{advert.images[0].path}}">
-        <div class="advert--elements">
-            <div class="advert--text-container">
+<div class="advert" *ngFor="let advert of advertList">
+    <div class="advert__line"></div>
+    <div class="advert__content">
+        <img class="advert__image" src="{{advert.images[0].path}}">
+        <div class="advert__elements">
+            <div class="advert__text">
                 <h5 class="medium-header">{{advert.name}}</h5>
                 <h4 class="small-header">от {{advert.price}} ₽ / час</h4>
             </div>
-            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary--authorize">
+            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary-authorize">
                 <p class="primary-text">Арендовать</p>
             </button>
-            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'my'" class="edit--button">
+            <button (click)="GetAdvertInfo(advert.id)" *ngIf="page == 'my'" class="edit-button">
                 <p class="primary-text">Подробнее</p>
             </button>
         </div>

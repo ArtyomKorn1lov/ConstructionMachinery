@@ -1,16 +1,16 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/my-adverts']" class="back--container">
+        <div [routerLink]="['/my-adverts']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Новое объявление</h5>
         </div>
-        <div class="content--elements">
+        <div class="content__elements">
             <h5 class="small-header">Название техники</h5>
-            <input [(ngModel)]="name" class="authorize--input" type="text" placeholder="Введите название техники">
+            <input [(ngModel)]="name" class="authorize-input" type="text" placeholder="Введите название техники">
             <h5 class="small-header">Цена в час</h5>
-            <input [(ngModel)]="price" class="authorize--input" type="number" placeholder="Введите цену">
+            <input [(ngModel)]="price" class="authorize-input" type="number" placeholder="Введите цену">
             <h5 class="small-header">Описание объявления</h5>
-            <textarea [(ngModel)]="description" class="advert--textarea" placeholder="Введите описание"></textarea>
+            <textarea [(ngModel)]="description" class="advert-textarea" placeholder="Введите описание"></textarea>
             <h5 class="small-header">Добавьте фотографию</h5>
             <div class="photo-container">
                 <div *ngIf="image == undefined" (click)="UploadImage()" class="photo-download">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <input (change)="Download($event)" id="SelectImage" type="file">
-            <button (click)="CrossingToAvailiableTime()" class="primary--authorize">
+            <button (click)="CrossingToAvailiableTime()" class="primary-authorize">
                 <h5 class="medium-header">Продолжить</h5>
             </button>
         </div>

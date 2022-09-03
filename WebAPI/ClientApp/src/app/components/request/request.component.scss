@@ -1,40 +1,40 @@
-.request--container {
+.request {
     display: flex;
     flex-direction: column;
     margin-top: 22px;
     margin-bottom: 22px;
 }
 
-.request--line {
+.request__line {
     border: 1px solid rgba(22, 22, 22, 0.3);
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-.request--content {
+.request__content {
     display: flex;
     justify-content: space-between;
     margin-top: 22px;
 }
 
-.request--image {
+.request__image {
     border-radius: 5px;
     object-fit: cover;
     min-width: 129px;
     height: 124px;
 }
 
-.request--elements {
+.request__text {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 300px;
 }
 
-.request--image + .request--elements {
+.request__image + .request__text {
     margin-left: 17px;
 }
 
-.request--elements .medium-header {
+.request__text .medium-header {
     color: var(--color-primary-button);
 }
 

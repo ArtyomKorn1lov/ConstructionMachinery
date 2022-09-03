@@ -1,10 +1,10 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/private-area']" class="back--container">
+        <div [routerLink]="['/private-area']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Исходящие заявки</h5>
         </div>
-        <div class="content--elements">
+        <div class="content__elements">
             <app-request [page]="'in'"></app-request>
         </div>
     </div>

@@ -1,19 +1,19 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/advert-info']" class="back--container">
+        <div [routerLink]="['/advert-info']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Оформление аренды:</h5>
         </div>
-        <div class="content--elements">
+        <div class="content__elements">
             <h4 class="small-header">Адрес доставки</h4>
-            <input type="text" class="authorize--input" [(ngModel)]="address" placeholder="Введите адрес">
+            <input type="text" class="authorize-input" [(ngModel)]="address" placeholder="Введите адрес">
             <h4 class="small-header">Выберете время заказа</h4>
-            <div class="select--container">
+            <div class="select-container">
                 <select class="select-filter" [(ngModel)]="currentTimeId">
-                    <option class="select-filter--option" *ngFor="let time of times" ngValue={{time.id}}>{{time.date.getMonth()}}.{{time.date.getDate()}}.{{time.date.getFullYear()}} в {{time.date.getHours()}}:00</option>
+                    <option class="select-filter__option" *ngFor="let time of times" ngValue={{time.id}}>{{time.date.getMonth()}}.{{time.date.getDate()}}.{{time.date.getFullYear()}} в {{time.date.getHours()}}:00</option>
                 </select>
             </div>
-            <button (click)="CreateRequest()" class="primary--authorize">
+            <button (click)="CreateRequest()" class="primary-authorize">
                 <h5 class="medium-header">Отправить заявку</h5>
             </button>
         </div>

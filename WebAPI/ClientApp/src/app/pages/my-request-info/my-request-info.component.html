@@ -1,49 +1,49 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/my-requests']" class="back--container">
+        <div [routerLink]="['/my-requests']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Исходящая заявка</h5>
         </div>
         <h6 class="big-header">Заявка №{{request.id}}</h6>
         <img class="technique-image" src="{{request.images[0].path}}">
-        <div class="content--elements">
+        <div class="content__elements">
             <div class="title-info">
                 <h6 class="big-header">{{request.advertName}}</h6>
-                <div class="request-info--container">
-                    <div class="request-info--title">
+                <div class="request-info">
+                    <div class="request-info__title">
                         <h5 class="medium-header">Арендодатель:</h5>
                     </div>
                     <h5 class="medium-header">{{request.landlordName}}</h5>
                 </div>
-                <div class="request-info--container">
-                    <div class="request-info--title">
+                <div class="request-info">
+                    <div class="request-info__title">
                         <h5 class="medium-header">Время:</h5>
                     </div>
                     <h5 class="medium-header">{{date.getMonth()}}.{{date.getDate()}}.{{date.getFullYear()}} в {{date.getHours()}}:00</h5>
                 </div>
-                <div class="request-info--container">
-                    <div class="request-info--title">
+                <div class="request-info">
+                    <div class="request-info__title">
                         <h5 class="medium-header">Состояние заявки:</h5>
                     </div>
                     <h5 style="color: #FFFF44;" *ngIf="request.requestStateId == 3" class="medium-header">Ожидается подтверждение</h5>
                     <h5 style="color: #FF4444;" *ngIf="request.requestStateId == 2" class="medium-header">Отказано</h5>
                     <h5 style="color: #44FF44;" *ngIf="request.requestStateId == 1" class="medium-header">Подтверждено</h5>
                 </div>
-                <div class="request-info--container">
-                    <div class="request-info--title">
+                <div class="request-info">
+                    <div class="request-info__title">
                         <h5 class="medium-header">Адрес доставки:</h5>
                     </div>
                     <h5 class="medium-header">{{request.address}}</h5>
                 </div>
-                <div class="request-info--container">
-                    <div class="request-info--title">
+                <div class="request-info">
+                    <div class="request-info__title">
                         <h5 class="medium-header">Телефон:</h5>
                     </div>
                     <h5 class="medium-header">{{request.phone}}</h5>
                 </div>
             </div>
             <div class="vector"></div>
-            <button (click)="Cancel()" class="edit--button">
+            <button (click)="Cancel()" class="edit-button">
                 <h5 class="medium-header">Отменить заявку</h5>
             </button>
         </div>

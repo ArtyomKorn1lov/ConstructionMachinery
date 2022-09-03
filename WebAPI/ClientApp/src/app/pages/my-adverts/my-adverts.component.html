@@ -1,11 +1,11 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/private-area']" class="back--container">
+        <div [routerLink]="['/private-area']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Мои объявления</h5>
         </div>
-        <div [routerLink]="['/advert-create']" class="content--elements">
-            <button class="primary--authorize">
+        <div [routerLink]="['/advert-create']" class="content__elements">
+            <button class="primary-authorize">
                 <h5 class="medium-header">Создать объявление</h5>
             </button>
             <app-advert [page]="'my'"></app-advert>

@@ -1,12 +1,12 @@
-.authorize--input {
+.authorize-input {
     margin-top: 12px;
 }
 
-.authorize--input + .small-header {
+.authorize-input + .small-header {
     margin-top: 20px;
 }
 
-.select--container {
+.select-container {
     display: flex;
     flex-direction: column;
 }
@@ -18,6 +18,6 @@
     border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-.select-filter--option {
+.select-filter__option {
     opacity: 1.0;
 }

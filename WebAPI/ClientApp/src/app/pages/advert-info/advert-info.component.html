@@ -1,11 +1,11 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div (click)="Back()" class="back--container">
+        <div (click)="Back()" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Информация об объявлении</h5>
         </div>
         <img class="technique-image" src="{{advert.images[0].path}}">
-        <div class="content--elements">
+        <div class="content__elements">
             <div class="title-info">
                 <h6 class="big-header">{{advert.name}}</h6>
                 <h5 class="medium-header">Арендодатель: {{advert.userName}}</h5>
@@ -19,9 +19,9 @@
             <div class="vector"></div>
             <div class="title-info">
                 <h5 class="medium-header">Доступное время</h5>
-                <div class="day--list" *ngFor="let day of days">
+                <div class="day-list" *ngFor="let day of days">
                     <h5 class="medium-header">{{day.day.getDate()}}.{{day.day.getMonth()}}.{{day.day.getFullYear()}}</h5>
-                    <div class="time--list">
+                    <div class="time-list">
                         <div *ngFor="let time of day.times">
                             <p *ngIf="time.availabilityStateId == 1" class="primary-text" style="color: #44FF44; margin-left: 15px;">
                                 {{time.date.getHours()}}:00</p>
@@ -34,10 +34,10 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag" class="primary--authorize">
+            <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button (click)="Remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary--authorize">
+            <button (click)="Remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Снять публикацию</h5>
             </button>
         </div>

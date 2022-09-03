@@ -18,10 +18,6 @@ export class HeaderComponent implements OnInit {
     this.event.emit();
   }
 
-  /*public isAuthorized() {
-    return !!this.model.name;
-  }*/
-
   public FocusIn(): void {
     this.visibility = true;
   }

@@ -1,16 +1,16 @@
-.technique-type--list {
+.technique-type {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
 }
 
-.technique-type--group {
+.technique-type__group {
     display: flex;
     justify-content: space-between;
     margin-top: 23px;
 }
 
-.technique-type--element {
+.technique-type__element {
     display: flex;
     flex-direction: column;
     width: 140px;
@@ -20,12 +20,12 @@
     background: #E8E8E8;
 }
 
-.technique-type--element h4 {
+.technique-type__element h4 {
     text-align: center;
     font-weight: 600;
     color: var(--color-secondary-button);
 }
 
-.technique-type--element img + h4 {
+.technique-type__element img + h4 {
     margin-top: 15px;
 }

@@ -1,16 +1,16 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/authorize']" class="back--container">
+        <div [routerLink]="['/authorize']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Регистрация</h5>
         </div>
-        <div class="content--elements">
-            <input [(ngModel)]="email" class="authorize--input" type="email" placeholder="Email">
-            <input [(ngModel)]="password" class="authorize--input" type="password" placeholder="Пароль">
-            <input [(ngModel)]="confirm_password" class="authorize--input" type="password" placeholder="Подтвердите пароль">
-            <input [(ngModel)]="name" class="authorize--input" type="text" placeholder="ФИО">
-            <input [(ngModel)]="phone" class="authorize--input" type="tel" placeholder="Телефон" pattern="2-[0-9]{3}-[0-9]{3}">
-            <button class="primary--authorize" (click)="Registration()">
+        <div class="content__elements">
+            <input [(ngModel)]="email" class="authorize-input" type="email" placeholder="Email">
+            <input [(ngModel)]="password" class="authorize-input" type="password" placeholder="Пароль">
+            <input [(ngModel)]="confirm_password" class="authorize-input" type="password" placeholder="Подтвердите пароль">
+            <input [(ngModel)]="name" class="authorize-input" type="text" placeholder="ФИО">
+            <input [(ngModel)]="phone" class="authorize-input" type="tel" placeholder="Телефон" pattern="2-[0-9]{3}-[0-9]{3}">
+            <button class="primary-authorize" (click)="Registration()">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>
             <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете согласие на

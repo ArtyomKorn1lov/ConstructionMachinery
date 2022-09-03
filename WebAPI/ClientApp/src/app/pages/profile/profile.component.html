@@ -1,23 +1,23 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div [routerLink]="['/private-area']" class="back--container">
+        <div [routerLink]="['/private-area']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Профиль пользователя</h5>
         </div>
-        <div class="content--elements">
+        <div class="content__elements">
             <h6 class="big-header">{{user.name}}</h6>
-            <div class="icon--container">
+            <div class="icon-container">
                 <img src="/assets/lucide_mail.png">
                 <h5 class="medium-header">{{user.email}}</h5>
             </div>
-            <div class="icon--container">
+            <div class="icon-container">
                 <img src="assets/lucide_phone.png">
                 <h5 class="medium-header">{{user.phone}}</h5>
             </div>
-            <button [routerLink]="['/profile/edit']" class="edit--button">
+            <button [routerLink]="['/profile/edit']" class="edit-button">
                 <h5 class="medium-header">Редактировать</h5>
             </button>
-            <button (click)="Logout()" class="secondary--authorize">
+            <button (click)="Logout()" class="secondary-authorize">
                 <h5 class="medium-header">Выйти</h5>
             </button>
         </div>

@@ -55,6 +55,30 @@ export class LeaseRegistrationComponent implements OnInit {
       this.times[count].date = new Date(this.times[count].date);
     }
     this.times = this.advertService.SortByHour(this.times);
+    this.SortByDate();
+  }
+
+  public SortByDate(): void {
+    var date;
+    for(let i = 0; i < this.times.length; i++) {
+      for(let j = 0; j < this.times.length - i - 1; j++) {
+        if(this.times[j].date.getFullYear() > this.times[j+1].date.getFullYear()) {
+          date = this.times[j];
+          this.times[j] = this.times[j+1];
+          this.times[j+1] = date;
+        }
+        else if(this.times[j].date.getMonth() > this.times[j+1].date.getMonth()) {
+          date = this.times[j];
+          this.times[j] = this.times[j+1];
+          this.times[j+1] = date;
+        }
+        else if(this.times[j].date.getDate() > this.times[j+1].date.getDate()) {
+          date = this.times[j];
+          this.times[j] = this.times[j+1];
+          this.times[j+1] = date;
+        }
+      }
+    }
   }
 
   public async ngOnInit(): Promise<void> {

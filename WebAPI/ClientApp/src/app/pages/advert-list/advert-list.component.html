@@ -1,11 +1,11 @@
-<div class="page--flex-element">
+<div class="flex-container">
     <div class="content">
-        <div class="content--elements">
+        <div class="content__elements">
             <h6 class="big-header">Список объявлений:</h6>
             <select class="select-filter" [(ngModel)]="filter">
-                <option class="select-filter--option" value="all">Все объявления</option>
-                <option class="select-filter--option" value="max">По возрастанию цены</option>
-                <option class="select-filter--option" value="min">По убыванию цены</option>
+                <option class="select-filter__option" value="all">Все объявления</option>
+                <option class="select-filter__option" value="max">По возрастанию цены</option>
+                <option class="select-filter__option" value="min">По убыванию цены</option>
             </select>
             <app-advert [page]="'list'"></app-advert>
         </div>

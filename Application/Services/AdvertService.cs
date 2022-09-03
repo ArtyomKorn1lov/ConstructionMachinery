@@ -35,6 +35,7 @@ namespace Application.Services
                         advert.AvailableTimeCommandCreates[count].AvailabilityStateId = 1;
                         advert.AvailableTimeCommandCreates[count].Date = advert.AvailableTimeCommandCreates[count].Date.ToLocalTime();
                     }
+                    advert.AvailableTimeCommandCreates.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
                     await _advertRepository.Create(AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert));
                     return true;
                 }

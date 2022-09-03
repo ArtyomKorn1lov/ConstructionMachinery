@@ -1,19 +1,23 @@
-a {
-    margin-top: 17px;
-}
-
-.social-network--container {
+.social-network {
     display: flex;
     justify-content: center;
 }
 
-.social-network--element {
+.social-network__element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     margin-top: 27px;
     padding: 11px;
     border: 2px solid var(--color-primary-text);
     border-radius: 5px;
 }
 
-.authorize--input {
+.authorize-input {
     margin-top: 27px;
+}
+
+.medium-header + .google-image {
+    margin-left: 10px;
 }

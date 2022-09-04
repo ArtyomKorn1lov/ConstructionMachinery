@@ -14,7 +14,7 @@ namespace WebAPI.ModelsConverters
             return new AvailabilityRequestModelForCustomer
             {
                 Id = command.Id,
-                AvertName = command.AvertName,
+                AdvertName = command.AdvertName,
                 Address = command.Address,
                 Phone = command.Phone,
                 LandlordName = command.LandlordName,

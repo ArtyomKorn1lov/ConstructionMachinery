@@ -29,9 +29,21 @@ export class AdvertComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     this.advertService.ClearLocalStorage();
     if(this.page == 'list')
-      await this.advertService.GetAll().subscribe(data => {
-        this.advertList = data;
-      });
+    {
+      if(this.advertService.searchFlag == true)
+      {
+        await this.advertService.GetByName(this.advertService.search).subscribe(data => {
+          this.advertList = data;
+          this.advertService.searchFlag = false;
+        });
+      }
+      else
+      {
+        await this.advertService.GetAll().subscribe(data => {
+          this.advertList = data;
+        });
+      }
+    }
     if(this.page == 'my')
       await this.advertService.GetByUser().subscribe(data => {
         this.advertList = data;

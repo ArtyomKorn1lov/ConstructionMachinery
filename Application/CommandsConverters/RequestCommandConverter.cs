@@ -30,7 +30,7 @@ namespace Application.CommandsConverters
             return new AvailabilityRequestCommandForCustomer
             {
                 Id = request.Id,
-                AvertName = advertName,
+                AdvertName = advertName,
                 Address = request.Address,
                 Phone = phone,
                 LandlordName = landlordName,

@@ -5,6 +5,7 @@ import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
+import { ImageModel } from 'src/app/models/ImageModel';
 
 @Component({
   selector: 'app-advert-info',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class AdvertInfoComponent implements OnInit {
 
-  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [], []);
+  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [ new ImageModel(0, "", "", 0) ], []);
   public days: AvailableDayModel[] = [];
   public month: number = 0;
   public year: number = 0;

@@ -5,7 +5,7 @@ namespace WebAPI.Models
     public class AvailabilityRequestModelForCustomer
     {
         public int Id { get; set; }
-        public string AvertName { get; set; }
+        public string AdvertName { get; set; }
         public string Address { get; set; }
         public string LandlordName { get; set; }
         public string Phone { get; set; }

@@ -63,7 +63,6 @@ export class AdvertCreateTimeComponent implements OnInit {
       return;
     }
     this.advert.availableTimeModelsCreates = this.availiableTime;
-    //console.log(this.advert.availableTimeModelsCreates);
     var formData = new FormData();
     formData.append('file', this.image);
     this.advertService.CreateAdvert(this.advert).subscribe(data => {

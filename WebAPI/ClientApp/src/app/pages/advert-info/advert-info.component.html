@@ -11,8 +11,8 @@
                 <h5 class="medium-header">Арендодатель: {{advert.userName}}</h5>
                 <h4 class="small-header">от {{advert.price}} ₽ / час</h4>
             </div>
-            <div class="vector"></div>
-            <div class="title-info">
+            <div *ngIf="advert.description != ''" class="vector"></div>
+            <div *ngIf="advert.description != ''" class="title-info">
                 <h5 class="medium-header">Описание</h5>
                 <p class="primary-text">{{advert.description}}</p>
             </div>

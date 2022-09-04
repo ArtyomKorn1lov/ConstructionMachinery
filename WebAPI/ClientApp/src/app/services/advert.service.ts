@@ -11,6 +11,8 @@ import { AvailableTimeModel } from '../models/AvailableTimeModel';
 })
 export class AdvertService {
 
+  public search: string = "";
+  public searchFlag: boolean = false;
   private advertCreate: AdvertModelCreate | undefined;
 
   constructor(private http: HttpClient) { }
@@ -84,6 +86,10 @@ export class AdvertService {
 
   public Remove(id: number): Observable<string> {
     return this.http.delete(`api/advert/remove/${id}`, { responseType: 'text' })
+  }
+
+  public GetByName(name: string): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}`);
   }
 
 }

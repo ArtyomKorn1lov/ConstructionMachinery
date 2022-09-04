@@ -3,6 +3,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { RequestService } from 'src/app/services/request.service';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
 import { Router } from '@angular/router';
+import { ImageModel } from 'src/app/models/ImageModel';
 
 @Component({
   selector: 'app-my-request-info',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class MyRequestInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [], []);
+  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], []);
   public date: Date = new Date();
   private targetRoute: string = "/my-requests"
 

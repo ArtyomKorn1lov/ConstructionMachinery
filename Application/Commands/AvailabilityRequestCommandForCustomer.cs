@@ -9,7 +9,7 @@ namespace Application.Commands
     public class AvailabilityRequestCommandForCustomer
     {
         public int Id { get; set; }
-        public string AvertName { get; set; }
+        public string AdvertName { get; set; }
         public string Address { get; set; }
         public int RequestStateId { get; set; }
         public string LandlordName { get; set; }

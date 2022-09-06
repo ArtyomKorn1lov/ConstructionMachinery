@@ -1,12 +1,11 @@
 <div class="flex-container">
     <div class="content">
-        <form class="content__elements">
+        <div class="content__elements">
             <h6 class="big-header">Войти в личный кабинет</h6>
-            <input [(ngModel)]="email" #mail="ngModel" 
-            [style.border]="mail.invalid?'2px solid var(--color-identity-text)':'2px solid var(--color-primary-text)'" 
-            class="authorize-input" type="email" placeholder="Email" required>
-            <p *ngIf="mail.invalid && (mail.dirty || mail.touched)" class="micro-text">Обязательное поле</p>
-            <input [(ngModel)]="password" #pass="ngModel" class="authorize-input" type="password" placeholder="Пароль" required>
+            <h5 class="small-header">Email пользователя</h5>
+            <input [(ngModel)]="email" class="authorize-input" type="email" placeholder="Email">
+            <h5 class="small-header">Пароль пользователя</h5>
+            <input [(ngModel)]="password" class="authorize-input" type="password" placeholder="Пароль">
             <button (click)="Login()" class="primary-authorize">
                 <h5 class="medium-header">Войти</h5>
             </button>
@@ -15,10 +14,10 @@
             </button>
             <div class="social-network">
                 <div class="social-network__element">
-                    <h5 class="medium-header">Авторизация через Google</h5>
                     <img class="google-image" src="assets/google.png">
+                    <h5 class="medium-header">Авторизация через Google</h5>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>

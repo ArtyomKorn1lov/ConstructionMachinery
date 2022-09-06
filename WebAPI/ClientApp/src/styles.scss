@@ -1,33 +1,21 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
-
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
-
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $ConstructionMachineryApp-primary: mat.define-palette(mat.$indigo-palette);
 $ConstructionMachineryApp-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
 // The warn palette is optional (defaults to red).
 $ConstructionMachineryApp-warn: mat.define-palette(mat.$red-palette);
-
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$ConstructionMachineryApp-theme: mat.define-light-theme((
-  color: (
-    primary: $ConstructionMachineryApp-primary,
-    accent: $ConstructionMachineryApp-accent,
-    warn: $ConstructionMachineryApp-warn,
-  )
-));
-
+$ConstructionMachineryApp-theme: mat.define-light-theme(( color: ( primary: $ConstructionMachineryApp-primary, accent: $ConstructionMachineryApp-accent, warn: $ConstructionMachineryApp-warn, )));
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
@@ -41,7 +29,7 @@ $ConstructionMachineryApp-theme: mat.define-light-theme((
 }
 
 :root {
-    --margin-top-button: 24px;
+    --margin-top-button: 27px;
     --padding-button: 13px;
     --color-primary-text: #D9D9D9;
     --color-primary-button: #E4A400;
@@ -50,7 +38,7 @@ $ConstructionMachineryApp-theme: mat.define-light-theme((
     --color-option: #232323;
     --color-option-select: #161616;
     --color-hover-primary: #966c03;
-    --color-identity-text:#FF4444;
+    --color-identity-text: #FF4444;
 }
 
 body {
@@ -95,7 +83,7 @@ body {
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
-    color: var(--color-primary-text); 
+    color: var(--color-primary-text);
 }
 
 .small-header {
@@ -172,9 +160,13 @@ body {
     background: transparent;
 }
 
-.authorize-input::-moz-placeholder { color: var(--color-primary-text); }
+.authorize-input::-moz-placeholder {
+    color: var(--color-primary-text);
+}
 
-.authorize-input::-webkit-input-placeholder { color: var(--color-primary-text); }
+.authorize-input::-webkit-input-placeholder {
+    color: var(--color-primary-text);
+}
 
 .primary-authorize {
     margin-top: var(--margin-top-button);
@@ -211,7 +203,7 @@ body {
     opacity: 0.8;
 }
 
-.back-container + .technique-image {
+.back-container+.technique-image {
     margin-top: 0px;
 }
 
@@ -246,7 +238,7 @@ body {
     color: var(--color-option-select);
 }
 
-.authorize-input + .small-header {
+.authorize-input+.small-header {
     margin-top: 16px;
 }
 
@@ -264,7 +256,7 @@ body {
     background: transparent;
 }
 
-.advert-textarea + .small-header {
+.advert-textarea+.small-header {
     margin-top: 16px;
 }
 
@@ -309,8 +301,22 @@ body {
     margin-right: 15px;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}

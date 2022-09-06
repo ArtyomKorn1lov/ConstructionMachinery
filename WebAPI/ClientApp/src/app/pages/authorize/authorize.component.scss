@@ -14,10 +14,11 @@
     border-radius: 5px;
 }
 
-.authorize-input {
+.small-header {
     margin-top: 27px;
+    margin-bottom: 8px;
 }
 
-.medium-header + .google-image {
+.google-image+.medium-header {
     margin-left: 10px;
 }

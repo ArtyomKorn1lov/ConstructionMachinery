@@ -5,16 +5,20 @@
             <h5 class="medium-header">Регистрация</h5>
         </div>
         <div class="content__elements">
+            <h5 class="small-header">Email прользователя</h5>
             <input [(ngModel)]="email" class="authorize-input" type="email" placeholder="Email">
+            <h5 class="small-header">Пароль прользователя</h5>
             <input [(ngModel)]="password" class="authorize-input" type="password" placeholder="Пароль">
+            <h5 class="small-header">Подтвердите пароль</h5>
             <input [(ngModel)]="confirm_password" class="authorize-input" type="password" placeholder="Подтвердите пароль">
+            <h5 class="small-header">Фамилия Имя Отчество</h5>
             <input [(ngModel)]="name" class="authorize-input" type="text" placeholder="ФИО">
+            <h5 class="small-header">Телефон пользователя</h5>
             <input [(ngModel)]="phone" class="authorize-input" type="tel" placeholder="Телефон" pattern="2-[0-9]{3}-[0-9]{3}">
             <button class="primary-authorize" (click)="Registration()">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>
-            <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете согласие на
-                обработку персональных данных.</p>
+            <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете согласие на обработку персональных данных.</p>
         </div>
     </div>
 </div>

@@ -37,7 +37,13 @@ export class HeaderComponent implements OnInit {
       this.searchForm.value.search = "";
     this.advertService.search = this.searchForm.value.search;
     this.advertService.searchFlag = true;
-    this.router.navigateByUrl(this.targetRoute);
+    this.router.navigate([this.targetRoute], {
+      queryParams: {
+        search: this.advertService.search
+      }
+    });
+    //this.router.navigateByUrl(this.targetRoute);
+    console.log("entered here");
   }
 
   public async ngOnInit(): Promise<void> {

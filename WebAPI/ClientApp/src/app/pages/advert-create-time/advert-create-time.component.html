@@ -4,7 +4,7 @@
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Новое объявление</h5>
         </div>
-        <div class="content__elements">
+        <form class="content__elements">
             <h5 class="big-header">Выберете доступное время для аренды</h5>
             <h5 class="small-header">Дни</h5>
             <mat-form-field class="date-picker" appearance="fill">
@@ -21,12 +21,20 @@
             </mat-form-field>
             <h5 class="small-header">Время аренды</h5>
             <h5 class="small-header">Начальное время</h5>
-            <input [(ngModel)]="startTime" class="authorize-input" type="time">
+            <input #slectorStart="ngModel" [(ngModel)]="startTime" name="startTime" class="authorize-input" type="time" required>
+            <div class="valid-container" *ngIf="slectorStart.invalid && slectorStart.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <h5 class="small-header">Конечное время</h5>
-            <input [(ngModel)]="endTime" class="authorize-input" type="time">
+            <input #slectorEnd="ngModel" [(ngModel)]="endTime" name="endTime" class="authorize-input" type="time" required>
+            <div class="valid-container" *ngIf="slectorEnd.invalid && slectorEnd.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <button (click)="Create()" class="primary-authorize">
                 <h5 class="medium-header">Выложить объявление</h5>
             </button>
-        </div>
+        </form>
     </div>
 </div>

@@ -8,7 +8,11 @@
 }
 
 .big-header + .small-header{
-    margin-top: 40px;
+    margin-top: 20px;
+}
+
+.valid-container + .small-header {
+    margin-top: 16px;
 }
 
 .primary--authorize {

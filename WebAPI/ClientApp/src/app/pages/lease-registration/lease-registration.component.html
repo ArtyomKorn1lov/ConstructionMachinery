@@ -4,18 +4,22 @@
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Оформление аренды:</h5>
         </div>
-        <div class="content__elements">
+        <form class="content__elements">
             <h4 class="small-header">Адрес доставки</h4>
-            <input type="text" class="authorize-input" [(ngModel)]="address" placeholder="Введите адрес">
+            <input type="text" class="authorize-input" #slectorAddress="ngModel" [(ngModel)]="address" name="address" placeholder="Введите адрес" required>
+            <div class="valid-container" *ngIf="slectorAddress.invalid && slectorAddress.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <h4 class="small-header">Выберете время заказа</h4>
             <div class="select-container">
-                <select class="select-filter" [(ngModel)]="currentTimeId">
+                <select class="select-filter" [(ngModel)]="currentTimeId" name="currentTimeId">
                     <option class="select-filter__option" *ngFor="let time of times" ngValue={{time.id}}>{{time.date.getMonth()}}.{{time.date.getDate()}}.{{time.date.getFullYear()}} в {{time.date.getHours()}}:00</option>
                 </select>
             </div>
             <button (click)="CreateRequest()" class="primary-authorize">
                 <h5 class="medium-header">Отправить заявку</h5>
             </button>
-        </div>
+        </form>
     </div>
 </div>

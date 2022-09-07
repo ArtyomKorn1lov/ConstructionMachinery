@@ -1,11 +1,19 @@
 <div class="flex-container">
     <div class="content">
-        <div class="content__elements">
+        <form class="content__elements">
             <h6 class="big-header">Войти в личный кабинет</h6>
             <h5 class="small-header">Email пользователя</h5>
-            <input [(ngModel)]="email" class="authorize-input" type="email" placeholder="Email">
+            <input #slectorEmail="ngModel" [(ngModel)]="email" name="email" class="authorize-input" type="email" placeholder="Email" required>
+            <div class="valid-container" *ngIf="slectorEmail.invalid && slectorEmail.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <h5 class="small-header">Пароль пользователя</h5>
-            <input [(ngModel)]="password" class="authorize-input" type="password" placeholder="Пароль">
+            <input #slectorPassword="ngModel" [(ngModel)]="password" name="password" class="authorize-input" type="password" placeholder="Пароль" required>
+            <div class="valid-container" *ngIf="slectorPassword.invalid && slectorPassword.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <button (click)="Login()" class="primary-authorize">
                 <h5 class="medium-header">Войти</h5>
             </button>
@@ -18,6 +26,6 @@
                     <h5 class="medium-header">Авторизация через Google</h5>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>

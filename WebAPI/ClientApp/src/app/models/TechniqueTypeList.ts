@@ -5,7 +5,7 @@ export class TechniqueTypeList {
 
     public constructor() {
         this.techniqueList.push(new TechniqueType("assets/type1.png", "Автовышки", "Автовышка", "assets/type2.png", "Автокраны", "Автокран"));
-        this.techniqueList.push(new TechniqueType("assets/type3.png", "Бетононасосы", "Бетононасос", "assets/type4.png", "Бульдозеры", ""));
+        this.techniqueList.push(new TechniqueType("assets/type3.png", "Бетононасосы", "Бетононасос", "assets/type4.png", "Бульдозеры", "Бульдозер"));
         this.techniqueList.push(new TechniqueType("assets/type5.png", "Гидромолоты", "Гидромолот", "assets/type6.png", "Грунторезы", "Грунторез"));
         this.techniqueList.push(new TechniqueType("assets/type7.png", "Компрессоры", "Компрессор", "assets/type8.png", "Манипуляторы", "Манипулятор"));
         this.techniqueList.push(new TechniqueType("assets/type9.png", "Минипогрузчики", "Минипогрузчик", "assets/type10.png", "Полуприцепы", "Полуприцеп"));

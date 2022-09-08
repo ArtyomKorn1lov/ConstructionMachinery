@@ -14,12 +14,14 @@ export class MainComponent implements OnInit {
   public techniqueObject: TechniqueTypeList = new TechniqueTypeList();;
   private targetRoute: string = "/advert-list";
 
-  constructor(private accountService: AccountService, private advertService: AdvertService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router) { }
 
   public Search(name: string): void {
-    this.advertService.search = name;
-    this.advertService.searchFlag = true;
-    this.router.navigateByUrl(this.targetRoute);
+    this.router.navigate([this.targetRoute], {
+      queryParams: {
+        search: name
+      }
+    });
   }
 
   public async ngOnInit(): Promise<void> {

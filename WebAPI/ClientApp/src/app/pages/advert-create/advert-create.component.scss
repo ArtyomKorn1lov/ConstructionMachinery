@@ -32,9 +32,10 @@
 }
 
 .photo-element {
-    max-width: 130px;
-    min-height: 100px;
+    max-width: 230px;
+    min-height: 200px;
     border-radius: 5px;
+    object-fit: cover;
 }
 
 #SelectImage

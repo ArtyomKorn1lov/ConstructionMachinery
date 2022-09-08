@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
+import { AdvertComponent } from 'src/app/components/advert/advert.component';
 
 @Component({
   selector: 'app-advert-list',
@@ -9,8 +10,13 @@ import { AccountService } from 'src/app/services/account.service';
 export class AdvertListComponent implements OnInit {
 
   public filter: string = "all";
+  @ViewChild(AdvertComponent) child: AdvertComponent | undefined;
 
   constructor(private accountService: AccountService) { }
+
+  public async SelectEvent(): Promise<void> {
+    await this.child?.SortByParam(this.filter);
+  }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.GetAuthoriseModel();

@@ -10,9 +10,6 @@ import { AvailableTimeModel } from '../models/AvailableTimeModel';
   providedIn: 'root'
 })
 export class AdvertService {
-
-  public search: string = "";
-  public searchFlag: boolean = false;
   private advertCreate: AdvertModelCreate | undefined;
 
   constructor(private http: HttpClient) { }

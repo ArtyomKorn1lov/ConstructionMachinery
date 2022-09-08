@@ -35,15 +35,11 @@ export class HeaderComponent implements OnInit {
   public OnSubmith(): void {
     if(this.searchForm.value.search == null || this.searchForm.value.search == undefined)
       this.searchForm.value.search = "";
-    this.advertService.search = this.searchForm.value.search;
-    this.advertService.searchFlag = true;
     this.router.navigate([this.targetRoute], {
       queryParams: {
-        search: this.advertService.search
+        search: this.searchForm.value.search
       }
     });
-    //this.router.navigateByUrl(this.targetRoute);
-    console.log("entered here");
   }
 
   public async ngOnInit(): Promise<void> {

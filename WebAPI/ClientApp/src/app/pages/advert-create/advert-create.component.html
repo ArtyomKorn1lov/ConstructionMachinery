@@ -21,13 +21,10 @@
             <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание"></textarea>
             <h5 class="small-header">Добавьте фотографию</h5>
             <div class="photo-container">
+                <img *ngIf="image != undefined" src="{{fileBase64}}" class="photo-element" (click)="UploadImage()">
                 <div *ngIf="image == undefined" (click)="UploadImage()" class="photo-download">
                     <img src="assets/photo.png">
                     <p class="primary-text">Добавить</p>
-                </div>
-                <div *ngIf="image != undefined" (click)="UploadImage()" class="photo-download">
-                    <img src="assets/photo.png">
-                    <p class="primary-text">Изменить</p>
                 </div>
             </div>
             <input (change)="Download($event)" id="SelectImage" type="file" accept="image/*">

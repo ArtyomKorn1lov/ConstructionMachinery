@@ -14,8 +14,9 @@ export class AdvertCreateComponent implements OnInit {
 
   public name: string | undefined;
   public description: string = "";
-  public price: number | undefined; 
+  public price: number | undefined;
   public image: File | undefined;
+  public fileBase64: string = "";
   private targetRoute: string = "/advert-create/time";
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
@@ -25,8 +26,14 @@ export class AdvertCreateComponent implements OnInit {
   }
 
   public Download(event: any): void {
-    this.image = event.target.files[0];
-    console.log(this.image);
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    this.image = file;
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (reader.result != null)
+        this.fileBase64 = reader.result.toString();
+    }
   }
 
   public CrossingToAvailiableTime(): void {
@@ -40,8 +47,7 @@ export class AdvertCreateComponent implements OnInit {
       this.price = undefined;
       return;
     }
-    if(this.image == null || this.image == undefined)
-    {
+    if (this.image == null || this.image == undefined) {
       alert("Не выбран файл");
       return;
     }

@@ -7,8 +7,8 @@
             <h6 class="big-header">{{[this.accountService.authorize.name[0]]}}</h6>
         </div>
     </div>
-    <form [formGroup]="searchForm" (submit)="OnSubmith()" class="header__seach">
-        <input [style.margin-left]="visibility==true?'0px':'20px'" formControlName="search" (focus)="FocusIn()" (focusout)="FocusOut()" type="search" class="header__seach-input" placeholder="Найти лучшую технику">
+    <form [formGroup]="searchForm" (submit)="OnSubmith()" class="header__search">
+        <input [style.margin-left]="visibility==true?'0px':'20px'" formControlName="search" (focus)="FocusIn()" (focusout)="FocusOut()" type="search" class="header__search-input" placeholder="Найти лучшую технику">
         <img (click)="OnSubmith()" [style.display]="visibility==false?'block':'none'" src="assets/search-icon.png" class="header__search-icon">
     </form>
 </div>

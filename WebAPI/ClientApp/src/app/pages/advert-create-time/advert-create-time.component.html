@@ -21,14 +21,14 @@
             </mat-form-field>
             <h5 class="small-header">Время аренды</h5>
             <h5 class="small-header">Начальное время</h5>
-            <input #slectorStart="ngModel" [(ngModel)]="startTime" name="startTime" class="authorize-input" type="time" required>
-            <div class="valid-container" *ngIf="slectorStart.invalid && slectorStart.touched">
+            <input #selectorStart="ngModel" [(ngModel)]="startTime" name="startTime" class="authorize-input" type="time" required>
+            <div class="valid-container" *ngIf="selectorStart.invalid && selectorStart.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
             <h5 class="small-header">Конечное время</h5>
-            <input #slectorEnd="ngModel" [(ngModel)]="endTime" name="endTime" class="authorize-input" type="time" required>
-            <div class="valid-container" *ngIf="slectorEnd.invalid && slectorEnd.touched">
+            <input #selectorEnd="ngModel" [(ngModel)]="endTime" name="endTime" class="authorize-input" type="time" required>
+            <div class="valid-container" *ngIf="selectorEnd.invalid && selectorEnd.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>

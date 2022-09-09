@@ -1,5 +1,5 @@
 <p class="micro-text">Показано {{advertList.length}} объявления</p>
-<div class="advert" *ngFor="let advert of advertList">
+<article class="advert" *ngFor="let advert of advertList">
     <div class="advert__line"></div>
     <div class="advert__content">
         <img class="advert__image" src="{{advert.images[0].path}}">
@@ -16,4 +16,7 @@
             </button>
         </div>
     </div>
+</article>
+<div class="load-spinner">
+    <mat-spinner></mat-spinner>
 </div>

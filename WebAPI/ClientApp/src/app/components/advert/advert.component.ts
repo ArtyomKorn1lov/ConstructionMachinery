@@ -18,15 +18,15 @@ export class AdvertComponent implements OnInit {
   constructor(private advertService: AdvertService, private router: Router, private route: ActivatedRoute) { }
 
   public async SortByParam(param: string): Promise<void> {
-    if(param == "all") {
+    if (param == "all") {
       await this.ngOnInit();
       return;
     }
-    if(param == "max") {
+    if (param == "max") {
       this.SortByMax();
       return;
     }
-    if(param == "min") {
+    if (param == "min") {
       this.SortByMin();
       return;
     }
@@ -34,12 +34,12 @@ export class AdvertComponent implements OnInit {
 
   public SortByMax(): void {
     var advert;
-    for(let i = 0; i < this.advertList.length; i++) {
-      for(let j = 0; j < this.advertList.length - i - 1; j++) {
-        if(this.advertList[j].price > this.advertList[j+1].price) {
+    for (let i = 0; i < this.advertList.length; i++) {
+      for (let j = 0; j < this.advertList.length - i - 1; j++) {
+        if (this.advertList[j].price > this.advertList[j + 1].price) {
           advert = this.advertList[j];
-          this.advertList[j] = this.advertList[j+1];
-          this.advertList[j+1] = advert;
+          this.advertList[j] = this.advertList[j + 1];
+          this.advertList[j + 1] = advert;
         }
       }
     }
@@ -47,12 +47,12 @@ export class AdvertComponent implements OnInit {
 
   public SortByMin(): void {
     var advert;
-    for(let i = 0; i < this.advertList.length; i++) {
-      for(let j = 0; j < this.advertList.length - i - 1; j++) {
-        if(this.advertList[j].price < this.advertList[j+1].price) {
+    for (let i = 0; i < this.advertList.length; i++) {
+      for (let j = 0; j < this.advertList.length - i - 1; j++) {
+        if (this.advertList[j].price < this.advertList[j + 1].price) {
           advert = this.advertList[j];
-          this.advertList[j] = this.advertList[j+1];
-          this.advertList[j+1] = advert;
+          this.advertList[j] = this.advertList[j + 1];
+          this.advertList[j + 1] = advert;
         }
       }
     }

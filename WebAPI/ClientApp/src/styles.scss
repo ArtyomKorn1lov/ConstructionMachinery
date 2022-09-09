@@ -329,6 +329,15 @@ body {
     color: var(--color-invalid-text);
 }
 
+.load-spinner {
+    display: flex;
+    justify-content: center;
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: var(--color-primary-text);
+}
+
 html,
 body {
     height: 100%;

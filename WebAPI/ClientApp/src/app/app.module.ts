@@ -13,6 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
@@ -68,6 +69,7 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
     MatFormFieldModule,
     ReactiveFormsModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([
@@ -85,7 +87,7 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
       { path: 'confirm-list', component: ConfirmListComponent },
       { path: 'my-requests', component: MyRequestsComponent },
       { path: 'confirm-list/info', component: ConfirmListInfoComponent },
-      { path: 'my-requests/info', component: MyRequestInfoComponent},
+      { path: 'my-requests/info', component: MyRequestInfoComponent },
       { path: 'profile/edit', component: EditProfileComponent }
     ]),
     BrowserAnimationsModule,

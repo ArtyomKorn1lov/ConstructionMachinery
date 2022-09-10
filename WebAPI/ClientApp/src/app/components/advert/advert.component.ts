@@ -32,17 +32,31 @@ export class AdvertComponent implements OnInit {
     }
   }
 
+  private isMax(first: AdvertModelList, second: AdvertModelList): number {
+    if (first.price > second.price)
+    {
+      return 1;
+    }
+
+    if (first.price < second.price) {
+      return -1;
+    }
+
+    return 0;
+  }
+
   public SortByMax(): void {
     var advert;
-    for (let i = 0; i < this.advertList.length; i++) {
-      for (let j = 0; j < this.advertList.length - i - 1; j++) {
-        if (this.advertList[j].price > this.advertList[j + 1].price) {
-          advert = this.advertList[j];
-          this.advertList[j] = this.advertList[j + 1];
-          this.advertList[j + 1] = advert;
-        }
-      }
-    }
+    this.advertList.sort(this.isMax);
+    // for (let i = 0; i < this.advertList.length; i++) {
+    //   for (let j = 0; j < this.advertList.length - i - 1; j++) {
+    //     if (this.advertList[j].price > this.advertList[j + 1].price) {
+    //       advert = this.advertList[j];
+    //       this.advertList[j] = this.advertList[j + 1];
+    //       this.advertList[j + 1] = advert;
+    //     }
+    //   }
+    // }
   }
 
   public SortByMin(): void {

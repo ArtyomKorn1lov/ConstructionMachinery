@@ -23,6 +23,7 @@ $ConstructionMachineryApp-theme: mat.define-light-theme(( color: ( primary: $Con
 
 /* You can add global styles to this file, and also import other style files */
 
+@import url("app/elements/base.scss");
 * {
     margin: 0;
     padding: 0;
@@ -301,7 +302,8 @@ body {
     margin-right: 15px;
 }
 
-.ng-valid[required], .ng-valid.required {
+.ng-valid[required],
+.ng-valid.required {
     border: 2px solid var(--color-primary-text);
 }
 
@@ -334,7 +336,8 @@ body {
     justify-content: center;
 }
 
-.mat-progress-spinner circle, .mat-spinner circle {
+.mat-progress-spinner circle,
+.mat-spinner circle {
     stroke: var(--color-primary-text);
 }
 

@@ -1,14 +1,14 @@
-<div class="flex-container">
+<div class="flex-centered">
     <div class="content">
         <div [routerLink]="['/confirm-list']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header">Подтверждение заявки</h5>
         </div>
-        <h6 class="big-header">Заявка №{{request.id}}</h6>
-        <img class="technique-image" src="{{request.images[0].path}}">
+        <h4 class="big-header">Заявка №{{request.id}}</h4>
+        <img class="technique-image" src="{{request.images[0].path}}" alt="Изображение строительной техники">
         <div class="content__elements">
             <div class="title-info">
-                <h6 class="big-header">{{request.advertName}}</h6>
+                <h5 class="big-header">{{request.advertName}}</h5>
                 <div class="request-info">
                     <div class="request-info__title">
                         <h5 class="medium-header">Заказчик:</h5>
@@ -35,10 +35,10 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button (click)="Confirm(1)" class="primary-authorize">
+            <button (click)="confirm(1)" class="primary-authorize">
                 <h5 class="medium-header">Подтвердить</h5>
             </button>
-            <button (click)="Confirm(2)" class="edit-button">
+            <button (click)="confirm(2)" class="edit-button">
                 <h5 class="medium-header">Отказать</h5>
             </button>
         </div>

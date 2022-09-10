@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async Logout(): Promise<void> {
+  public async logout(): Promise<void> {
     this.accountService.Logout().subscribe(data => {
       if(data == "success") {
         alert("Успешный выход");

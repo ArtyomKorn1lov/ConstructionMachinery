@@ -1,15 +1,15 @@
-<div class="flex-container">
+<div class="flex-centered">
     <div class="content">
-        <div (click)="Back()" class="back-container">
+        <div (click)="back()" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header">Информация об объявлении</h5>
+            <h4 class="medium-header">Информация об объявлении</h4>
         </div>
-        <img class="technique-image" src="{{advert.images[0].path}}">
+        <img class="technique-image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
         <div class="content__elements">
             <div class="title-info">
-                <h6 class="big-header">{{advert.name}}</h6>
+                <h4 class="big-header">{{advert.name}}</h4>
                 <h5 class="medium-header">Арендодатель: {{advert.userName}}</h5>
-                <h4 class="small-header">от {{advert.price}} ₽ / час</h4>
+                <h6 class="small-header">от {{advert.price}} ₽ / час</h6>
             </div>
             <div *ngIf="advert.description != ''" class="vector"></div>
             <div *ngIf="advert.description != ''" class="title-info">
@@ -37,7 +37,7 @@
             <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button (click)="Remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
+            <button (click)="remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Снять публикацию</h5>
             </button>
         </div>

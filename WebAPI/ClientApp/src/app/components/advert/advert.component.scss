@@ -26,11 +26,8 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        margin-left: 17px;
     }
-}
-
-.advert__image+.advert__elements {
-    margin-left: 17px;
 }
 
 .advert__text {

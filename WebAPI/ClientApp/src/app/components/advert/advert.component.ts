@@ -17,62 +17,38 @@ export class AdvertComponent implements OnInit {
 
   constructor(private advertService: AdvertService, private router: Router, private route: ActivatedRoute) { }
 
-  public async SortByParam(param: string): Promise<void> {
+  public async sortByParam(param: string): Promise<void> {
     if (param == "all") {
       await this.ngOnInit();
       return;
     }
     if (param == "max") {
-      this.SortByMax();
+      this.advertList.sort(this.isMax);
       return;
     }
     if (param == "min") {
-      this.SortByMin();
+      this.advertList.sort(this.isMin);
       return;
     }
   }
 
   private isMax(first: AdvertModelList, second: AdvertModelList): number {
     if (first.price > second.price)
-    {
       return 1;
-    }
-
-    if (first.price < second.price) {
+    if (first.price < second.price)
       return -1;
-    }
-
     return 0;
   }
 
-  public SortByMax(): void {
-    var advert;
-    this.advertList.sort(this.isMax);
-    // for (let i = 0; i < this.advertList.length; i++) {
-    //   for (let j = 0; j < this.advertList.length - i - 1; j++) {
-    //     if (this.advertList[j].price > this.advertList[j + 1].price) {
-    //       advert = this.advertList[j];
-    //       this.advertList[j] = this.advertList[j + 1];
-    //       this.advertList[j + 1] = advert;
-    //     }
-    //   }
-    // }
+  private isMin(first: AdvertModelList, second: AdvertModelList): number {
+    if (first.price < second.price)
+      return 1;
+    if (first.price > second.price)
+      return -1;
+    return 0;
   }
 
-  public SortByMin(): void {
-    var advert;
-    for (let i = 0; i < this.advertList.length; i++) {
-      for (let j = 0; j < this.advertList.length - i - 1; j++) {
-        if (this.advertList[j].price < this.advertList[j + 1].price) {
-          advert = this.advertList[j];
-          this.advertList[j] = this.advertList[j + 1];
-          this.advertList[j + 1] = advert;
-        }
-      }
-    }
-  }
-
-  public GetAdvertInfo(id: number): void {
+  public getAdvertInfo(id: number): void {
     this.advertService.SetIdInLocalStorage(id);
     if (this.page == undefined)
       this.advertService.SetPageInLocalStorage('list');

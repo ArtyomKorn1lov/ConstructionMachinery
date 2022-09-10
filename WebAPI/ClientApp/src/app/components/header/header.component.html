@@ -1,14 +1,14 @@
 <div class="header">
     <div class="header__logo">
-        <img (click)="SidenavEvent()" src="assets/menu.png">
+        <img (click)="sidenavEvent()" src="assets/menu.png">
         <img [routerLink]="['/']" src="assets/logo.png">
         <img *ngIf="!accountService.userFlag" [routerLink]="['/authorize']" src="assets/account.png">
         <div *ngIf="accountService.userFlag" class="account-ellipse" [routerLink]="['/profile']">
             <h6 class="big-header">{{[this.accountService.authorize.name[0]]}}</h6>
         </div>
     </div>
-    <form [formGroup]="searchForm" (submit)="OnSubmith()" class="header__search">
-        <input [style.margin-left]="visibility==true?'0px':'20px'" formControlName="search" (focus)="FocusIn()" (focusout)="FocusOut()" type="search" class="header__search-input" placeholder="Найти лучшую технику">
-        <img (click)="OnSubmith()" [style.display]="visibility==false?'block':'none'" src="assets/search-icon.png" class="header__search-icon">
+    <form [formGroup]="searchForm" (submit)="onSubmith()" class="header__search">
+        <input [style.margin-left]="visibility==true?'0px':'20px'" formControlName="search" (focus)="focusIn()" (focusout)="focusOut()" type="search" class="header__search-input" placeholder="Найти лучшую технику">
+        <img (click)="onSubmith()" [style.display]="visibility==false?'block':'none'" src="assets/search-icon.png" class="header__search-icon">
     </form>
 </div>

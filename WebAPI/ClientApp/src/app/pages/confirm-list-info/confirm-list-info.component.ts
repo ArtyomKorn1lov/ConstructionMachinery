@@ -19,8 +19,8 @@ export class ConfirmListInfoComponent implements OnInit {
 
   constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
-  public Confirm(state: number): void {
-    var model: ConfirmModel = new ConfirmModel(this.request.id, state);
+  public confirm(state: number): void {
+    let model: ConfirmModel = new ConfirmModel(this.request.id, state);
     this.requestService.Confirm(model).subscribe(data => {
       if (data == "success") {
         console.log(data);

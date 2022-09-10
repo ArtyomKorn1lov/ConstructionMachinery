@@ -1,7 +1,7 @@
 <div class="navigation">
-    <a (click)="SidenavEvent()" [routerLink]="['/advert-list']" class="navigation__hyperlink">Объявления</a>
+    <a (click)="sidenavEvent()" [routerLink]="['/advert-list']" class="navigation__hyperlink">Объявления</a>
     <div class="navigation__vector"></div>
-    <a *ngIf="accountService.userFlag" (click)="SidenavEvent()" [routerLink]="['/private-area']" class="navigation__hyperlink">Личный кабинет</a>
+    <a *ngIf="accountService.userFlag" (click)="sidenavEvent()" [routerLink]="['/private-area']" class="navigation__hyperlink">Личный кабинет</a>
     <div *ngIf="accountService.userFlag" class="navigation__vector"></div>
     <a class="navigation__hyperlink">Контакты</a>
     <div class="navigation__vector"></div>
@@ -9,5 +9,5 @@
     <div class="navigation__vector"></div>
     <a class="navigation__hyperlink">Документы</a>
     <div class="navigation__vector"></div>
-    <a *ngIf="!accountService.userFlag" (click)="SidenavEvent()" [routerLink]="['/authorize']" class="forgot-password">Вход/Регистрация</a>
+    <a *ngIf="!accountService.userFlag" (click)="sidenavEvent()" [routerLink]="['/authorize']" class="forgot-password">Вход/Регистрация</a>
 </div>

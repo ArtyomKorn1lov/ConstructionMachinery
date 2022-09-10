@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Артём данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj": {}
+    "C:\\Данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "C:\\Артём данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj": {
+    "C:\\Данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Артём данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Артём данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Артём данные\\Travelline\\ConstructionMachinery\\Domain\\obj\\",
+        "projectPath": "C:\\Данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Duke\\.nuget\\packages\\",
+        "outputPath": "C:\\Данные\\Travelline\\ConstructionMachinery\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Duke\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,8 +45,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -55,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

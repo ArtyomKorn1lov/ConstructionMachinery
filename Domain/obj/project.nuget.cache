@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8c6g8Uj0gSiq+0bXPtIh4XwgY42+C1V5i+oNeJ9KnziaHJTZgeLbjX7nVm25Cwh0Rky2zabwV2EWSgcJ+rh2+Q==",
+  "dgSpecHash": "sEiOONExSQHEeKa+RSeoWyFtn64I3e1SagJzBFX8afQFr4mZZjovsgjrtngwvoM235H5ONx2G1XKmzkyBBQYrg==",
   "success": true,
-  "projectFilePath": "C:\\Артём данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj",
+  "projectFilePath": "C:\\Данные\\Travelline\\ConstructionMachinery\\Domain\\Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

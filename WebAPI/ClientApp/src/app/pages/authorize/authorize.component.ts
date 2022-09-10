@@ -17,7 +17,7 @@ export class AuthorizeComponent implements OnInit {
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async Login(): Promise<void> {
+  public async login(): Promise<void> {
     if (this.email == undefined || this.email.trim() == '') {
       alert("Введите email пользователя");
       this.email = '';
@@ -32,9 +32,8 @@ export class AuthorizeComponent implements OnInit {
     await this.accountService.Login(model).subscribe(data => {
       if(data == "success") {
         console.log(data);
-        // location.reload();
         alert(data);
-        this.router.navigate(['/'], {});
+        this.router.navigateByUrl(this.targetRoute);
         return;
       }
       if(data == "authorize") {

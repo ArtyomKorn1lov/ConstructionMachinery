@@ -24,7 +24,7 @@ export class AdvertInfoComponent implements OnInit {
 
   constructor(private advertService: AdvertService, private router: Router, public accountService: AccountService) { }
 
-  public Back(): void {
+  public back(): void {
     if (this.page == 'list') {
       this.router.navigateByUrl(this.listRoute);
       return;
@@ -36,13 +36,13 @@ export class AdvertInfoComponent implements OnInit {
     this.router.navigateByUrl('/');
   }
 
-  public PackageToDayModel(): void {
+  public packageToDayModel(): void {
     let day;
-    var buffer;
-    var sortTimes: AvailableTimeModel[];
+    let buffer;
+    let sortTimes: AvailableTimeModel[];
     for (let j = 0; j < this.advert.availableTimes.length; j++) {
       buffer = new Date(this.advert.availableTimes[j].date);
-      if (!this.Contain(this.days, buffer)) {
+      if (!this.contain(this.days, buffer)) {
         sortTimes = [];
         for (let i = 0; i < this.advert.availableTimes.length; i++) {
           day = new Date(this.advert.availableTimes[i].date);
@@ -56,14 +56,14 @@ export class AdvertInfoComponent implements OnInit {
       this.month = buffer.getMonth();
       this.year = buffer.getFullYear();
     }
-    this.ConvertToNormalDate();
-    this.SortByDate();
+    this.convertToNormalDate();
+    this.sortByDate();
   }
 
-  public Contain(list: AvailableDayModel[], elem: Date): Boolean {
-    var firstFormat = '';
-    var secondFormat = elem.getMonth() + '.' + elem.getDate() + '.' + elem.getFullYear();
-    var flag = false;
+  public contain(list: AvailableDayModel[], elem: Date): Boolean {
+    let firstFormat = '';
+    let secondFormat = elem.getMonth() + '.' + elem.getDate() + '.' + elem.getFullYear();
+    let flag = false;
     for (let count = 0; count < list.length; count++) {
       firstFormat = list[count].day.getMonth() + '.' + list[count].day.getDate() + '.' + list[count].day.getFullYear();
       if (firstFormat == secondFormat) {
@@ -73,7 +73,7 @@ export class AdvertInfoComponent implements OnInit {
     return flag;
   }
 
-  public ConvertToNormalDate(): void {
+  public convertToNormalDate(): void {
     for (let count_day = 0; count_day < this.days.length; count_day++) {
       for (let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
         this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
@@ -82,8 +82,8 @@ export class AdvertInfoComponent implements OnInit {
     }
   }
 
-  public SortByDate(): void {
-    var date;
+  public sortByDate(): void {
+    let date;
     for(let i = 0; i < this.days.length; i++) {
       for(let j = 0; j < this.days.length - i - 1; j++) {
         if(this.days[j].day.getFullYear() > this.days[j+1].day.getFullYear()) {
@@ -105,7 +105,7 @@ export class AdvertInfoComponent implements OnInit {
     }
   }
 
-  public Remove(): void {
+  public remove(): void {
     if (this.advert.id == 0) {
       alert("Ошибка удаления");
       return;
@@ -114,7 +114,7 @@ export class AdvertInfoComponent implements OnInit {
       if (data == "success") {
         alert(data);
         console.log(data);
-        this.Back();
+        this.back();
         return;
       }
       alert("Ошибка удаления");
@@ -128,7 +128,7 @@ export class AdvertInfoComponent implements OnInit {
     this.page = this.advertService.GetPageFromLocalStorage();
     await this.advertService.GetById(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
       this.advert = data;
-      this.PackageToDayModel();
+      this.packageToDayModel();
     });
   }
 

@@ -17,7 +17,7 @@ export class EditProfileComponent implements OnInit {
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async Edit(): Promise<void> {
+  public async edit(): Promise<void> {
     if (this.user.email == undefined || this.user.email.trim() == '') {
       alert("Введите Email пользователя");
       this.user.email = '';

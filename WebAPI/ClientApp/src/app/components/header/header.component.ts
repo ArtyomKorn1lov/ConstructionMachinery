@@ -20,19 +20,19 @@ export class HeaderComponent implements OnInit {
 
   constructor(public accountService: AccountService, private advertService: AdvertService, private router: Router, private formBuilder: FormBuilder) { }
 
-  public SidenavEvent(): void {
+  public sidenavEvent(): void {
     this.event.emit();
   }
 
-  public FocusIn(): void {
+  public focusIn(): void {
     this.visibility = true;
   }
 
-  public FocusOut(): void {
+  public focusOut(): void {
     this.visibility = false;
   }
 
-  public OnSubmith(): void {
+  public onSubmith(): void {
     if(this.searchForm.value.search == null || this.searchForm.value.search == undefined)
       this.searchForm.value.search = "";
     this.router.navigate([this.targetRoute], {

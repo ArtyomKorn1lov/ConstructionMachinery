@@ -14,8 +14,8 @@ export class AdvertListComponent implements OnInit {
 
   constructor(private accountService: AccountService) { }
 
-  public async SelectEvent(): Promise<void> {
-    await this.child?.SortByParam(this.filter);
+  public async selectEvent(): Promise<void> {
+    await this.child?.sortByParam(this.filter);
   }
 
   public async ngOnInit(): Promise<void> {

@@ -16,7 +16,7 @@ export class MainComponent implements OnInit {
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public Search(name: string): void {
+  public search(name: string): void {
     this.router.navigate([this.targetRoute], {
       queryParams: {
         search: name

@@ -2,13 +2,16 @@
 <article class="request" *ngFor="let request of requests">
     <div class="request__line"></div>
     <div class="request__content">
-        <img class="request__image" src="{{request.images[0].path}}">
+        <img class="request__image" src="{{request.images[0].path}}" alt="Изображение строительной техники">
         <div class="request__text">
             <p class="primary-text">Заявка №{{request.id}}</p>
             <h5 class="medium-header">{{request.name}}</h5>
         </div>
     </div>
-    <button (click)="NavigateToInfo(request.id)" class="edit-button">
+    <button (click)="navigateToInfo(request.id)" class="edit-button">
         <h5 class="medium-header">Открыть</h5>
     </button>
 </article>
+<div class="load-spinner">
+    <mat-spinner></mat-spinner>
+</div>

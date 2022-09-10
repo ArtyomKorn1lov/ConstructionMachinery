@@ -1,4 +1,4 @@
-<div class="flex-container">
+<div class="flex-centered">
     <div class="content">
         <div [routerLink]="['/advert-info']" class="back-container">
             <img src="assets/back-cursor.png">
@@ -17,7 +17,7 @@
                     <option class="select-filter__option" *ngFor="let time of times" ngValue={{time.id}}>{{time.date.getMonth()}}.{{time.date.getDate()}}.{{time.date.getFullYear()}} в {{time.date.getHours()}}:00</option>
                 </select>
             </div>
-            <button (click)="CreateRequest()" class="primary-authorize">
+            <button (click)="createRequest()" class="primary-authorize">
                 <h5 class="medium-header">Отправить заявку</h5>
             </button>
         </form>

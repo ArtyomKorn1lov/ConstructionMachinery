@@ -28,7 +28,7 @@ export class AdvertCreateTimeComponent implements OnInit {
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
 
-  public Create(): void {
+  public create(): void {
     if(this.range.value.start == null || this.range.value.start == undefined) {
       alert("Выберите диапазон чисел");
       return;
@@ -50,26 +50,24 @@ export class AdvertCreateTimeComponent implements OnInit {
       alert("Не выбран файл");
       return;
     }
-    var startHour = parseInt(this.startTime);
-    var endHour = parseInt(this.endTime);
+    let startHour = parseInt(this.startTime);
+    let endHour = parseInt(this.endTime);
     if(startHour > endHour) {
       alert("Неверный диапазон времени");
       return;
     }
-    var dates = this.GetDatesInRange(this.range.value.start, this.range.value.end);
-    this.FillAvailiableTime(dates, startHour, endHour);
+    let dates = this.getDatesInRange(this.range.value.start, this.range.value.end);
+    this.fillAvailiableTime(dates, startHour, endHour);
     if(this.availiableTime == undefined || this.advert == undefined) {
       alert("Ошибка заполнения доступного времени");
       return;
     }
     this.advert.availableTimeModelsCreates = this.availiableTime;
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('file', this.image);
     this.advertService.CreateAdvert(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
-        //alert(data);
-        //this.router.navigateByUrl(this.listRoute);
         this.imageService.Create(formData).subscribe(data => {
           if (data == "success") {
             console.log(data);
@@ -97,9 +95,9 @@ export class AdvertCreateTimeComponent implements OnInit {
     });
   }
 
-  public GetDatesInRange(startDate: Date, endDate: Date): Date[] {
-    var date = new Date(startDate.getTime());
-    var dates = [];
+  public getDatesInRange(startDate: Date, endDate: Date): Date[] {
+    let date = new Date(startDate.getTime());
+    let dates = [];
     while(date <= endDate) {
       dates.push(new Date(date))
       date.setDate(date.getDate() + 1);
@@ -107,9 +105,8 @@ export class AdvertCreateTimeComponent implements OnInit {
     return dates;
   }
 
-  public FillAvailiableTime(dates: Date[], startTime: number, endTime: number): void {
-    var currenthour = startTime;
-    var now_utc = new Date();
+  public fillAvailiableTime(dates: Date[], startTime: number, endTime: number): void {
+    let currenthour = startTime;
     for(let count = 0; count < dates.length; count++) {
       while(currenthour <= endTime) {
         dates[count].setHours(currenthour);

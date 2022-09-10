@@ -18,7 +18,7 @@ export class RequestComponent implements OnInit {
 
   constructor(private requestService: RequestService, private router: Router) { }
 
-  public NavigateToInfo(id: number): void {
+  public navigateToInfo(id: number): void {
     this.requestService.SetIdInLocalStorage(id);
     if (this.page == 'in')
     {
@@ -40,9 +40,6 @@ export class RequestComponent implements OnInit {
       this.requestService.GetListForLandlord().subscribe(data => {
         this.requests = data;
       });
-    /*this.requests.push(new AvailabilityRequestModel(2, "Кран ТТ-22"));
-    this.requests.push(new AvailabilityRequestModel(3, "Камаз АН246"));
-    this.requests.push(new AvailabilityRequestModel(4, "Ямобур 65-36"));*/
   }
 
 }

@@ -1,4 +1,4 @@
-<div class="flex-container">
+<div class="flex-centered">
     <div class="content">
         <div [routerLink]="['/authorize']" class="back-container">
             <img src="assets/back-cursor.png">
@@ -35,7 +35,7 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
-            <button class="primary-authorize" (click)="Registration()">
+            <button class="primary-authorize" (click)="registration()">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>
             <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете согласие на обработку персональных данных.</p>

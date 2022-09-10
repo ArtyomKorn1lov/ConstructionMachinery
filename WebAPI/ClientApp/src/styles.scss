@@ -58,7 +58,7 @@ body {
     min-height: 100vh;
 }
 
-.page--container {
+.page__element {
     position: relative;
     flex-grow: 1;
 }
@@ -121,7 +121,7 @@ body {
     text-decoration: none;
 }
 
-.flex-container {
+.flex-centered {
     display: flex;
     justify-content: center;
 }

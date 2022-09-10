@@ -52,7 +52,7 @@ export class AdvertService {
   }
 
   public SortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
-    var time;
+    let time;
     for(let i = 0; i < list.length; i++) {
       for(let j = 0; j < list.length - i - 1; j++) {
         if(list[j].date.getHours() > list[j+1].date.getHours()) {

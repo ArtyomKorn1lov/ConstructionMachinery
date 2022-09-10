@@ -20,12 +20,12 @@
     background: #E8E8E8;
 }
 
-.technique-type__element h4 {
+.technique-type__element .small-header {
     text-align: center;
     font-weight: 600;
     color: var(--color-secondary-button);
 }
 
-.technique-type__element img + h4 {
+.technique-type__element img + .small-header {
     margin-top: 15px;
 }

@@ -18,7 +18,7 @@ export class MyRequestInfoComponent implements OnInit {
 
   constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
-  public Cancel(): void {
+  public cancel(): void {
     this.requestService.Remove(this.request.id).subscribe(data => {
       if (data == "success") {
         console.log(data);

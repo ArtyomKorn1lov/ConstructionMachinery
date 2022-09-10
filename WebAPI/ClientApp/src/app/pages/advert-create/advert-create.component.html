@@ -1,4 +1,4 @@
-<div class="flex-container">
+<div class="flex-centered">
     <div class="content">
         <div [routerLink]="['/my-adverts']" class="back-container">
             <img src="assets/back-cursor.png">
@@ -9,26 +9,26 @@
             <input #slectorName="ngModel" [(ngModel)]="name" name="name" class="authorize-input" type="text" placeholder="Введите название техники" required>
             <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
-                <span class="valid-container__text">Обязательное поле для заполнения</span>
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
             <h5 class="small-header">Цена в час</h5>
             <input #slectorPrice="ngModel" [(ngModel)]="price" name="price" class="authorize-input" type="number" placeholder="Введите цену" required>
             <div class="valid-container" *ngIf="slectorPrice.invalid && slectorPrice.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
-                <span class="valid-container__text">Обязательное поле для заполнения</span>
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
             <h5 class="small-header">Описание объявления</h5>
             <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание"></textarea>
             <h5 class="small-header">Добавьте фотографию</h5>
             <div class="photo-container">
-                <img *ngIf="image != undefined" src="{{fileBase64}}" class="photo-element" (click)="UploadImage()">
-                <div *ngIf="image == undefined" (click)="UploadImage()" class="photo-download">
+                <img *ngIf="image != undefined" src="{{fileBase64}}" class="photo-element" (click)="uploadImage()" alt="Изображение строительной техники">
+                <div *ngIf="image == undefined" (click)="uploadImage()" class="photo-download">
                     <img src="assets/photo.png">
                     <p class="primary-text">Добавить</p>
                 </div>
             </div>
-            <input (change)="Download($event)" id="SelectImage" type="file" accept="image/*">
-            <button (click)="CrossingToAvailiableTime()" class="primary-authorize">
+            <input (change)="download($event)" id="SelectImage" type="file" accept="image/*">
+            <button (click)="crossingToAvailiableTime()" class="primary-authorize">
                 <h5 class="medium-header">Продолжить</h5>
             </button>
         </form>

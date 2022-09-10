@@ -21,11 +21,11 @@ export class AdvertCreateComponent implements OnInit {
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
 
-  public UploadImage(): void {
+  public uploadImage(): void {
     document.getElementById("SelectImage")?.click();
   }
 
-  public Download(event: any): void {
+  public download(event: any): void {
     const file = event.target.files[0];
     const reader = new FileReader();
     this.image = file;
@@ -36,7 +36,7 @@ export class AdvertCreateComponent implements OnInit {
     }
   }
 
-  public CrossingToAvailiableTime(): void {
+  public crossingToAvailiableTime(): void {
     if (this.name == undefined || this.name.trim() == '') {
       alert("Введите название объявления");
       this.name = '';
@@ -51,7 +51,7 @@ export class AdvertCreateComponent implements OnInit {
       alert("Не выбран файл");
       return;
     }
-    var advert = new AdvertModelCreate(this.name, this.description, this.price, 0, []);
+    let advert = new AdvertModelCreate(this.name, this.description, this.price, 0, []);
     this.advertService.SetAdvertCreateInService(advert);
     this.imageService.SetImageInService(this.image);
     this.router.navigateByUrl(this.targetRoute);

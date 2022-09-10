@@ -19,7 +19,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async Registration(): Promise<void> {
+  public async registration(): Promise<void> {
     if (this.email == undefined || this.email.trim() == '') {
       alert("Введите Email пользователя");
       this.email = '';
@@ -51,7 +51,7 @@ export class RegistrationComponent implements OnInit {
       this.confirm_password = '';
       return;
     }
-    var model = new RegisterModel(this.name, this.email, this.phone, this.password);
+    let model = new RegisterModel(this.name, this.email, this.phone, this.password);
     await this.accountService.Registration(model).subscribe(data => {
       if (data == "success") {
         console.log(data);

@@ -1,8 +1,8 @@
-<div class="flex-container">
+<div class="flex-centered">
     <div class="content">
         <div class="content__elements">
             <h6 class="big-header">Список объявлений:</h6>
-            <select (change)="SelectEvent()" class="select-filter" [(ngModel)]="filter">
+            <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filter">
                 <option class="select-filter__option" value="all">Все объявления</option>
                 <option class="select-filter__option" value="max">По возрастанию цены</option>
                 <option class="select-filter__option" value="min">По убыванию цены</option>

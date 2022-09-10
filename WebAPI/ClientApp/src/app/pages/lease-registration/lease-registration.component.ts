@@ -22,7 +22,7 @@ export class LeaseRegistrationComponent implements OnInit {
 
   constructor(private accountService: AccountService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
 
-  public CreateRequest(): void {
+  public createRequest(): void {
     if (this.address == undefined || this.address.trim() == '') {
       alert("Введите адрес доставки");
       this.address = '';
@@ -32,7 +32,7 @@ export class LeaseRegistrationComponent implements OnInit {
       alert("Выберете время доставки");
       return;
     }
-    var modelTime: AvailableTimeModelForCreateRequest[] = [];
+    let modelTime: AvailableTimeModelForCreateRequest[] = [];
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
     console.log(this.request);
@@ -50,15 +50,15 @@ export class LeaseRegistrationComponent implements OnInit {
     });
   }
 
-  public ConvertToNormalDate(): void {
+  public convertToNormalDate(): void {
     for(let count = 0; count < this.times.length; count++) {
       this.times[count].date = new Date(this.times[count].date);
     }
     this.times = this.advertService.SortByHour(this.times);
-    this.SortByDate();
+    this.sortByDate();
   }
 
-  public SortByDate(): void {
+  public sortByDate(): void {
     var date;
     for(let i = 0; i < this.times.length; i++) {
       for(let j = 0; j < this.times.length - i - 1; j++) {
@@ -85,7 +85,7 @@ export class LeaseRegistrationComponent implements OnInit {
     await this.accountService.GetAuthoriseModel();
     await this.requestService.GetAvailableTimesByAdvertId(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
       this.times = data;
-      this.ConvertToNormalDate();
+      this.convertToNormalDate();
     })
   }
 

@@ -12,7 +12,7 @@ export class NavigationComponent implements OnInit {
 
   constructor(public accountService: AccountService) { }
 
-  public SidenavEvent(): void {
+  public sidenavEvent(): void {
     this.event.emit();
   }
 

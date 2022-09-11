@@ -1,3 +1,4 @@
+//
 export class AuthoriseModel {
     name: string;
     email: string;

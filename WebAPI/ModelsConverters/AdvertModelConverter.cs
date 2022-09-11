@@ -63,11 +63,10 @@ namespace WebAPI.ModelsConverters
                 Description = model.Description,
                 Price = model.Price,
                 UserId = model.UserId,
-                AvailableTimeCommandCreates = model.AvailableTimeModelsCreates.Select(command => new AvailableTimeCommandCreate
-                {
-                    Date = command.Date,
-                    AvailabilityStateId = command.AvailabilityStateId
-                }).ToList(),
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime
             };
         }
 

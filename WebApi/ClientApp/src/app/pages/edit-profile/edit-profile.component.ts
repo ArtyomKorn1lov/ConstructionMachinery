@@ -74,5 +74,5 @@ export class EditProfileComponent implements OnInit {
       this.user.phone = data.phone;
     });
   }
-
+//
 }

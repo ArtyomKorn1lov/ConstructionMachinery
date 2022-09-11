@@ -53,5 +53,5 @@ export class AccountService {
   public Update(model: UserUpdateModel): Observable<string> {
     return this.http.put(`api/account/update`, model, { responseType: 'text' });
   }
-
+//
 }

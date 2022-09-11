@@ -51,7 +51,7 @@ export class AdvertCreateComponent implements OnInit {
       alert("Не выбран файл");
       return;
     }
-    let advert = new AdvertModelCreate(this.name, this.description, this.price, 0, []);
+    let advert = new AdvertModelCreate(this.name, this.description, this.price, 0, new Date(), new Date(), 0, 0);
     this.advertService.SetAdvertCreateInService(advert);
     this.imageService.SetImageInService(this.image);
     this.router.navigateByUrl(this.targetRoute);
@@ -60,7 +60,7 @@ export class AdvertCreateComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.GetAuthoriseModel();
-    this.advertService.SetAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, []));
+    this.advertService.SetAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
   }
 
 }

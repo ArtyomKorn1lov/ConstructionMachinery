@@ -30,13 +30,11 @@ namespace Application.Services
             {
                 if(advert != null)
                 {
-                    for(int count = 0; count < advert.AvailableTimeCommandCreates.Count; count++)
-                    {
-                        advert.AvailableTimeCommandCreates[count].AvailabilityStateId = 1;
-                        advert.AvailableTimeCommandCreates[count].Date = advert.AvailableTimeCommandCreates[count].Date.ToLocalTime();
-                    }
-                    advert.AvailableTimeCommandCreates.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
-                    await _advertRepository.Create(AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert));
+                    Advert advertEntity = AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert);
+                    List<AvailableTime> availableTimes = FillAvailableTime(advert.StartDate, advert.EndDate, advert.StartTime, advert.EndTime);
+                    availableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+                    advertEntity.AvailableTimes = availableTimes;
+                    await _advertRepository.Create(advertEntity);
                     return true;
                 }
                 return false;
@@ -45,6 +43,35 @@ namespace Application.Services
             {
                 return false;
             }
+        }
+
+        public List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
+        {
+            List<DateTime> dates = new List<DateTime>();
+            DateTime date = new DateTime(startDate.Year, startDate.Month, startDate.Day);
+            while(date <= endDate)
+            {
+                dates.Add(date);
+                date = date.AddDays(1);
+            }
+            List<AvailableTime> availableTimes = new List<AvailableTime>();
+            int currentHour = startTime;
+            for(int count = 0; count < dates.Count; count++)
+            {
+                while(currentHour <= endTime)
+                {
+                    dates[count] = dates[count].AddHours(currentHour);
+                    availableTimes.Add(new AvailableTime
+                    {
+                        Date = dates[count],
+                        AvailabilityStateId = 1
+                    });
+                    dates[count] = dates[count].AddHours(-currentHour);
+                    currentHour++;
+                }
+                currentHour = startTime;
+            }
+            return availableTimes;
         }
 
         public async Task<List<AdvertCommandList>> GetAll()

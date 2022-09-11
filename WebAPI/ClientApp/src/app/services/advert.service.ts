@@ -47,7 +47,7 @@ export class AdvertService {
 
   public GetAdvertCreateFromService(): AdvertModelCreate {
     if (this.advertCreate == undefined)
-      return new AdvertModelCreate("", "", 0, 0, []);
+      return new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0);
     return this.advertCreate;
   }
 

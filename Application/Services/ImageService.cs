@@ -15,7 +15,6 @@ namespace Application.Services
     public class ImageService : IImageService
     {
         private IImageRepository _imageRepository;
-        private string _currentDirectory = "/Files/";
 
         public ImageService(IImageRepository imageRepository)
         {

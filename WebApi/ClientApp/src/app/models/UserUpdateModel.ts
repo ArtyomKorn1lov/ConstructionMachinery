@@ -1,3 +1,4 @@
+//
 export class UserUpdateModel {
     id: number;
     name: string;

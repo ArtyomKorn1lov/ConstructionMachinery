@@ -19,12 +19,7 @@ namespace Application.CommandsConverters
                 Name = advert.Name,
                 Description = advert.Description,
                 Price = advert.Price,
-                UserId = advert.UserId,
-                AvailableTimes = advert.AvailableTimeCommandCreates.Select( availableTime => new AvailableTime
-                {
-                    Date = availableTime.Date,
-                    AvailabilityStateId = availableTime.AvailabilityStateId
-                } ).ToList(),
+                UserId = advert.UserId
             };
         }
 

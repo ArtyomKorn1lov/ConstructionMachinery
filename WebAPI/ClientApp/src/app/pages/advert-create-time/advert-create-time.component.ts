@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { AdvertService } from 'src/app/services/advert.service';
 import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
-import { AvailableTimeModelCreate } from 'src/app/models/AvailableTimeModelCreate';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
 import { ImageService } from 'src/app/services/image.service';
@@ -15,7 +14,6 @@ import { ImageService } from 'src/app/services/image.service';
 export class AdvertCreateTimeComponent implements OnInit {
 
   public advert: AdvertModelCreate | undefined;
-  public availiableTime: AvailableTimeModelCreate[] = [];
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
@@ -26,7 +24,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService, private formBuilder: FormBuilder) { }
 
   public create(): void {
     if(this.range.value.start == null || this.range.value.start == undefined) {
@@ -56,13 +54,14 @@ export class AdvertCreateTimeComponent implements OnInit {
       alert("Неверный диапазон времени");
       return;
     }
-    let dates = this.getDatesInRange(this.range.value.start, this.range.value.end);
-    this.fillAvailiableTime(dates, startHour, endHour);
-    if(this.availiableTime == undefined || this.advert == undefined) {
-      alert("Ошибка заполнения доступного времени");
+    if(this.advert == null || this.advert == undefined) {
+      alert("Ошибка формирования объявления, поля с предыдущей страницы равны нулю");
       return;
     }
-    this.advert.availableTimeModelsCreates = this.availiableTime;
+    this.advert.startDate = new Date(this.range.value.start);
+    this.advert.endDate = new Date(this.range.value.end);
+    this.advert.startTime = startHour;
+    this.advert.endTime = endHour;
     let formData = new FormData();
     formData.append('file', this.image);
     this.advertService.CreateAdvert(this.advert).subscribe(data => {
@@ -77,7 +76,10 @@ export class AdvertCreateTimeComponent implements OnInit {
           }
           alert("Ошибка загрузки картинки");
           console.log(data);
-          this.range.value.start = null;
+          this.range = this.formBuilder.group({
+            start: new FormControl<Date | null>(null),
+            end: new FormControl<Date | null>(null)
+          });
           this.range.value.end = null;
           this.startTime = undefined;
           this.endTime = undefined;
@@ -87,34 +89,14 @@ export class AdvertCreateTimeComponent implements OnInit {
       }
       alert("Ошибка создания объявления");
       console.log(data);
-      this.range.value.start = null;
-      this.range.value.end = null;
+      this.range = this.formBuilder.group({
+        start: new FormControl<Date | null>(null),
+        end: new FormControl<Date | null>(null)
+      });
       this.startTime = undefined;
       this.endTime = undefined;
       return;
     });
-  }
-
-  public getDatesInRange(startDate: Date, endDate: Date): Date[] {
-    let date = new Date(startDate.getTime());
-    let dates = [];
-    while(date <= endDate) {
-      dates.push(new Date(date))
-      date.setDate(date.getDate() + 1);
-    }
-    return dates;
-  }
-
-  public fillAvailiableTime(dates: Date[], startTime: number, endTime: number): void {
-    let currenthour = startTime;
-    for(let count = 0; count < dates.length; count++) {
-      while(currenthour <= endTime) {
-        dates[count].setHours(currenthour);
-        this.availiableTime.push(new AvailableTimeModelCreate(new Date(dates[count]), 0));
-        currenthour++;
-      }
-      currenthour = startTime;
-    }
   }
 
   public async ngOnInit(): Promise<void> {

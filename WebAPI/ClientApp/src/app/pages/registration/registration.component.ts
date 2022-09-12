@@ -52,7 +52,7 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     let model = new RegisterModel(this.name, this.email, this.phone, this.password);
-    await this.accountService.Registration(model).subscribe(data => {
+    await this.accountService.registration(model).subscribe(data => {
       if (data == "success") {
         console.log(data);
         alert(data);
@@ -81,7 +81,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
+    await this.accountService.getAuthoriseModel();
   }
 
 }

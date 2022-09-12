@@ -77,5 +77,24 @@ namespace Infrastructure.Repositories
         {
             return await _constructionMachineryDbContext.Set<Advert>().MaxAsync(advert => advert.Id);
         }
+
+        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images)
+                .Include(advert => advert.AvailableTimes)
+                .Where(advert => advert.AvailableTimes.Any(time => time.AvailabilityRequestId != null 
+                && _constructionMachineryDbContext.Set<AvailabilityRequest>().FirstOrDefault(request => request.Id == time.AvailabilityRequestId).UserId == id))
+                .ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images)
+                .Include(advert => advert.AvailableTimes)
+                .Where(advert => advert.AvailableTimes.Any(time => time.AvailabilityRequestId != null && time.AvailabilityStateId == 3))
+                .Where(advert => advert.UserId == id).ToListAsync();
+        }
     }
 }

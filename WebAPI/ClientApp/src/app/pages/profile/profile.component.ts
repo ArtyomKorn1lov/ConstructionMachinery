@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   constructor(private accountService: AccountService, private router: Router) { }
 
   public async logout(): Promise<void> {
-    this.accountService.Logout().subscribe(data => {
+    this.accountService.logout().subscribe(data => {
       if(data == "success") {
         alert("Успешный выход");
         console.log(data);
@@ -30,8 +30,8 @@ export class ProfileComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    await this.accountService.GetUserProfile().subscribe(data => {
+    await this.accountService.getAuthoriseModel();
+    await this.accountService.getUserProfile().subscribe(data => {
       this.user = data;
     });
   }

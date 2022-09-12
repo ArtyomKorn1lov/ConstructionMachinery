@@ -50,7 +50,7 @@ export class EditProfileComponent implements OnInit {
       return;
     }
     this.user.password = this.password;
-    await this.accountService.Update(this.user).subscribe(data => {
+    await this.accountService.update(this.user).subscribe(data => {
       if (data == "success") {
         console.log(data);
         alert(data);
@@ -66,8 +66,8 @@ export class EditProfileComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    await this.accountService.GetUserProfile().subscribe(data => {
+    await this.accountService.getAuthoriseModel();
+    await this.accountService.getUserProfile().subscribe(data => {
       this.user.id = data.id;
       this.user.name = data.name;
       this.user.email = data.email;

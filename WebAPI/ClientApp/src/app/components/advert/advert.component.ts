@@ -49,32 +49,32 @@ export class AdvertComponent implements OnInit {
   }
 
   public getAdvertInfo(id: number): void {
-    this.advertService.SetIdInLocalStorage(id);
+    this.advertService.setIdInLocalStorage(id);
     if (this.page == undefined)
-      this.advertService.SetPageInLocalStorage('list');
+      this.advertService.setPageInLocalStorage('list');
     else
-      this.advertService.SetPageInLocalStorage(this.page);
+      this.advertService.setPageInLocalStorage(this.page);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
 
   public async ngOnInit(): Promise<void> {
-    this.advertService.ClearLocalStorage();
+    this.advertService.clearLocalStorage();
     if (this.page == 'list') {
-      this.route.queryParams.subscribe(async params => {
+      await this.route.queryParams.subscribe(async params => {
         const searchString = params['search'];
         if (searchString == undefined)
-          await this.advertService.GetAll().subscribe(data => {
+          await this.advertService.getAll().subscribe(data => {
             this.advertList = data;
           });
         else
-          await this.advertService.GetByName(searchString).subscribe(data => {
+          await this.advertService.getByName(searchString).subscribe(data => {
             this.advertList = data;
           });
       });
     }
     if (this.page == 'my')
-      await this.advertService.GetByUser().subscribe(data => {
+      await this.advertService.getByUser().subscribe(data => {
         this.advertList = data;
       });
   }

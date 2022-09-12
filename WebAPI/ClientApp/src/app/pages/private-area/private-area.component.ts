@@ -11,7 +11,7 @@ export class PrivateAreaComponent implements OnInit {
   constructor(private accountService: AccountService) { }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
+    await this.accountService.getAuthoriseModel();
   }
 
 }

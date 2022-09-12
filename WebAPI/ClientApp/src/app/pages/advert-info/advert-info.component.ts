@@ -78,7 +78,7 @@ export class AdvertInfoComponent implements OnInit {
       for (let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
         this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
       }
-      this.days[count_day].times = this.advertService.SortByHour(this.days[count_day].times);
+      this.days[count_day].times = this.advertService.sortByHour(this.days[count_day].times);
     }
   }
 
@@ -110,7 +110,7 @@ export class AdvertInfoComponent implements OnInit {
       alert("Ошибка удаления");
       return;
     }
-    this.advertService.Remove(this.advert.id).subscribe(data => {
+    this.advertService.remove(this.advert.id).subscribe(data => {
       if (data == "success") {
         alert(data);
         console.log(data);
@@ -124,9 +124,9 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    this.page = this.advertService.GetPageFromLocalStorage();
-    await this.advertService.GetById(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
+    await this.accountService.getAuthoriseModel();
+    this.page = this.advertService.getPageFromLocalStorage();
+    await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {
       this.advert = data;
       this.packageToDayModel();
     });

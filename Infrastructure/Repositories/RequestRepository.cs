@@ -29,12 +29,6 @@ namespace Infrastructure.Repositories
             await _constructionMachineryDbContext.Set<AvailabilityRequest>().AddAsync(availabilityRequest);
         }
 
-        public async Task<List<AvailableTime>> GetTimesByAdvertId(int id)
-        {
-            return await _constructionMachineryDbContext.Set<AvailableTime>()
-                .Where(time => time.AdvertId == id && time.AvailabilityRequestId != null && time.AvailabilityStateId == 3).ToListAsync();
-        }
-
         public async Task<List<AvailableTime>> GetTimesForRequestByAdvertId(int id)
         {
             return await _constructionMachineryDbContext.Set<AvailableTime>()
@@ -48,11 +42,21 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(availabilityRequest => availabilityRequest.Id == id);
         }
 
-        public async Task<List<AvailabilityRequest>> GetByUserId(int id)
+        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
-                .Where(availabilityRequest => availabilityRequest.UserId == id).ToListAsync();
+                .Where(availabilityRequest => availabilityRequest.UserId == userId 
+                && availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id)).ToListAsync();
+        }
+
+        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForLandlord(int id, int userId)
+        {
+            return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
+                .Include(availabilityRequest => availabilityRequest.AvailableTimes)
+                .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id
+                && _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.Id == id).UserId == userId))
+                .ToListAsync();
         }
 
         public async Task<int> GetLastRequestId()

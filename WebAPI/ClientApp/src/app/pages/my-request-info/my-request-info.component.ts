@@ -19,7 +19,7 @@ export class MyRequestInfoComponent implements OnInit {
   constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
   public cancel(): void {
-    this.requestService.Remove(this.request.id).subscribe(data => {
+    this.requestService.remove(this.request.id).subscribe(data => {
       if (data == "success") {
         console.log(data);
         alert(data);
@@ -33,8 +33,8 @@ export class MyRequestInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    await this.requestService.GetForCustomer(this.requestService.GetIdFromLocalStorage()).subscribe(data => {
+    await this.accountService.getAuthoriseModel();
+    await this.requestService.getForCustomer(this.requestService.getIdFromLocalStorage()).subscribe(data => {
       this.request = data;
       this.date = new Date(this.request.availableTimeModels[0].date);
     });

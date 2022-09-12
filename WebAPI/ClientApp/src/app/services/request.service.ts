@@ -15,50 +15,65 @@ export class RequestService {
 
   constructor(private http: HttpClient) { }
 
-  public ClearLocalStorage(): void {
+  public clearIdLocalStorage(): void {
     localStorage.removeItem('requestId');
   }
 
-  public SetIdInLocalStorage(id: number): void {
+  public clearAdvertIdLocalStorage(): void {
+    localStorage.removeItem('advertRequestId');
+  }
+
+  public setIdInLocalStorage(id: number): void {
     localStorage.setItem('requestId', id.toString());
   }
 
-  public GetIdFromLocalStorage(): number {
+  public getIdFromLocalStorage(): number {
     let id = localStorage.getItem('requestId');
     if (id == null)
       return 0;
     return parseInt(id);
   }
 
-  public GetListForCustomer(): Observable<AvailabilityRequestModel[]> {
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer`);
+  public setAdvertIdInLocalStorage(id: number): void {
+    localStorage.setItem('advertRequestId', id.toString());
   }
 
-  public GetListForLandlord(): Observable<AvailabilityRequestModel[]> {
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord`);
+  public getAdvertIdInLocalStorage(): number {
+    let id = localStorage.getItem('advertRequestId');
+    if (id == null)
+      return 0;
+    return parseInt(id);
   }
 
-  public GetForCustomer(id: number): Observable<AvailabilityRequestModelForCustomer> {
+  public getListForCustomer(id: number): Observable<AvailabilityRequestModel[]> {
+    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}`);
+  }
+
+  public getListForLandlord(id: number): Observable<AvailabilityRequestModel[]> {
+    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${id}`);
+  }
+
+  public getForCustomer(id: number): Observable<AvailabilityRequestModelForCustomer> {
     return this.http.get<AvailabilityRequestModelForCustomer>(`api/request/customer/${id}`);
   }
 
-  public GetForLandLord(id: number): Observable<AvailabilityRequestModelForLandlord> {
+  public getForLandLord(id: number): Observable<AvailabilityRequestModelForLandlord> {
     return this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`);
   }
 
-  public GetAvailableTimesByAdvertId(id: number): Observable<AvailableTimeModel[]> {
+  public getAvailableTimesByAdvertId(id: number): Observable<AvailableTimeModel[]> {
     return this.http.get<AvailableTimeModel[]>(`api/request/times/${id}`);
   }
 
-  public Create(request: AvailabilityRequestModelCreate): Observable<string> {
+  public create(request: AvailabilityRequestModelCreate): Observable<string> {
     return this.http.post(`api/request/create`, request, { responseType: 'text' });
   }
 
-  public Confirm(model: ConfirmModel): Observable<string> {
+  public confirm(model: ConfirmModel): Observable<string> {
     return this.http.put(`api/request/confirm`, model, { responseType: 'text' });
   }
 
-  public Remove(id: number): Observable<string> {
+  public remove(id: number): Observable<string> {
     return this.http.delete(`api/request/remove/${id}`, { responseType: 'text' });
   }
 

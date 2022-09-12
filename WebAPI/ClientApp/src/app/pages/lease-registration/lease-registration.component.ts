@@ -36,7 +36,7 @@ export class LeaseRegistrationComponent implements OnInit {
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
     console.log(this.request);
-    this.requestService.Create(this.request).subscribe(data => {
+    this.requestService.create(this.request).subscribe(data => {
       if (data == "success") {
         console.log(data);
         alert(data);
@@ -54,7 +54,7 @@ export class LeaseRegistrationComponent implements OnInit {
     for(let count = 0; count < this.times.length; count++) {
       this.times[count].date = new Date(this.times[count].date);
     }
-    this.times = this.advertService.SortByHour(this.times);
+    this.times = this.advertService.sortByHour(this.times);
     this.sortByDate();
   }
 
@@ -82,8 +82,8 @@ export class LeaseRegistrationComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    await this.requestService.GetAvailableTimesByAdvertId(this.advertService.GetIdFromLocalStorage()).subscribe(data => {
+    await this.accountService.getAuthoriseModel();
+    await this.requestService.getAvailableTimesByAdvertId(this.advertService.getIdFromLocalStorage()).subscribe(data => {
       this.times = data;
       this.convertToNormalDate();
     })

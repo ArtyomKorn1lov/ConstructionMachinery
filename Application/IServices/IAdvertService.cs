@@ -21,5 +21,7 @@ namespace Application.IServices
         Task<AdvertCommandUpdate> GetForUpdate(int id);
         Task<int> GetUserIdByAdvert(int id);
         Task<int> GetLastAdvertId();
+        Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id);
+        Task<List<AdvertCommandForRequest>> GetForRequestLandlord(int id);
     }
 }

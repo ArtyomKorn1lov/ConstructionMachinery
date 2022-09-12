@@ -11,17 +11,17 @@ export class ImageService {
 
   constructor(private http: HttpClient) { }
 
-  public SetImageInService(image: File): void {
+  public setImageInService(image: File): void {
     this.imageCreate = image;
   }
 
-  public GetImageFromService(): File {
+  public getImageFromService(): File {
     if(this.imageCreate == undefined)
       return new File([""], "");
     return this.imageCreate;
   }
 
-  public Create(uploadImage: FormData): Observable<string> {
+  public create(uploadImage: FormData): Observable<string> {
     return this.http.post(`api/image/create`, uploadImage, { responseType: 'text' });
   }
 

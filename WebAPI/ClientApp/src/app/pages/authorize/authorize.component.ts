@@ -29,7 +29,7 @@ export class AuthorizeComponent implements OnInit {
       return;
     }
     var model = new LoginModel(this.email, this.password);
-    await this.accountService.Login(model).subscribe(data => {
+    await this.accountService.login(model).subscribe(data => {
       if(data == "success") {
         console.log(data);
         alert(data);
@@ -52,7 +52,7 @@ export class AuthorizeComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
+    await this.accountService.getAuthoriseModel();
   }
 
 }

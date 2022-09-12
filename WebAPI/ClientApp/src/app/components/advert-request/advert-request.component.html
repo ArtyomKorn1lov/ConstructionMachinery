@@ -1,0 +1,17 @@
+<p class="micro-text">Показано {{adverts.length}} объявлений</p>
+<article class="request" *ngFor="let advert of adverts">
+    <div class="request__line"></div>
+    <div class="request__content">
+        <img class="request__image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
+        <div class="request__text">
+            <p class="primary-text">Объявление №{{advert.id}}</p>
+            <h5 class="medium-header">{{advert.name}}</h5>
+        </div>
+    </div>
+    <button (click)="navigateToRequest(advert.id)" class="edit-button">
+        <h5 class="medium-header">Открыть</h5>
+    </button>
+</article>
+<div class="load-spinner">
+    <mat-spinner></mat-spinner>
+</div>

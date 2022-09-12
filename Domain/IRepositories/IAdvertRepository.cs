@@ -20,5 +20,7 @@ namespace Domain.IRepositories
         Task<List<Advert>> GetByUserId(int id);
         Task<Advert> GetForUpdate(int id);
         Task<int> GetLastAdvertId();
+        Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id);
+        Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id);
     }
 }

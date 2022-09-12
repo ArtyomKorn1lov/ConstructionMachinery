@@ -19,7 +19,7 @@ export class AdvertListComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
+    await this.accountService.getAuthoriseModel();
   }
 
 }

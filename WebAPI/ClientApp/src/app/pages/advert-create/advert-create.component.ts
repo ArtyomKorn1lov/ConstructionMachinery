@@ -52,15 +52,15 @@ export class AdvertCreateComponent implements OnInit {
       return;
     }
     let advert = new AdvertModelCreate(this.name, this.description, this.price, 0, new Date(), new Date(), 0, 0);
-    this.advertService.SetAdvertCreateInService(advert);
-    this.imageService.SetImageInService(this.image);
+    this.advertService.setAdvertCreateInService(advert);
+    this.imageService.setImageInService(this.image);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    this.advertService.SetAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
+    await this.accountService.getAuthoriseModel();
+    this.advertService.setAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
   }
 
 }

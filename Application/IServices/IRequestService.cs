@@ -11,8 +11,8 @@ namespace Application.IServices
     {
         Task<AvailabilityRequestCommandForCustomer> GetForCustomer(int id, int userId);
         Task<AvailabilityRequestCommandForLandlord> GetForLandlord(int id, int userId);
-        Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id);
-        Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id);
+        Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id, int userId);
+        Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id, int userId);
         Task<int> GetLastRequestId();
         Task<List<AvailableTimeCommand>> GetAvailableTimesByAdvertId(int id, int userId);
         Task<bool> Create(AvailabilityRequestCommandCreate request);

@@ -111,5 +111,23 @@ namespace WebAPI.ModelsConverters
                 }).ToList()
             };
         }
+
+        public static AdvertModelForRequest AdvertCommandForRequestConvertModel(AdvertCommandForRequest command)
+        {
+            if (command == null)
+                return null;
+            return new AdvertModelForRequest
+            {
+                Id = command.Id,
+                Name = command.Name,
+                Images = command.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
+            };
+        }
     }
 }

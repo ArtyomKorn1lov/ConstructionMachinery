@@ -64,10 +64,10 @@ export class AdvertCreateTimeComponent implements OnInit {
     this.advert.endTime = endHour;
     let formData = new FormData();
     formData.append('file', this.image);
-    this.advertService.CreateAdvert(this.advert).subscribe(data => {
+    this.advertService.createAdvert(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
-        this.imageService.Create(formData).subscribe(data => {
+        this.imageService.create(formData).subscribe(data => {
           if (data == "success") {
             console.log(data);
             alert(data);
@@ -100,11 +100,11 @@ export class AdvertCreateTimeComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    this.advert = this.advertService.GetAdvertCreateFromService();
+    await this.accountService.getAuthoriseModel();
+    this.advert = this.advertService.getAdvertCreateFromService();
     if(this.advert.name == "")
       this.router.navigateByUrl(this.createRoute);
-    this.image = this.imageService.GetImageFromService();
+    this.image = this.imageService.getImageFromService();
     if(this.image == undefined)
       this.router.navigateByUrl(this.createRoute);
   }

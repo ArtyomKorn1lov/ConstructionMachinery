@@ -34,6 +34,9 @@ import { MyRequestsComponent } from './pages/my-requests/my-requests.component';
 import { ConfirmListInfoComponent } from './pages/confirm-list-info/confirm-list-info.component';
 import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
+import { MyAdvertsRequestsComponent } from './pages/my-adverts-requests/my-adverts-requests.component';
+import { MyAdvertsConfirmListComponent } from './pages/my-adverts-confirm-list/my-adverts-confirm-list.component';
+import { AdvertRequestComponent } from './components/advert-request/advert-request.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
     ConfirmListInfoComponent,
     MyRequestInfoComponent,
     EditProfileComponent,
+    MyAdvertsRequestsComponent,
+    MyAdvertsConfirmListComponent,
+    AdvertRequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,11 +90,13 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
       { path: 'advert-info', component: AdvertInfoComponent },
       { path: 'my-adverts', component: MyAdvertsComponent },
       { path: 'lease-registration', component: LeaseRegistrationComponent },
-      { path: 'confirm-list', component: ConfirmListComponent },
-      { path: 'my-requests', component: MyRequestsComponent },
-      { path: 'confirm-list/info', component: ConfirmListInfoComponent },
-      { path: 'my-requests/info', component: MyRequestInfoComponent },
-      { path: 'profile/edit', component: EditProfileComponent }
+      { path: 'advert-confirm/confirm-list', component: ConfirmListComponent },
+      { path: 'advert-request/my-requests', component: MyRequestsComponent },
+      { path: 'advert-confirm/confirm-list/info', component: ConfirmListInfoComponent },
+      { path: 'advert-request/my-requests/info', component: MyRequestInfoComponent },
+      { path: 'profile/edit', component: EditProfileComponent },
+      { path: 'advert-confirm', component: MyAdvertsConfirmListComponent },
+      { path: 'advert-request' , component: MyAdvertsRequestsComponent }
     ]),
     BrowserAnimationsModule,
   ],

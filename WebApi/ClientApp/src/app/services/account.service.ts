@@ -17,8 +17,8 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  public async GetAuthoriseModel(): Promise<void> {
-    await this.IsUserAuthorized().subscribe(data => {
+  public async getAuthoriseModel(): Promise<void> {
+    await this.isUserAuthorized().subscribe(data => {
       this.authorize = data;
       if(data != null)
       {
@@ -29,28 +29,28 @@ export class AccountService {
     })
   }
 
-  public Registration(model: RegisterModel): Observable<string> {
+  public registration(model: RegisterModel): Observable<string> {
     return this.http.post(`api/account/register`, model, { responseType: 'text' });
   }
 
-  public Login(model: LoginModel): Observable<string> {
+  public login(model: LoginModel): Observable<string> {
     return this.http.post(`api/account/login`, model, { responseType: 'text' });
   }
 
-  public Logout(): Observable<string> {
+  public logout(): Observable<string> {
     var model = new RegisterModel("", "", "", "");
     return this.http.post(`api/account/logout`, model, { responseType: 'text' });
   }
 
-  public IsUserAuthorized(): Observable<AuthoriseModel> {
+  public isUserAuthorized(): Observable<AuthoriseModel> {
     return this.http.get<AuthoriseModel>(`api/account/is-authorized`);
   }
 
-  public GetUserProfile(): Observable<UserModel> {
+  public getUserProfile(): Observable<UserModel> {
     return this.http.get<UserModel>(`api/account/user`);
   }
 
-  public Update(model: UserUpdateModel): Observable<string> {
+  public update(model: UserUpdateModel): Observable<string> {
     return this.http.put(`api/account/update`, model, { responseType: 'text' });
   }
 //

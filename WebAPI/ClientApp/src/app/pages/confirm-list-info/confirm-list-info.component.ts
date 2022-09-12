@@ -21,7 +21,7 @@ export class ConfirmListInfoComponent implements OnInit {
 
   public confirm(state: number): void {
     let model: ConfirmModel = new ConfirmModel(this.request.id, state);
-    this.requestService.Confirm(model).subscribe(data => {
+    this.requestService.confirm(model).subscribe(data => {
       if (data == "success") {
         console.log(data);
         alert(data);
@@ -35,8 +35,8 @@ export class ConfirmListInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.accountService.GetAuthoriseModel();
-    await this.requestService.GetForLandLord(this.requestService.GetIdFromLocalStorage()).subscribe(data => {
+    await this.accountService.getAuthoriseModel();
+    await this.requestService.getForLandLord(this.requestService.getIdFromLocalStorage()).subscribe(data => {
       this.request = data;
       this.date = new Date(this.request.availableTimeModels[0].date);
     })

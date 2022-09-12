@@ -111,5 +111,23 @@ namespace Application.CommandsConverters
                 }).ToList(),
             };
         }
+
+        public static AdvertCommandForRequest AdvertConvertToAdvertCommandForRequest(Advert advert)
+        {
+            if (advert == null)
+                return null;
+            return new AdvertCommandForRequest
+            {
+                Id = advert.Id,
+                Name = advert.Name,
+                Images = advert.Images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
+            };
+        }
     }
 }

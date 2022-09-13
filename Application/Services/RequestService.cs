@@ -109,7 +109,6 @@ namespace Application.Services
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetByUserId(id);
                 AvailabilityRequest request = await _requestRepository.GetById(id);
                 if (request == null)
                     return null;
@@ -127,11 +126,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id, int userId)
+        public async Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id, int userId, int count)
         {
             try
             {
-                List<AvailabilityRequest> requests = await _requestRepository.GetByAdvertIdUserIdForCustomer(id, userId);
+                List<AvailabilityRequest> requests = await _requestRepository.GetByAdvertIdUserIdForCustomer(id, userId, count);
                 if (requests == null)
                     return null;
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
@@ -148,11 +147,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id, int userId)
+        public async Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id, int userId, int count)
         {
             try
             {
-                List<AvailabilityRequest> requests = await _requestRepository.GetByAdvertIdUserIdForLandlord(id, userId);
+                List<AvailabilityRequest> requests = await _requestRepository.GetByAdvertIdUserIdForLandlord(id, userId, count);
                 if (requests == null)
                     return null;
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();

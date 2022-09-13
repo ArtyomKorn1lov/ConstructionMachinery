@@ -32,20 +32,20 @@ namespace WebAPI.Controllers
             _imageService = imageService;
         }
 
-        [HttpGet("adverts")]
-        public async Task<List<AdvertModelList>> GetAll()
+        [HttpGet("adverts/{count}")]
+        public async Task<List<AdvertModelList>> GetAll(int count)
         {
             if(HttpContext.User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetAllWithoutUserId(userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetAllWithoutUserId(userId, count);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetAll();
+            List<AdvertCommandList> advertCommands = await _advertService.GetAll(count);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand => 
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -62,20 +62,20 @@ namespace WebAPI.Controllers
             return advert;
         }
 
-        [HttpGet("by-name/{name}")]
-        public async Task<List<AdvertModelList>> GetByName(string name)
+        [HttpGet("by-name/{name}/{count}")]
+        public async Task<List<AdvertModelList>> GetByName(string name, int count)
         {
             if (HttpContext.User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetByNameWithoutUserId(name, userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetByNameWithoutUserId(name, userId, count);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetByName(name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetByName(name, count);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand => 
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -84,11 +84,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user")]
-        public async Task<List<AdvertModelList>> GetByUser()
+        [HttpGet("by-user/{count}")]
+        public async Task<List<AdvertModelList>> GetByUser(int count)
         {
             int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId);
+            List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId, count);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -97,10 +97,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("adverts-for-request-customer")]
-        public async Task<List<AdvertModelForRequest>> GetForRequestCustomer()
+        [HttpGet("adverts-for-request-customer/{count}")]
+        public async Task<List<AdvertModelForRequest>> GetForRequestCustomer(int count)
         {
-            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
             List<AdvertModelForRequest> advertModels = advertCommands.Select(advertCommand => 
                 AdvertModelConverter.AdvertCommandForRequestConvertModel(advertCommand)).ToList();
             if (advertModels == null)
@@ -109,10 +109,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("adverts-for-request-landlord")]
-        public async Task<List<AdvertModelForRequest>> GetForRequestLandlord()
+        [HttpGet("adverts-for-request-landlord/{count}")]
+        public async Task<List<AdvertModelForRequest>> GetForRequestLandlord(int count)
         {
-            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestLandlord(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestLandlord(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
             List<AdvertModelForRequest> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandForRequestConvertModel(advertCommand)).ToList();
             if (advertModels == null)

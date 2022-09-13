@@ -23,14 +23,14 @@ namespace Infrastructure.Repositories
             await _constructionMachineryDbContext.Set<Advert>().AddAsync(advert);
         }
 
-        public async Task<List<Advert>> GetAll()
+        public async Task<List<Advert>> GetAll(int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Take(count).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetAllWithoutUserId(int id)
+        public async Task<List<Advert>> GetAllWithoutUserId(int id, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Images).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Images).Take(count).ToListAsync();
         }
 
         public async Task<Advert> GetById(int id)
@@ -39,19 +39,21 @@ namespace Infrastructure.Repositories
                 .Include(advert => advert.AvailableTimes).Include(advert => advert.Images).FirstOrDefaultAsync(advert => advert.Id == id);
         }
 
-        public async Task<List<Advert>> GetByName(string name)
+        public async Task<List<Advert>> GetByName(string name, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
+                .Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).Take(count).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetByNameWithoutUserId(string name, int id)
+        public async Task<List<Advert>> GetByNameWithoutUserId(string name, int id, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id).Take(count).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetByUserId(int id)
+        public async Task<List<Advert>> GetByUserId(int id, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => advert.UserId == id).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => advert.UserId == id).Take(count).ToListAsync();
         }
 
         public async Task Remove(int id)
@@ -78,23 +80,26 @@ namespace Infrastructure.Repositories
             return await _constructionMachineryDbContext.Set<Advert>().MaxAsync(advert => advert.Id);
         }
 
-        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id)
+        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id, int count)
         {
             return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images)
                 .Include(advert => advert.AvailableTimes)
                 .Where(advert => advert.AvailableTimes.Any(time => time.AvailabilityRequestId != null 
                 && _constructionMachineryDbContext.Set<AvailabilityRequest>().FirstOrDefault(request => request.Id == time.AvailabilityRequestId).UserId == id))
+                .Take(count)
                 .ToListAsync();
         }
 
-        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id)
+        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id, int count)
         {
             return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images)
                 .Include(advert => advert.AvailableTimes)
                 .Where(advert => advert.AvailableTimes.Any(time => time.AvailabilityRequestId != null && time.AvailabilityStateId == 3))
-                .Where(advert => advert.UserId == id).ToListAsync();
+                .Where(advert => advert.UserId == id)
+                .Take(count)
+                .ToListAsync();
         }
     }
 }

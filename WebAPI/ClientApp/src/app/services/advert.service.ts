@@ -66,8 +66,14 @@ export class AdvertService {
     return list;
   }
 
-  public getAll(): Observable<AdvertModelList[]> {
-    return this.http.get<AdvertModelList[]>(`api/advert/adverts`);
+  public checkLenght(oldLength: number, newLength: number): boolean {
+    if(oldLength >= newLength)
+      return false;
+    return true;
+  }
+
+  public getAll(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/adverts/${count}`);
   }
 
   public getById(id: number): Observable<AdvertModelInfo> {
@@ -78,24 +84,24 @@ export class AdvertService {
     return this.http.post(`api/advert/create`, advert, { responseType: 'text' });
   }
 
-  public getByUser(): Observable<AdvertModelList[]> {
-    return this.http.get<AdvertModelList[]>(`api/advert/by-user`);
+  public getByUser(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user/${count}`);
   }
 
   public remove(id: number): Observable<string> {
     return this.http.delete(`api/advert/remove/${id}`, { responseType: 'text' })
   }
 
-  public getByName(name: string): Observable<AdvertModelList[]> {
-    return this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}`);
+  public getByName(name: string, count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}/${count}`);
   }
 
-  public getForRequestCustomer(): Observable<AdvertModelForRequest[]> {
-    return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer`);
+  public getForRequestCustomer(count: number): Observable<AdvertModelForRequest[]> {
+    return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer/${count}`);
   }
 
-  public getForRequestLandlord(): Observable<AdvertModelForRequest[]> {
-    return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-landlord`);
+  public getForRequestLandlord(count: number): Observable<AdvertModelForRequest[]> {
+    return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-landlord/${count}`);
   }
 
 }

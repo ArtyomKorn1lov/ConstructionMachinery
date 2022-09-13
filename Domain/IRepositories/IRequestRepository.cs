@@ -9,8 +9,8 @@ namespace Domain.IRepositories
 {
     public interface IRequestRepository
     {
-        Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId);
-        Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForLandlord(int id, int userId);
+        Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId, int count);
+        Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForLandlord(int id, int userId, int count);
         Task<List<AvailableTime>> GetTimesForRequestByAdvertId(int id);
         Task<List<AvailableTime>> GetTimesForRemoveRequestByAdvertId(int id);
         Task<int> GetLastRequestId();

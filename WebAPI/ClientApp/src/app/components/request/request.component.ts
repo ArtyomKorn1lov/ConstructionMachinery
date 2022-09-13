@@ -13,6 +13,8 @@ export class RequestComponent implements OnInit {
 
   @Input() page: string | undefined;
   public requests: AvailabilityRequestModel[] = [];
+  public count: number = 10;
+  public scrollFlag = true;
   private confirmInfoRoute = "advert-confirm/confirm-list/info";
   private requestInfoRoute = "advert-request/my-requests/info";
 
@@ -26,15 +28,46 @@ export class RequestComponent implements OnInit {
       this.router.navigateByUrl(this.confirmInfoRoute);
   }
 
+  public scrollEvent = async (event: any): Promise<void> => {
+    if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
+      const length = this.requests.length;
+      if (this.page == 'in')
+        await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
+          this.requests = data;
+          this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+          this.flagState();
+        });
+      if (this.page == 'out')
+        await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
+          this.requests = data;
+          this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+          this.flagState();
+        });
+      this.count++;
+    }
+  }
+
+  public flagState(): void {
+    if(this.scrollFlag == false) {
+      this.count = 0;
+      window.removeEventListener('scroll', this.scrollEvent, true);
+    }
+  }
+
   public async ngOnInit(): Promise<void> {
+    window.addEventListener('scroll', this.scrollEvent, true);
     this.requestService.clearIdLocalStorage();
     if (this.page == 'in')
-      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage()).subscribe(data => {
+      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
         this.requests = data;
       });
     if (this.page == 'out')
-      await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage()).subscribe(data => {
+      await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
         this.requests = data;
       });
+  }
+
+  public ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.scrollEvent, true);
   }
 }

@@ -42,20 +42,24 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(availabilityRequest => availabilityRequest.Id == id);
         }
 
-        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId)
+        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId, int count)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
                 .Where(availabilityRequest => availabilityRequest.UserId == userId 
-                && availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id)).ToListAsync();
+                && availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id))
+                .Take(count)
+                .ToListAsync();
         }
 
-        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForLandlord(int id, int userId)
+        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForLandlord(int id, int userId, int count)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
                 .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id
                 && _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.Id == id).UserId == userId))
+                .Where(availabilityRequest => availabilityRequest.RequestStateId == 3)
+                .Take(count)
                 .ToListAsync();
         }
 

@@ -74,11 +74,11 @@ namespace Application.Services
             return availableTimes;
         }
 
-        public async Task<List<AdvertCommandList>> GetAll()
+        public async Task<List<AdvertCommandList>> GetAll(int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetAll();
+                List<Advert> adverts = await _advertRepository.GetAll(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
                 return advertCommandList;
             }
@@ -88,11 +88,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetAllWithoutUserId(int id)
+        public async Task<List<AdvertCommandList>> GetAllWithoutUserId(int id, int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id);
+                List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
                 return advertCommandList;
             }
@@ -117,11 +117,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetByName(string name)
+        public async Task<List<AdvertCommandList>> GetByName(string name, int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetByName(name);
+                List<Advert> adverts = await _advertRepository.GetByName(name, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
                 return advertCommandList;
             }
@@ -131,11 +131,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetByNameWithoutUserId(string name, int id)
+        public async Task<List<AdvertCommandList>> GetByNameWithoutUserId(string name, int id, int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetByNameWithoutUserId(name, id);
+                List<Advert> adverts = await _advertRepository.GetByNameWithoutUserId(name, id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
                 return advertCommandList;
             }
@@ -145,11 +145,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetByUserId(int id)
+        public async Task<List<AdvertCommandList>> GetByUserId(int id, int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetByUserId(id);
+                List<Advert> adverts = await _advertRepository.GetByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
                 return advertCommandList;
             }
@@ -159,11 +159,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id)
+        public async Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id, int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForCustomer(id);
+                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForCustomer(id, count);
                 List<AdvertCommandForRequest> commands = adverts.Select(advert => AdvertCommandConverter.AdvertConvertToAdvertCommandForRequest(advert)).ToList();
                 return commands;
             }
@@ -173,11 +173,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandForRequest>> GetForRequestLandlord(int id)
+        public async Task<List<AdvertCommandForRequest>> GetForRequestLandlord(int id, int count)
         {
             try
             {
-                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForLandlord(id);
+                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForLandlord(id, count);
                 List<AdvertCommandForRequest> commands = adverts.Select(advert => AdvertCommandConverter.AdvertConvertToAdvertCommandForRequest(advert)).ToList();
                 return commands;
             }

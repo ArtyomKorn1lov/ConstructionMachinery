@@ -50,10 +50,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("for-customer/{id}")]
-        public async Task<List<AvailabilityRequestListModel>> GetListForCustomer(int id)
+        [HttpGet("for-customer/{id}/{count}")]
+        public async Task<List<AvailabilityRequestListModel>> GetListForCustomer(int id, int count)
         {
-            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
             List<AvailabilityRequestListModel> models = commands.Select(command => 
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
@@ -62,10 +62,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("for-landlord/{id}")]
-        public async Task<List<AvailabilityRequestListModel>> GetListForLandlord(int id)
+        [HttpGet("for-landlord/{id}/{count}")]
+        public async Task<List<AvailabilityRequestListModel>> GetListForLandlord(int id, int count)
         {
-            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
             List<AvailabilityRequestListModel> models = commands.Select(command =>
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)

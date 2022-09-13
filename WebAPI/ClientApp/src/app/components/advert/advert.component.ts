@@ -13,6 +13,8 @@ export class AdvertComponent implements OnInit {
 
   @Input() page: string | undefined;
   public advertList: AdvertModelList[] = [];
+  public count: number = 10;
+  public scrollFlag = true;
   private targetRoute: string = "advert-info";
 
   constructor(private advertService: AdvertService, private router: Router, private route: ActivatedRoute) { }
@@ -58,25 +60,68 @@ export class AdvertComponent implements OnInit {
     return;
   }
 
+  public scrollEvent = async (event: any): Promise<void> => {
+    if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
+      const length = this.advertList.length;
+      if (this.page == 'list') {
+        await this.route.queryParams.subscribe(async params => {
+          const searchString = params['search'];
+          if (searchString == undefined)
+            await this.advertService.getAll(this.count).subscribe(data => {
+              this.advertList = data;
+              this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+              this.flagState();
+            });
+          else
+            await this.advertService.getByName(searchString, this.count).subscribe(data => {
+              this.advertList = data;
+              this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+              this.flagState();
+            });
+        });
+      }
+      if (this.page == 'my')
+        await this.advertService.getByUser(this.count).subscribe(data => {
+          this.advertList = data;
+          this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+          this.flagState();
+        });
+      this.count += 10;
+    }
+  };
+
+  public flagState(): void {
+    if(this.scrollFlag == false) {
+      this.count = 0;
+      window.removeEventListener('scroll', this.scrollEvent, true);
+    }
+  }
+
   public async ngOnInit(): Promise<void> {
+    window.addEventListener('scroll', this.scrollEvent, true);
     this.advertService.clearLocalStorage();
     if (this.page == 'list') {
       await this.route.queryParams.subscribe(async params => {
         const searchString = params['search'];
         if (searchString == undefined)
-          await this.advertService.getAll().subscribe(data => {
+          await this.advertService.getAll(this.count).subscribe(data => {
             this.advertList = data;
           });
         else
-          await this.advertService.getByName(searchString).subscribe(data => {
+          await this.advertService.getByName(searchString, this.count).subscribe(data => {
             this.advertList = data;
           });
       });
     }
     if (this.page == 'my')
-      await this.advertService.getByUser().subscribe(data => {
+      await this.advertService.getByUser(this.count).subscribe(data => {
         this.advertList = data;
       });
+    this.count += 10;
+  }
+
+  public ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.scrollEvent, true);
   }
 
 }

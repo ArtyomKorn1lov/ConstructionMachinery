@@ -45,12 +45,18 @@ export class RequestService {
     return parseInt(id);
   }
 
-  public getListForCustomer(id: number): Observable<AvailabilityRequestModel[]> {
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}`);
+  public checkLenght(oldLength: number, newLength: number): boolean {
+    if(oldLength >= newLength)
+      return false;
+    return true;
   }
 
-  public getListForLandlord(id: number): Observable<AvailabilityRequestModel[]> {
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${id}`);
+  public getListForCustomer(id: number, count: number): Observable<AvailabilityRequestModel[]> {
+    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${count}`);
+  }
+
+  public getListForLandlord(id: number, count: number): Observable<AvailabilityRequestModel[]> {
+    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${id}/${count}`);
   }
 
   public getForCustomer(id: number): Observable<AvailabilityRequestModelForCustomer> {

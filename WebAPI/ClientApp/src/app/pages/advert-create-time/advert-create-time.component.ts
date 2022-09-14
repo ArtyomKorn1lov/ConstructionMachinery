@@ -20,6 +20,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   });
   public startTime: string | undefined;
   public endTime: string | undefined;
+  //public myDatePicker: string | undefined;
   public image: File | undefined;
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
@@ -102,11 +103,11 @@ export class AdvertCreateTimeComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertCreateFromService();
-    if(this.advert.name == "")
+    /*if(this.advert.name == "")
       this.router.navigateByUrl(this.createRoute);
     this.image = this.imageService.getImageFromService();
     if(this.image == undefined)
-      this.router.navigateByUrl(this.createRoute);
+      this.router.navigateByUrl(this.createRoute);*/
   }
 
 }

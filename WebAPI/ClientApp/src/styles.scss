@@ -341,6 +341,42 @@ body {
     stroke: var(--color-primary-text);
 }
 
+.mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background-color: var(--color-primary-text);
+}
+
+.mat-datepicker-content {
+    background-color: var(--color-option-select);
+}
+
+.mat-calendar-body-cell-content, .mat-date-range-input-separator {
+    color: var(--color-primary-text) !important;
+}
+
+.mat-calendar-table-header, .mat-calendar-body-label {
+    color: var(--color-primary-button) !important;
+}
+
+.mat-button, .mat-icon-button, .mat-stroked-button {
+    color: var(--color-primary-text) !important;
+}
+
+.mat-calendar-table-header-divider::after {
+    background: var(--color-primary-button) !important;
+}
+
+.mat-calendar-arrow {
+    fill: var(--color-primary-text) !important;
+}
+
+.mat-calendar-body-selected {
+    background-color: var(--color-primary-button) !important;
+}
+
+.mat-calendar-body-in-range::before {
+    background-color: var(--color-hover-primary) !important;
+}
+
 html,
 body {
     height: 100%;

@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
@@ -76,6 +77,9 @@ import { AdvertRequestComponent } from './components/advert-request/advert-reque
     ReactiveFormsModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([
@@ -96,7 +100,7 @@ import { AdvertRequestComponent } from './components/advert-request/advert-reque
       { path: 'advert-request/my-requests/info', component: MyRequestInfoComponent },
       { path: 'profile/edit', component: EditProfileComponent },
       { path: 'advert-confirm', component: MyAdvertsConfirmListComponent },
-      { path: 'advert-request' , component: MyAdvertsRequestsComponent }
+      { path: 'advert-request', component: MyAdvertsRequestsComponent }
     ]),
     BrowserAnimationsModule,
   ],

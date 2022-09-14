@@ -10,24 +10,29 @@
             <mat-form-field class="date-picker" appearance="fill">
                 <mat-label class="date-picker__element">Введите диапазон дней</mat-label>
                 <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                  <input class="date-picker__element" matStartDate formControlName="start" placeholder="Начальный день">
-                  <input class="date-picker__element" matEndDate formControlName="end" placeholder="Конечный">
+                    <input class="date-picker__element" matStartDate formControlName="start"
+                        placeholder="Начальный день">
+                    <input class="date-picker__element" matEndDate formControlName="end" placeholder="Конечный">
                 </mat-date-range-input>
                 <mat-hint class="date-picker__element">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-                <mat-error class="date-picker__element" *ngIf="range.controls.start.hasError('matStartDateInvalid')">Ошибка в начальной дате</mat-error>
-                <mat-error class="date-picker__element" *ngIf="range.controls.end.hasError('matEndDateInvalid')">Ошибка в конечной дате</mat-error>
+                <mat-error class="date-picker__element" *ngIf="range.controls.start.hasError('matStartDateInvalid')">
+                    Ошибка в начальной дате</mat-error>
+                <mat-error class="date-picker__element" *ngIf="range.controls.end.hasError('matEndDateInvalid')">Ошибка
+                    в конечной дате</mat-error>
             </mat-form-field>
             <h5 class="small-header">Время аренды</h5>
             <h5 class="small-header">Начальное время</h5>
-            <input #selectorStart="ngModel" [(ngModel)]="startTime" name="startTime" class="authorize-input" type="time" required>
+            <input #selectorStart="ngModel" [(ngModel)]="startTime" name="startTime" class="authorize-input" type="time"
+                required>
             <div class="valid-container" *ngIf="selectorStart.invalid && selectorStart.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
             <h5 class="small-header">Конечное время</h5>
-            <input #selectorEnd="ngModel" [(ngModel)]="endTime" name="endTime" class="authorize-input" type="time" required>
+            <input #selectorEnd="ngModel" [(ngModel)]="endTime" name="endTime" class="authorize-input" type="time"
+                required>
             <div class="valid-container" *ngIf="selectorEnd.invalid && selectorEnd.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
@@ -36,5 +41,11 @@
                 <h5 class="medium-header">Выложить объявление</h5>
             </button>
         </form>
+        <!--<mat-form-field appearance="fill">
+            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date & time"
+                [(ngModel)]="myDatePicker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
+        </mat-form-field>-->
     </div>
 </div>

@@ -24,15 +24,17 @@
             </mat-form-field>
             <h5 class="small-header">Время аренды</h5>
             <h5 class="small-header">Начальное время</h5>
-            <input #selectorStart="ngModel" [(ngModel)]="startTime" name="startTime" class="authorize-input" type="time"
-                required>
+            <input #selectorStart="ngModel" [(ngModel)]="startTime" [ngxTimepicker]="startPicker" [format]="24" readonly
+                name="startTime" class="authorize-input" type="time" required>
+            <ngx-material-timepicker #startPicker></ngx-material-timepicker>
             <div class="valid-container" *ngIf="selectorStart.invalid && selectorStart.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
             <h5 class="small-header">Конечное время</h5>
-            <input #selectorEnd="ngModel" [(ngModel)]="endTime" name="endTime" class="authorize-input" type="time"
-                required>
+            <input #selectorEnd="ngModel" [(ngModel)]="endTime" [ngxTimepicker]="endPicker" [format]="24" readonly
+                name="endTime" class="authorize-input" type="time" required>
+            <ngx-material-timepicker #endPicker></ngx-material-timepicker>
             <div class="valid-container" *ngIf="selectorEnd.invalid && selectorEnd.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
@@ -41,11 +43,5 @@
                 <h5 class="medium-header">Выложить объявление</h5>
             </button>
         </form>
-        <!--<mat-form-field appearance="fill">
-            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date & time"
-                [(ngModel)]="myDatePicker">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
-        </mat-form-field>-->
     </div>
 </div>

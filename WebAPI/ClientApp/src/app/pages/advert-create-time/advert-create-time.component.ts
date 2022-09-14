@@ -28,34 +28,33 @@ export class AdvertCreateTimeComponent implements OnInit {
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService, private formBuilder: FormBuilder) { }
 
   public create(): void {
-    if(this.range.value.start == null || this.range.value.start == undefined) {
+    if (this.range.value.start == null || this.range.value.start == undefined) {
       alert("Выберите диапазон чисел");
       return;
     }
-    if(this.range.value.end == null || this.range.value.end == undefined) {
+    if (this.range.value.end == null || this.range.value.end == undefined) {
       alert("Выберете диапазон чисел");
       return;
     }
-    if(this.startTime == null || this.startTime == undefined) {
+    if (this.startTime == null || this.startTime == undefined) {
       alert("Выберете диапазон времени");
       return;
     }
-    if(this.endTime == null || this.endTime == undefined) {
+    if (this.endTime == null || this.endTime == undefined) {
       alert("Выберете диапазон времени");
       return;
     }
-    if(this.image == null || this.image == undefined)
-    {
+    if (this.image == null || this.image == undefined) {
       alert("Не выбран файл");
       return;
     }
     let startHour = parseInt(this.startTime);
     let endHour = parseInt(this.endTime);
-    if(startHour > endHour) {
+    if (startHour > endHour) {
       alert("Неверный диапазон времени");
       return;
     }
-    if(this.advert == null || this.advert == undefined) {
+    if (this.advert == null || this.advert == undefined) {
       alert("Ошибка формирования объявления, поля с предыдущей страницы равны нулю");
       return;
     }
@@ -103,11 +102,11 @@ export class AdvertCreateTimeComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertCreateFromService();
-    /*if(this.advert.name == "")
+    if(this.advert.name == "")
       this.router.navigateByUrl(this.createRoute);
     this.image = this.imageService.getImageFromService();
     if(this.image == undefined)
-      this.router.navigateByUrl(this.createRoute);*/
+      this.router.navigateByUrl(this.createRoute);
   }
 
 }

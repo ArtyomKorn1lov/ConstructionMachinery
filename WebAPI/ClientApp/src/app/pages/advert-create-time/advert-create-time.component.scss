@@ -15,7 +15,7 @@
     margin-top: 16px;
 }
 
-.primary--authorize {
+.primary-authorize {
     margin-top: 40px;
 }
 
@@ -36,4 +36,8 @@
 
 .small-header + .small-header {
     margin-top: 5px;
+}
+
+ngx-material-timepicker + .small-header {
+    margin-top: 15px;
 }

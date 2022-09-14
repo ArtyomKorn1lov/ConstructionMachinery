@@ -15,7 +15,7 @@ $ConstructionMachineryApp-accent: mat.define-palette(mat.$pink-palette, A200, A1
 $ConstructionMachineryApp-warn: mat.define-palette(mat.$red-palette);
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$ConstructionMachineryApp-theme: mat.define-light-theme(( color: ( primary: $ConstructionMachineryApp-primary, accent: $ConstructionMachineryApp-accent, warn: $ConstructionMachineryApp-warn, )));
+$ConstructionMachineryApp-theme: mat.define-light-theme((color: (primary: $ConstructionMachineryApp-primary, accent: $ConstructionMachineryApp-accent, warn: $ConstructionMachineryApp-warn, )));
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
@@ -349,15 +349,19 @@ body {
     background-color: var(--color-option-select);
 }
 
-.mat-calendar-body-cell-content, .mat-date-range-input-separator {
+.mat-calendar-body-cell-content,
+.mat-date-range-input-separator {
     color: var(--color-primary-text) !important;
 }
 
-.mat-calendar-table-header, .mat-calendar-body-label {
+.mat-calendar-table-header,
+.mat-calendar-body-label {
     color: var(--color-primary-button) !important;
 }
 
-.mat-button, .mat-icon-button, .mat-stroked-button {
+.mat-button,
+.mat-icon-button,
+.mat-stroked-button {
     color: var(--color-primary-text) !important;
 }
 
@@ -376,6 +380,46 @@ body {
 .mat-calendar-body-in-range::before {
     background-color: var(--color-hover-primary) !important;
 }
+
+.timepicker__header {
+    background-color: var(--color-primary-button) !important;
+}
+
+.timepicker__actions {
+    background-color: var(--color-option-select) !important;
+}
+
+.timepicker-button {
+    color: var(--color-primary-button) !important;
+}
+
+.timepicker__body {
+    background-color: var(--color-option) !important;
+}
+
+.clock-face {
+    background-color: var(--color-background) !important;
+}
+
+.clock-face__number span {
+    color: var(--color-primary-text) !important;
+}
+
+.clock-face__number span.active {
+    background-color: var(--color-primary-button) !important;
+}
+
+.clock-face__clock-hand {
+    background-color: var(--color-primary-button) !important;
+}
+
+.clock-face__clock-hand_minute:before {
+    border-color: var(--color-primary-button) !important;
+}
+
+.timepicker-dial__item_active {}
+
+.timepicker-dial__item_active {}
 
 html,
 body {

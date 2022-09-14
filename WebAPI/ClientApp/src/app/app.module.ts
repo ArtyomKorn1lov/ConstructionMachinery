@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
@@ -80,6 +81,7 @@ import { AdvertRequestComponent } from './components/advert-request/advert-reque
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
+    NgxMaterialTimepickerModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([

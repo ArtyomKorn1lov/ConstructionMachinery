@@ -22,8 +22,6 @@ namespace Domain.Entities
             Name = advert.Name;
             Description = advert.Description;
             Price = advert.Price;
-            UserId = advert.UserId;
-            Images = advert.Images;
             AvailableTimes = advert.AvailableTimes;
             Reviews = advert.Reviews;
         }

@@ -72,6 +72,51 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
+        [HttpPut("update/{id}")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> UpdateImage(int id)
+        {
+            try
+            {
+                IFormFile uploadImage = null;
+                try
+                {
+                    uploadImage = Request.Form.Files[0];
+                }
+                catch
+                {
+                    uploadImage = null;
+                }
+                if(uploadImage != null)
+                {
+                    string folderPath = _appEnvironment.WebRootPath + _currentDirectory + id.ToString();
+                    Directory.CreateDirectory(folderPath);
+                    string path = folderPath + "/" + id.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await uploadImage.CopyToAsync(fileStream);
+                    }
+                    path = _serverDirectory + _currentDirectory + id.ToString() + "/" + id.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    string relativePath = _currentDirectory + id.ToString();
+                    ImageModelCreate image = new ImageModelCreate
+                    {
+                        Path = path,
+                        RelativePath = relativePath,
+                        AdvertId = id
+                    };
+                    await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
+                    await _unitOfWork.Commit();
+                    return Ok("success");
+                }
+                return Ok("success");
+            }
+            catch
+            {
+                return BadRequest("error");
+            }
+        }
+
+        [Authorize]
         [HttpDelete("remove/{id}")]
         public async Task<IActionResult> RemoveImage(int id)
         {

@@ -1,0 +1,44 @@
+.authorize-input {
+    margin-top: 12px;
+}
+
+.valid-container + .small-header {
+    margin-top: 16px;
+}
+
+.advert-textarea {
+    margin-top: 12px;
+}
+
+.photo-container {
+    display: flex;
+    margin-top: 12px;
+}
+
+.photo-download {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    min-height: 100px;
+    padding: 17px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+}
+
+.photo-download .primary-text {
+    margin-top: 15px;
+}
+
+.photo-element {
+    max-width: 230px;
+    min-height: 200px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+#SelectImage
+{
+    visibility: hidden;
+}

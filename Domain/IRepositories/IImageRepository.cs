@@ -13,5 +13,6 @@ namespace Domain.IRepositories
         Task<Image> GetById(int id);
         Task Create(Image image);
         Task Remove(int id);
+        Task Update(Image image);
     }
 }

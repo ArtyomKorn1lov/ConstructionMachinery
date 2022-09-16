@@ -6,12 +6,14 @@ import { AdvertModelInfo } from '../models/AdvertModelInfo';
 import { AdvertModelCreate } from '../models/AdvertModelCreate';
 import { AvailableTimeModel } from '../models/AvailableTimeModel';
 import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
+import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdvertService {
   private advertCreate: AdvertModelCreate | undefined;
+  private advertUpdate: AdvertModelUpdate | undefined;
 
   constructor(private http: HttpClient) { }
 
@@ -50,6 +52,16 @@ export class AdvertService {
     if (this.advertCreate == undefined)
       return new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0);
     return this.advertCreate;
+  }
+
+  public setAdvertUpdateInService(advert: AdvertModelUpdate): void {
+    this.advertUpdate = advert;
+  }
+
+  public getAdvertUpdateFromService(): AdvertModelUpdate {
+    if (this.advertUpdate == undefined)
+      return new AdvertModelUpdate(0, "", "", 0, 0, [], new Date(), new Date(), 0, 0);
+    return this.advertUpdate;
   }
 
   public sortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
@@ -102,6 +114,14 @@ export class AdvertService {
 
   public getForRequestLandlord(count: number): Observable<AdvertModelForRequest[]> {
     return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-landlord/${count}`);
+  }
+
+  public getForUpdate(id: number): Observable<AdvertModelUpdate> {
+    return this.http.get<AdvertModelUpdate>(`api/advert/for-update/${id}`)
+  }
+
+  public update(advert: AdvertModelUpdate): Observable<string> {
+    return this.http.put(`api/advert/update`, advert, { responseType: 'text' });
   }
 
 }

@@ -12,5 +12,13 @@ namespace Domain.Entities
         public string Path { get; set; }
         public string RelativePath { get; set; }
         public int AdvertId { get; set; }
+
+        public void CopyFrom(Image image)
+        {
+            this.Id = image.Id;
+            this.Path = image.Path;
+            this.RelativePath = image.RelativePath;
+            this.AdvertId = image.AdvertId;
+        }
     }
 }

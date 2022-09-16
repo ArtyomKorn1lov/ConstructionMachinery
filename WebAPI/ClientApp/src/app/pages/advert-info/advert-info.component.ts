@@ -6,6 +6,7 @@ import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
+import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 
 @Component({
   selector: 'app-advert-info',
@@ -21,6 +22,7 @@ export class AdvertInfoComponent implements OnInit {
   public page: string = '';
   private listRoute: string = '/advert-list';
   private myRoute: string = '/my-adverts';
+  private editRoute: string = '/advert-edit';
 
   constructor(private advertService: AdvertService, private router: Router, public accountService: AccountService) { }
 
@@ -123,8 +125,14 @@ export class AdvertInfoComponent implements OnInit {
     });
   }
 
+  public edit(): void {
+    this.advertService.setIdInLocalStorage(this.advert.id);
+    this.router.navigateByUrl(this.editRoute);
+  }
+
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
     this.page = this.advertService.getPageFromLocalStorage();
     await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {
       this.advert = data;

@@ -24,7 +24,6 @@ namespace Domain.Entities
             Phone = user.Phone;
             Password = user.Password;
             Adverts = user.Adverts;
-            Adverts = user.Adverts;
             AvailabilityRequests = user.AvailabilityRequests;
             Reviews = user.Reviews;
         }

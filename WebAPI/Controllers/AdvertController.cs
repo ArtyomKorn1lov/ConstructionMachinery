@@ -143,6 +143,16 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
+        [HttpGet("for-update/{id}")]
+        public async Task<AdvertModelUpdate> GetForUpdate(int id)
+        {
+            AdvertModelUpdate advert = AdvertModelConverter.AdvertCommandUpdateConvertAdvertModelUpdate(await _advertService.GetForUpdate(id));
+            if (advert == null)
+                return null;
+            return advert;
+        }
+
+        [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> Update(AdvertModelUpdate advertModel)
         {
@@ -150,6 +160,7 @@ namespace WebAPI.Controllers
             {
                 if (advertModel == null)
                     return Ok("error");
+                advertModel.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
                 if (await _advertService.Update(AdvertModelConverter.AdvertModelUpdateConvertAdvertCommandUpdate(advertModel)))
                 {
                     await _unitOfWork.Commit();
@@ -161,16 +172,6 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("error");
             }
-        }
-
-        [Authorize]
-        [HttpGet("for-update/{id}")]
-        public async Task<AdvertModelUpdate> GetForUpdate(int id)
-        {
-            AdvertModelUpdate advert = AdvertModelConverter.AdvertCommandUpdateConvertAdvertModelUpdate(await _advertService.GetForUpdate(id));
-            if (advert == null)
-                return null;
-            return advert;
         }
 
         [Authorize]

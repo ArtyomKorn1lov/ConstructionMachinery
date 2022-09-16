@@ -20,7 +20,6 @@ export class AdvertCreateTimeComponent implements OnInit {
   });
   public startTime: string | undefined;
   public endTime: string | undefined;
-  //public myDatePicker: string | undefined;
   public image: File | undefined;
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";

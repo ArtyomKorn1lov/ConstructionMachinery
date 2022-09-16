@@ -84,5 +84,22 @@ namespace Application.Services
                 return false;
             }
         }
+
+        public async Task<bool> Update(ImageCommand image)
+        {
+            try
+            {
+                if(image != null)
+                {
+                    await _imageRepository.Update(ImageCommandConverter.ImageCommandConvertToEntity(image));
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

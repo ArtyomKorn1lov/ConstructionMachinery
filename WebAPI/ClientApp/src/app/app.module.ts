@@ -39,6 +39,8 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
 import { MyAdvertsRequestsComponent } from './pages/my-adverts-requests/my-adverts-requests.component';
 import { MyAdvertsConfirmListComponent } from './pages/my-adverts-confirm-list/my-adverts-confirm-list.component';
 import { AdvertRequestComponent } from './components/advert-request/advert-request.component';
+import { AdvertEditComponent } from './pages/advert-edit/advert-edit.component';
+import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-time.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { AdvertRequestComponent } from './components/advert-request/advert-reque
     MyAdvertsRequestsComponent,
     MyAdvertsConfirmListComponent,
     AdvertRequestComponent,
+    AdvertEditComponent,
+    AdvertEditTimeComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,7 +106,9 @@ import { AdvertRequestComponent } from './components/advert-request/advert-reque
       { path: 'advert-request/my-requests/info', component: MyRequestInfoComponent },
       { path: 'profile/edit', component: EditProfileComponent },
       { path: 'advert-confirm', component: MyAdvertsConfirmListComponent },
-      { path: 'advert-request', component: MyAdvertsRequestsComponent }
+      { path: 'advert-request', component: MyAdvertsRequestsComponent },
+      { path: 'advert-edit', component: AdvertEditComponent },
+      { path: 'advert-edit/time', component: AdvertEditTimeComponent }
     ]),
     BrowserAnimationsModule,
   ],

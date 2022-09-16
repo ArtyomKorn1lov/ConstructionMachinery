@@ -13,5 +13,6 @@ namespace Application.IServices
         Task<ImageCommand> GetById(int id);
         Task<bool> Create(ImageCommandCreate image);
         Task<bool> Remove(int id, string path);
+        Task<bool> Update(ImageCommand image);
     }
 }

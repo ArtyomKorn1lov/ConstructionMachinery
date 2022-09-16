@@ -3,6 +3,8 @@ import { AdvertModelList } from 'src/app/models/AdvertModelList';
 import { AdvertService } from 'src/app/services/advert.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-advert',
@@ -17,7 +19,7 @@ export class AdvertComponent implements OnInit {
   public scrollFlag = true;
   private targetRoute: string = "advert-info";
 
-  constructor(private advertService: AdvertService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private advertService: AdvertService, private router: Router, private route: ActivatedRoute, private imageService: ImageService) { }
 
   public async sortByParam(param: string): Promise<void> {
     if (param == "all") {
@@ -100,6 +102,8 @@ export class AdvertComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
     this.advertService.clearLocalStorage();
+    this.advertService.setAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
+    this.imageService.setImageInService(new File([""], ""));
     if (this.page == 'list') {
       await this.route.queryParams.subscribe(async params => {
         const searchString = params['search'];

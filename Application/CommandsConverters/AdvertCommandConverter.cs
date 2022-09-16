@@ -81,13 +81,13 @@ namespace Application.CommandsConverters
                 Description = advert.Description,
                 Price = advert.Price,
                 UserId = advert.UserId,
-                AvailableTimeCommands = advert.AvailableTimes.Select(availableTime => new AvailableTimeCommand
+                ImageCommands = advert.Images.Select(image => new ImageCommand
                 {
-                    Id = availableTime.Id,
-                    Date = availableTime.Date,
-                    AdvertId = availableTime.AdvertId,
-                    AvailabilityStateId = availableTime.AvailabilityStateId
-                }).ToList(),
+                    Id = image.Id,
+                    AdvertId = image.AdvertId,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath
+                }).ToList()
             };
         }
 
@@ -102,13 +102,13 @@ namespace Application.CommandsConverters
                 Description = advert.Description,
                 Price = advert.Price,
                 UserId = advert.UserId,
-                AvailableTimes = advert.AvailableTimeCommands.Select(availableTime => new AvailableTime
+                Images = advert.ImageCommands.Select(image => new Image
                 {
-                    Id = availableTime.Id,
-                    Date = availableTime.Date,
-                    AdvertId = availableTime.AdvertId,
-                    AvailabilityStateId = availableTime.AvailabilityStateId
-                }).ToList(),
+                    Id= image.Id,
+                    AdvertId = image.AdvertId,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath
+                }).ToList()
             };
         }
 

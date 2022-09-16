@@ -45,6 +45,28 @@ namespace Application.Services
             }
         }
 
+        public async Task<bool> Update(AdvertCommandUpdate advertCommand)
+        {
+            try
+            {
+                if (advertCommand != null)
+                {
+                    List<AvailableTime> times = await _requestRepository.GetTimesForRemoveRequestByAdvertId(advertCommand.Id);
+                    Advert advert = AdvertCommandConverter.AdvertCommandUpdateConvertToAdvertEntity(advertCommand);
+                    List<AvailableTime> newAvailableTime = FillAvailableTime(advertCommand.StartDate, advertCommand.EndDate, advertCommand.StartTime, advertCommand.EndTime);
+                    newAvailableTime = await RemoveOldRequests(newAvailableTime, times);
+                    advert.AvailableTimes = newAvailableTime;
+                    await _advertRepository.Update(advert);
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
         {
             List<DateTime> dates = new List<DateTime>();
@@ -72,6 +94,43 @@ namespace Application.Services
                 currentHour = startTime;
             }
             return availableTimes;
+        }
+
+        public AdvertCommandUpdate FillRangeTime(AdvertCommandUpdate command, Advert advert)
+        {
+            command.StartDate = advert.AvailableTimes[0].Date;
+            command.EndDate = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date;
+            string start = advert.AvailableTimes[0].Date.ToString("HH");
+            string end = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date.ToString("HH");
+            command.StartTime = Int32.Parse(start);
+            command.EndTime = Int32.Parse(end);
+            return command;
+        }
+
+        public async Task<List<AvailableTime>> RemoveOldRequests(List<AvailableTime> newAvilableTime, List<AvailableTime> oldAvailableTime)
+        {
+            for(int count_new_time = 0; count_new_time < newAvilableTime.Count; count_new_time++)
+            {
+                for(int count_old_time = 0; count_old_time < oldAvailableTime.Count; count_old_time++)
+                {
+                    if(oldAvailableTime[count_old_time] != null)
+                    {
+                        if (newAvilableTime[count_new_time].Date == oldAvailableTime[count_old_time].Date)
+                        {
+                            newAvilableTime[count_new_time] = oldAvailableTime[count_old_time];
+                            oldAvailableTime[count_old_time] = null;
+                        }
+                    }
+                }
+            }
+            foreach(AvailableTime time in oldAvailableTime)
+            {
+                if(time != null)
+                {
+                    await _requestRepository.Remove((int)time.AvailabilityRequestId);
+                }
+            }
+            return newAvilableTime;
         }
 
         public async Task<List<AdvertCommandList>> GetAll(int count)
@@ -191,8 +250,10 @@ namespace Application.Services
         {
             try
             {
-                AdvertCommandUpdate advert = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandUpdate(await _advertRepository.GetForUpdate(id));
-                return advert;
+                Advert advert = await _advertRepository.GetForUpdate(id);
+                AdvertCommandUpdate advertCommand = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandUpdate(advert);
+                advertCommand = FillRangeTime(advertCommand, advert);
+                return advertCommand;
             }
             catch
             {
@@ -239,23 +300,6 @@ namespace Application.Services
                 }
                 await _advertRepository.Remove(id);
                 return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> Update(AdvertCommandUpdate advert)
-        {
-            try
-            {
-                if (advert != null)
-                {
-                    await _advertRepository.Update(AdvertCommandConverter.AdvertCommandUpdateConvertToAdvertEntity(advert));
-                    return true;
-                }
-                return false;
             }
             catch
             {

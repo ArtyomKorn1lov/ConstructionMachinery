@@ -1,0 +1,43 @@
+.big-header {
+    text-align: center;
+    font-size: 18px;
+}
+
+.authorize-input {
+    margin-top: 12px;
+}
+
+.big-header + .small-header {
+    margin-top: 20px;
+}
+
+.valid-container + .small-header {
+    margin-top: 16px;
+}
+
+.primary-authorize {
+    margin-top: 40px;
+}
+
+.date-picker {
+    margin-top: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 0 0 8px 0;
+}
+
+.date-picker__element {
+    color: var(--color-primary-text);
+}
+
+.date-picker + .small-header {
+    margin-top: 20px;
+}
+
+.small-header + .small-header {
+    margin-top: 5px;
+}
+
+ngx-material-timepicker + .small-header {
+    margin-top: 15px;
+}

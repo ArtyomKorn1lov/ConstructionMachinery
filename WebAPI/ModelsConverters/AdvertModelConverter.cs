@@ -81,13 +81,17 @@ namespace WebAPI.ModelsConverters
                 Description = model.Description,
                 Price = model.Price,
                 UserId = model.Id,
-                AvailableTimeCommands = model.AvailableTimeModels.Select(command => new AvailableTimeCommand
+                ImageCommands = model.Images.Select(image => new ImageCommand
                 {
-                    Id = command.Id,
-                    Date = command.Date,
-                    AvailabilityStateId = command.AvailabilityStateId,
-                    AdvertId = command.AdvertId
-                }).ToList()
+                    Id = image.Id,
+                    AdvertId = image.AdvertId,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath
+                }).ToList(),
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime
             };
         }
 
@@ -102,13 +106,17 @@ namespace WebAPI.ModelsConverters
                 Description = model.Description,
                 Price = model.Price,
                 UserId = model.Id,
-                AvailableTimeModels = model.AvailableTimeCommands.Select(command => new AvailableTimeModel
+                Images = model.ImageCommands.Select(image => new ImageModel
                 {
-                    Id = command.Id,
-                    Date = command.Date,
-                    AvailabilityStateId = command.AvailabilityStateId,
-                    AdvertId = command.AdvertId
-                }).ToList()
+                    Id = image.Id,
+                    AdvertId = image.AdvertId,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath
+                }).ToList(),
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime
             };
         }
 

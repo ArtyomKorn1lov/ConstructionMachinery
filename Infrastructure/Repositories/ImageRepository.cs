@@ -39,5 +39,11 @@ namespace Infrastructure.Repositories
             if (image != null)
                 _constructionMachineryDbContext.Set<Image>().Remove(image);
         }
+
+        public async Task Update(Image image)
+        {
+            Image _image = await GetById(image.Id);
+            _image.CopyFrom(image);
+        }
     }
 }

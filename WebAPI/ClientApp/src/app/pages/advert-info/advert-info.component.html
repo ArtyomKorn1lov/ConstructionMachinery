@@ -37,7 +37,10 @@
             <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button (click)="remove()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
+            <button (click)="edit()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
+                <h5 class="medium-header">Редактировать</h5>
+            </button>
+            <button (click)="remove()" *ngIf="page == 'my' && accountService.userFlag" class="edit-button">
                 <h5 class="medium-header">Снять публикацию</h5>
             </button>
         </div>

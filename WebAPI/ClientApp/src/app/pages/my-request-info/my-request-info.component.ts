@@ -14,7 +14,7 @@ export class MyRequestInfoComponent implements OnInit {
 
   public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], []);
   public date: Date = new Date();
-  private targetRoute: string = "/my-requests"
+  private targetRoute: string = "/advert-request/my-requests"
 
   constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 

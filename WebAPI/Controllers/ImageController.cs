@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using WebAPI.Models;
 using WebAPI.ModelsConverters;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -38,30 +42,35 @@ namespace WebAPI.Controllers
         {
             try
             {
-                IFormFile uploadImage = Request.Form.Files[0];
-                if (uploadImage == null)
-                {
-                    return Ok("error");
-                }
                 int advertId = await _advertService.GetLastAdvertId();
                 if (advertId == 0)
                     return Ok("error");
                 string folderPath = _appEnvironment.WebRootPath + _currentDirectory + advertId.ToString();
                 Directory.CreateDirectory(folderPath);
-                string path = folderPath + "/" + advertId.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
-                using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                IFormFileCollection files = Request.Form.Files;
+                if (files.Any(f => f.Length == 0))
                 {
-                    await uploadImage.CopyToAsync(fileStream);
+                    return Ok("error");
                 }
-                path = _serverDirectory + _currentDirectory + advertId.ToString() + "/" + advertId.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
-                string relativePath = _currentDirectory + advertId.ToString();
-                ImageModelCreate image = new ImageModelCreate
+                int countName = 0;
+                foreach (IFormFile uploadImage in files)
                 {
-                    Path = path,
-                    RelativePath = relativePath,
-                    AdvertId = advertId
-                };
-                await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
+                    countName++;
+                    string path = folderPath + "/" + (advertId + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await uploadImage.CopyToAsync(fileStream);
+                    }
+                    path = _serverDirectory + _currentDirectory + advertId.ToString() + "/" + (advertId + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    string relativePath = _currentDirectory + advertId.ToString();
+                    ImageModelCreate image = new ImageModelCreate
+                    {
+                        Path = path,
+                        RelativePath = relativePath,
+                        AdvertId = advertId
+                    };
+                    await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
+                }
                 await _unitOfWork.Commit();
                 return Ok("success");
             }
@@ -78,17 +87,31 @@ namespace WebAPI.Controllers
         {
             try
             {
-                IFormFile uploadImage = Request.Form.Files[0];
-                if (uploadImage != null)
+                string folderPath = _appEnvironment.WebRootPath + _currentDirectory + id.ToString();
+                IFormFileCollection files = Request.Form.Files;
+                if (files.Any(f => f.Length == 0))
                 {
-                    string folderPath = _appEnvironment.WebRootPath + _currentDirectory + id.ToString();
-                    Directory.CreateDirectory(folderPath);
-                    string path = folderPath + "/" + id.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    return Ok("error");
+                }
+                AdvertModelInfo advert = AdvertModelConverter.AdvertCommandInfoConvertAdvertModelInfo(await _advertService.GetById(id));
+                int countName = 0;
+                if(advert.Images.Count != 0)
+                {
+                    Regex regex = new Regex(@"\/\d+\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                    Match match = regex.Match(advert.Images[advert.Images.Count - 1].Path);
+                    string regexResult = match.Value;
+                    countName = Int32.Parse(regexResult.Substring(1, regexResult.Length - 2));
+                    countName = countName - id;
+                }
+                foreach (IFormFile uploadImage in files)
+                {
+                    countName++;
+                    string path = folderPath + "/" + (id + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
                     using (FileStream fileStream = new FileStream(path, FileMode.Create))
                     {
                         await uploadImage.CopyToAsync(fileStream);
                     }
-                    path = _serverDirectory + _currentDirectory + id.ToString() + "/" + id.ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    path = _serverDirectory + _currentDirectory + id.ToString() + "/" + (id + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
                     string relativePath = _currentDirectory + id.ToString();
                     ImageModelCreate image = new ImageModelCreate
                     {
@@ -97,9 +120,8 @@ namespace WebAPI.Controllers
                         AdvertId = id
                     };
                     await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
-                    await _unitOfWork.Commit();
-                    return Ok("success");
                 }
+                await _unitOfWork.Commit();
                 return Ok("success");
             }
             catch
@@ -109,18 +131,21 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpDelete("remove/{id}")]
-        public async Task<IActionResult> RemoveImage(int id)
+        [HttpPost("remove")]
+        public async Task<IActionResult> RemoveImage(List<int> imagesId)
         {
             try
             {
-                if (id == 0)
+                if (imagesId == null)
                     return Ok("error");
-                ImageCommand image = await _imageService.GetById(id);
-                if (image == null)
-                    return Ok("error");
-                string path = _appEnvironment.WebRootPath + image.RelativePath;
-                await _imageService.Remove(id, path);
+                foreach(int id in imagesId)
+                {
+                    ImageCommand image = await _imageService.GetById(id);
+                    string path = image.Path;
+                    path = path.Replace(_serverDirectory, "");
+                    path = _appEnvironment.WebRootPath + path; 
+                    await _imageService.Remove(id, path);
+                }
                 await _unitOfWork.Commit();
                 return Ok("success");
             }

@@ -7,6 +7,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-advert-info',
@@ -24,7 +25,7 @@ export class AdvertInfoComponent implements OnInit {
   private myRoute: string = '/my-adverts';
   private editRoute: string = '/advert-edit';
 
-  constructor(private advertService: AdvertService, private router: Router, public accountService: AccountService) { }
+  constructor(private advertService: AdvertService, private router: Router, public accountService: AccountService, private imageService: ImageService) { }
 
   public back(): void {
     if (this.page == 'list') {
@@ -133,6 +134,7 @@ export class AdvertInfoComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
+    this.imageService.setImagesInService([]);
     this.page = this.advertService.getPageFromLocalStorage();
     await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {
       this.advert = data;

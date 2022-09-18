@@ -5,6 +5,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { ImageService } from 'src/app/services/image.service';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { Router } from '@angular/router';
+import { ImageModel } from 'src/app/models/ImageModel';
 
 @Component({
   selector: 'app-advert-edit-time',
@@ -20,11 +21,20 @@ export class AdvertEditTimeComponent implements OnInit {
   });
   public startTime: string = "";
   public endTime: string = "";
-  public image: File | undefined;
+  public images: File[] = [];
   private updateRoute = "/advert-edit";
   private infoRoute = "/advert-info";
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService, private formBuilder: FormBuilder) { }
+
+  public prepareArrayId(images: ImageModel[]): number[] {
+    let numberArray = [];
+    for (let count = 0; count < images.length; count++) {
+      if (images[count].path == "")
+        numberArray.push(images[count].id);
+    }
+    return numberArray;
+  }
 
   public update(): void {
     if (this.range.value.start == null || this.range.value.start == undefined) {
@@ -43,8 +53,8 @@ export class AdvertEditTimeComponent implements OnInit {
       alert("Выберете диапазон времени");
       return;
     }
-    if (this.image == null || this.image == undefined) {
-      this.image = new File([""], "");
+    if (this.images == null || this.images == undefined) {
+      this.images = [];
     }
     let startHour = parseInt(this.startTime);
     let endHour = parseInt(this.endTime);
@@ -60,16 +70,20 @@ export class AdvertEditTimeComponent implements OnInit {
     this.advert.endDate = new Date(this.range.value.end);
     this.advert.startTime = startHour;
     this.advert.endTime = endHour;
+    let numberArray: number[] = []
+    if (!this.imageService.oldImageFlag)
+      numberArray = this.prepareArrayId(this.advert.images);
     let formData = new FormData();
-    formData.append('file', this.image);
+    Array.from(this.images).map((image, index) => {
+      return formData.append('file' + index, image);
+    });
     this.advertService.update(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
         if (!this.imageService.oldImageFlag) {
-          this.imageService.remove(this.advert.images[0].id).subscribe(data => {
+          this.imageService.remove(numberArray).subscribe(data => {
             if (data == "success") {
               console.log(data);
-              console.log(formData);
               this.imageService.update(formData, this.advert.id).subscribe(data => {
                 if (data == "success") {
                   console.log(data);
@@ -130,11 +144,9 @@ export class AdvertEditTimeComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertUpdateFromService();
-    this.image = this.imageService.getImageFromService();
+    this.images = this.imageService.getImagesFromService();
     if (this.advert.name == "")
       this.router.navigateByUrl(this.updateRoute);
-    console.log(this.advert.startDate);
-    console.log(this.advert.endDate);
     this.range = this.formBuilder.group({
       start: this.advert.startDate,
       end: this.advert.endDate

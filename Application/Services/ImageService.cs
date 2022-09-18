@@ -76,7 +76,7 @@ namespace Application.Services
                 if (path == null)
                     return false;
                 await _imageRepository.Remove(id);
-                Directory.Delete(path, true);
+                File.Delete(path);
                 return true;
             }
             catch

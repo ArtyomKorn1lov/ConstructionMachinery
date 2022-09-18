@@ -8,30 +8,28 @@ import { Observable } from 'rxjs';
 export class ImageService {
 
   public oldImageFlag: boolean = false;
-  private imageCreate: File | undefined;
+  private imagesCreate: File[] = [];
 
   constructor(private http: HttpClient) { }
 
-  public setImageInService(image: File): void {
-    this.imageCreate = image;
+  public setImagesInService(images: File[]): void {
+    this.imagesCreate = images;
   }
 
-  public getImageFromService(): File {
-    if(this.imageCreate == undefined)
-      return new File([""], "");
-    return this.imageCreate;
+  public getImagesFromService(): File[] {
+    return this.imagesCreate;
   }
 
-  public create(uploadImage: FormData): Observable<string> {
-    return this.http.post(`api/image/create`, uploadImage, { responseType: 'text' });
+  public create(uploadImages: FormData): Observable<string> {
+    return this.http.post(`api/image/create`, uploadImages, { responseType: 'text' });
   }
 
   public update(uploadImage: FormData, id: number): Observable<string> {
     return this.http.post(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
   }
 
-  public remove(id: number): Observable<string> {
-    return this.http.delete(`api/image/remove/${id}`, { responseType: 'text' });
+  public remove(imagesId: number[]): Observable<string> {
+    return this.http.post(`api/image/remove`, imagesId, { responseType: 'text' });
   }
 
 }

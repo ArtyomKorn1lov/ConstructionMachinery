@@ -20,7 +20,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   });
   public startTime: string | undefined;
   public endTime: string | undefined;
-  public image: File | undefined;
+  public images: File[] = [];
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
@@ -43,7 +43,7 @@ export class AdvertCreateTimeComponent implements OnInit {
       alert("Выберете диапазон времени");
       return;
     }
-    if (this.image == null || this.image == undefined) {
+    if (this.images == null || this.images == undefined) {
       alert("Не выбран файл");
       return;
     }
@@ -62,7 +62,9 @@ export class AdvertCreateTimeComponent implements OnInit {
     this.advert.startTime = startHour;
     this.advert.endTime = endHour;
     let formData = new FormData();
-    formData.append('file', this.image);
+    Array.from(this.images).map((image, index) => {
+      return formData.append('file'+index, image);
+    });
     this.advertService.createAdvert(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
@@ -103,8 +105,8 @@ export class AdvertCreateTimeComponent implements OnInit {
     this.advert = this.advertService.getAdvertCreateFromService();
     if(this.advert.name == "")
       this.router.navigateByUrl(this.createRoute);
-    this.image = this.imageService.getImageFromService();
-    if(this.image == undefined)
+    this.images = this.imageService.getImagesFromService();
+    if(this.images == undefined)
       this.router.navigateByUrl(this.createRoute);
   }
 

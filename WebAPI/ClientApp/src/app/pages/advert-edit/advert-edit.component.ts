@@ -14,8 +14,8 @@ import { ImageService } from 'src/app/services/image.service';
 export class AdvertEditComponent implements OnInit {
 
   public advertUpdate: AdvertModelUpdate = new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0);
-  public image: File | undefined;
-  public fileBase64: string = "";
+  public images: File[] = [];
+  public filesBase64: string[] = [];
   private targetRoute: string = "/advert-edit/time";
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
@@ -27,11 +27,25 @@ export class AdvertEditComponent implements OnInit {
   public download(event: any): void {
     const file = event.target.files[0];
     const reader = new FileReader();
-    this.image = file;
+    this.images.push(file);
     reader.readAsDataURL(file);
     reader.onload = () => {
       if (reader.result != null)
-        this.fileBase64 = reader.result.toString();
+        this.filesBase64.push(reader.result.toString());
+    }
+  }
+
+  public removeFromDownloadImages(image: ImageModel): void {
+    let index = this.advertUpdate.images.indexOf(image);
+    if(index != -1)
+      this.advertUpdate.images[index].path = "";
+  }
+
+  public removeFromDUploadImages(fileBase64: string): void {
+    let index = this.filesBase64.indexOf(fileBase64);
+    if(index != -1) {
+      this.filesBase64.slice(index, 1);
+      this.images.slice(index, 1);
     }
   }
 
@@ -46,14 +60,14 @@ export class AdvertEditComponent implements OnInit {
       this.advertUpdate.price = 0;
       return;
     }
-    if (this.image == null || this.image == undefined) {
-      this.image = new File([""], "");
+    if (this.images == null || this.images == undefined) {
+      this.images = [];
     }
-    if (this.image != null || this.image != undefined) {
+    if (this.images != null || this.images != undefined) {
       this.imageService.oldImageFlag = false;
     }
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
-    this.imageService.setImageInService(this.image);
+    this.imageService.setImagesInService(this.images);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
@@ -62,12 +76,14 @@ export class AdvertEditComponent implements OnInit {
     this.advertUpdate.name = advert.name;
     this.advertUpdate.description = advert.description;
     this.advertUpdate.price = advert.price;
-    this.image = this.imageService.getImageFromService();
+    this.images = this.imageService.getImagesFromService();
     const reader = new FileReader();
-    reader.readAsDataURL(this.image);
-    reader.onload = () => {
-      if (reader.result != null)
-        this.fileBase64 = reader.result.toString();
+    for (let count = 0; count < this.images.length; count++) {
+      reader.readAsDataURL(this.images[count]);
+      reader.onload = () => {
+        if (reader.result != null)
+          this.filesBase64.push(reader.result.toString());
+      }
     }
   }
 

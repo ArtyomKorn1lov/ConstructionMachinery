@@ -69,6 +69,8 @@ namespace Application.Services
 
         public List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
         {
+            startDate = startDate.ToLocalTime();
+            endDate = endDate.ToLocalTime();
             List<DateTime> dates = new List<DateTime>();
             DateTime date = new DateTime(startDate.Year, startDate.Month, startDate.Day);
             while(date <= endDate)

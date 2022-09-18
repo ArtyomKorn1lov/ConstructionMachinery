@@ -72,22 +72,14 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpPut("update/{id}")]
+        [HttpPost("update/{id}")]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> UpdateImage(int id)
         {
             try
             {
-                IFormFile uploadImage = null;
-                try
-                {
-                    uploadImage = Request.Form.Files[0];
-                }
-                catch
-                {
-                    uploadImage = null;
-                }
-                if(uploadImage != null)
+                IFormFile uploadImage = Request.Form.Files[0];
+                if (uploadImage != null)
                 {
                     string folderPath = _appEnvironment.WebRootPath + _currentDirectory + id.ToString();
                     Directory.CreateDirectory(folderPath);

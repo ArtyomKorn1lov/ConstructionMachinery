@@ -65,24 +65,44 @@ export class AdvertEditTimeComponent implements OnInit {
     this.advertService.update(this.advert).subscribe(data => {
       if (data == "success") {
         console.log(data);
-        this.imageService.update(formData, this.advert.id).subscribe(data => {
-          if (data == "success") {
+        if (!this.imageService.oldImageFlag) {
+          this.imageService.remove(this.advert.images[0].id).subscribe(data => {
+            if (data == "success") {
+              console.log(data);
+              console.log(formData);
+              this.imageService.update(formData, this.advert.id).subscribe(data => {
+                if (data == "success") {
+                  console.log(data);
+                  alert(data);
+                  this.router.navigateByUrl(this.infoRoute);
+                  return;
+                }
+                alert("Ошибка загрузки картинки");
+                console.log(data);
+                this.range = this.formBuilder.group({
+                  start: new FormControl<Date | null>(null),
+                  end: new FormControl<Date | null>(null)
+                });
+                this.range.value.end = null;
+                this.startTime = "";
+                this.endTime = "";
+                return;
+              });
+              return;
+            }
+            alert("Ошибка удаления картинки");
             console.log(data);
-            alert(data);
-            this.router.navigateByUrl(this.infoRoute);
+            this.range = this.formBuilder.group({
+              start: new FormControl<Date | null>(null),
+              end: new FormControl<Date | null>(null)
+            });
+            this.range.value.end = null;
+            this.startTime = "";
+            this.endTime = "";
             return;
-          }
-          alert("Ошибка загрузки картинки");
-          console.log(data);
-          this.range = this.formBuilder.group({
-            start: new FormControl<Date | null>(null),
-            end: new FormControl<Date | null>(null)
           });
-          this.range.value.end = null;
-          this.startTime = "";
-          this.endTime = "";
           return;
-        });
+        }
         return;
       }
       alert("Ошибка создания объявления");
@@ -97,17 +117,32 @@ export class AdvertEditTimeComponent implements OnInit {
     });
   }
 
+  public backToPreviosPage(): void {
+    if (this.range.value.start != null || this.range.value.start != undefined)
+      this.advert.startDate = new Date(this.range.value.start);
+    if (this.range.value.end != null || this.range.value.end != undefined)
+      this.advert.endDate = new Date(this.range.value.end);
+    this.advert.startTime = parseInt(this.startTime);
+    this.advert.endTime = parseInt(this.endTime);
+    this.router.navigateByUrl(this.updateRoute);
+  }
+
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertUpdateFromService();
+    this.image = this.imageService.getImageFromService();
     if (this.advert.name == "")
       this.router.navigateByUrl(this.updateRoute);
+    console.log(this.advert.startDate);
+    console.log(this.advert.endDate);
     this.range = this.formBuilder.group({
       start: this.advert.startDate,
       end: this.advert.endDate
     });
     let start = this.advert.startTime.toString();
     let end = this.advert.endTime.toString();
+    this.startTime = start;
+    this.endTime = end;
   }
 
 }

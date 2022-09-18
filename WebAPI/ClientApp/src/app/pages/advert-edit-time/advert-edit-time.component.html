@@ -1,8 +1,8 @@
 <div class="flex-centered">
     <div class="content">
-        <div [routerLink]="['/advert-edit']" class="back-container">
+        <div (click)="backToPreviosPage()" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header">Новое объявление</h5>
+            <h5 class="medium-header">Редактирование объявление</h5>
         </div>
         <form class="content__elements">
             <h4 class="big-header">Выберете доступное время для аренды</h4>

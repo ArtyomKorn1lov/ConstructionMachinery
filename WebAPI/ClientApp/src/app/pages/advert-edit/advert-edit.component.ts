@@ -21,10 +21,6 @@ export class AdvertEditComponent implements OnInit {
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
 
   public uploadImage(): void {
-    this.imageService.remove(this.advertUpdate.images[0].id).subscribe(data => {
-      console.log(data);
-    });
-    this.advertUpdate.images = [];
     document.getElementById("SelectImage")?.click();
   }
 
@@ -53,7 +49,9 @@ export class AdvertEditComponent implements OnInit {
     if (this.image == null || this.image == undefined) {
       this.image = new File([""], "");
     }
-    this.advertUpdate.images = [];
+    if (this.image != null || this.image != undefined) {
+      this.imageService.oldImageFlag = false;
+    }
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
     this.imageService.setImageInService(this.image);
     this.router.navigateByUrl(this.targetRoute);
@@ -81,10 +79,10 @@ export class AdvertEditComponent implements OnInit {
       this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
       await this.advertService.getForUpdate(this.advertService.getIdFromLocalStorage()).subscribe(data => {
         this.advertUpdate = data;
+        this.imageService.oldImageFlag = true;
       });
     }
-    else
-      this.fillData(advert);
+    this.fillData(advert);
   }
 
 }

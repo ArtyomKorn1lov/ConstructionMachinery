@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ImageService {
 
+  public oldImageFlag: boolean = false;
   private imageCreate: File | undefined;
 
   constructor(private http: HttpClient) { }
@@ -26,7 +27,7 @@ export class ImageService {
   }
 
   public update(uploadImage: FormData, id: number): Observable<string> {
-    return this.http.put(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
+    return this.http.post(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
   }
 
   public remove(id: number): Observable<string> {

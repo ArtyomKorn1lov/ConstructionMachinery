@@ -2,6 +2,7 @@
     <div class="content">
         <div class="content__elements">
             <h5 class="big-header">Предлагаем в аренду следующие виды спецтехники:</h5>
+            <app-gallery></app-gallery>
             <div class="technique-type" *ngFor="let technique of techniqueObject.techniqueList">
                 <div class="technique-type__group">
                     <div (click)="search(technique.first_search)" class="technique-type__element">

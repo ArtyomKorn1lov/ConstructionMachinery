@@ -14,7 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
@@ -41,6 +40,7 @@ import { MyAdvertsConfirmListComponent } from './pages/my-adverts-confirm-list/m
 import { AdvertRequestComponent } from './components/advert-request/advert-request.component';
 import { AdvertEditComponent } from './pages/advert-edit/advert-edit.component';
 import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-time.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +71,7 @@ import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-ti
     AdvertRequestComponent,
     AdvertEditComponent,
     AdvertEditTimeComponent,
+    GalleryComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,9 +83,6 @@ import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-ti
     ReactiveFormsModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
     NgxMaterialTimepickerModule,
     HttpClientModule,
     AppRoutingModule,

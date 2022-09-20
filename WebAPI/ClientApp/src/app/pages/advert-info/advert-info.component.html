@@ -4,6 +4,7 @@
             <img src="assets/back-cursor.png">
             <h4 class="medium-header">Информация об объявлении</h4>
         </div>
+        <app-gallery [images]="advert.images"></app-gallery>
         <img class="technique-image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
         <div class="content__elements">
             <div class="title-info">

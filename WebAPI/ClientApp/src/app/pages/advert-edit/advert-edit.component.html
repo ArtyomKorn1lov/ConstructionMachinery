@@ -25,7 +25,7 @@
                     <img (click)="removeFromDownloadImages(image)" *ngIf="image.path != ''" src="{{image.path}}" class="photo-element" alt="Изображение строительной техники">
                 </div>
                 <div *ngFor="let fileBase64 of filesBase64" class="photo__list"> 
-                    <img (click)="removeFromDUploadImages(fileBase64)" src="{{fileBase64}}" class="photo-element" alt="Изображение строительной техники">
+                    <img (click)="removeFromUploadImages(fileBase64)" src="{{fileBase64}}" class="photo-element" alt="Изображение строительной техники">
                 </div>
                 <div (click)="uploadImage()" class="photo-download">
                     <img src="assets/photo.png">

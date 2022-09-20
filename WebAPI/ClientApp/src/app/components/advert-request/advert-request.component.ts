@@ -50,6 +50,13 @@ export class AdvertRequestComponent implements OnInit {
     }
   }
 
+  public async changeFlagState(length: number, firstCount: number): Promise<void> {
+    if(this.adverts.length < this.count) {
+      this.scrollFlag = false;
+      this.flagState();
+    }
+  }
+
   public flagState(): void {
     if(this.scrollFlag == false) {
       this.count = 0;
@@ -60,13 +67,16 @@ export class AdvertRequestComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
     this.requestService.clearAdvertIdLocalStorage();
+    const firstCount = this.count;
     if (this.page == 'in')
-      await this.advertService.getForRequestCustomer(this.count).subscribe(data => {
+      await this.advertService.getForRequestCustomer(this.count).subscribe(async data => {
         this.adverts = data;
+        await this.changeFlagState(this.adverts.length, firstCount);
       });
     if (this.page == 'out')
-      await this.advertService.getForRequestLandlord(this.count).subscribe(data => {
+      await this.advertService.getForRequestLandlord(this.count).subscribe(async data => {
         this.adverts = data;
+        await this.changeFlagState(this.adverts.length, firstCount);
       });
     this.count += 10;
   }

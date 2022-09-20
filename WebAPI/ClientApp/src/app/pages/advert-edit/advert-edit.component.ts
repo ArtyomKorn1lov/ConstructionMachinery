@@ -41,11 +41,11 @@ export class AdvertEditComponent implements OnInit {
       this.advertUpdate.images[index].path = "";
   }
 
-  public removeFromDUploadImages(fileBase64: string): void {
+  public removeFromUploadImages(fileBase64: string): void {
     let index = this.filesBase64.indexOf(fileBase64);
     if(index != -1) {
-      this.filesBase64.slice(index, 1);
-      this.images.slice(index, 1);
+      this.filesBase64.splice(index, 1);
+      this.images.splice(index, 1);
     }
   }
 
@@ -73,9 +73,7 @@ export class AdvertEditComponent implements OnInit {
   }
 
   public fillData(advert: AdvertModelUpdate): void {
-    this.advertUpdate.name = advert.name;
-    this.advertUpdate.description = advert.description;
-    this.advertUpdate.price = advert.price;
+    this.advertUpdate = advert;
     this.images = this.imageService.getImagesFromService();
     const reader = new FileReader();
     for (let count = 0; count < this.images.length; count++) {

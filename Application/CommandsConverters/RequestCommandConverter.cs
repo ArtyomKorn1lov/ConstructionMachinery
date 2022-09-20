@@ -83,7 +83,7 @@ namespace Application.CommandsConverters
             };
         }
 
-        public static AvailabilityRequestListCommand EntityConvertToAvailabilityRequestListCommand(AvailabilityRequest request, string advertName, List<Image> images)
+        public static AvailabilityRequestListCommand EntityConvertToAvailabilityRequestListCommand(AvailabilityRequest request, DateTime date, string advertName, List<Image> images)
         {
             if (request == null)
                 return null;
@@ -91,6 +91,7 @@ namespace Application.CommandsConverters
             {
                 Id = request.Id,
                 Name = advertName,
+                Date = date,
                 Images = images.Select(image => new ImageCommand
                 {
                     Id = image.Id,

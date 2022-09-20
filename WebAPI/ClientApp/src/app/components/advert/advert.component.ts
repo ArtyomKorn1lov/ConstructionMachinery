@@ -23,6 +23,8 @@ export class AdvertComponent implements OnInit {
 
   public async sortByParam(param: string): Promise<void> {
     if (param == "all") {
+      this.count = 10;
+      this.scrollFlag = true;
       await this.ngOnInit();
       return;
     }
@@ -92,6 +94,13 @@ export class AdvertComponent implements OnInit {
     }
   };
 
+  public async changeFlagState(length: number, firstCount: number): Promise<void> {
+    if(this.advertList.length < firstCount) {
+      this.scrollFlag = false;
+      this.flagState();
+    }
+  }
+
   public flagState(): void {
     if(this.scrollFlag == false) {
       this.count = 0;
@@ -104,22 +113,26 @@ export class AdvertComponent implements OnInit {
     this.advertService.clearLocalStorage();
     this.advertService.setAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([]);
+    const firstCount = this.count;
     if (this.page == 'list') {
       await this.route.queryParams.subscribe(async params => {
         const searchString = params['search'];
         if (searchString == undefined)
-          await this.advertService.getAll(this.count).subscribe(data => {
+          await this.advertService.getAll(this.count).subscribe(async data => {
             this.advertList = data;
+            await this.changeFlagState(this.advertList.length, firstCount);
           });
         else
-          await this.advertService.getByName(searchString, this.count).subscribe(data => {
+          await this.advertService.getByName(searchString, this.count).subscribe(async data => {
             this.advertList = data;
+            await this.changeFlagState(this.advertList.length, firstCount);
           });
       });
     }
     if (this.page == 'my')
-      await this.advertService.getByUser(this.count).subscribe(data => {
+      await this.advertService.getByUser(this.count).subscribe(async data => {
         this.advertList = data;
+        await this.changeFlagState(this.advertList.length, firstCount);
       });
     this.count += 10;
   }

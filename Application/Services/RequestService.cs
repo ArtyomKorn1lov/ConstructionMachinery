@@ -136,7 +136,7 @@ namespace Application.Services
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
                 foreach (AvailabilityRequest request in requests)
                 {
-                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request,
+                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request, request.AvailableTimes[0].Date,
                          await GetAdvertNameById(id), await _imageRepository.GetByAdvertId(id)));
                 }
                 return commands;
@@ -157,7 +157,7 @@ namespace Application.Services
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
                 foreach (AvailabilityRequest request in requests)
                 {
-                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request,
+                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request, request.AvailableTimes[0].Date,
                         await GetAdvertNameById(id), await _imageRepository.GetByAdvertId(id)));
                 }
                 return commands;

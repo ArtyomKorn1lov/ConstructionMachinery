@@ -58,6 +58,14 @@ export class AdvertCreateComponent implements OnInit {
     return;
   }
 
+  public removeFromUploadImages(fileBase64: string): void {
+    let index = this.filesBase64.indexOf(fileBase64);
+    if(index != -1) {
+      this.filesBase64.splice(index, 1);
+      this.images.splice(index, 1);
+    }
+  }
+
   public fillData(advert: AdvertModelCreate): void {
     this.name = advert.name;
     this.description = advert.description;

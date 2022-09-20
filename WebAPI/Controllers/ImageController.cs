@@ -24,8 +24,8 @@ namespace WebAPI.Controllers
         private IImageService _imageService;
         private IAdvertService _advertService;
         private IWebHostEnvironment _appEnvironment;
-        private string _currentDirectory = "/Files/";
-        private string _serverDirectory = "https://localhost:5001";
+        private const string _currentDirectory = "/Files/";
+        private const string _serverDirectory = "https://localhost:5001";
 
         public ImageController(IUnitOfWork unitOfWork, IImageService imageService, IWebHostEnvironment appEnvironment, IAdvertService advertService)
         {
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpPost("update/{id}")]
+        [HttpPut("update/{id}")]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> UpdateImage(int id)
         {

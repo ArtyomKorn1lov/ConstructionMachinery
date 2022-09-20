@@ -132,6 +132,8 @@ export class AdvertEditTimeComponent implements OnInit {
   }
 
   public backToPreviosPage(): void {
+    console.log(this.range.value.start);
+    console.log(this.range.value.end);
     if (this.range.value.start != null || this.range.value.start != undefined)
       this.advert.startDate = new Date(this.range.value.start);
     if (this.range.value.end != null || this.range.value.end != undefined)
@@ -151,10 +153,10 @@ export class AdvertEditTimeComponent implements OnInit {
       start: this.advert.startDate,
       end: this.advert.endDate
     });
-    let start = this.advert.startTime.toString();
-    let end = this.advert.endTime.toString();
-    this.startTime = start;
-    this.endTime = end;
+    //let start = this.advert.startTime.toString();
+    //let end = this.advert.endTime.toString();
+    //this.startTime = start;
+    //this.endTime = end;
   }
 
 }

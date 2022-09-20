@@ -34,16 +34,31 @@ export class RequestComponent implements OnInit {
       if (this.page == 'in')
         await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
           this.requests = data;
+          this.dateConvert();
           this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
           this.flagState();
         });
       if (this.page == 'out')
         await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
           this.requests = data;
+          this.dateConvert();
           this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
           this.flagState();
         });
       this.count++;
+    }
+  }
+
+  public dateConvert(): void {
+    for(let count = 0; count < this.requests.length; count++) {
+      this.requests[count].date = new Date(this.requests[count].date);
+    }
+  }
+
+  public async changeFlagState(length: number, firstCount: number): Promise<void> {
+    if(this.requests.length < this.count) {
+      this.scrollFlag = false;
+      this.flagState();
     }
   }
 
@@ -57,13 +72,18 @@ export class RequestComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
     this.requestService.clearIdLocalStorage();
+    const firstCount = this.count;
     if (this.page == 'in')
-      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
+      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(async data => {
         this.requests = data;
+        await this.changeFlagState(this.requests.length, firstCount);
+        this.dateConvert();
       });
     if (this.page == 'out')
-      await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
+      await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(async data => {
         this.requests = data;
+        await this.changeFlagState(this.requests.length, firstCount);
+        this.dateConvert();
       });
   }
 

@@ -25,7 +25,7 @@ export class ImageService {
   }
 
   public update(uploadImage: FormData, id: number): Observable<string> {
-    return this.http.post(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
+    return this.http.put(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
   }
 
   public remove(imagesId: number[]): Observable<string> {

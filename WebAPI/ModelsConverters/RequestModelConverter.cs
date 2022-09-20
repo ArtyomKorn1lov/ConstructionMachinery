@@ -97,6 +97,7 @@ namespace WebAPI.ModelsConverters
             {
                 Id = command.Id,
                 Name = command.Name,
+                Date = command.Date,
                 Images = command.Images.Select(image => new ImageModel
                 {
                     Id = image.Id,

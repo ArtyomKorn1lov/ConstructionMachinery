@@ -20,8 +20,8 @@
     padding: 15px;
     opacity: 1.0;
     border: 2px solid rgba(255, 255, 255, 0.5);
-}
 
-.select-filter__option {
-    opacity: 1.0;
+    &__option {
+        opacity: 1.0;
+    }
 }

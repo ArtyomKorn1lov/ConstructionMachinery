@@ -4,8 +4,8 @@
             <img src="assets/back-cursor.png">
             <h4 class="medium-header">Информация об объявлении</h4>
         </div>
-        <app-gallery [images]="advert.images"></app-gallery>
-        <img class="technique-image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
+        <app-gallery [dotCount]="6" [images]="advert.images"></app-gallery>
+        <!--<img class="technique-image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">-->
         <div class="content__elements">
             <div class="title-info">
                 <h4 class="big-header">{{advert.name}}</h4>
@@ -24,11 +24,11 @@
                     <h5 class="medium-header">{{day.day.getDate()}}.{{day.day.getMonth()}}.{{day.day.getFullYear()}}</h5>
                     <div class="time-list">
                         <div *ngFor="let time of day.times">
-                            <p *ngIf="time.availabilityStateId == 1" class="primary-text" style="color: #44FF44; margin-left: 15px;">
+                            <p *ngIf="time.availabilityStateId == 1" class="primary-text -green">
                                 {{time.date.getHours()}}:00</p>
-                            <p *ngIf="time.availabilityStateId == 2" class="primary-text" style="color: #FF4444; margin-left: 15px;">
+                            <p *ngIf="time.availabilityStateId == 2" class="primary-text -red">
                                 {{time.date.getHours()}}:00</p>
-                            <p *ngIf="time.availabilityStateId == 3" class="primary-text" style="color: #FFFF44; margin-left: 15px;">
+                            <p *ngIf="time.availabilityStateId == 3" class="primary-text -yellow">
                                 {{time.date.getHours()}}:00</p>
                         </div>
                     </div>

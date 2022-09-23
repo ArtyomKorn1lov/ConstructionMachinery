@@ -1,10 +1,19 @@
 .gallery {
-    background-color: var(--color-primary-text);
     display: flex;
     position: relative;
     justify-content: center;
+    background-color: var(--color-primary-text);
+    &__list {
+        position: absolute;
+        display: flex;
+        bottom: 12px;
+        z-index: 1;
+    }
+    &__element {
+        display: flex;
+    }
     &__dot {
-        background-color: var(--color-background);
+        background-color: var(--color-option);
         border-radius: 8px;
         height: 12px;
         width: 12px;
@@ -13,7 +22,7 @@
             opacity: 1;
         }
         &.-inactive {
-            opacity: .4;
+            opacity: .6;
         }
     }
     &::after {

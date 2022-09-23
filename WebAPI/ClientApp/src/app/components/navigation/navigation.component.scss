@@ -2,18 +2,18 @@
     display: flex;
     flex-direction: column;
     margin-top: 32px;
-}
 
-.navigation__hyperlink {
-    margin-top: 16px;
-    border-radius: 5px;
-}
+    &__hyperlink {
+        margin-top: 16px;
+        border-radius: 5px;
+    }
 
-.navigation__vector {
-    min-width: 233px;
-    margin-top: 16px;
-    border: 2px solid rgba(22, 22, 22, 0.3);
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    &__vector {
+        min-width: 233px;
+        margin-top: 16px;
+        border: 2px solid rgba(22, 22, 22, 0.3);
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    }
 }
 
 .forgot-password {

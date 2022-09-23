@@ -20,13 +20,13 @@
             <h5 class="small-header">Описание объявления</h5>
             <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание"></textarea>
             <h5 class="small-header">Добавьте фотографию</h5>
-            <div class="photo-container">
+            <div class="photo">
                 <div *ngFor="let fileBase64 of filesBase64" class="photo__list">
-                    <img (click)="removeFromUploadImages(fileBase64)" src="{{fileBase64}}" class="photo-element" alt="Изображение строительной техники">
+                    <img (click)="removeFromUploadImages(fileBase64)" src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
                 </div>
-                <div (click)="uploadImage()" class="photo-download">
+                <div (click)="uploadImage()" class="photo__download">
                     <img src="assets/photo.png">
-                    <p class="primary-text">Добавить</p>
+                    <p class="primary-text -download">Добавить</p>
                 </div>
             </div>
             <input (change)="download($event)" id="SelectImage" type="file" accept="image/*">

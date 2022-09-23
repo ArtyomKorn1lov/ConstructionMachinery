@@ -2,25 +2,25 @@
     display: flex;
     flex-direction: column;
     margin-top: 10px;
+
+    &__group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 23px;
+    }
+
+    &__element {
+        display: flex;
+        flex-direction: column;
+        width: 140px;
+        padding: 18px;
+        border-radius: 15px;
+        box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.35);
+        background: #E8E8E8;
+    }
 }
 
-.technique-type__group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 23px;
-}
-
-.technique-type__element {
-    display: flex;
-    flex-direction: column;
-    width: 140px;
-    padding: 18px;
-    border-radius: 15px;
-    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.35);
-    background: #E8E8E8;
-}
-
-.technique-type__element .small-header {
+.small-header.-type {
     text-align: center;
     font-weight: 600;
     color: var(--color-secondary-button);

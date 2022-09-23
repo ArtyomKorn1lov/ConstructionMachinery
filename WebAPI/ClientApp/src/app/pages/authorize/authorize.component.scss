@@ -1,17 +1,17 @@
 .social-network {
     display: flex;
     justify-content: center;
-}
 
-.social-network__element {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 27px;
-    padding: 11px;
-    border: 2px solid var(--color-primary-text);
-    border-radius: 5px;
+    &__element {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 27px;
+        padding: 11px;
+        border: 2px solid var(--color-primary-text);
+        border-radius: 5px;
+    }
 }
 
 .small-header {

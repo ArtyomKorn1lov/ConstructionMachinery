@@ -8,7 +8,7 @@
     margin-top: 19px;
 }
 
-.primary--authorize {
+.primary-authorize {
     margin-top: 31px;
 }
 
@@ -26,4 +26,20 @@
 
 .small-header {
     margin-top: 12px;
+}
+
+.primary-text {
+    margin-left: 12px;
+
+    &.-yellow {
+        color: #FFFF44;
+    }
+
+    &.-red {
+        color: #FF4444;
+    }
+
+    &.-green {
+        color: #44FF44;
+    }
 }

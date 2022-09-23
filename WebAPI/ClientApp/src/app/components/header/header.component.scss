@@ -3,45 +3,41 @@
     flex-direction: column;
     padding: 19px 28px;
     background: var(--color-secondary-button);
-}
 
-.header--sidenav {
-    padding: 20px;
-}
+    &__logo {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+    
+    &__search {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        background: var(--color-primary-text);
+    }
 
-.header__logo {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-}
+    &__search-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        order: -1;
+    }
 
-.header__search {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background: var(--color-primary-text);
-}
-
-.header__search-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    order: -1;
-}
-
-.header__search-input {
-    margin-left: 20px;
-    width: 100%;
-    height: 30px;
-    font-size: 16px;
-    border: 0;
-    color: var(--color-secondary-button);
-    background: transparent;
-    &.-hidden {
-        display: none;
+    &__search-input {
+        margin-left: 20px;
+        width: 100%;
+        height: 30px;
+        font-size: 16px;
+        border: 0;
+        color: var(--color-secondary-button);
+        background: transparent;
+        &.-hidden {
+            display: none;
+        }
     }
 }
 

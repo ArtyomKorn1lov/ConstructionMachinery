@@ -24,10 +24,10 @@
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     padding: 0 0 8px 0;
-}
 
-.date-picker__element {
-    color: var(--color-primary-text);
+    &__element {
+        color: var(--color-primary-text);
+    }
 }
 
 .date-picker + .small-header {

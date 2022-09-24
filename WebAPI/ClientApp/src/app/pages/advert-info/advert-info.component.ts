@@ -16,7 +16,7 @@ import { ImageService } from 'src/app/services/image.service';
 })
 export class AdvertInfoComponent implements OnInit {
 
-  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [ new ImageModel(0, "", "", 0) ], []);
+  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [], []);
   public days: AvailableDayModel[] = [];
   public month: number = 0;
   public year: number = 0;

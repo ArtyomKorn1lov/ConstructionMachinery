@@ -1,9 +1,8 @@
 <div class="gallery">
-    <img (click)="nexImage()" class="technique-image" src="{{images[index].path}}" alt="Изображение строительной техники">
+    <img (click)="nexImage()" class="technique-image" src="{{images[activeIndex].path}}" alt="Изображение строительной техники">
     <div class="gallery__list">
-        <div class="gallery__element" *ngFor="let dot of dotArray">
-            <div *ngIf="dot == false" class="gallery__dot -inactive"></div>
-            <div *ngIf="dot == true" class="gallery__dot -active"></div>
+        <div class="gallery__element" *ngFor="let image of images; let i = index">
+            <div [ngClass]="{'-active': i == activeIndex }" class="gallery__dot"></div>
         </div>
     </div>
 </div>

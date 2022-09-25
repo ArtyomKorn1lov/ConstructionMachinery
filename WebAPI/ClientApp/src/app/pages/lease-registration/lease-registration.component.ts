@@ -35,7 +35,6 @@ export class LeaseRegistrationComponent implements OnInit {
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
-    console.log(this.request);
     this.requestService.create(this.request).subscribe(data => {
       if (data == "success") {
         console.log(data);

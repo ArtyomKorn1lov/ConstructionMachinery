@@ -1,10 +1,10 @@
 <p class="micro-text">Показано {{adverts.length}} объявлений</p>
-<article class="request" *ngFor="let advert of adverts">
+<article class="request" *ngFor="let advert of adverts; let i = index">
     <div class="request__line"></div>
     <div class="request__content">
         <img class="request__image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
         <div class="request__text">
-            <p class="primary-text">Объявление №{{advert.id}}</p>
+            <p class="primary-text">Объявление №{{i+1}}</p>
             <h5 class="medium-header -request">{{advert.name}}</h5>
         </div>
     </div>

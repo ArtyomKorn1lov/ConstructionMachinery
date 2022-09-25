@@ -1,10 +1,10 @@
 <p class="micro-text">Показано {{requests.length}} заявок</p>
-<article class="request" *ngFor="let request of requests">
+<article class="request" *ngFor="let request of requests; let i = index">
     <div class="request__line"></div>
     <div class="request__content">
         <img class="request__image" src="{{request.images[0].path}}" alt="Изображение строительной техники">
         <div class="request__text">
-            <p class="primary-text">Заявка №{{request.id}}</p>
+            <p class="primary-text">Заявка №{{i+1}}</p>
             <h5 class="medium-header">{{request.name}}</h5>
             <h6 class="small-header">{{request.date.getMonth()}}.{{request.date.getDate()}}.{{request.date.getFullYear()}} в {{request.date.getHours()}}:00</h6>
         </div>

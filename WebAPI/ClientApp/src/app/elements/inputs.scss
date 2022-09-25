@@ -24,6 +24,10 @@
     background: var(--color-primary-button);
 }
 
+.primary-authorize:active {
+    background: var(--color-hover-primary);
+}
+
 .primary-authorize .medium-header {
     text-align: center;
     font-weight: 600;

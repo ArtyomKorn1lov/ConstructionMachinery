@@ -1,7 +1,7 @@
 <div class="flex-centered">
     <div class="content">
         <form class="content__elements">
-            <h4 class="big-header">Войти в личный кабинет</h4>
+            <h4 class="big-header -content">Войти в личный кабинет</h4>
             <h5 class="small-header">Email пользователя</h5>
             <input #slectorEmail="ngModel" [(ngModel)]="email" name="email" class="authorize-input" type="email" placeholder="Email" required>
             <div class="valid-container" *ngIf="slectorEmail.invalid && slectorEmail.touched">

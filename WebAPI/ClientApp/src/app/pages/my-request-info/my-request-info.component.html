@@ -2,49 +2,49 @@
     <div class="content">
         <div [routerLink]="['/advert-request/my-requests']" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header">Исходящая заявка</h5>
+            <h5 class="medium-header -back">Исходящая заявка</h5>
         </div>
-        <h4 class="big-header">Заявка №{{request.id}}</h4>
+        <h4 class="big-header -content">Заявка №{{request.id}}</h4>
         <img class="technique-image" src="{{request.images[0].path}}" alt="Изображение строительной техники">
         <div class="content__elements">
             <div class="title-info">
                 <h4 class="big-header">{{request.advertName}}</h4>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header">Арендодатель:</h5>
+                        <h5 class="medium-header -title">Арендодатель:</h5>
                     </div>
-                    <h5 class="medium-header">{{request.landlordName}}</h5>
+                    <h5 class="medium-header -title">{{request.landlordName}}</h5>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header">Время:</h5>
+                        <h5 class="medium-header -title">Время:</h5>
                     </div>
-                    <h5 class="medium-header">{{date.getMonth()}}.{{date.getDate()}}.{{date.getFullYear()}} в {{date.getHours()}}:00</h5>
+                    <h5 class="medium-header -title">{{date.getMonth()}}.{{date.getDate()}}.{{date.getFullYear()}} в {{date.getHours()}}:00</h5>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header">Состояние заявки:</h5>
+                        <h5 class="medium-header -title">Состояние заявки:</h5>
                     </div>
-                    <h5 *ngIf="request.requestStateId == 3" class="medium-header -yellow">Ожидается подтверждение</h5>
-                    <h5 *ngIf="request.requestStateId == 2" class="medium-header -red">Отказано</h5>
-                    <h5 *ngIf="request.requestStateId == 1" class="medium-header -green">Подтверждено</h5>
+                    <h5 *ngIf="request.requestStateId == 3" class="medium-header -title -yellow">Ожидается подтверждение</h5>
+                    <h5 *ngIf="request.requestStateId == 2" class="medium-header -title -red">Отказано</h5>
+                    <h5 *ngIf="request.requestStateId == 1" class="medium-header -title -green">Подтверждено</h5>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header">Адрес доставки:</h5>
+                        <h5 class="medium-header -title">Адрес доставки:</h5>
                     </div>
-                    <h5 class="medium-header">{{request.address}}</h5>
+                    <h5 class="medium-header -title">{{request.address}}</h5>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header">Телефон:</h5>
+                        <h5 class="medium-header -title">Телефон:</h5>
                     </div>
-                    <h5 class="medium-header">{{request.phone}}</h5>
+                    <h5 class="medium-header -title">{{request.phone}}</h5>
                 </div>
             </div>
             <div class="vector"></div>
             <button (click)="cancel()" class="edit-button">
-                <h5 class="medium-header">Отменить заявку</h5>
+                <h5 class="medium-header -title">Отменить заявку</h5>
             </button>
         </div>
     </div>

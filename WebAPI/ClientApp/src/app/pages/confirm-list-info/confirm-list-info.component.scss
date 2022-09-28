@@ -1,6 +1,10 @@
 .big-header {
     margin-top: 12px;
     text-align: center;
+
+    &.-content {
+        margin-bottom: 12px;
+    }
 }
 
 .big-header {

@@ -53,7 +53,7 @@ export class AdvertCreateComponent implements OnInit {
     }
     let advert = new AdvertModelCreate(this.name, this.description, this.price, 0, new Date(), new Date(), 0, 0);
     this.advertService.setAdvertCreateInService(advert);
-    this.imageService.setImagesInService(this.images);
+    this.imageService.setImagesInService(this.images, this.filesBase64);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
@@ -66,19 +66,12 @@ export class AdvertCreateComponent implements OnInit {
     }
   }
 
-  public fillData(advert: AdvertModelCreate): void {
+  public async fillData(advert: AdvertModelCreate): Promise<void> {
     this.name = advert.name;
     this.description = advert.description;
     this.price = advert.price;
     this.images = this.imageService.getImagesFromService();
-    const reader = new FileReader();
-    for (let count = 0; count < this.images.length; count++) {
-      reader.readAsDataURL(this.images[count]);
-      reader.onload = () => {
-        if (reader.result != null)
-          this.filesBase64.push(reader.result.toString());
-      }
-    }
+    this.filesBase64 = this.imageService.getBases64FromService();
   }
 
   public async ngOnInit(): Promise<void> {
@@ -88,7 +81,7 @@ export class AdvertCreateComponent implements OnInit {
       this.advertService.setAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
       return;
     }
-    this.fillData(advert);
+    await this.fillData(advert);
   }
 
 }

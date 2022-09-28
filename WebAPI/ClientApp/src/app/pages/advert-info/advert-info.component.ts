@@ -134,7 +134,7 @@ export class AdvertInfoComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
-    this.imageService.setImagesInService([]);
+    this.imageService.setImagesInService([], []);
     this.page = this.advertService.getPageFromLocalStorage();
     await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {
       this.advert = data;

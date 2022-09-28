@@ -14,7 +14,7 @@
             <h4 class="small-header">Выберете время заказа</h4>
             <div class="select-container">
                 <select class="select-filter" [(ngModel)]="currentTimeId" name="currentTimeId">
-                    <option class="select-filter__option" *ngFor="let time of times" ngValue={{time.id}}>{{time.date.getMonth()}}.{{time.date.getDate()}}.{{time.date.getFullYear()}} в {{time.date.getHours()}}:00</option>
+                    <option class="select-filter__option" *ngFor="let time of times" ngValue={{time.id}}>{{time.date.getDate()}}.{{time.date.getMonth()}}.{{time.date.getFullYear()}} в {{time.date.getHours()}}:00</option>
                 </select>
             </div>
             <button (click)="createRequest()" class="primary-authorize">

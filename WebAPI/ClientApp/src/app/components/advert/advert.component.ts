@@ -112,7 +112,7 @@ export class AdvertComponent implements OnInit {
     window.addEventListener('scroll', this.scrollEvent, true);
     this.advertService.clearLocalStorage();
     this.advertService.setAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
-    this.imageService.setImagesInService([]);
+    this.imageService.setImagesInService([], []);
     const firstCount = this.count;
     if (this.page == 'list') {
       await this.route.queryParams.subscribe(async params => {

@@ -4,8 +4,8 @@
             <img src="assets/back-cursor.png">
             <h5 class="medium-header -back">Исходящая заявка</h5>
         </div>
-        <h4 class="big-header -content">Заявка №{{request.id}}</h4>
-        <img class="technique-image" src="{{request.images[0].path}}" alt="Изображение строительной техники">
+        <h4 class="big-header -content">Заявка на аренду</h4>
+        <app-gallery *ngIf="request.images.length != 0" [images]="request.images"></app-gallery>
         <div class="content__elements">
             <div class="title-info">
                 <h4 class="big-header">{{request.advertName}}</h4>

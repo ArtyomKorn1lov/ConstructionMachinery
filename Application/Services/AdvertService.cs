@@ -100,6 +100,7 @@ namespace Application.Services
 
         public AdvertCommandUpdate FillRangeTime(AdvertCommandUpdate command, Advert advert)
         {
+            advert.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
             command.StartDate = advert.AvailableTimes[0].Date;
             command.EndDate = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date;
             string start = advert.AvailableTimes[0].Date.ToString("HH");

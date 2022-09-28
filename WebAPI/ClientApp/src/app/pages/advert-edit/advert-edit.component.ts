@@ -67,7 +67,7 @@ export class AdvertEditComponent implements OnInit {
       this.imageService.oldImageFlag = false;
     }
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
-    this.imageService.setImagesInService(this.images);
+    this.imageService.setImagesInService(this.images, this.filesBase64);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }

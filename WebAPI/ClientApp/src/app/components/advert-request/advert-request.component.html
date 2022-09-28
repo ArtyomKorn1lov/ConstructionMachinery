@@ -2,7 +2,8 @@
 <article class="request" *ngFor="let advert of adverts; let i = index">
     <div class="request__line"></div>
     <div class="request__content">
-        <img class="request__image" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
+        <img class="request__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
+        <img class="request__image" *ngIf="advert.images.length == 0" src="assets/default.jpg" alt="Изображение строительной техники">
         <div class="request__text">
             <p class="primary-text">Объявление №{{i+1}}</p>
             <h5 class="medium-header -request">{{advert.name}}</h5>

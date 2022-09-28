@@ -131,18 +131,6 @@ export class AdvertEditTimeComponent implements OnInit {
     });
   }
 
-  public backToPreviosPage(): void {
-    console.log(this.range.value.start);
-    console.log(this.range.value.end);
-    if (this.range.value.start != null || this.range.value.start != undefined)
-      this.advert.startDate = new Date(this.range.value.start);
-    if (this.range.value.end != null || this.range.value.end != undefined)
-      this.advert.endDate = new Date(this.range.value.end);
-    this.advert.startTime = parseInt(this.startTime);
-    this.advert.endTime = parseInt(this.endTime);
-    this.router.navigateByUrl(this.updateRoute);
-  }
-
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertUpdateFromService();
@@ -153,10 +141,8 @@ export class AdvertEditTimeComponent implements OnInit {
       start: this.advert.startDate,
       end: this.advert.endDate
     });
-    //let start = this.advert.startTime.toString();
-    //let end = this.advert.endTime.toString();
-    //this.startTime = start;
-    //this.endTime = end;
+    this.startTime = this.advert.startTime.toString()+":00";
+    this.endTime = this.advert.endTime.toString()+":00";
   }
 
 }

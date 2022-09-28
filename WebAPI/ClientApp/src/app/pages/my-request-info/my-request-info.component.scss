@@ -2,6 +2,10 @@
     margin-top: 12px;
     text-align: center;
     color: var(--color-primary-button);
+
+    &.-content {
+        margin-bottom: 12px;
+    }
 }
 
 .vector {

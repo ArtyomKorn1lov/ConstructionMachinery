@@ -4,7 +4,7 @@
             <img src="assets/back-cursor.png">
             <h4 class="medium-header -back">Информация об объявлении</h4>
         </div>
-        <app-gallery *ngIf="advert.images.length !== 0" [images]="advert.images"></app-gallery>
+        <app-gallery *ngIf="advert.images.length != 0" [images]="advert.images"></app-gallery>
         <div class="content__elements">
             <div class="title-info">
                 <h4 class="big-header">{{advert.name}}</h4>

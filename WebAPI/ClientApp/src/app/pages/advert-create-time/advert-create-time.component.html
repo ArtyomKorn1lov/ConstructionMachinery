@@ -17,10 +17,6 @@
                 <mat-hint class="date-picker__element">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-                <mat-error class="date-picker__element" *ngIf="range.controls.start.hasError('matStartDateInvalid')">
-                    Ошибка в начальной дате</mat-error>
-                <mat-error class="date-picker__element" *ngIf="range.controls.end.hasError('matEndDateInvalid')">Ошибка
-                    в конечной дате</mat-error>
             </mat-form-field>
             <h5 class="small-header">Время аренды</h5>
             <h5 class="small-header">Начальное время</h5>

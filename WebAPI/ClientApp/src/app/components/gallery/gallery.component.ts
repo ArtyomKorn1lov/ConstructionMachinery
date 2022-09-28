@@ -14,11 +14,21 @@ export class GalleryComponent implements OnInit {
   public posX?: number = 0;
 
   public nexImage(): void {
-    this.activeIndex++;
+    if (this.activeIndex === this.images.length - 1)
+    {
+      this.activeIndex = 0;
+    } else {
+      this.activeIndex++;
+    }
   }
 
   public backImage(): void {
-    this.activeIndex--;
+    if (this.activeIndex === 0)
+    {
+      this.activeIndex = this.images.length - 1;
+    } else {
+      this.activeIndex--;
+    }
   }
 
   public touchStart(event: TouchEvent): void {
@@ -40,22 +50,38 @@ export class GalleryComponent implements OnInit {
 
   public moveGallery(direction: string): void {
     if(direction == "right") {
-      let element = document.getElementById("gallery__container");
-      if(element && this.activeIndex != 0) {
-        let imageWidth = (element.scrollWidth ?? 0) / this.images.length;
-        let currentMargin = this.activeIndex * imageWidth;
-        element.style.left = (-currentMargin + imageWidth) + "px";
+      const images: HTMLCollectionOf<Element> = document.getElementsByClassName("gallery__image");
+      const nextIndex = this.activeIndex === 0 ? this.images.length - 1 : this.activeIndex - 1;
+
+      images[this.activeIndex].classList.add("-active");
+      images[nextIndex].classList.add("-active");
+      images[this.activeIndex].classList.add("-moving-right-from-center");
+      images[nextIndex].classList.add("-moving-right-from-left");
+
+      setTimeout(() => {
+        images[this.activeIndex].classList.remove("-moving-right-from-center");
+        images[nextIndex].classList.remove("-moving-right-from-left");
+
+        images[this.activeIndex].classList.remove("-active");
         this.backImage();
-      }
+      }, 1000);
     }
     if(direction == "left") {
-      let element = document.getElementById("gallery__container");
-      if(element && this.activeIndex != this.images.length - 1) {
-        let imageWidth = (element.scrollWidth ?? 0) / this.images.length;
-        let currentMargin = this.activeIndex * imageWidth;
-        element.style.left = (-currentMargin - imageWidth) + "px";
+      const images: HTMLCollectionOf<Element> = document.getElementsByClassName("gallery__image");
+      const nextIndex = this.activeIndex === this.images.length - 1 ? 0 : this.activeIndex + 1;
+
+      images[this.activeIndex].classList.add("-active");
+      images[nextIndex].classList.add("-active");
+      images[this.activeIndex].classList.add("-moving-left-from-center");
+      images[nextIndex].classList.add("-moving-left-from-right");
+
+      setTimeout(() => {
+        images[this.activeIndex].classList.remove("-moving-left-from-center");
+        images[nextIndex].classList.remove("-moving-left-from-right");
+
+        images[this.activeIndex].classList.remove("-active");
         this.nexImage();
-      }
+      }, 1000);
     }
   }
 

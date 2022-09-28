@@ -51,7 +51,7 @@ export class AdvertRequestComponent implements OnInit {
   }
 
   public async changeFlagState(length: number, firstCount: number): Promise<void> {
-    if(this.adverts.length < this.count) {
+    if(length < firstCount) {
       this.scrollFlag = false;
       this.flagState();
     }

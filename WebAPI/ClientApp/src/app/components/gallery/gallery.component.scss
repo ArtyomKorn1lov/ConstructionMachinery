@@ -7,24 +7,39 @@
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
     &__image-container {
-        display: flex;
-        flex-direction: row;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        width: 100%;
         overflow: hidden;
-        transition: 1s;
     }
 
     &__image {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        margin-top: 0 !important;
+        height: 300px;
         object-fit: cover;
-        position: relative;
-        margin-top: 15px;      
         box-shadow: 0, -5px 5px 0 var(--color-option-select) inset;
+        z-index: 0;
+
+        &.-active {
+            z-index: 1;
+        }
+
+        &.-moving-left-from-center {
+            animation: move-left-from-center 1s ease-in;
+        }
+
+        &.-moving-left-from-right {
+            animation: move-left-from-right 1s ease-in;
+        }
+
+        &.-moving-right-from-center {
+            animation: move-right-from-center 1s ease-in;
+        }
+
+        &.-moving-right-from-left {
+            animation: move-right-from-left 1s ease-in;
+        }
     }
 
     &__list {
@@ -64,4 +79,24 @@
 
 .technique-image {
     margin-top: 0;
+}
+
+@keyframes move-left-from-center {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+@keyframes move-left-from-right {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes move-right-from-center {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+@keyframes move-right-from-left {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
 }

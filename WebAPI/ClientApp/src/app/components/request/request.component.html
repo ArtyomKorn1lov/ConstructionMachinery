@@ -7,7 +7,7 @@
         <div class="request__text">
             <p class="primary-text">Заявка №{{i+1}}</p>
             <h5 class="medium-header">{{request.name}}</h5>
-            <h6 class="small-header">{{request.date.getMonth()}}.{{request.date.getDate()}}.{{request.date.getFullYear()}} в {{request.date.getHours()}}:00</h6>
+            <h6 class="small-header">{{request.date.getDate()}}.{{request.date.getMonth()}}.{{request.date.getFullYear()}} в {{request.date.getHours()}}:00</h6>
         </div>
     </div>
     <button (click)="navigateToInfo(request.id)" class="edit-button">

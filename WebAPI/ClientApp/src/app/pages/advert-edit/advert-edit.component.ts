@@ -16,6 +16,7 @@ export class AdvertEditComponent implements OnInit {
   public advertUpdate: AdvertModelUpdate = new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0);
   public images: File[] = [];
   public filesBase64: string[] = [];
+  public oldImageCount: number = 0;
   private targetRoute: string = "/advert-edit/time";
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
@@ -37,8 +38,10 @@ export class AdvertEditComponent implements OnInit {
 
   public removeFromDownloadImages(image: ImageModel): void {
     let index = this.advertUpdate.images.indexOf(image);
-    if(index != -1)
+    if(index != -1) {
       this.advertUpdate.images[index].path = "";
+      this.oldImageCount--;
+    }
   }
 
   public removeFromUploadImages(fileBase64: string): void {
@@ -68,6 +71,7 @@ export class AdvertEditComponent implements OnInit {
     }
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
     this.imageService.setImagesInService(this.images, this.filesBase64);
+    this.imageService.setImageCountInService(this.oldImageCount);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
@@ -75,14 +79,8 @@ export class AdvertEditComponent implements OnInit {
   public fillData(advert: AdvertModelUpdate): void {
     this.advertUpdate = advert;
     this.images = this.imageService.getImagesFromService();
-    const reader = new FileReader();
-    for (let count = 0; count < this.images.length; count++) {
-      reader.readAsDataURL(this.images[count]);
-      reader.onload = () => {
-        if (reader.result != null)
-          this.filesBase64.push(reader.result.toString());
-      }
-    }
+    this.filesBase64 = this.imageService.getBases64FromService();
+    this.oldImageCount = this.imageService.getOldImageCountFromService();
   }
 
   public async ngOnInit(): Promise<void> {
@@ -94,6 +92,8 @@ export class AdvertEditComponent implements OnInit {
       await this.advertService.getForUpdate(this.advertService.getIdFromLocalStorage()).subscribe(data => {
         this.advertUpdate = data;
         this.imageService.oldImageFlag = true;
+        this.oldImageCount = this.advertUpdate.images.length;
+        return;
       });
     }
     this.fillData(advert);

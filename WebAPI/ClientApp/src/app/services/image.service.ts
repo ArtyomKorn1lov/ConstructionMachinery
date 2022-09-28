@@ -10,6 +10,7 @@ export class ImageService {
   public oldImageFlag: boolean = false;
   private imagesCreate: File[] = [];
   private filesBase64: string[] = [];
+  private oldImageCount: number = 0;
 
   constructor(private http: HttpClient) { }
 
@@ -24,6 +25,14 @@ export class ImageService {
 
   public getBases64FromService(): string[] {
     return this.filesBase64;
+  }
+
+  public setImageCountInService(count: number): void {
+    this.oldImageCount = count;
+  }
+
+  public getOldImageCountFromService(): number {
+    return this.oldImageCount;
   }
 
   public create(uploadImages: FormData): Observable<string> {

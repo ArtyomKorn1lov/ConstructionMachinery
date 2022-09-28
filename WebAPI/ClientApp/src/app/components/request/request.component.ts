@@ -56,7 +56,6 @@ export class RequestComponent implements OnInit {
   }
 
   public async changeFlagState(length: number, firstCount: number): Promise<void> {
-    console.log(length, firstCount);
     if(length < firstCount) {
       this.scrollFlag = false;
       this.flagState();

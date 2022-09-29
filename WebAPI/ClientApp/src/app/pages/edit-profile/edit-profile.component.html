@@ -30,7 +30,7 @@
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
             <h5 class="small-header">Номер телефона</h5>
-            <input #slectorPhone="ngModel" [(ngModel)]="user.phone" name="phone" class="authorize-input" type="tel" placeholder="Телефон" pattern="2-[0-9]{3}-[0-9]{3}" required>
+            <input #slectorPhone="ngModel" [(ngModel)]="user.phone" name="phone" class="authorize-input" type="text" placeholder="Телефон" required>
             <div class="valid-container" *ngIf="slectorPhone.invalid && slectorPhone.touched">
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>

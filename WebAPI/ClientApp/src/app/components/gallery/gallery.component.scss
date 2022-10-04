@@ -1,102 +1,134 @@
 .gallery {
-    display: flex;
-    position: relative;
-    justify-content: center;
+  $timeoutDelay: 0.3s;
+
+  display: flex;
+  position: relative;
+  justify-content: center;
+  height: 300px;
+  background-color: var(--color-primary-text);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  &__images-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 300px;
+    object-fit: cover;
+    box-shadow: 0, -5px 5px 0 var(--color-option-select) inset;
+    z-index: 0;
+
+    &.-active {
+      z-index: 1;
+    }
+
+    &.-moving-left-from-center {
+      animation: move-left-from-center $timeoutDelay ease-in;
+    }
+
+    &.-moving-left-from-right {
+      animation: move-left-from-right $timeoutDelay ease-in;
+    }
+
+    &.-moving-right-from-center {
+      animation: move-right-from-center $timeoutDelay ease-in;
+    }
+
+    &.-moving-right-from-left {
+      animation: move-right-from-left $timeoutDelay ease-in;
+    }
+  }
+
+  &__dots {
+    position: absolute;
+    display: flex;
+    bottom: 12px;
+    z-index: 1;
+  }
+
+  &__dot {
+    height: 12px;
+    width: 12px;
+    margin-left: 8px;
+    border: 1px solid rgb(15, 15, 15, 1);
+    border-radius: 8px;
     background-color: var(--color-primary-text);
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
-    &__image-container {
-        width: 100%;
-        overflow: hidden;
+    &.-active {
+      background-color: var(--color-option-select);
     }
+  }
 
-    &__image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
-        box-shadow: 0, -5px 5px 0 var(--color-option-select) inset;
-        z-index: 0;
-
-        &.-active {
-            z-index: 1;
-        }
-
-        &.-moving-left-from-center {
-            animation: move-left-from-center 1s ease-in;
-        }
-
-        &.-moving-left-from-right {
-            animation: move-left-from-right 1s ease-in;
-        }
-
-        &.-moving-right-from-center {
-            animation: move-right-from-center 1s ease-in;
-        }
-
-        &.-moving-right-from-left {
-            animation: move-right-from-left 1s ease-in;
-        }
-    }
-
-    &__list {
-        position: absolute;
-        display: flex;
-        bottom: 12px;
-        z-index: 1;
-    }
-
-    &__element {
-        display: flex;
-    }
-
-    &__dot {
-        border: 1px solid rgb(15, 15, 15, 1);
-        border-radius: 8px;
-        height: 12px;
-        width: 12px;
-        margin-left: 8px;
-        background-color: var(--color-primary-text);
-
-        &.-active {
-            background-color: var(--color-option-select);
-        }
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 24px;
-        background: linear-gradient(0deg, rgba(0, 0, 0, .5) 0, rgba(0, 0, 0, .494) 8.1%, rgba(0, 0, 0, .476) 15.5%, rgba(0, 0, 0, .448) 22.5%, rgba(0, 0, 0, .412) 29%, rgba(0, 0, 0, .37) 35.3%, rgba(0, 0, 0, .324) 41.2%, rgba(0, 0, 0, .275) 47.1%, rgba(0, 0, 0, .225) 52.9%, rgba(0, 0, 0, .176) 58.8%, rgba(0, 0, 0, .13) 64.7%, rgba(0, 0, 0, .088) 71%, rgba(0, 0, 0, .052) 77.5%, rgba(0, 0, 0, .024) 84.5%, rgba(0, 0, 0, .006) 91.9%, transparent);
-    }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 24px;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.5) 0,
+      rgba(0, 0, 0, 0.494) 8.1%,
+      rgba(0, 0, 0, 0.476) 15.5%,
+      rgba(0, 0, 0, 0.448) 22.5%,
+      rgba(0, 0, 0, 0.412) 29%,
+      rgba(0, 0, 0, 0.37) 35.3%,
+      rgba(0, 0, 0, 0.324) 41.2%,
+      rgba(0, 0, 0, 0.275) 47.1%,
+      rgba(0, 0, 0, 0.225) 52.9%,
+      rgba(0, 0, 0, 0.176) 58.8%,
+      rgba(0, 0, 0, 0.13) 64.7%,
+      rgba(0, 0, 0, 0.088) 71%,
+      rgba(0, 0, 0, 0.052) 77.5%,
+      rgba(0, 0, 0, 0.024) 84.5%,
+      rgba(0, 0, 0, 0.006) 91.9%,
+      transparent
+    );
+  }
 }
 
 .technique-image {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 @keyframes move-left-from-center {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 @keyframes move-left-from-right {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes move-right-from-center {
-    from { transform: translateX(0); }
-    to { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes move-right-from-left {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

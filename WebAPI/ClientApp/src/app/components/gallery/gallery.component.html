@@ -1,11 +1,20 @@
 <div class="gallery">
-    <div id="gallery__container" class="gallery__image-container">
-        <img (touchstart)="touchStart($event)" (touchend)="touchEnd($event)" class="gallery__image" [ngClass]="{'-active': isFirst}"
-        *ngFor="let image of images; first as isFirst" src="{{image.path}}" alt="Изображение строительной техники">
-    </div>
-    <div *ngIf="images.length > 1" class="gallery__list">
-        <div class="gallery__element" *ngFor="let image of images; let i = index">
-            <div [ngClass]="{'-active': i == activeIndex }" class="gallery__dot"></div>
-        </div>
-    </div>
+  <div class="gallery__images-container">
+    <img
+      class="gallery__image"
+      (touchstart)="touchStart($event)"
+      (touchend)="touchEnd($event)"
+      [ngClass]="{ '-active': isFirst }"
+      *ngFor="let image of images; first as isFirst"
+      src="{{ image.path }}"
+      alt="Cтроительная техника"
+    />
+  </div>
+  <div class="gallery__dots" *ngIf="images.length > 1">
+    <div
+      class="gallery__dot"
+      *ngFor="let image of images; let currIndex = index"
+      [ngClass]="{ '-active': currIndex == activeIndex }"
+    ></div>
+  </div>
 </div>

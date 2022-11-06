@@ -13,6 +13,8 @@ namespace Domain.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
         public List<Advert> Adverts { get; set; }
         public List<AvailabilityRequest> AvailabilityRequests { get; set; }
         public List<Review> Reviews { get; set; }

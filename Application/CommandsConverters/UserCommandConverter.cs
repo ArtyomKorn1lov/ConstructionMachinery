@@ -47,5 +47,20 @@ namespace Application.CommandsConverters
                 Password = user.Password
             };
         }
+
+        public static UserTokenCommand UserEntityConvertToUserToken(User user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+            return new UserTokenCommand
+            {
+                Id = user.Id,
+                Email = user.Email,
+                RefreshToken = user.RefreshToken,
+                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
+            };
+        }
     }
 }

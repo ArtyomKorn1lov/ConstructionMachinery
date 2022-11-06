@@ -18,6 +18,8 @@ namespace Infrastructure.Configurations
             builder.Property(user => user.Email).IsRequired();
             builder.Property(user => user.Phone).IsRequired();
             builder.Property(user => user.Password).IsRequired();
+            builder.Property(user => user.RefreshToken);
+            builder.Property(user => user.RefreshTokenExpiryTime);
             builder.HasMany(user => user.Adverts).WithOne().HasForeignKey(adverts => adverts.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(user => user.AvailabilityRequests).WithOne()
                 .HasForeignKey(availabilityRequest => availabilityRequest.UserId).OnDelete(DeleteBehavior.Cascade);

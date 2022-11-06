@@ -165,5 +165,65 @@ namespace Application.Services
                 return null;
             }
         }
+
+        public async Task<UserTokenCommand> GetUserTokenByLogin(string email)
+        {
+            try
+            {
+                User user = await _accountRepository.GetRegisterModel(email);
+                UserTokenCommand command = UserCommandConverter.UserEntityConvertToUserToken(user);
+                return command;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> SetUserToken(int id, string refreshToken)
+        {
+            try
+            {
+                User user = await _accountRepository.GetById(id);
+                if (user == null)
+                    return false;
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> RefreshUserToken(int id, string refreshToken)
+        {
+            try
+            {
+                User user = await _accountRepository.GetById(id);
+                if (user == null)
+                    return false;
+                user.RefreshToken = refreshToken;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<int> GetUserIdByLogin(string email)
+        {
+            try
+            {
+                User user = await _accountRepository.GetRegisterModel(email);
+                return user.Id;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }

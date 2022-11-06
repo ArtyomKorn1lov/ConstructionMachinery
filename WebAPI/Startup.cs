@@ -14,6 +14,9 @@ using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ConstructionMachinery
 {
@@ -39,13 +42,25 @@ namespace ConstructionMachinery
             services.AddScoped<IAdvertService, AdvertService>();
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddTransient<ITokenService, TokenService>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "https://localhost:5001",
+                    ValidAudience = "https://localhost:5001",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SecretMachineryKey@345"))
+                };
+            });
 
             services.AddDbContext<ConstructionMachineryDbContext>(options =>
             {
@@ -57,6 +72,16 @@ namespace ConstructionMachinery
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
             });
         }
 
@@ -90,6 +115,7 @@ namespace ConstructionMachinery
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("EnableCORS");
 
             app.UseEndpoints(endpoints =>
             {

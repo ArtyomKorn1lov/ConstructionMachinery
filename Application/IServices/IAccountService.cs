@@ -18,5 +18,9 @@ namespace Application.IServices
         Task<UserCommand> GetById(int id);
         Task<int> GetIdByEmail(string email);
         Task<UserCommand> GetUserByEmail(string email);
+        Task<UserTokenCommand> GetUserTokenByLogin(string email);
+        Task<bool> SetUserToken(int id, string refreshToken);
+        Task<bool> RefreshUserToken(int id, string refreshToken);
+        Task<int> GetUserIdByLogin(string email);
     }
 }

@@ -20,11 +20,12 @@ namespace WebAPI.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private IAccountService _accountService;
-        
-        public AccountController(IUnitOfWork unitOfWork, IAccountService accountService)
+        private ITokenService _tokenService;
+        public AccountController(IUnitOfWork unitOfWork, IAccountService accountService, ITokenService tokenService)
         {
             _unitOfWork = unitOfWork;
             _accountService = accountService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("login")]
@@ -32,21 +33,22 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (model is null)
+                    return BadRequest("error");
+                if (await _accountService.GetLoginResult(model.Email, model.Password))
                 {
-                    AuthorizeModel authorize = await IsUserAuthorized();
-                    if (authorize != null)
-                    {
-                        return Ok("authorize");
-                    }
                     model.Password = _accountService.HashPassword(model.Password);
-                    bool result = await _accountService.GetLoginResult(model.Email, model.Password);
-                    if (result)
+                    int accountId = await _accountService.GetIdByEmail(model.Email);
+                    List<Claim> identity = GetIdentity(model.Email);
+                    string accessToken = _tokenService.GenerateAccessToken(identity);
+                    string refreshToken = _tokenService.GenerateRefreshToken();
+                    await _accountService.SetUserToken(accountId, refreshToken);
+                    await _unitOfWork.Commit();
+                    return Ok(new AuthenticatedResponse
                     {
-                        await Authenticate(model.Email);
-                        return Ok("success");
-                    }
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                        Token = accessToken,
+                        RefreshToken = refreshToken
+                    });
                 }
                 return Ok("error");
             }
@@ -61,26 +63,28 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (model is null)
+                    return BadRequest("error");
+                if (await _accountService.GetRegisterResult(model.Email))
                 {
-                    AuthorizeModel authorize = await IsUserAuthorized();
-                    if (authorize != null)
+                    model.Password = _accountService.HashPassword(model.Password);
+                    UserCreateCommand userCreateCommand = UserModelConverter.RegisterModelConvertToUserCreateCommand(model);
+                    if (await _accountService.Create(userCreateCommand))
                     {
-                        return Ok("authorize");
-                    }
-                    if (await _accountService.GetRegisterResult(model.Email))
-                    {
-                        model.Password = _accountService.HashPassword(model.Password);
-                        UserCreateCommand userCreateCommand = UserModelConverter.RegisterModelConvertToUserCreateCommand(model);
-                        if (await _accountService.Create(userCreateCommand))
+                        await _unitOfWork.Commit();
+                        int accountId = await _accountService.GetIdByEmail(model.Email);
+                        List<Claim> identity = GetIdentity(model.Email);
+                        string accessToken = _tokenService.GenerateAccessToken(identity);
+                        string refreshToken = _tokenService.GenerateRefreshToken();
+                        await _accountService.SetUserToken(accountId, refreshToken);
+                        await _unitOfWork.Commit();
+                        return Ok(new AuthenticatedResponse
                         {
-                            await _unitOfWork.Commit();
-                            await Authenticate(model.Email);
-                            return Ok("success");
-                        }
-                        return Ok("error");
+                            Token = accessToken,
+                            RefreshToken = refreshToken
+                        });
                     }
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    return Ok("error");
                 }
                 return Ok("error");
             }
@@ -90,35 +94,16 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            try
-            {
-                AuthorizeModel authorize = await IsUserAuthorized();
-                if (authorize == null)
-                {
-                    return Ok("error");
-                }
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                return Ok("success");
-            }
-            catch
-            {
-                return BadRequest("error");
-            }
-        }
-
-        private async Task Authenticate(string userEmail)
+        private List<Claim> GetIdentity(string email)
         {
             var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userEmail),
-            };
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, email)
+                };
+            return claims;
         }
 
+        [Authorize]
         [HttpGet("is-authorized")]
         public async Task<AuthorizeModel> IsUserAuthorized()
         {
@@ -133,7 +118,7 @@ namespace WebAPI.Controllers
         [HttpGet("user")]
         public async Task<UserModel> GetById()
         {
-            int id = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+            int id = await _accountService.GetIdByEmail(User.Identity.Name);
             UserCommand userCommand = await _accountService.GetById(id);
             UserModel userModel = UserModelConverter.UserCommandConvertToUserModel(userCommand);
             if (userModel == null)

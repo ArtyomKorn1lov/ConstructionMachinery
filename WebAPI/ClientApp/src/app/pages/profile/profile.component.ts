@@ -16,17 +16,12 @@ export class ProfileComponent implements OnInit {
   constructor(private accountService: AccountService, private router: Router) { }
 
   public async logout(): Promise<void> {
-    this.accountService.logout().subscribe(data => {
-      if(data == "success") {
-        alert("Успешный выход");
-        console.log(data);
-        this.router.navigateByUrl(this.targetRoute)
-        return;
-      }
+    if (this.accountService.logOut()) {
+      alert("Успешный выход");
+      this.router.navigateByUrl(this.targetRoute);
+    }
+    else
       alert("Ошибка выхода");
-      console.log(data);
-      return;
-    });
   }
 
   public async ngOnInit(): Promise<void> {

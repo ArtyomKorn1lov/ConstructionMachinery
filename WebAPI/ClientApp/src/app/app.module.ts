@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from "@auth0/angular-jwt";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,6 +42,11 @@ import { AdvertRequestComponent } from './components/advert-request/advert-reque
 import { AdvertEditComponent } from './pages/advert-edit/advert-edit.component';
 import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-time.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
+import { AuthGuard } from './guards/auth.guards';
+
+export function tokenGetter() { 
+  return localStorage.getItem("jwt"); 
+}
 
 @NgModule({
   declarations: [
@@ -74,6 +80,13 @@ import { GalleryComponent } from './components/gallery/gallery.component';
     GalleryComponent,
   ],
   imports: [
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:5001"],
+        disallowedRoutes: []
+      }
+    }),
     BrowserModule,
     MatSidenavModule,
     MatDatepickerModule,
@@ -91,22 +104,22 @@ import { GalleryComponent } from './components/gallery/gallery.component';
       { path: 'authorize', component: AuthorizeComponent },
       { path: 'registration', component: RegistrationComponent },
       { path: 'advert-list', component: AdvertListComponent },
-      { path: 'advert-create', component: AdvertCreateComponent },
-      { path: 'advert-create/time', component: AdvertCreateTimeComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'private-area', component: PrivateAreaComponent },
+      { path: 'advert-create', component: AdvertCreateComponent, canActivate: [AuthGuard] },
+      { path: 'advert-create/time', component: AdvertCreateTimeComponent, canActivate: [AuthGuard] },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: 'private-area', component: PrivateAreaComponent, canActivate: [AuthGuard] },
       { path: 'advert-info', component: AdvertInfoComponent },
-      { path: 'my-adverts', component: MyAdvertsComponent },
-      { path: 'lease-registration', component: LeaseRegistrationComponent },
-      { path: 'advert-confirm/confirm-list', component: ConfirmListComponent },
-      { path: 'advert-request/my-requests', component: MyRequestsComponent },
-      { path: 'advert-confirm/confirm-list/info', component: ConfirmListInfoComponent },
-      { path: 'advert-request/my-requests/info', component: MyRequestInfoComponent },
-      { path: 'profile/edit', component: EditProfileComponent },
-      { path: 'advert-confirm', component: MyAdvertsConfirmListComponent },
-      { path: 'advert-request', component: MyAdvertsRequestsComponent },
-      { path: 'advert-edit', component: AdvertEditComponent },
-      { path: 'advert-edit/time', component: AdvertEditTimeComponent }
+      { path: 'my-adverts', component: MyAdvertsComponent, canActivate: [AuthGuard] },
+      { path: 'lease-registration', component: LeaseRegistrationComponent, canActivate: [AuthGuard] },
+      { path: 'advert-confirm/confirm-list', component: ConfirmListComponent, canActivate: [AuthGuard] },
+      { path: 'advert-request/my-requests', component: MyRequestsComponent, canActivate: [AuthGuard] },
+      { path: 'advert-confirm/confirm-list/info', component: ConfirmListInfoComponent, canActivate: [AuthGuard] },
+      { path: 'advert-request/my-requests/info', component: MyRequestInfoComponent, canActivate: [AuthGuard] },
+      { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthGuard] },
+      { path: 'advert-confirm', component: MyAdvertsConfirmListComponent, canActivate: [AuthGuard] },
+      { path: 'advert-request', component: MyAdvertsRequestsComponent, canActivate: [AuthGuard] },
+      { path: 'advert-edit', component: AdvertEditComponent, canActivate: [AuthGuard] },
+      { path: 'advert-edit/time', component: AdvertEditTimeComponent, canActivate: [AuthGuard] }
     ]),
     BrowserAnimationsModule,
   ],

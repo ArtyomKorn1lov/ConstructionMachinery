@@ -52,16 +52,19 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     let model = new RegisterModel(this.name, this.email, this.phone, this.password);
-    await this.accountService.registration(model).subscribe(data => {
-      if (data == "success") {
+    await this.accountService.registration(model).subscribe({
+      next: async (data) => {
         console.log(data);
-        alert(data);
+        alert("success");
+        const token = data.token;
+        const refreshToken = data.refreshToken;
+        this.accountService.saveTokens(token, refreshToken);
         this.router.navigateByUrl(this.targetRoute);
         return;
-      }
-      if (data == "authorize") {
-        alert("Пользователь уже авторизован");
-        console.log(data);
+      },
+      error: (bad) => {
+        alert("Некорректные логин и(или) пароль");
+        console.log(bad);
         this.email = '';
         this.password = '';
         this.confirm_password = '';
@@ -69,14 +72,6 @@ export class RegistrationComponent implements OnInit {
         this.phone = '';
         return;
       }
-      alert("Некорректные логин и(или) пароль");
-      console.log(data);
-      this.email = '';
-      this.password = '';
-      this.confirm_password = '';
-      this.name = '';
-      this.phone = '';
-      return;
     });
   }
 

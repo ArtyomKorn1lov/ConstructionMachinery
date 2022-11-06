@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegisterModel } from '../models/RegisterModel';
 import { LoginModel } from '../models/LoginModel';
 import { AuthoriseModel } from '../models/AuthoriseModel';
 import { UserModel } from '../models/UserModel';
 import { UserUpdateModel } from '../models/UserUpdateModel';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class AccountService {
   public userFlag: boolean = false;
   public authorize: AuthoriseModel = new AuthoriseModel("", "");
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   public async getAuthoriseModel(): Promise<void> {
     await this.isUserAuthorized().subscribe(data => {
@@ -29,17 +31,37 @@ export class AccountService {
     })
   }
 
-  public registration(model: RegisterModel): Observable<string> {
-    return this.http.post(`api/account/register`, model, { responseType: 'text' });
+  public saveTokens(token: string, refreshToken: string): void {
+    localStorage.setItem("jwt", token);
+    localStorage.setItem("refreshToken", refreshToken);
   }
 
-  public login(model: LoginModel): Observable<string> {
-    return this.http.post(`api/account/login`, model, { responseType: 'text' });
+  public isAuthorized(): void {
+    const token = localStorage.getItem("jwt");
+    if (token && !this.jwtHelper.isTokenExpired(token))
+      this.userFlag = true;
+    else
+      this.userFlag = false;
   }
 
-  public logout(): Observable<string> {
-    var model = new RegisterModel("", "", "", "");
-    return this.http.post(`api/account/logout`, model, { responseType: 'text' });
+  public registration(model: RegisterModel): Observable<AuthenticatedResponse> {
+    return this.http.post<AuthenticatedResponse>(`api/account/register`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
+  }
+
+  public login(model: LoginModel): Observable<AuthenticatedResponse> {
+    return this.http.post<AuthenticatedResponse>(`api/account/login`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
+  }
+
+  public logOut(): boolean {
+    if(localStorage.getItem("jwt") == null || localStorage.getItem("refreshToken") == null) {
+      return false;
+    }
+    else {
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("refreshToken");
+      this.userFlag = false;
+      return true;
+    }
   }
 
   public isUserAuthorized(): Observable<AuthoriseModel> {
@@ -53,5 +75,5 @@ export class AccountService {
   public update(model: UserUpdateModel): Observable<string> {
     return this.http.put(`api/account/update`, model, { responseType: 'text' });
   }
-//
+
 }

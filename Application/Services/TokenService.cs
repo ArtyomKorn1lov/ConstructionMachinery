@@ -45,7 +45,7 @@ namespace Application.Services
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SecretMachineryKey@345")),
                 ValidateLifetime = false
             };
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

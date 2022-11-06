@@ -35,9 +35,9 @@ namespace WebAPI.Controllers
             {
                 if (model is null)
                     return BadRequest("error");
+                model.Password = _accountService.HashPassword(model.Password);
                 if (await _accountService.GetLoginResult(model.Email, model.Password))
                 {
-                    model.Password = _accountService.HashPassword(model.Password);
                     int accountId = await _accountService.GetIdByEmail(model.Email);
                     List<Claim> identity = GetIdentity(model.Email);
                     string accessToken = _tokenService.GenerateAccessToken(identity);

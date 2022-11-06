@@ -29,25 +29,23 @@ export class AuthorizeComponent implements OnInit {
       return;
     }
     var model = new LoginModel(this.email, this.password);
-    await this.accountService.login(model).subscribe(data => {
-      if(data == "success") {
-        console.log(data);
-        alert(data);
+    await this.accountService.login(model).subscribe({
+      next: async (data) => {
+        console.log("success");
+        alert("success");
+        const token = data.token;
+        const refreshToken = data.refreshToken;
+        this.accountService.saveTokens(token, refreshToken);
         this.router.navigateByUrl(this.targetRoute);
         return;
-      }
-      if(data == "authorize") {
-        alert("Пользователь уже авторизован");
-        console.log(data);
+      },
+      error: (bad) => {
+        alert("Некорректные логин и(или) пароль");
+        console.log(bad);
         this.email = '';
         this.password = '';
         return;
       }
-      alert("Некорректные логин и(или) пароль");
-      console.log(data);
-      this.email = '';
-      this.password = '';
-      return;
     });
   }
 

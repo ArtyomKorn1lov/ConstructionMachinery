@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
             var userLogin = User.Identity.Name;
             UserTokenCommand user = await _accountService.GetUserTokenByLogin(userLogin);
             if (user == null)
-                return BadRequest();
+                return BadRequest("error");
             await _accountService.RefreshUserToken(user.Id, null);
             await _unitOfWork.Commit();
             return NoContent();

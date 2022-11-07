@@ -77,57 +77,62 @@ export class AdvertEditTimeComponent implements OnInit {
     Array.from(this.images).map((image, index) => {
       return formData.append('file' + index, image);
     });
-    this.advertService.update(this.advert).subscribe(data => {
-      if (data == "success") {
+    this.advertService.update(this.advert).subscribe({
+      next: async (data) => {
         console.log(data);
         if (!this.imageService.oldImageFlag) {
-          this.imageService.remove(numberArray).subscribe(data => {
-            if (data == "success") {
+          this.imageService.remove(numberArray).subscribe({
+            next: async (data) => {
               console.log(data);
-              this.imageService.update(formData, this.advert.id).subscribe(data => {
-                if (data == "success") {
+              this.imageService.update(formData, this.advert.id).subscribe({
+                next: async (data) => {
                   console.log(data);
                   alert(data);
                   this.router.navigateByUrl(this.infoRoute);
                   return;
+                },
+                error: (bad) => {
+                  alert("Ошибка обновления картинки");
+                  console.log(bad);
+                  this.range = this.formBuilder.group({
+                    start: new FormControl<Date | null>(null),
+                    end: new FormControl<Date | null>(null)
+                  });
+                  this.range.value.end = null;
+                  this.startTime = "";
+                  this.endTime = "";
+                  return;
                 }
-                alert("Ошибка загрузки картинки");
-                console.log(data);
-                this.range = this.formBuilder.group({
-                  start: new FormControl<Date | null>(null),
-                  end: new FormControl<Date | null>(null)
-                });
-                this.range.value.end = null;
-                this.startTime = "";
-                this.endTime = "";
-                return;
               });
               return;
+            },
+            error: (bad) => {
+              alert("Ошибка удаления картинки");
+              console.log(bad);
+              this.range = this.formBuilder.group({
+                start: new FormControl<Date | null>(null),
+                end: new FormControl<Date | null>(null)
+              });
+              this.range.value.end = null;
+              this.startTime = "";
+              this.endTime = "";
+              return;
             }
-            alert("Ошибка удаления картинки");
-            console.log(data);
-            this.range = this.formBuilder.group({
-              start: new FormControl<Date | null>(null),
-              end: new FormControl<Date | null>(null)
-            });
-            this.range.value.end = null;
-            this.startTime = "";
-            this.endTime = "";
-            return;
           });
-          return;
         }
         return;
+      },
+      error: (bad) => {
+        alert("Ошибка редактирования объявления");
+        console.log(bad);
+        this.range = this.formBuilder.group({
+          start: new FormControl<Date | null>(null),
+          end: new FormControl<Date | null>(null)
+        });
+        this.startTime = "";
+        this.endTime = "";
+        return;
       }
-      alert("Ошибка создания объявления");
-      console.log(data);
-      this.range = this.formBuilder.group({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null)
-      });
-      this.startTime = "";
-      this.endTime = "";
-      return;
     });
   }
 
@@ -141,8 +146,8 @@ export class AdvertEditTimeComponent implements OnInit {
       start: this.advert.startDate,
       end: this.advert.endDate
     });
-    this.startTime = this.advert.startTime.toString()+":00";
-    this.endTime = this.advert.endTime.toString()+":00";
+    this.startTime = this.advert.startTime.toString() + ":00";
+    this.endTime = this.advert.endTime.toString() + ":00";
   }
 
 }

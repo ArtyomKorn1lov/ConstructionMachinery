@@ -12,23 +12,25 @@ import { ImageModel } from 'src/app/models/ImageModel';
 })
 export class MyRequestInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], []);
+  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], []);
   public date: Date = new Date();
   private targetRoute: string = "/advert-request/my-requests"
 
   constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
   public cancel(): void {
-    this.requestService.remove(this.request.id).subscribe(data => {
-      if (data == "success") {
+    this.requestService.remove(this.request.id).subscribe({
+      next: async (data) => {
         console.log(data);
         alert(data);
         this.router.navigateByUrl(this.targetRoute);
         return;
+      },
+      error: (bad) => {
+        alert("Ошибка отмены заявки");
+        console.log(bad);
+        return;
       }
-      alert("Ошибка отмены заявки");
-      console.log(data);
-      return;
     });
   }
 

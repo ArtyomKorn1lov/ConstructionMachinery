@@ -44,13 +44,13 @@ namespace WebAPI.Controllers
             {
                 int advertId = await _advertService.GetLastAdvertId();
                 if (advertId == 0)
-                    return Ok("error");
+                    return BadRequest("error");
                 string folderPath = _appEnvironment.WebRootPath + _currentDirectory + advertId.ToString();
                 Directory.CreateDirectory(folderPath);
                 IFormFileCollection files = Request.Form.Files;
                 if (files.Any(f => f.Length == 0))
                 {
-                    return Ok("error");
+                    return BadRequest("error");
                 }
                 int countName = 0;
                 foreach (IFormFile uploadImage in files)
@@ -91,7 +91,7 @@ namespace WebAPI.Controllers
                 IFormFileCollection files = Request.Form.Files;
                 if (files.Any(f => f.Length == 0))
                 {
-                    return Ok("error");
+                    return BadRequest("error");
                 }
                 AdvertModelInfo advert = AdvertModelConverter.AdvertCommandInfoConvertAdvertModelInfo(await _advertService.GetById(id));
                 int countName = 0;
@@ -137,7 +137,7 @@ namespace WebAPI.Controllers
             try
             {
                 if (imagesId == null)
-                    return Ok("error");
+                    return BadRequest("error");
                 foreach(int id in imagesId)
                 {
                     ImageCommand image = await _imageService.GetById(id);

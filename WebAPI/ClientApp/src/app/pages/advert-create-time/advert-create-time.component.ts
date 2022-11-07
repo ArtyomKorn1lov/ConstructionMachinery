@@ -63,50 +63,54 @@ export class AdvertCreateTimeComponent implements OnInit {
     this.advert.endTime = endHour;
     let formData = new FormData();
     Array.from(this.images).map((image, index) => {
-      return formData.append('file'+index, image);
+      return formData.append('file' + index, image);
     });
-    this.advertService.createAdvert(this.advert).subscribe(data => {
-      if (data == "success") {
+    this.advertService.createAdvert(this.advert).subscribe({
+      next: async (data) => {
         console.log(data);
-        this.imageService.create(formData).subscribe(data => {
-          if (data == "success") {
+        this.imageService.create(formData).subscribe({
+          next: async (data) => {
             console.log(data);
             alert(data);
             this.router.navigateByUrl(this.listRoute);
             return;
+          },
+          error: (bad) => {
+            alert("Ошибка загрузки картинки");
+            console.log(bad);
+            this.range = this.formBuilder.group({
+              start: new FormControl<Date | null>(null),
+              end: new FormControl<Date | null>(null)
+            });
+            this.range.value.end = null;
+            this.startTime = undefined;
+            this.endTime = undefined;
+            return;
           }
-          alert("Ошибка загрузки картинки");
-          console.log(data);
-          this.range = this.formBuilder.group({
-            start: new FormControl<Date | null>(null),
-            end: new FormControl<Date | null>(null)
-          });
-          this.range.value.end = null;
-          this.startTime = undefined;
-          this.endTime = undefined;
-          return;
         });
         return;
+      },
+      error: (bad) => {
+        alert("Ошибка создания объявления");
+        console.log(bad);
+        this.range = this.formBuilder.group({
+          start: new FormControl<Date | null>(null),
+          end: new FormControl<Date | null>(null)
+        });
+        this.startTime = undefined;
+        this.endTime = undefined;
+        return;
       }
-      alert("Ошибка создания объявления");
-      console.log(data);
-      this.range = this.formBuilder.group({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null)
-      });
-      this.startTime = undefined;
-      this.endTime = undefined;
-      return;
     });
   }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertCreateFromService();
-    if(this.advert.name == "")
+    if (this.advert.name == "")
       this.router.navigateByUrl(this.createRoute);
     this.images = this.imageService.getImagesFromService();
-    if(this.images == undefined)
+    if (this.images == undefined)
       this.router.navigateByUrl(this.createRoute);
   }
 

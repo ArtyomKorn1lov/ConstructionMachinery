@@ -87,22 +87,22 @@ export class AdvertInfoComponent implements OnInit {
 
   public sortByDate(): void {
     let date;
-    for(let i = 0; i < this.days.length; i++) {
-      for(let j = 0; j < this.days.length - i - 1; j++) {
-        if(this.days[j].day.getFullYear() > this.days[j+1].day.getFullYear()) {
+    for (let i = 0; i < this.days.length; i++) {
+      for (let j = 0; j < this.days.length - i - 1; j++) {
+        if (this.days[j].day.getFullYear() > this.days[j + 1].day.getFullYear()) {
           date = this.days[j];
-          this.days[j] = this.days[j+1];
-          this.days[j+1] = date;
+          this.days[j] = this.days[j + 1];
+          this.days[j + 1] = date;
         }
-        else if(this.days[j].day.getMonth() > this.days[j+1].day.getMonth()) {
+        else if (this.days[j].day.getMonth() > this.days[j + 1].day.getMonth()) {
           date = this.days[j];
-          this.days[j] = this.days[j+1];
-          this.days[j+1] = date;
+          this.days[j] = this.days[j + 1];
+          this.days[j + 1] = date;
         }
-        else if(this.days[j].day.getDate() > this.days[j+1].day.getDate()) {
+        else if (this.days[j].day.getDate() > this.days[j + 1].day.getDate()) {
           date = this.days[j];
-          this.days[j] = this.days[j+1];
-          this.days[j+1] = date;
+          this.days[j] = this.days[j + 1];
+          this.days[j + 1] = date;
         }
       }
     }
@@ -113,16 +113,18 @@ export class AdvertInfoComponent implements OnInit {
       alert("Ошибка удаления");
       return;
     }
-    this.advertService.remove(this.advert.id).subscribe(data => {
-      if (data == "success") {
+    this.advertService.remove(this.advert.id).subscribe({
+      next: async (data) => {
         alert(data);
         console.log(data);
         this.back();
         return;
+      },
+      error: (bad) => {
+        alert("Ошибка удаления");
+        console.log(bad);
+        return;
       }
-      alert("Ошибка удаления");
-      console.log(data);
-      return;
     });
   }
 
@@ -133,7 +135,7 @@ export class AdvertInfoComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
+    this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);
     this.page = this.advertService.getPageFromLocalStorage();
     await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {

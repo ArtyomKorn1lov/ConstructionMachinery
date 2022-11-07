@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
                         RefreshToken = refreshToken
                     });
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -84,9 +84,9 @@ namespace WebAPI.Controllers
                             RefreshToken = refreshToken
                         });
                     }
-                    return Ok("error");
+                    return BadRequest("error");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -135,11 +135,11 @@ namespace WebAPI.Controllers
                 UserModel getUser = UserModelConverter.UserCommandConvertToUserModel(await _accountService.GetById(user.Id));
                 if (getUser == null)
                 {
-                    return Ok("error");
+                    return BadRequest("error");
                 }
                 if (!await _accountService.GetRegisterResult(user.Email) && getUser.Email != user.Email)
                 {
-                    return Ok("error");
+                    return BadRequest("error");
                 }
                 user.Password = _accountService.HashPassword(user.Password);
                 UserUpdateCommand userCommand = UserModelConverter.UserUpdateModelConvertToUserUpdateCommand(user);
@@ -148,7 +148,7 @@ namespace WebAPI.Controllers
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -167,7 +167,7 @@ namespace WebAPI.Controllers
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {

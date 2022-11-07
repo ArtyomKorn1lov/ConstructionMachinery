@@ -35,9 +35,9 @@ namespace WebAPI.Controllers
         [HttpGet("adverts/{count}")]
         public async Task<List<AdvertModelList>> GetAll(int count)
         {
-            if(HttpContext.User.Identity.Name != null)
+            if(User.Identity.Name != null)
             {
-                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                int userId = await _accountService.GetIdByEmail(User.Identity.Name);
                 List<AdvertCommandList> advertUserCommands = await _advertService.GetAllWithoutUserId(userId, count);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
@@ -65,9 +65,9 @@ namespace WebAPI.Controllers
         [HttpGet("by-name/{name}/{count}")]
         public async Task<List<AdvertModelList>> GetByName(string name, int count)
         {
-            if (HttpContext.User.Identity.Name != null)
+            if (User.Identity.Name != null)
             {
-                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                int userId = await _accountService.GetIdByEmail(User.Identity.Name);
                 List<AdvertCommandList> advertUserCommands = await _advertService.GetByNameWithoutUserId(name, userId, count);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
@@ -87,7 +87,7 @@ namespace WebAPI.Controllers
         [HttpGet("by-user/{count}")]
         public async Task<List<AdvertModelList>> GetByUser(int count)
         {
-            int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+            int userId = await _accountService.GetIdByEmail(User.Identity.Name);
             List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId, count);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
@@ -127,14 +127,14 @@ namespace WebAPI.Controllers
             try
             {
                 if(advertModel == null)
-                    return Ok("error");
-                advertModel.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                    return BadRequest("error");
+                advertModel.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 if (await _advertService.Create(AdvertModelConverter.AdvertModelCreateConvertAdvertCommandCreate(advertModel)))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -159,14 +159,14 @@ namespace WebAPI.Controllers
             try
             {
                 if (advertModel == null)
-                    return Ok("error");
-                advertModel.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                    return BadRequest("error");
+                advertModel.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 if (await _advertService.Update(AdvertModelConverter.AdvertModelUpdateConvertAdvertCommandUpdate(advertModel)))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -181,14 +181,14 @@ namespace WebAPI.Controllers
             try
             {
                 int advertUserId = await _advertService.GetUserIdByAdvert(id);
-                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                int userId = await _accountService.GetIdByEmail(User.Identity.Name);
                 if(advertUserId == 0)
                 {
-                    return Ok("error");
+                    return BadRequest("error");
                 }
                 if(advertUserId != userId)
                 {
-                    return Ok("error");
+                    return BadRequest("error");
                 }
                 List<ImageCommand> images = await _imageService.GetByAdvertId(id);
                 string path = null;
@@ -201,7 +201,7 @@ namespace WebAPI.Controllers
                         Directory.Delete(path, true);
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {

@@ -35,22 +35,24 @@ export class LeaseRegistrationComponent implements OnInit {
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
-    this.requestService.create(this.request).subscribe(data => {
-      if (data == "success") {
+    this.requestService.create(this.request).subscribe({
+      next: async (data) => {
         console.log(data);
         alert(data);
         this.router.navigateByUrl(this.targerRoute);
         return;
+      },
+      error: (bad) => {
+        alert("Ошибка запроса на аренду");
+        console.log(bad);
+        this.address = '';
+        return;
       }
-      alert("Ошибка создания запроса на аренду");
-      console.log(data);
-      this.address = '';
-      return;
     });
   }
 
   public convertToNormalDate(): void {
-    for(let count = 0; count < this.times.length; count++) {
+    for (let count = 0; count < this.times.length; count++) {
       this.times[count].date = new Date(this.times[count].date);
     }
     this.times = this.advertService.sortByHour(this.times);
@@ -59,22 +61,22 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public sortByDate(): void {
     var date;
-    for(let i = 0; i < this.times.length; i++) {
-      for(let j = 0; j < this.times.length - i - 1; j++) {
-        if(this.times[j].date.getFullYear() > this.times[j+1].date.getFullYear()) {
+    for (let i = 0; i < this.times.length; i++) {
+      for (let j = 0; j < this.times.length - i - 1; j++) {
+        if (this.times[j].date.getFullYear() > this.times[j + 1].date.getFullYear()) {
           date = this.times[j];
-          this.times[j] = this.times[j+1];
-          this.times[j+1] = date;
+          this.times[j] = this.times[j + 1];
+          this.times[j + 1] = date;
         }
-        else if(this.times[j].date.getMonth() > this.times[j+1].date.getMonth()) {
+        else if (this.times[j].date.getMonth() > this.times[j + 1].date.getMonth()) {
           date = this.times[j];
-          this.times[j] = this.times[j+1];
-          this.times[j+1] = date;
+          this.times[j] = this.times[j + 1];
+          this.times[j + 1] = date;
         }
-        else if(this.times[j].date.getDate() > this.times[j+1].date.getDate()) {
+        else if (this.times[j].date.getDate() > this.times[j + 1].date.getDate()) {
           date = this.times[j];
-          this.times[j] = this.times[j+1];
-          this.times[j+1] = date;
+          this.times[j] = this.times[j + 1];
+          this.times[j + 1] = date;
         }
       }
     }

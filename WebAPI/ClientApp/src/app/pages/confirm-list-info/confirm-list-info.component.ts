@@ -13,7 +13,7 @@ import { ImageModel } from 'src/app/models/ImageModel';
 })
 export class ConfirmListInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, [ new ImageModel(0, "", "", 0) ], []);
+  public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, [new ImageModel(0, "", "", 0)], []);
   public date: Date = new Date();
   private targetRoute: string = "/advert-confirm/confirm-list";
 
@@ -21,16 +21,18 @@ export class ConfirmListInfoComponent implements OnInit {
 
   public confirm(state: number): void {
     let model: ConfirmModel = new ConfirmModel(this.request.id, state);
-    this.requestService.confirm(model).subscribe(data => {
-      if (data == "success") {
+    this.requestService.confirm(model).subscribe({
+      next: async (data) => {
         console.log(data);
         alert(data);
         this.router.navigateByUrl(this.targetRoute);
         return;
+      },
+      error: (bad) => {
+        alert("Ошибка подтверждения запроса");
+        console.log(bad);
+        return;
       }
-      alert("Ошибка подтверждения запроса");
-      console.log(data);
-      return;
     });
   }
 

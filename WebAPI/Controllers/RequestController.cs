@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
         [HttpGet("customer/{id}")]
         public async Task<AvailabilityRequestModelForCustomer> GetForCustomer(int id)
         {
-            AvailabilityRequestCommandForCustomer command = await _requestService.GetForCustomer(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            AvailabilityRequestCommandForCustomer command = await _requestService.GetForCustomer(id, await _accountService.GetIdByEmail(User.Identity.Name));
             AvailabilityRequestModelForCustomer model = RequestModelConverter.AvailabilityRequestForCustomerCommandConvertModel(command);
             if (model == null)
                 return null;
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         [HttpGet("landlord/{id}")]
         public async Task<AvailabilityRequestModelForLandlord> GetForLandlord(int id)
         {
-            AvailabilityRequestCommandForLandlord command = await _requestService.GetForLandlord(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            AvailabilityRequestCommandForLandlord command = await _requestService.GetForLandlord(id, await _accountService.GetIdByEmail(User.Identity.Name));
             AvailabilityRequestModelForLandlord model = RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command);
             if (model == null)
                 return null;
@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
         [HttpGet("for-customer/{id}/{count}")]
         public async Task<List<AvailabilityRequestListModel>> GetListForCustomer(int id, int count)
         {
-            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, await _accountService.GetIdByEmail(User.Identity.Name), count);
             List<AvailabilityRequestListModel> models = commands.Select(command => 
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
         [HttpGet("for-landlord/{id}/{count}")]
         public async Task<List<AvailabilityRequestListModel>> GetListForLandlord(int id, int count)
         {
-            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(id, await _accountService.GetIdByEmail(User.Identity.Name), count);
             List<AvailabilityRequestListModel> models = commands.Select(command =>
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
@@ -77,7 +77,7 @@ namespace WebAPI.Controllers
         [HttpGet("times/{id}")]
         public async Task<List<AvailableTimeModel>> GetAvailableTimesByAdvertId(int id)
         {
-            List<AvailableTimeCommand> commands = await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(HttpContext.User.Identity.Name));
+            List<AvailableTimeCommand> commands = await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(User.Identity.Name));
             List<AvailableTimeModel> models = commands.Select(command => RequestModelConverter.CommandConvertToAvailableTimeModel(command)).ToList();
             if (models == null)
                 return null;
@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
             {
                 if (model == null)
                     return Ok("error");
-                model.UserId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                model.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 model.RequestStateId = 3;
                 if(await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
                 {
@@ -140,7 +140,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                int userId = await _accountService.GetIdByEmail(HttpContext.User.Identity.Name);
+                int userId = await _accountService.GetIdByEmail(User.Identity.Name);
                 if (await _requestService.Remove(id, userId))
                 {
                     await _unitOfWork.Commit();

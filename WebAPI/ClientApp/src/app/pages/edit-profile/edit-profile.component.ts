@@ -50,18 +50,20 @@ export class EditProfileComponent implements OnInit {
       return;
     }
     this.user.password = this.password;
-    await this.accountService.update(this.user).subscribe(data => {
-      if (data == "success") {
+    await this.accountService.update(this.user).subscribe({
+      next: async (data) => {
         console.log(data);
         alert(data);
         this.router.navigateByUrl(this.targetRoute);
         return;
+      },
+      error: (bad) => {
+        alert("Некорректные логин и(или) пароль");
+        console.log(bad);
+        this.password = '';
+        this.confirm_password = '';
+        return;
       }
-      alert("Некорректные логин и(или) пароль");
-      console.log(data);
-      this.password = '';
-      this.confirm_password = '';
-      return;
     });
   }
 
@@ -74,5 +76,5 @@ export class EditProfileComponent implements OnInit {
       this.user.phone = data.phone;
     });
   }
-//
+  //
 }

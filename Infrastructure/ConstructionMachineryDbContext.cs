@@ -26,6 +26,7 @@ namespace Infrastructure
             builder.ApplyConfiguration(new RequestStateConfiguration());
             builder.ApplyConfiguration(new ReviewConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new ReviewStateConfiguration());
         }
     }
 }

@@ -175,6 +175,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ReviewStateId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -182,9 +185,27 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("AdvertId");
 
+                    b.HasIndex("ReviewStateId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Review");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReviewState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReviewState");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -282,6 +303,12 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.ReviewState", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ReviewStateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
@@ -311,6 +338,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.RequestState", b =>
                 {
                     b.Navigation("AvailabilityRequests");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReviewState", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

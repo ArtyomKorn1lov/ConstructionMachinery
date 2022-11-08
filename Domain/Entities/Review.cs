@@ -13,5 +13,6 @@ namespace Domain.Entities
         public DateTime Date { get; set; }
         public int AdvertId { get; set; }
         public int UserId { get; set; }
+        public int ReviewStateId { get; set; }
     }
 }

@@ -38,11 +38,13 @@ namespace ConstructionMachinery
             services.AddScoped<IAdvertRepository, AdvertRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAdvertService, AdvertService>();
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IImageService, ImageService>();
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddTransient<ITokenService, TokenService>();            
 
             services.AddAuthentication(opt =>
             {

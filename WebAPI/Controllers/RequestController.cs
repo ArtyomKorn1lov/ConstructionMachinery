@@ -91,7 +91,7 @@ namespace WebAPI.Controllers
             try
             {
                 if (model == null)
-                    return Ok("error");
+                    return BadRequest("error");
                 model.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 model.RequestStateId = 3;
                 if(await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
@@ -99,13 +99,13 @@ namespace WebAPI.Controllers
                     await _unitOfWork.Commit();
                     int requestId = await _requestService.GetLastRequestId();
                     if (requestId == 0)
-                        return Ok("error");
+                        return BadRequest("error");
                     List<AvailableTimeCommandForCreateRequest> times = model.AvailableTimeModelForCreateRequests.Select(time => RequestModelConverter.AvailableTimeModelForCreateRequestConvertToCommand(time)).ToList();
                     await _requestService.UpdateTimes(requestId, times);
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -120,13 +120,13 @@ namespace WebAPI.Controllers
             try
             {
                 if (model.RequestStateId != 1 && model.RequestStateId != 2 && model.RequestStateId != 3)
-                    return Ok("error");
+                    return BadRequest("error");
                 if (await _requestService.Confirm(model.Id, model.RequestStateId))
                 {
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {
@@ -146,7 +146,7 @@ namespace WebAPI.Controllers
                     await _unitOfWork.Commit();
                     return Ok("success");
                 }
-                return Ok("error");
+                return BadRequest("error");
             }
             catch
             {

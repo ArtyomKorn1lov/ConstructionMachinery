@@ -14,5 +14,14 @@ namespace Domain.Entities
         public int AdvertId { get; set; }
         public int UserId { get; set; }
         public int ReviewStateId { get; set; }
+
+        public void CopyFrom(Review review)
+        {
+            Description = review.Description;
+            Date = review.Date;
+            ReviewStateId = review.ReviewStateId;
+            UserId = review.UserId;
+            AdvertId = review.ReviewStateId;
+        }
     }
 }

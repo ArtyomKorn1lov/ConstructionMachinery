@@ -43,6 +43,8 @@ import { AdvertEditComponent } from './pages/advert-edit/advert-edit.component';
 import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-time.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { AuthGuard } from './guards/auth.guards';
+import { ReviewCreateComponent } from './pages/review-create/review-create.component';
+import { ReviewComponent } from './components/review/review.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -78,6 +80,8 @@ export function tokenGetter() {
     AdvertEditComponent,
     AdvertEditTimeComponent,
     GalleryComponent,
+    ReviewCreateComponent,
+    ReviewComponent,
   ],
   imports: [
     JwtModule.forRoot({
@@ -119,7 +123,8 @@ export function tokenGetter() {
       { path: 'advert-confirm', component: MyAdvertsConfirmListComponent, canActivate: [AuthGuard] },
       { path: 'advert-request', component: MyAdvertsRequestsComponent, canActivate: [AuthGuard] },
       { path: 'advert-edit', component: AdvertEditComponent, canActivate: [AuthGuard] },
-      { path: 'advert-edit/time', component: AdvertEditTimeComponent, canActivate: [AuthGuard] }
+      { path: 'advert-edit/time', component: AdvertEditTimeComponent, canActivate: [AuthGuard] },
+      { path: 'review-create', component: ReviewCreateComponent, canActivate: [AuthGuard] }
     ]),
     BrowserAnimationsModule,
   ],

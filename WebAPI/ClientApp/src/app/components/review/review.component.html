@@ -1,0 +1,27 @@
+<div class="review__line"></div>
+<article class="review" *ngFor="let review of reviews">    
+    <div class="review__content">
+        <div class="review__header">
+            <div class="review__rating">
+                <img class="review__star" src="assets/star_fill.png" alt="star">
+                <img *ngIf="review.reviewStateId < 2" class="review__star" src="assets/star_empty.png" alt="star">
+                <img *ngIf="review.reviewStateId >= 2" class="review__star" src="assets/star_fill.png" alt="star">
+                <img *ngIf="review.reviewStateId < 3" class="review__star" src="assets/star_empty.png" alt="star">
+                <img *ngIf="review.reviewStateId >= 3" class="review__star" src="assets/star_fill.png" alt="star">
+                <img *ngIf="review.reviewStateId < 4" class="review__star" src="assets/star_empty.png" alt="star">
+                <img *ngIf="review.reviewStateId >= 4" class="review__star" src="assets/star_fill.png" alt="star">
+                <img *ngIf="review.reviewStateId < 5" class="review__star" src="assets/star_empty.png" alt="star">
+                <img *ngIf="review.reviewStateId >= 5" class="review__star" src="assets/star_fill.png" alt="star">
+            </div>
+            <h5 class="small-header -name">{{review.name}}</h5>
+        </div>
+        <div class="review__info">
+            <p class="primary-text">{{review.description}}</p>
+            <p class="primary-text -date">{{review.date.getDate()}}.{{review.date.getMonth()}}.{{review.date.getFullYear()}} в {{review.date.getHours()}}:00</p>
+        </div>
+    </div>
+    <div class="review__line"></div>
+</article>
+<div *ngIf="scrollFlag" class="load-spinner">
+    <mat-spinner></mat-spinner>
+</div>

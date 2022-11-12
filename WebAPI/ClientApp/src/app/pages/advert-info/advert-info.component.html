@@ -33,9 +33,12 @@
                     </div>
                 </div>
             </div>
-            <div class="vector"></div>
+            <div class="vector" *ngIf="accountService.userFlag"></div>
             <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
+            </button>
+            <button [routerLink]="['/review-create']" *ngIf="page == 'list' && accountService.userFlag" class="edit-button">
+                <h5 class="medium-header">Оставить отзыв</h5>
             </button>
             <button (click)="edit()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
                 <h5 class="medium-header">Редактировать</h5>
@@ -43,6 +46,9 @@
             <button (click)="remove()" *ngIf="page == 'my' && accountService.userFlag" class="edit-button">
                 <h5 class="medium-header">Снять публикацию</h5>
             </button>
+            <div class="vector -review"></div>
+            <h4 class="big-header">Отзывы:</h4>
+            <app-review></app-review>
         </div>
     </div>
 </div>

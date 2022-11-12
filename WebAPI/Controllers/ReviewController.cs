@@ -32,17 +32,24 @@ namespace WebAPI.Controllers
         {
             List<ReviewCommand> commands = await _reviewService.GetByUserId(await _accountService.GetIdByEmail(User.Identity.Name), count);
             List<ReviewModel> models = commands.Select(command => ReviewModelConverter.ReviewCommandCovertToModel(command)).ToList();
+            for (int index = 0; index < models.Count; index++)
+            {
+                models[index].Name = await _accountService.GetUserNameById(commands[index].UserId);
+            }
             if (models == null)
                 return null;
             return models;
         }
 
-        [Authorize]
         [HttpGet("advert/{id}/{count}")]
         public async Task<List<ReviewModel>> GetByAdvertId(int id, int count)
         {
             List<ReviewCommand> commands = await _reviewService.GetByAdvertId(id, count);
             List<ReviewModel> models = commands.Select(command => ReviewModelConverter.ReviewCommandCovertToModel(command)).ToList();
+            for(int index = 0; index < models.Count; index++)
+            {
+                models[index].Name = await _accountService.GetUserNameById(commands[index].UserId);
+            }
             if (models == null)
                 return null;
             return models;
@@ -52,7 +59,9 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ReviewModel> GetById(int id)
         {
-            ReviewModel model = ReviewModelConverter.ReviewCommandCovertToModel(await _reviewService.GetById(id));
+            ReviewCommand command = await _reviewService.GetById(id);
+            ReviewModel model = ReviewModelConverter.ReviewCommandCovertToModel(command);
+            model.Name = await _accountService.GetUserNameById(command.UserId);
             if (model == null)
                 return null;
             return model;

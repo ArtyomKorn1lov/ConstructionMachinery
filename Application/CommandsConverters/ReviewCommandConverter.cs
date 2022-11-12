@@ -48,7 +48,8 @@ namespace Application.CommandsConverters
                 Id = review.Id,
                 Description = review.Description,
                 Date = review.Date,
-                ReviewStateId = review.ReviewStateId
+                ReviewStateId = review.ReviewStateId,
+                UserId = review.UserId
             };
         }
     }

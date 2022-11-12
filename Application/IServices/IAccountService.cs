@@ -22,5 +22,6 @@ namespace Application.IServices
         Task<bool> SetUserToken(int id, string refreshToken);
         Task<bool> RefreshUserToken(int id, string refreshToken);
         Task<int> GetUserIdByLogin(string email);
+        Task<string> GetUserNameById(int id);
     }
 }

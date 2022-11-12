@@ -225,5 +225,18 @@ namespace Application.Services
                 return 0;
             }
         }
+
+        public async Task<string> GetUserNameById(int id)
+        {
+            try
+            {
+                User user = await _accountRepository.GetById(id);
+                return user.Name;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

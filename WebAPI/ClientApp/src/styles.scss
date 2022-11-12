@@ -23,7 +23,7 @@ $ConstructionMachineryApp-theme: mat.define-light-theme((color: (primary: $Const
 
 /* You can add global styles to this file, and also import other style files */
 
-@import url("app/elements/base.scss");
+@import url("app/styles/base.scss");
 
 * {
     margin: 0;

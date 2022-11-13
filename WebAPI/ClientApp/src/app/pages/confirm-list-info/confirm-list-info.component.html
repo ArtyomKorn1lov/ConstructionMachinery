@@ -19,7 +19,9 @@
                     <div class="request-info__title">
                         <h5 class="medium-header -title">Время:</h5>
                     </div>
-                    <h5 class="medium-header -title">{{date.getMonth()}}.{{date.getDate()}}.{{date.getFullYear()}} в {{date.getHours()}}:00</h5>
+                    <h5 class="medium-header -title">
+                        {{datetimeService.convertDateToUTS(date.getDate())}}.{{datetimeService.convertDateToUTS(date.getMonth())}}.{{date.getFullYear()}}
+                        в {{datetimeService.convertDateToUTS(date.getHours())}}:00</h5>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">

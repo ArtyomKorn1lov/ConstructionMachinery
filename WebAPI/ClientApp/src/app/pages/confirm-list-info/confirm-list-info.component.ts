@@ -5,6 +5,7 @@ import { AvailabilityRequestModelForLandlord } from 'src/app/models/Availability
 import { Router } from '@angular/router';
 import { ConfirmModel } from 'src/app/models/ConfirmModel';
 import { ImageModel } from 'src/app/models/ImageModel';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-confirm-list-info',
@@ -17,7 +18,7 @@ export class ConfirmListInfoComponent implements OnInit {
   public date: Date = new Date();
   private targetRoute: string = "/advert-confirm/confirm-list";
 
-  constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
   public confirm(state: number): void {
     let model: ConfirmModel = new ConfirmModel(this.request.id, state);

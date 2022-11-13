@@ -3,6 +3,7 @@ import { AvailabilityRequestModel } from 'src/app/models/AvailabilityRequestMode
 import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-request',
@@ -18,7 +19,7 @@ export class RequestComponent implements OnInit {
   private confirmInfoRoute = "advert-confirm/confirm-list/info";
   private requestInfoRoute = "advert-request/my-requests/info";
 
-  constructor(private requestService: RequestService, private router: Router, private route: ActivatedRoute) { }
+  constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router, private route: ActivatedRoute) { }
 
   public navigateToInfo(id: number): void {
     this.requestService.setIdInLocalStorage(id);
@@ -50,20 +51,20 @@ export class RequestComponent implements OnInit {
   }
 
   public dateConvert(): void {
-    for(let count = 0; count < this.requests.length; count++) {
+    for (let count = 0; count < this.requests.length; count++) {
       this.requests[count].date = new Date(this.requests[count].date);
     }
   }
 
   public async changeFlagState(length: number, firstCount: number): Promise<void> {
-    if(length < firstCount) {
+    if (length < firstCount) {
       this.scrollFlag = false;
       this.flagState();
     }
   }
 
   public flagState(): void {
-    if(this.scrollFlag == false) {
+    if (this.scrollFlag == false) {
       this.count = 0;
       window.removeEventListener('scroll', this.scrollEvent, true);
     }

@@ -4,6 +4,7 @@ import { RequestService } from 'src/app/services/request.service';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
 import { Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-my-request-info',
@@ -16,7 +17,7 @@ export class MyRequestInfoComponent implements OnInit {
   public date: Date = new Date();
   private targetRoute: string = "/advert-request/my-requests"
 
-  constructor(private accountService: AccountService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
   public cancel(): void {
     this.requestService.remove(this.request.id).subscribe({

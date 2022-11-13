@@ -1,6 +1,6 @@
 <div *ngIf="reviews.length > 0" class="vector"></div>
 <h4 *ngIf="reviews.length > 0" class="big-header">Отзывы:</h4>
-<article class="review" *ngFor="let review of reviews">    
+<article class="review" *ngFor="let review of reviews">
     <div class="review__content">
         <div class="review__header">
             <div class="review__rating">
@@ -18,7 +18,12 @@
         </div>
         <div class="review__info">
             <p class="primary-text">{{review.description}}</p>
-            <p class="primary-text -date">{{review.date.getDate()}}.{{review.date.getMonth()}}.{{review.date.getFullYear()}} в {{review.date.getHours()}}:{{review.date.getMinutes()}}</p>
+            <p class="primary-text -date">
+                Опубликовано
+                {{datetimeService.convertDateToUTS(review.date.getDate())}}.{{datetimeService.convertDateToUTS(review.date.getMonth())}}.{{review.date.getFullYear()}}
+                в
+                {{datetimeService.convertDateToUTS(review.date.getHours())}}:{{datetimeService.convertDateToUTS(review.date.getMinutes())}}
+            </p>
         </div>
         <button *ngIf="review.isAuthorized" (click)="update(review.id)" class="edit-button">
             <h5 class="medium-header">Редактировать</h5>

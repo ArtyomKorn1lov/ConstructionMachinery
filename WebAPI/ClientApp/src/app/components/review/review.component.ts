@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ReviewModel } from 'src/app/models/ReviewModel';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-review',
@@ -16,7 +17,7 @@ export class ReviewComponent implements OnInit {
   public reviews: ReviewModel[] = [];
   private targetRoute: string = "/review-edit";
 
-  constructor(private reviewService: ReviewService, private router: Router, private advertService: AdvertService) { }
+  constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router, private advertService: AdvertService) { }
 
   public convertToNormalDate(): void {
     for(let index = 0; index < this.reviews.length; index++) {

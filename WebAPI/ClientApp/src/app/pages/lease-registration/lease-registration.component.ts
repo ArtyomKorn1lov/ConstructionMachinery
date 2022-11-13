@@ -6,6 +6,7 @@ import { RequestService } from 'src/app/services/request.service';
 import { AvailabilityRequestModelCreate } from 'src/app/models/AvailabilityRequestModelCreate';
 import { AvailableTimeModelForCreateRequest } from 'src/app/models/AvailableTimeModelForCreateRequest';
 import { Router } from '@angular/router';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-lease-registration',
@@ -20,7 +21,7 @@ export class LeaseRegistrationComponent implements OnInit {
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
   private targerRoute: string = "/advert-info";
 
-  constructor(private accountService: AccountService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
 
   public createRequest(): void {
     if (this.address == undefined || this.address.trim() == '') {

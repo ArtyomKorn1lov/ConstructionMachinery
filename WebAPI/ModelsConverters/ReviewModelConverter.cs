@@ -46,5 +46,18 @@ namespace WebAPI.ModelsConverters
                 Date = review.Date
             };
         }
+
+        public static ReviewModelInfo ReviewCommandCovertToModelInfo(ReviewCommand review)
+        {
+            if (review == null)
+                return null;
+            return new ReviewModelInfo
+            {
+                Id = review.Id,
+                Description = review.Description,
+                ReviewStateId = review.ReviewStateId,
+                AdvertId = review.AdvertId
+            };
+        }
     }
 }

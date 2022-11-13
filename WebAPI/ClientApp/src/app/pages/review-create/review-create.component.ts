@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
+import { AccountService } from 'src/app/services/account.service';
 import { ReviewModelCreate } from 'src/app/models/ReviewModelCreate';
 
 interface Stars {
@@ -10,7 +11,7 @@ interface Stars {
   third: boolean;
   fourth: boolean;
   fifth: boolean;
-}
+};
 
 @Component({
   selector: 'app-review-create',
@@ -30,7 +31,7 @@ export class ReviewCreateComponent implements OnInit {
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, private accountService: AccountService) { }
 
   public create(): void {
     if (this.rating <= 0 || this.rating > 5) {
@@ -151,7 +152,8 @@ export class ReviewCreateComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
+    await this.accountService.getAuthoriseModel();
   }
 
 }

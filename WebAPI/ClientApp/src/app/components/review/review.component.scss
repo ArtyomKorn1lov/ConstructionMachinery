@@ -1,3 +1,7 @@
+.big-header {
+    color: var(--color-primary-button);
+}
+
 .small-header.-name {
     color: var(--color-primary-button);
     font-size: 18px;
@@ -8,14 +12,27 @@
     margin-left: 12px;
 
     &.-date {
+        margin-top: 5px;
+        color: var(--color-primary-button);
         text-align: end;
     }
+}
+
+.edit-button {
+    margin-top: 12px;
+}
+
+.vector {
+    border: 1px solid rgba(22, 22, 22, 0.3);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    margin-top: var(--margin-top-button);
+    margin-bottom: 12px;
 }
 
 .review {
     display: flex;
     flex-direction: column;
-    margin-top: 12px;
+    margin-top: 22px;
     margin-bottom: 22px;
 
     &__line {
@@ -33,6 +50,11 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+
+    &__rating {
+        display: flex;
+        flex: 1;
     }
 
     &__star {

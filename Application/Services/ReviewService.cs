@@ -26,6 +26,7 @@ namespace Application.Services
             {
                 if(review == null)
                     return false;
+                review.Date = review.Date.ToLocalTime();
                 await _reviewRepository.Create(ReviewCommandConverter.ReviewCommandCreateConvertToEntity(review));
                 return true;
             }
@@ -97,6 +98,7 @@ namespace Application.Services
             {
                 if (review == null)
                     return false;
+                review.Date = review.Date.ToLocalTime();
                 await _reviewRepository.Update(ReviewCommandConverter.ReviewCommandUpdateConvertToEntity(review));
                 return true;
             }

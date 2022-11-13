@@ -15,6 +15,7 @@ namespace WebAPI.ModelsConverters
                 Id = commands.Id,
                 Name = commands.Name,
                 Price = commands.Price,
+                AverageRating = commands.AverageRating,
                 Images = commands.Images.Select(image => new ImageModel
                 {
                     Id = image.Id,

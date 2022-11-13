@@ -20,8 +20,6 @@ namespace Domain.Entities
             Description = review.Description;
             Date = review.Date;
             ReviewStateId = review.ReviewStateId;
-            UserId = review.UserId;
-            AdvertId = review.ReviewStateId;
         }
     }
 }

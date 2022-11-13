@@ -16,12 +16,14 @@ namespace Application.Services
         private IAdvertRepository _advertRepository;
         private IAccountRepository _accountRepository;
         private IRequestRepository _requestRepository;
+        private IReviewRepository _reviewRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IAccountRepository accountRepository, IRequestRepository requestRepository)
+        public AdvertService(IAdvertRepository advertRepository, IAccountRepository accountRepository, IRequestRepository requestRepository, IReviewRepository reviewRepository)
         {
             _advertRepository = advertRepository;
             _accountRepository = accountRepository;
             _requestRepository = requestRepository;
+            _reviewRepository = reviewRepository;
         }
 
         public async Task<bool> Create(AdvertCommandCreate advert)
@@ -136,12 +138,32 @@ namespace Application.Services
             return newAvilableTime;
         }
 
+        private double GetAverageRating(List<Review> reviews)
+        {
+            int rating = 0;
+            double result = 0;
+            if(reviews == null)
+                return result;
+            if (reviews.Count == 0)
+                return result;
+            foreach (Review review in reviews)
+            {
+                rating = rating + review.ReviewStateId;
+            }
+            if (rating > 0)
+            {
+                result = rating / reviews.Count;
+                result = Math.Round(result, 2);
+            }
+            return result;
+        }
+            
         public async Task<List<AdvertCommandList>> GetAll(int count)
         {
             try
             {
                 List<Advert> adverts = await _advertRepository.GetAll(count);
-                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
             catch
@@ -155,7 +177,7 @@ namespace Application.Services
             try
             {
                 List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id, count);
-                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
             catch
@@ -184,7 +206,7 @@ namespace Application.Services
             try
             {
                 List<Advert> adverts = await _advertRepository.GetByName(name, count);
-                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
             catch
@@ -198,7 +220,7 @@ namespace Application.Services
             try
             {
                 List<Advert> adverts = await _advertRepository.GetByNameWithoutUserId(name, id, count);
-                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
             catch
@@ -212,7 +234,7 @@ namespace Application.Services
             try
             {
                 List<Advert> adverts = await _advertRepository.GetByUserId(id, count);
-                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert)).ToList();
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
             catch

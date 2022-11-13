@@ -6,6 +6,17 @@
         <img class="advert__image" *ngIf="advert.images.length == 0" src="assets/default.jpg" alt="Изображение строительной техники">
         <div class="advert__elements">
             <div class="advert__text">
+                <div *ngIf="advert.averageRating > 0" class="advert__rating">
+                    <img class="advert__star" src="assets/star_fill.png" alt="star">
+                    <img *ngIf="advert.averageRating < 2" class="advert__star" src="assets/star_empty.png" alt="star">
+                    <img *ngIf="advert.averageRating >= 2" class="advert__star" src="assets/star_fill.png" alt="star">
+                    <img *ngIf="advert.averageRating < 3" class="advert__star" src="assets/star_empty.png" alt="star">
+                    <img *ngIf="advert.averageRating >= 3" class="advert__star" src="assets/star_fill.png" alt="star">
+                    <img *ngIf="advert.averageRating < 4" class="advert__star" src="assets/star_empty.png" alt="star">
+                    <img *ngIf="advert.averageRating >= 4" class="advert__star" src="assets/star_fill.png" alt="star">
+                    <img *ngIf="advert.averageRating < 5" class="advert__star" src="assets/star_empty.png" alt="star">
+                    <img *ngIf="advert.averageRating >= 5" class="advert__star" src="assets/star_fill.png" alt="star">
+                </div>
                 <h4 class="medium-header">{{advert.name}}</h4>
                 <h5 class="small-header">от {{advert.price}} ₽ / час</h5>
             </div>

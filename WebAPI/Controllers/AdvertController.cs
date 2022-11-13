@@ -160,7 +160,11 @@ namespace WebAPI.Controllers
             {
                 if (advertModel == null)
                     return BadRequest("error");
-                advertModel.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
+                int advertUserId = await _advertService.GetUserIdByAdvert(advertModel.Id);
+                int userId = await _accountService.GetIdByEmail(User.Identity.Name);
+                if (advertUserId != userId)
+                    return BadRequest("error");
+                advertModel.UserId = userId;
                 if (await _advertService.Update(AdvertModelConverter.AdvertModelUpdateConvertAdvertCommandUpdate(advertModel)))
                 {
                     await _unitOfWork.Commit();

@@ -4,11 +4,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from "@auth0/angular-jwt";
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -16,10 +11,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { MainComponent } from './pages/main/main.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { AdvertListComponent } from './pages/advert-list/advert-list.component';
 import { AdvertComponent } from './components/advert/advert.component';
@@ -45,6 +45,7 @@ import { GalleryComponent } from './components/gallery/gallery.component';
 import { AuthGuard } from './guards/auth.guards';
 import { ReviewCreateComponent } from './pages/review-create/review-create.component';
 import { ReviewComponent } from './components/review/review.component';
+import { ReviewEditComponent } from './pages/review-edit/review-edit.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -82,6 +83,7 @@ export function tokenGetter() {
     GalleryComponent,
     ReviewCreateComponent,
     ReviewComponent,
+    ReviewEditComponent,
   ],
   imports: [
     JwtModule.forRoot({
@@ -124,7 +126,8 @@ export function tokenGetter() {
       { path: 'advert-request', component: MyAdvertsRequestsComponent, canActivate: [AuthGuard] },
       { path: 'advert-edit', component: AdvertEditComponent, canActivate: [AuthGuard] },
       { path: 'advert-edit/time', component: AdvertEditTimeComponent, canActivate: [AuthGuard] },
-      { path: 'review-create', component: ReviewCreateComponent, canActivate: [AuthGuard] }
+      { path: 'review-create', component: ReviewCreateComponent, canActivate: [AuthGuard] },
+      { path: 'review-edit', component: ReviewEditComponent, canActivate: [AuthGuard] }
     ]),
     BrowserAnimationsModule,
   ],

@@ -1,0 +1,16 @@
+.advert-textarea {
+    margin-top: 12px;
+}
+
+.star {
+    display: flex;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &__item {
+        width: 50px;
+        height: 50px;
+    }
+}

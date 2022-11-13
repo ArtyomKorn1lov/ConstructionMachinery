@@ -12,7 +12,19 @@
     &__content {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin-top: 22px;
+    }
+
+    &__rating {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    &__star {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
     }
 
     &__image {

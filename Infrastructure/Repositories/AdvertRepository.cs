@@ -25,12 +25,14 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Advert>> GetAll(int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
+                .Include(advert => advert.Reviews).Take(count).ToListAsync();
         }
 
         public async Task<List<Advert>> GetAllWithoutUserId(int id, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Images).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id)
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).Take(count).ToListAsync();
         }
 
         public async Task<Advert> GetById(int id)
@@ -42,18 +44,20 @@ namespace Infrastructure.Repositories
         public async Task<List<Advert>> GetByName(string name, int count)
         {
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
-                .Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).Take(count).ToListAsync();
+                .Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).Include(advert => advert.Reviews).Take(count).ToListAsync();
         }
 
         public async Task<List<Advert>> GetByNameWithoutUserId(string name, int id, int count)
         {
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id).Take(count).ToListAsync();
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id)
+                .Include(advert => advert.Reviews).Take(count).ToListAsync();
         }
 
         public async Task<List<Advert>> GetByUserId(int id, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Where(advert => advert.UserId == id).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).Where(advert => advert.UserId == id).Take(count).ToListAsync();
         }
 
         public async Task Remove(int id)

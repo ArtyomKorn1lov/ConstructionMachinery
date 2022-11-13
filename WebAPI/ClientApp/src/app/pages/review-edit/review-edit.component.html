@@ -1,0 +1,28 @@
+<div class="flex-centered">
+    <div class="content">
+        <div [routerLink]="['/advert-info']" class="back-container">
+            <img src="assets/back-cursor.png">
+            <h5 class="medium-header -back">Редактировать отзыв</h5>
+        </div>
+        <form class="content__elements">
+            <h5 class="small-header">Опишите ваш отзыв</h5>
+            <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание"></textarea>
+            <h5 class="small-header">Оцените данное объявление</h5>
+            <div class="star">
+                <img *ngIf="!stateStars.first" (click)="setState(1)" class="star__item" src="assets/star_empty.png" alt="star">
+                <img *ngIf="stateStars.first" (click)="removeState(1)" class="star__item" src="assets/star_fill.png" alt="star">
+                <img *ngIf="!stateStars.second" (click)="setState(2)" class="star__item" src="assets/star_empty.png" alt="star">
+                <img *ngIf="stateStars.second" (click)="removeState(2)" class="star__item" src="assets/star_fill.png" alt="star">
+                <img *ngIf="!stateStars.third" (click)="setState(3)" class="star__item" src="assets/star_empty.png" alt="star">
+                <img *ngIf="stateStars.third" (click)="removeState(3)" class="star__item" src="assets/star_fill.png" alt="star">
+                <img *ngIf="!stateStars.fourth" (click)="setState(4)" class="star__item" src="assets/star_empty.png" alt="star">
+                <img *ngIf="stateStars.fourth" (click)="removeState(4)" class="star__item" src="assets/star_fill.png" alt="star">
+                <img *ngIf="!stateStars.fifth" (click)="setState(5)" class="star__item" src="assets/star_empty.png" alt="star">
+                <img *ngIf="stateStars.fifth" (click)="removeState(5)" class="star__item" src="assets/star_fill.png" alt="star">
+            </div>
+            <button (click)="update()" class="edit-button">
+                <h5 class="medium-header">Редактировать</h5>
+            </button>
+        </form>
+    </div>
+</div>

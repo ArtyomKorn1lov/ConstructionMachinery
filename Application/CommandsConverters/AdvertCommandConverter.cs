@@ -23,7 +23,7 @@ namespace Application.CommandsConverters
             };
         }
 
-        public static AdvertCommandList AdvertEntityConvertToAdvertCommandList(Advert advert)
+        public static AdvertCommandList AdvertEntityConvertToAdvertCommandList(Advert advert, double averageRating)
         {
             if (advert == null)
                 return null;
@@ -32,6 +32,7 @@ namespace Application.CommandsConverters
                 Id = advert.Id,
                 Name = advert.Name,
                 Price = advert.Price,
+                AverageRating = averageRating,
                 Images = advert.Images.Select(image => new ImageCommand
                 {
                     Id = image.Id,

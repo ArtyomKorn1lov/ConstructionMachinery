@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ReviewModel } from '../models/ReviewModel';
 import { ReviewModelCreate } from '../models/ReviewModelCreate';
 import { ReviewModelUpdate } from '../models/ReviewModelUpdate';
+import { ReviewModelInfo } from '../models/ReviewModelInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,17 @@ export class ReviewService {
       return false;
     return true;
   }
+
+  public setIdInLocalStorage(id: number): void {
+    localStorage.setItem('reviewId', id.toString());
+  }
+
+  public getIdFromLocalStorage(): number {
+    let id = localStorage.getItem('reviewId');
+    if (id == null)
+      return 0;
+    return parseInt(id);
+  }
   
   public getByUserId(count: number): Observable<ReviewModel[]> {
     return this.http.get<ReviewModel[]>(`api/review/user/${count}`);
@@ -26,8 +38,8 @@ export class ReviewService {
     return this.http.get<ReviewModel[]>(`api/review/advert/${id}/${count}`);
   }
 
-  public getById(id: number): Observable<ReviewModel> {
-    return this.http.get<ReviewModel>(`api/review/${id}`);
+  public getById(id: number): Observable<ReviewModelInfo> {
+    return this.http.get<ReviewModelInfo>(`api/review/${id}`);
   }
 
   public remove(id: number): Observable<string> {

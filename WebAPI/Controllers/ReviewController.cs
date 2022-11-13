@@ -32,9 +32,17 @@ namespace WebAPI.Controllers
         {
             List<ReviewCommand> commands = await _reviewService.GetByUserId(await _accountService.GetIdByEmail(User.Identity.Name), count);
             List<ReviewModel> models = commands.Select(command => ReviewModelConverter.ReviewCommandCovertToModel(command)).ToList();
+            string name = "";
+            UserCommand user = new UserCommand();
             for (int index = 0; index < models.Count; index++)
             {
-                models[index].Name = await _accountService.GetUserNameById(commands[index].UserId);
+                name = await _accountService.GetUserNameById(commands[index].UserId);
+                models[index].Name = name;
+                user = await _accountService.GetUserByEmail(User.Identity.Name);
+                if (name == user.Name)
+                    models[index].IsAuthorized = true;
+                else
+                    models[index].IsAuthorized = false;
             }
             if (models == null)
                 return null;
@@ -46,9 +54,20 @@ namespace WebAPI.Controllers
         {
             List<ReviewCommand> commands = await _reviewService.GetByAdvertId(id, count);
             List<ReviewModel> models = commands.Select(command => ReviewModelConverter.ReviewCommandCovertToModel(command)).ToList();
-            for(int index = 0; index < models.Count; index++)
+            string name = "";
+            UserCommand user = new UserCommand();
+            for (int index = 0; index < models.Count; index++)
             {
-                models[index].Name = await _accountService.GetUserNameById(commands[index].UserId);
+                name = await _accountService.GetUserNameById(commands[index].UserId);
+                models[index].Name = name;
+                user = await _accountService.GetUserByEmail(User.Identity.Name);
+                if(user != null)
+                    if (name == user.Name)
+                        models[index].IsAuthorized = true;
+                    else
+                        models[index].IsAuthorized = false;
+                else
+                    models[index].IsAuthorized = false;
             }
             if (models == null)
                 return null;
@@ -57,11 +76,12 @@ namespace WebAPI.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ReviewModel> GetById(int id)
+        public async Task<ReviewModelInfo> GetById(int id)
         {
             ReviewCommand command = await _reviewService.GetById(id);
-            ReviewModel model = ReviewModelConverter.ReviewCommandCovertToModel(command);
-            model.Name = await _accountService.GetUserNameById(command.UserId);
+            if (command.UserId != await _accountService.GetIdByEmail(User.Identity.Name))
+                return null;
+            ReviewModelInfo model = ReviewModelConverter.ReviewCommandCovertToModelInfo(command);
             if (model == null)
                 return null;
             return model;
@@ -119,8 +139,6 @@ namespace WebAPI.Controllers
             try
             {
                 if (review == null)
-                    return BadRequest("error");
-                if (ReviewModelConverter.ReviewCommandCovertToModel(await _reviewService.GetById(await _accountService.GetIdByEmail(User.Identity.Name))).Id != review.Id)
                     return BadRequest("error");
                 review.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 if(await _reviewService.Update(ReviewModelConverter.ReviewModelUpdateConvertToCommand(review)))

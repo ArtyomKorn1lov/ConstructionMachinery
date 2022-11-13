@@ -14,6 +14,7 @@ export class ReviewComponent implements OnInit {
   public count: number = 4;
   public scrollFlag = true;
   public reviews: ReviewModel[] = [];
+  private targetRoute: string = "/review-edit";
 
   constructor(private reviewService: ReviewService, private router: Router, private advertService: AdvertService) { }
 
@@ -21,6 +22,11 @@ export class ReviewComponent implements OnInit {
     for(let index = 0; index < this.reviews.length; index++) {
       this.reviews[index].date = new Date(this.reviews[index].date);
     }
+  }
+
+  public update(id: number): void {
+    this.reviewService.setIdInLocalStorage(id);
+    this.router.navigateByUrl(this.targetRoute);
   }
 
   public async changeFlagState(length: number, firstCount: number): Promise<void> {

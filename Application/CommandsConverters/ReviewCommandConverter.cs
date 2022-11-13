@@ -49,7 +49,8 @@ namespace Application.CommandsConverters
                 Description = review.Description,
                 Date = review.Date,
                 ReviewStateId = review.ReviewStateId,
-                UserId = review.UserId
+                UserId = review.UserId,
+                AdvertId = review.AdvertId
             };
         }
     }

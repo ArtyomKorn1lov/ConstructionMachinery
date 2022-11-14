@@ -56,7 +56,7 @@ export class LeaseRegistrationComponent implements OnInit {
     for (let count = 0; count < this.times.length; count++) {
       this.times[count].date = new Date(this.times[count].date);
     }
-    this.times = this.advertService.sortByHour(this.times);
+    this.times = this.datetimeService.sortByHour(this.times);
     this.sortByDate();
   }
 

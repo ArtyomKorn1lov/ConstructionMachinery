@@ -30,11 +30,25 @@ export class AdvertInfoComponent implements OnInit {
 
   public back(): void {
     if (this.page == 'list') {
-      this.router.navigateByUrl(this.listRoute);
+      if(this.advertService.getQueryParametr() == "")
+        this.router.navigateByUrl(this.listRoute);
+      else
+        this.router.navigate([this.listRoute], {
+          queryParams: {
+            search: this.advertService.getQueryParametr()
+          }
+        });
       return;
     }
     if (this.page == 'my') {
-      this.router.navigateByUrl(this.myRoute);
+      if(this.advertService.getQueryParametr() == "")
+        this.router.navigateByUrl(this.myRoute);
+      else
+      this.router.navigate([this.myRoute], {
+        queryParams: {
+          search: this.advertService.getQueryParametr()
+        }
+      });
       return;
     }
     this.router.navigateByUrl('/');
@@ -82,7 +96,7 @@ export class AdvertInfoComponent implements OnInit {
       for (let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
         this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
       }
-      this.days[count_day].times = this.advertService.sortByHour(this.days[count_day].times);
+      this.days[count_day].times = this.datetimeService.sortByHour(this.days[count_day].times);
     }
   }
 

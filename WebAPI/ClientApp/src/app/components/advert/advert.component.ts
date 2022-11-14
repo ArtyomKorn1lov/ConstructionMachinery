@@ -60,6 +60,11 @@ export class AdvertComponent implements OnInit {
       this.advertService.setPageInLocalStorage('list');
     else
       this.advertService.setPageInLocalStorage(this.page);
+    this.route.queryParams.subscribe(async params => {
+      const searchString = params['search'];
+      if(searchString != "")
+        this.advertService.setQueryParametr(searchString);
+    });
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
@@ -95,14 +100,14 @@ export class AdvertComponent implements OnInit {
   };
 
   public async changeFlagState(length: number, firstCount: number): Promise<void> {
-    if(length < firstCount) {
+    if (length < firstCount) {
       this.scrollFlag = false;
       this.flagState();
     }
   }
 
   public flagState(): void {
-    if(this.scrollFlag == false) {
+    if (this.scrollFlag == false) {
       this.count = 0;
       window.removeEventListener('scroll', this.scrollEvent, true);
     }

@@ -91,6 +91,16 @@
   }
 }
 
+@media (max-width: 380px) {
+  .gallery {
+    height: 250px;
+
+    &__image {
+      height: 250px;
+    }
+  }
+}
+
 .technique-image {
   margin-top: 0;
 }

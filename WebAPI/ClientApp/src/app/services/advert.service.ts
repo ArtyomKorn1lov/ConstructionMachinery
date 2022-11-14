@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { AdvertModelList } from '../models/AdvertModelList';
 import { AdvertModelInfo } from '../models/AdvertModelInfo';
 import { AdvertModelCreate } from '../models/AdvertModelCreate';
-import { AvailableTimeModel } from '../models/AvailableTimeModel';
 import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
 import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
 
@@ -14,6 +13,7 @@ import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
 export class AdvertService {
   private advertCreate: AdvertModelCreate | undefined;
   private advertUpdate: AdvertModelUpdate | undefined;
+  private queryParam: string = "";
 
   constructor(private http: HttpClient) { }
 
@@ -44,6 +44,14 @@ export class AdvertService {
     return page;
   }
 
+  public setQueryParametr(param: string): void {
+    this.queryParam = param;
+  }
+
+  public getQueryParametr(): string {
+    return this.queryParam;
+  }
+
   public setAdvertCreateInService(advert: AdvertModelCreate): void {
     this.advertCreate = advert;
   }
@@ -63,21 +71,7 @@ export class AdvertService {
       return new AdvertModelUpdate(0, "", "", 0, 0, [], new Date(), new Date(), 0, 0);
     return this.advertUpdate;
   }
-
-  public sortByHour(list: AvailableTimeModel[]): AvailableTimeModel[] {
-    let time;
-    for(let i = 0; i < list.length; i++) {
-      for(let j = 0; j < list.length - i - 1; j++) {
-        if(list[j].date.getHours() > list[j+1].date.getHours()) {
-          time = list[j];
-          list[j] = list[j+1];
-          list[j+1] = time;
-        }
-      }
-    }
-    return list;
-  }
-
+  
   public checkLenght(oldLength: number, newLength: number): boolean {
     if(oldLength >= newLength)
       return false;

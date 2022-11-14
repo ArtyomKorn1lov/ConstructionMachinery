@@ -1,7 +1,7 @@
 <div class="header">
     <div class="header__logo">
         <img (click)="sidenavEvent()" src="assets/menu.png">
-        <img [routerLink]="['/']" src="assets/logo.png">
+        <img [routerLink]="['/']" src="assets/logotype.png">
         <img *ngIf="!accountService.userFlag" [routerLink]="['/authorize']" src="assets/account.png">
         <div *ngIf="accountService.userFlag" class="account-ellipse" [routerLink]="['/profile']">
             <h6 class="big-header">{{[this.accountService.authorize.name[0]]}}</h6>

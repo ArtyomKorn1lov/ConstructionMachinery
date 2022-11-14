@@ -1,15 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { AdvertService } from 'src/app/services/advert.service';
 import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
 import { ImageService } from 'src/app/services/image.service';
+import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
+import { DateAdapter } from '@angular/material/core';
+
+@Injectable()
+export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
+  constructor(private _dateAdapter: DateAdapter<D>) {}
+
+  public selectionFinished(date: D | null): DateRange<D> {
+    return this._createFiveDayRange(date);
+  }
+
+  public createPreview(activeDate: D | null): DateRange<D> {
+    return this._createFiveDayRange(activeDate);
+  }
+
+  private _createFiveDayRange(date: D | null): DateRange<D> {
+    if (date) {
+      const start = this._dateAdapter.addCalendarDays(date, -3);
+      const end = this._dateAdapter.addCalendarDays(date, 3);
+      return new DateRange<D>(start, end);
+    }
+
+    return new DateRange<D>(null, null);
+  }
+}
 
 @Component({
   selector: 'app-advert-create-time',
   templateUrl: './advert-create-time.component.html',
-  styleUrls: ['./advert-create-time.component.scss']
+  styleUrls: ['./advert-create-time.component.scss'],
+  providers: [
+    {
+      provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+      useClass: FiveDayRangeSelectionStrategy,
+    },
+  ],
 })
 export class AdvertCreateTimeComponent implements OnInit {
 

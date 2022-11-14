@@ -46,6 +46,21 @@
     }
 }
 
+@media (max-width: 360px) {
+    .advert__content {
+        flex-direction: column;
+    }
+
+    .advert__rating {
+        margin-top: 10px;
+        margin-bottom: 0px;
+    }
+
+    .medium-header {
+        margin-top: 10px;
+    }
+}
+
 .medium-header {
     color: var(--color-primary-button);
 }

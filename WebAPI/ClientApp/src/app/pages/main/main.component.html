@@ -2,15 +2,11 @@
     <div class="content">
         <div class="content__elements">
             <h5 class="big-header -content">Предлагаем в аренду следующие виды спецтехники:</h5>
-            <div class="technique-type" *ngFor="let technique of techniqueObject.techniqueList">
-                <div class="technique-type__group">
-                    <div (click)="search(technique.first_search)" class="technique-type__element">
-                        <img src={{technique.first_url}}>
-                        <h6 class="small-header -type">{{technique.first_name}}</h6>
-                    </div>
-                    <div (click)="search(technique.second_search)" class="technique-type__element">
-                        <img src={{technique.second_url}}>
-                        <h6 class="small-header -type">{{technique.second_name}}</h6>
+            <div class="content__wrap">
+                <div class="technique-type" *ngFor="let technique of techniqueObject.techniqueList">
+                    <div (click)="search(technique.search)" class="technique-type__element">
+                        <img src={{technique.url}}>
+                        <h6 class="small-header -type">{{technique.name}}</h6>
                     </div>
                 </div>
             </div>

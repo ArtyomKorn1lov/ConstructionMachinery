@@ -2,8 +2,10 @@
 <article class="advert" *ngFor="let advert of advertList">
     <div class="advert__line"></div>
     <div class="advert__content">
-        <img class="advert__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
-        <img class="advert__image" *ngIf="advert.images.length == 0" src="assets/default.jpg" alt="Изображение строительной техники">
+        <img class="advert__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}"
+            alt="Изображение строительной техники">
+        <img class="advert__image" *ngIf="advert.images.length == 0" src="assets/default.jpg"
+            alt="Изображение строительной техники">
         <div class="advert__elements">
             <div class="advert__text">
                 <div *ngIf="advert.averageRating > 0" class="advert__rating">

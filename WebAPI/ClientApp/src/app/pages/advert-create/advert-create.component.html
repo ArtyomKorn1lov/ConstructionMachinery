@@ -22,7 +22,8 @@
             <h5 class="small-header">Добавьте фотографию</h5>
             <div class="photo">
                 <div *ngFor="let fileBase64 of filesBase64" class="photo__list">
-                    <img (click)="removeFromUploadImages(fileBase64)" src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
+                    <img src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
+                    <div (click)="removeFromUploadImages(fileBase64)" class="photo__close"></div>
                 </div>
                 <div *ngIf="images.length < 6" (click)="uploadImage()" class="photo__download">
                     <img src="assets/photo.png">

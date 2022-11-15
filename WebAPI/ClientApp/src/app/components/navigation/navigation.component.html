@@ -3,7 +3,7 @@
     <div class="navigation__vector"></div>
     <a *ngIf="accountService.userFlag" (click)="sidenavEvent()" [routerLink]="['/private-area']" class="navigation__hyperlink">Личный кабинет</a>
     <div *ngIf="accountService.userFlag" class="navigation__vector"></div>
-    <a class="navigation__hyperlink">Контакты</a>
+    <a (click)="sidenavEvent()" [routerLink]="['/contacts']" class="navigation__hyperlink">Контакты</a>
     <div class="navigation__vector"></div>
     <a class="navigation__hyperlink">О компании</a>
     <div class="navigation__vector"></div>

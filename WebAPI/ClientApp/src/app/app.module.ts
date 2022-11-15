@@ -46,6 +46,7 @@ import { AuthGuard } from './guards/auth.guards';
 import { ReviewCreateComponent } from './pages/review-create/review-create.component';
 import { ReviewComponent } from './components/review/review.component';
 import { ReviewEditComponent } from './pages/review-edit/review-edit.component';
+import { ContactsComponent } from './pages/contacts/contacts.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -84,6 +85,7 @@ export function tokenGetter() {
     ReviewCreateComponent,
     ReviewComponent,
     ReviewEditComponent,
+    ContactsComponent,
   ],
   imports: [
     JwtModule.forRoot({
@@ -127,7 +129,8 @@ export function tokenGetter() {
       { path: 'advert-edit', component: AdvertEditComponent, canActivate: [AuthGuard] },
       { path: 'advert-edit/time', component: AdvertEditTimeComponent, canActivate: [AuthGuard] },
       { path: 'review-create', component: ReviewCreateComponent, canActivate: [AuthGuard] },
-      { path: 'review-edit', component: ReviewEditComponent, canActivate: [AuthGuard] }
+      { path: 'review-edit', component: ReviewEditComponent, canActivate: [AuthGuard] },
+      { path: 'contacts', component: ContactsComponent }
     ]),
     BrowserAnimationsModule,
   ],

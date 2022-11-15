@@ -22,10 +22,12 @@
             <h5 class="small-header">Добавьте фотографию</h5>
             <div class="photo">
                 <div *ngFor="let image of advertUpdate.images" class="photo__list">
-                    <img (click)="removeFromDownloadImages(image)" *ngIf="image.path != ''" src="{{image.path}}" class="photo__element" alt="Изображение строительной техники">
+                    <img *ngIf="image.path != ''" src="{{image.path}}" class="photo__element" alt="Изображение строительной техники">
+                    <div (click)="removeFromDownloadImages(image)" class="photo__close"></div>
                 </div>
                 <div *ngFor="let fileBase64 of filesBase64" class="photo__list"> 
-                    <img (click)="removeFromUploadImages(fileBase64)" src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
+                    <img src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
+                    <div (click)="removeFromUploadImages(fileBase64)" class="photo__close"></div>
                 </div>
                 <div *ngIf="oldImageCount + filesBase64.length < 6" (click)="uploadImage()" class="photo__download">
                     <img src="assets/photo.png">

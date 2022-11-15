@@ -18,6 +18,18 @@
     &__list {
         display: flex;
         flex-wrap: wrap;
+        position: relative;
+    }
+
+    &__close {
+        z-index: 1;
+        position: absolute;
+        top: 12px;
+        right: 2px;
+        width: 20px;
+        height: 20px;
+        background-image: url("/assets/close.gif");
+        background-size: cover;
     }
 
     &__download {

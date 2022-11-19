@@ -1,0 +1,63 @@
+.vector {
+    border: 1px solid rgba(22, 22, 22, 0.3);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.big-header {
+    text-align: center;
+
+    &.-form {
+        margin-bottom: 10px;
+    }
+}
+
+.medium-header {
+    text-indent: 20px;
+    text-align: justify;
+    padding: 10px 0;
+}
+
+.small-header {
+    padding: 10px 0 5px 0;
+}
+
+.authorize-input {
+    margin-top: 5px;
+}
+
+.advert-textarea {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.secondary-authorize .medium-header {
+    text-align: center;
+    padding: 0;
+    text-indent: 0;
+}
+
+.company {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+
+    &__direction {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    &__image {
+        width: 100%;
+    }
+
+    &__text {
+        padding: 10px 0;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+    }
+}

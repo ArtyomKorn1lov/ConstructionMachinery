@@ -5,12 +5,18 @@
     &__contact {
         margin-bottom: 26px;
     }
+
+    &__element {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
 }
 
 .primary-text {
-    margin-top: 15px;
+    margin-left: 10px
 }
 
 .micro-text {
-    margin-top: 0px;
+    margin-top: 10px;
 }

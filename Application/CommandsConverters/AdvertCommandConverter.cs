@@ -18,7 +18,12 @@ namespace Application.CommandsConverters
             {
                 Name = advert.Name,
                 Description = advert.Description,
+                DateIssue = advert.DateIssue,
+                PTS = advert.PTS,
+                VIN = advert.VIN,
                 Price = advert.Price,
+                PublishDate = advert.PublishDate,
+                EditDate = advert.EditDate,
                 UserId = advert.UserId
             };
         }
@@ -51,7 +56,12 @@ namespace Application.CommandsConverters
             {
                 Id = advert.Id,
                 Name = advert.Name,
+                DateIssue = advert.DateIssue,
+                PTS = advert.PTS,
+                VIN = advert.VIN,
                 Description = advert.Description,
+                PublishDate = advert.PublishDate,
+                EditDate = advert.EditDate,
                 Price = advert.Price,
                 UserName = name,
                 Images = advert.Images.Select(image => new ImageCommand
@@ -79,7 +89,11 @@ namespace Application.CommandsConverters
             {
                 Id = advert.Id,
                 Name = advert.Name,
+                DateIssue = advert.DateIssue,
+                PTS = advert.PTS,
+                VIN = advert.VIN,
                 Description = advert.Description,
+                EditDate = advert.EditDate,
                 Price = advert.Price,
                 UserId = advert.UserId,
                 ImageCommands = advert.Images.Select(image => new ImageCommand
@@ -100,7 +114,11 @@ namespace Application.CommandsConverters
             {
                 Id = advert.Id,
                 Name = advert.Name,
+                DateIssue = advert.DateIssue,
+                PTS = advert.PTS,
+                VIN = advert.VIN,
                 Description = advert.Description,
+                EditDate = advert.EditDate,
                 Price = advert.Price,
                 UserId = advert.UserId,
                 Images = advert.ImageCommands.Select(image => new Image

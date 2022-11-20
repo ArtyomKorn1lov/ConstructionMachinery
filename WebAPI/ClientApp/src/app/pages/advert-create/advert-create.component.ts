@@ -4,6 +4,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { ImageService } from 'src/app/services/image.service';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-advert-create',
@@ -13,13 +14,16 @@ import { ImageService } from 'src/app/services/image.service';
 export class AdvertCreateComponent implements OnInit {
 
   public name: string | undefined;
+  public dateIssure: string | undefined;
+  public pts: string | undefined;
+  public vin: string | undefined;
   public description: string = "";
   public price: number | undefined;
   public images: File[] = [];
   public filesBase64: string[] = [];
   private targetRoute: string = "/advert-create/time";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
 
   public uploadImage(): void {
     document.getElementById("SelectImage")?.click();
@@ -47,11 +51,27 @@ export class AdvertCreateComponent implements OnInit {
       this.price = undefined;
       return;
     }
+    if (this.dateIssure == undefined || this.dateIssure.trim() == '') {
+      alert("Введите год выпуска");
+      this.dateIssure = undefined;
+      return;
+    }
+    if (this.pts == undefined || this.pts.trim() == '') {
+      alert("Введите ПТС или ПСМ");
+      this.pts = '';
+      return;
+    }
+    if (this.vin == undefined || this.vin.trim() == '') {
+      alert("Введите VIN, номер кузова или SN");
+      this.vin = '';
+      return;
+    }
     if (this.images == null || this.images == undefined) {
       alert("Не выбран файл");
       return;
     }
-    let advert = new AdvertModelCreate(this.name, this.description, this.price, 0, new Date(), new Date(), 0, 0);
+    const issure = new Date(this.dateIssure);
+    let advert = new AdvertModelCreate(this.name, issure, this.pts, this.vin, this.description, this.price, 0, new Date(), new Date(), 0, 0);
     this.advertService.setAdvertCreateInService(advert);
     this.imageService.setImagesInService(this.images, this.filesBase64);
     this.router.navigateByUrl(this.targetRoute);
@@ -60,7 +80,7 @@ export class AdvertCreateComponent implements OnInit {
 
   public removeFromUploadImages(fileBase64: string): void {
     let index = this.filesBase64.indexOf(fileBase64);
-    if(index != -1) {
+    if (index != -1) {
       this.filesBase64.splice(index, 1);
       this.images.splice(index, 1);
     }
@@ -68,6 +88,9 @@ export class AdvertCreateComponent implements OnInit {
 
   public async fillData(advert: AdvertModelCreate): Promise<void> {
     this.name = advert.name;
+    this.dateIssure = advert.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(advert.dateIssue.getMonth()) + "-" + this.datetimeService.convertDateToUTS(advert.dateIssue.getDate());
+    this.pts = advert.pts;
+    this.vin = advert.vin;
     this.description = advert.description;
     this.price = advert.price;
     this.images = this.imageService.getImagesFromService();
@@ -78,7 +101,7 @@ export class AdvertCreateComponent implements OnInit {
     await this.accountService.getAuthoriseModel();
     let advert = this.advertService.getAdvertCreateFromService();
     if (advert.name == "") {
-      this.advertService.setAdvertCreateInService(new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0));
+      this.advertService.setAdvertCreateInService(new AdvertModelCreate("", new Date(), "", "", "", 0, 0, new Date(), new Date(), 0, 0));
       return;
     }
     await this.fillData(advert);

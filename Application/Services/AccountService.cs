@@ -34,6 +34,7 @@ namespace Application.Services
             {
                 if(user != null)
                 {
+                    user.Created = DateTime.Now;
                     await _accountRepository.Create(UserCommandConverter.UserCreateCommandConvertToUserEntity(user));
                     return true;
                 }

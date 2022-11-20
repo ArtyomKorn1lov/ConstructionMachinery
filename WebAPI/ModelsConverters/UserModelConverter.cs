@@ -14,6 +14,7 @@ namespace WebAPI.ModelsConverters
                 Email = model.Email,
                 Name = model.Name,
                 Phone = model.Phone,
+                Address = model.Address,
                 Password = model.Password
             };
         }
@@ -27,6 +28,8 @@ namespace WebAPI.ModelsConverters
                 Id = command.Id,
                 Email = command.Email,
                 Name = command.Name,
+                Address = command.Address,
+                Created = command.Created,
                 Phone = command.Phone
             };
         }
@@ -40,6 +43,7 @@ namespace WebAPI.ModelsConverters
                 Id = model.Id,
                 Email = model.Email,
                 Name = model.Name,
+                Address = model.Address,
                 Password = model.Password,
                 Phone = model.Phone
             };

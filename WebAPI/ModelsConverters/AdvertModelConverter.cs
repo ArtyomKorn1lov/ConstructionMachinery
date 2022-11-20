@@ -34,7 +34,12 @@ namespace WebAPI.ModelsConverters
             {
                 Id = command.Id,
                 Name = command.Name,
+                DateIssue = command.DateIssue,
+                PTS = command.PTS,
+                VIN = command.VIN,
                 Description = command.Description,
+                PublishDate = command.PublishDate,
+                EditDate = command.EditDate,
                 Price = command.Price,
                 UserName = command.UserName,
                 Images = command.Images.Select(image => new ImageModel
@@ -61,6 +66,9 @@ namespace WebAPI.ModelsConverters
             return new AdvertCommandCreate
             {
                 Name = model.Name,
+                DateIssue = model.DateIssue,
+                PTS = model.PTS,
+                VIN = model.VIN,
                 Description = model.Description,
                 Price = model.Price,
                 UserId = model.UserId,
@@ -79,6 +87,9 @@ namespace WebAPI.ModelsConverters
             {
                 Id = model.Id,
                 Name = model.Name,
+                DateIssue = model.DateIssue,
+                PTS = model.PTS,
+                VIN = model.VIN,
                 Description = model.Description,
                 Price = model.Price,
                 UserId = model.Id,
@@ -104,6 +115,9 @@ namespace WebAPI.ModelsConverters
             {
                 Id = model.Id,
                 Name = model.Name,
+                DateIssue = model.DateIssue,
+                PTS = model.PTS,
+                VIN = model.VIN,
                 Description = model.Description,
                 Price = model.Price,
                 UserId = model.Id,

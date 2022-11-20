@@ -17,8 +17,13 @@ namespace Infrastructure.Configurations
 
             builder.HasKey(advert => advert.Id);
             builder.Property(advert => advert.Name).IsRequired();
+            builder.Property(advert => advert.DateIssue).IsRequired();
+            builder.Property(advert => advert.PTS).IsRequired();
+            builder.Property(advert => advert.VIN).IsRequired();
             builder.Property(advert => advert.Description);
             builder.Property(advert => advert.Price).IsRequired();
+            builder.Property(advert => advert.PublishDate).IsRequired();
+            builder.Property(advert => advert.EditDate);
             builder.HasMany(advert => advert.Images).WithOne().HasForeignKey(image => image.AdvertId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(advert => advert.AvailableTimes).WithOne().HasForeignKey(availableTime => availableTime.AdvertId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(advert => advert.Reviews).WithOne().HasForeignKey(review => review.AdvertId).OnDelete(DeleteBehavior.Cascade);

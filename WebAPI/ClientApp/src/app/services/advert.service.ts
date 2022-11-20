@@ -58,7 +58,7 @@ export class AdvertService {
 
   public getAdvertCreateFromService(): AdvertModelCreate {
     if (this.advertCreate == undefined)
-      return new AdvertModelCreate("", "", 0, 0, new Date(), new Date(), 0, 0);
+      return new AdvertModelCreate("", new Date(), "", "", "", 0, 0, new Date(), new Date(), 0, 0);
     return this.advertCreate;
   }
 
@@ -68,7 +68,7 @@ export class AdvertService {
 
   public getAdvertUpdateFromService(): AdvertModelUpdate {
     if (this.advertUpdate == undefined)
-      return new AdvertModelUpdate(0, "", "", 0, 0, [], new Date(), new Date(), 0, 0);
+      return new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [], new Date(), new Date(), 0, 0);
     return this.advertUpdate;
   }
   

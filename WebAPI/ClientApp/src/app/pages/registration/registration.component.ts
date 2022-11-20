@@ -15,6 +15,7 @@ export class RegistrationComponent implements OnInit {
   public confirm_password: string | undefined;
   public name: string | undefined;
   public phone: string | undefined;
+  public address: string | undefined;
   private targetRoute: string = "/";
 
   constructor(private accountService: AccountService, private router: Router) { }
@@ -45,13 +46,18 @@ export class RegistrationComponent implements OnInit {
       this.phone = '';
       return;
     }
+    if (this.address == undefined || this.address.trim() == '') {
+      alert("Введите ардрес арендодателя");
+      this.address = '';
+      return;
+    }
     if (this.confirm_password != this.password) {
       alert("Пароли не совпадают, проверьте пароли");
       this.password = '';
       this.confirm_password = '';
       return;
     }
-    let model = new RegisterModel(this.name, this.email, this.phone, this.password);
+    let model = new RegisterModel(this.name, this.email, this.phone, this.address, this.password);
     await this.accountService.registration(model).subscribe({
       next: async (data) => {
         console.log(data);

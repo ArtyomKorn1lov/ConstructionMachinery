@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserModel } from 'src/app/models/UserModel';
 import { AccountService } from 'src/app/services/account.service';
+import { DatetimeService } from 'src/app/services/datetime.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,10 +11,10 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  public user: UserModel = new UserModel(0, "", "", "");
+  public user: UserModel = new UserModel(0, "", "", "", new Date(), "");
   private targetRoute: string = "/";
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private router: Router) { }
 
   public async logout(): Promise<void> {
     if (this.accountService.logOut()) {
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit {
     await this.accountService.getAuthoriseModel();
     await this.accountService.getUserProfile().subscribe(data => {
       this.user = data;
+      this.user.created = new Date(this.user.created);
     });
   }
 

@@ -59,6 +59,7 @@ export class AccountService {
     else {
       localStorage.removeItem("jwt");
       localStorage.removeItem("refreshToken");
+      localStorage.clear();
       this.userFlag = false;
       return true;
     }
@@ -72,8 +73,8 @@ export class AccountService {
     return this.http.get<UserModel>(`api/account/user`);
   }
 
-  public update(model: UserUpdateModel): Observable<string> {
-    return this.http.put(`api/account/update`, model, { responseType: 'text' });
+  public update(model: UserUpdateModel): Observable<AuthenticatedResponse> {
+    return this.http.put<AuthenticatedResponse>(`api/account/update`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
   }
 
 }

@@ -19,6 +19,8 @@ namespace Application.CommandsConverters
                 Name = user.Name,
                 Email = user.Email,
                 Phone = user.Phone,
+                Address = user.Address,
+                Created = user.Created,
                 Password = user.Password
             };
         }
@@ -31,7 +33,9 @@ namespace Application.CommandsConverters
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Phone = user.Phone
+                Phone = user.Phone,
+                Address = user.Address,
+                Created = user.Created
             };
         }
         public static User UserUpdateCommandConvertToUserEntity(UserUpdateCommand user)
@@ -44,6 +48,7 @@ namespace Application.CommandsConverters
                 Name = user.Name,
                 Email = user.Email,
                 Phone = user.Phone,
+                Address = user.Address,
                 Password = user.Password
             };
         }

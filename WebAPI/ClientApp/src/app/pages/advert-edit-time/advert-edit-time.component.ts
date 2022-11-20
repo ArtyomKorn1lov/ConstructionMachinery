@@ -14,7 +14,7 @@ import { ImageModel } from 'src/app/models/ImageModel';
 })
 export class AdvertEditTimeComponent implements OnInit {
 
-  public advert: AdvertModelUpdate = new AdvertModelUpdate(0, "", "", 0, 0, [], new Date(), new Date(), 0, 0);
+  public advert: AdvertModelUpdate = new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [], new Date(), new Date(), 0, 0);
   public range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),

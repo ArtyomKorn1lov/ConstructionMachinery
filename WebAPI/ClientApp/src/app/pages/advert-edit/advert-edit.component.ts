@@ -4,6 +4,7 @@ import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { AccountService } from 'src/app/services/account.service';
 import { AdvertService } from 'src/app/services/advert.service';
+import { DatetimeService } from 'src/app/services/datetime.service';
 import { ImageService } from 'src/app/services/image.service';
 
 @Component({
@@ -13,13 +14,14 @@ import { ImageService } from 'src/app/services/image.service';
 })
 export class AdvertEditComponent implements OnInit {
 
-  public advertUpdate: AdvertModelUpdate = new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0);
+  public advertUpdate: AdvertModelUpdate = new AdvertModelUpdate(0, "", new Date(), "", "",  "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0);
+  public dateIssure: string | undefined;
   public images: File[] = [];
   public filesBase64: string[] = [];
   public oldImageCount: number = 0;
   private targetRoute: string = "/advert-edit/time";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
 
   public uploadImage(): void {
     document.getElementById("SelectImage")?.click();
@@ -63,12 +65,33 @@ export class AdvertEditComponent implements OnInit {
       this.advertUpdate.price = 0;
       return;
     }
+    if (this.dateIssure == undefined || this.dateIssure.trim() == '') {
+      alert("Введите год выпуска");
+      this.dateIssure = "";
+      return;
+    }
+    if (this.advertUpdate.pts == undefined || this.advertUpdate.pts.trim() == '') {
+      alert("Введите ПТС или ПСМ");
+      this.advertUpdate.pts = '';
+      return;
+    }
+    if (this.advertUpdate.vin == undefined || this.advertUpdate.vin.trim() == '') {
+      alert("Введите VIN, номер кузова или SN");
+      this.advertUpdate.vin = '';
+      return;
+    }
     if (this.images == null || this.images == undefined) {
       this.images = [];
     }
     if (this.images != null || this.images != undefined) {
       this.imageService.oldImageFlag = false;
     }
+    if ((this.images == null || this.images == undefined) && (this.advertUpdate.images == null || this.advertUpdate.images == undefined)) {
+      alert("Не выбран файл");
+      return;
+    }
+    const issure = new Date(this.dateIssure);
+    this.advertUpdate.dateIssue = issure;
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
     this.imageService.setImagesInService(this.images, this.filesBase64);
     this.imageService.setImageCountInService(this.oldImageCount);
@@ -78,6 +101,7 @@ export class AdvertEditComponent implements OnInit {
 
   public fillData(advert: AdvertModelUpdate): void {
     this.advertUpdate = advert;
+    this.dateIssure = this.advertUpdate.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getMonth()) + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getDate());
     this.images = this.imageService.getImagesFromService();
     this.filesBase64 = this.imageService.getBases64FromService();
     this.oldImageCount = this.imageService.getOldImageCountFromService();
@@ -88,9 +112,10 @@ export class AdvertEditComponent implements OnInit {
     let advert = this.advertService.getAdvertUpdateFromService();
     if(advert.name == "")
     {
-      this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
+      this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
       await this.advertService.getForUpdate(this.advertService.getIdFromLocalStorage()).subscribe(data => {
         this.advertUpdate = data;
+        this.dateIssure = this.advertUpdate.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getMonth()) + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getDate());
         this.imageService.oldImageFlag = true;
         this.oldImageCount = this.advertUpdate.images.length;
         return;

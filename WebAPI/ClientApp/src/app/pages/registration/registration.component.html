@@ -35,6 +35,12 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
+            <h5 class="small-header">Адрес арендодателя</h5>
+            <input #slectorAddress="ngModel" [(ngModel)]="address" name="address" class="authorize-input" type="text" placeholder="Адрес" required>
+            <div class="valid-container" *ngIf="slectorAddress.invalid && slectorAddress.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <button class="primary-authorize" (click)="registration()">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>

@@ -10,7 +10,7 @@
             <p class="primary-text">Заявка №{{i+1}}</p>
             <h5 class="medium-header">{{request.name}}</h5>
             <h6 class="small-header">
-                {{datetimeService.convertDateToUTS(request.date.getDate())}}.{{datetimeService.convertDateToUTS(request.date.getMonth())}}.{{request.date.getFullYear()}}
+                {{datetimeService.convertDateToUTS(request.date.getDate())}}.{{datetimeService.convertDateToUTS(request.date.getMonth()+1)}}.{{request.date.getFullYear()}}
                 в {{datetimeService.convertDateToUTS(request.date.getHours())}}:00</h6>
         </div>
         <button (click)="navigateToInfo(request.id)" class="edit-button">

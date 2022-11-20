@@ -146,7 +146,17 @@ namespace WebAPI.Controllers
                 if (await _accountService.Update(userCommand))
                 {
                     await _unitOfWork.Commit();
-                    return Ok("success");
+                    int accountId = await _accountService.GetIdByEmail(userCommand.Email);
+                    List<Claim> identity = GetIdentity(userCommand.Email);
+                    string accessToken = _tokenService.GenerateAccessToken(identity);
+                    string refreshToken = _tokenService.GenerateRefreshToken();
+                    await _accountService.SetUserToken(accountId, refreshToken);
+                    await _unitOfWork.Commit();
+                    return Ok(new AuthenticatedResponse
+                    {
+                        Token = accessToken,
+                        RefreshToken = refreshToken
+                    });
                 }
                 return BadRequest("error");
             }

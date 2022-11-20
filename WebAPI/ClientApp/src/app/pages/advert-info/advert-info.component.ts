@@ -17,7 +17,7 @@ import { DatetimeService } from 'src/app/services/datetime.service';
 })
 export class AdvertInfoComponent implements OnInit {
 
-  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", "", 0, "", [], []);
+  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", new Date(), "", "", "", new Date(), new Date(), 0, "", [], []);
   public days: AvailableDayModel[] = [];
   public month: number = 0;
   public year: number = 0;
@@ -55,6 +55,9 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public packageToDayModel(): void {
+    this.advert.publishDate = new Date(this.advert.publishDate);
+    this.advert.editDate = new Date(this.advert.editDate);
+    this.advert.dateIssue = new Date(this.advert.dateIssue);
     let day;
     let buffer;
     let sortTimes: AvailableTimeModel[];
@@ -150,7 +153,7 @@ export class AdvertInfoComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
+    this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);
     this.page = this.advertService.getPageFromLocalStorage();
     await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {

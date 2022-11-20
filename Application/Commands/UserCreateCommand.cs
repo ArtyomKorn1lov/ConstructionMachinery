@@ -11,6 +11,8 @@ namespace Application.Commands
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string Address { get; set; }
+        public DateTime Created { get; set; }
         public string Password { get; set; }
     }
 }

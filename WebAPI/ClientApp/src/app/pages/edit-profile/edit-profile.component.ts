@@ -10,7 +10,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class EditProfileComponent implements OnInit {
 
-  public user: UserUpdateModel = new UserUpdateModel(0, "", "", "", "");
+  public user: UserUpdateModel = new UserUpdateModel(0, "", "", "", "", "");
   public password: string | undefined;
   public confirm_password: string | undefined;
   private targetRoute: string = "/profile";
@@ -43,6 +43,11 @@ export class EditProfileComponent implements OnInit {
       this.user.phone = '';
       return;
     }
+    if (this.user.address == undefined || this.user.address.trim() == '') {
+      alert("Введите ардрес арендодателя");
+      this.user.address = '';
+      return;
+    }
     if (this.confirm_password != this.password) {
       alert("Пароли не совпадают, проверьте пароли");
       this.password = '';
@@ -51,9 +56,12 @@ export class EditProfileComponent implements OnInit {
     }
     this.user.password = this.password;
     await this.accountService.update(this.user).subscribe({
-      next: async (data) => {
+      next: async (data) => {        
         console.log(data);
-        alert(data);
+        alert("success");
+        const token = data.token;
+        const refreshToken = data.refreshToken;
+        this.accountService.saveTokens(token, refreshToken);
         this.router.navigateByUrl(this.targetRoute);
         return;
       },
@@ -74,7 +82,8 @@ export class EditProfileComponent implements OnInit {
       this.user.name = data.name;
       this.user.email = data.email;
       this.user.phone = data.phone;
+      this.user.address = data.address;
     });
   }
-  //
+  
 }

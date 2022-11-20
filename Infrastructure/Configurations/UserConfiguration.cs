@@ -14,9 +14,12 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable(nameof(User));
+
+            builder.HasKey(user => user.Id);
             builder.Property(user => user.Name).IsRequired();
             builder.Property(user => user.Email).IsRequired();
             builder.Property(user => user.Phone).IsRequired();
+            builder.Property(user => user.Address).IsRequired();
             builder.Property(user => user.Password).IsRequired();
             builder.Property(user => user.RefreshToken);
             builder.Property(user => user.RefreshTokenExpiryTime);

@@ -7,12 +7,22 @@
         <div class="content__elements">
             <h4 class="big-header -content">{{user.name}}</h4>
             <div class="icon-container">
+                <img src="assets/octicon_calendar.png">
+                <h5 class="medium-header">На Авто Помощнике с
+                    {{datetimeService.convertDateToUTS(user.created.getDate())}}.{{datetimeService.convertDateToUTS(user.created.getMonth()+1)}}.{{user.created.getFullYear()}}
+                </h5>
+            </div>
+            <div class="icon-container">
                 <img src="/assets/lucide_mail.png">
                 <h5 class="medium-header">{{user.email}}</h5>
             </div>
             <div class="icon-container">
                 <img src="assets/lucide_phone.png">
                 <h5 class="medium-header">{{user.phone}}</h5>
+            </div>
+            <div class="icon-container">
+                <img src="assets/octicon_location.png">
+                <h5 class="medium-header">{{user.address}}</h5>
             </div>
             <button [routerLink]="['/profile/edit']" class="edit-button">
                 <h5 class="medium-header">Редактировать</h5>

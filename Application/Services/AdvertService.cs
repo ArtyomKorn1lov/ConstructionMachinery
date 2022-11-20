@@ -32,6 +32,8 @@ namespace Application.Services
             {
                 if(advert != null)
                 {
+                    advert.PublishDate = DateTime.Now;
+                    advert.EditDate = advert.PublishDate;
                     Advert advertEntity = AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert);
                     List<AvailableTime> availableTimes = FillAvailableTime(advert.StartDate, advert.EndDate, advert.StartTime, advert.EndTime);
                     availableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
@@ -53,6 +55,7 @@ namespace Application.Services
             {
                 if (advertCommand != null)
                 {
+                    advertCommand.EditDate = DateTime.Now;
                     List<AvailableTime> times = await _requestRepository.GetTimesForRemoveRequestByAdvertId(advertCommand.Id);
                     Advert advert = AdvertCommandConverter.AdvertCommandUpdateConvertToAdvertEntity(advertCommand);
                     List<AvailableTime> newAvailableTime = FillAvailableTime(advertCommand.StartDate, advertCommand.EndDate, advertCommand.StartTime, advertCommand.EndTime);
@@ -69,7 +72,7 @@ namespace Application.Services
             }
         }
 
-        public List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
+        private List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
         {
             startDate = startDate.ToLocalTime();
             endDate = endDate.ToLocalTime();
@@ -100,7 +103,7 @@ namespace Application.Services
             return availableTimes;
         }
 
-        public AdvertCommandUpdate FillRangeTime(AdvertCommandUpdate command, Advert advert)
+        private AdvertCommandUpdate FillRangeTime(AdvertCommandUpdate command, Advert advert)
         {
             advert.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
             command.StartDate = advert.AvailableTimes[0].Date;

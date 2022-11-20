@@ -6,6 +6,9 @@ namespace WebAPI.Models
     public class AdvertModelCreate
     {
         public string Name { get; set; }
+        public DateTime DateIssue { get; set; }
+        public string PTS { get; set; }
+        public string VIN { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }
         public int UserId { get; set; }

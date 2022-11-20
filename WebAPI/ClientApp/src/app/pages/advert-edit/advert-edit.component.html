@@ -11,6 +11,24 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
+            <h5 class="small-header">Год выпуска</h5>
+            <input #slectorName="ngModel" [(ngModel)]="dateIssure" name="dateIssure" class="authorize-input" type="date" placeholder="Выберете дату" required>
+            <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
+            <h5 class="small-header">ПТС или ПСМ</h5>
+            <input #slectorName="ngModel" [(ngModel)]="advertUpdate.pts" name="pts" class="authorize-input" type="text" placeholder="Введите данные" required>
+            <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
+            <h5 class="small-header">VIN, номер кузова или SN</h5>
+            <input #slectorName="ngModel" [(ngModel)]="advertUpdate.vin" name="vin" class="authorize-input" type="text" placeholder="Введите данные" required>
+            <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">Обязательное поле для заполнения</p>
+            </div>
             <h5 class="small-header">Цена в час</h5>
             <input #slectorPrice="ngModel" [(ngModel)]="advertUpdate.price" name="price" class="authorize-input" type="number" placeholder="Введите цену" required>
             <div class="valid-container" *ngIf="slectorPrice.invalid && slectorPrice.touched">

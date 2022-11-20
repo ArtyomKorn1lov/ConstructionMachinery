@@ -17,6 +17,7 @@ namespace Infrastructure.Configurations
 
             builder.HasKey(availabilityRequest => availabilityRequest.Id);
             builder.Property(availabilityRequest => availabilityRequest.Address).IsRequired();
+            builder.Property(availabilityRequest => availabilityRequest.IsAvailable).IsRequired();
             builder.HasMany(availabilityRequest => availabilityRequest.AvailableTimes).WithOne()
                 .HasForeignKey(availableTime => availableTime.AvailabilityRequestId).OnDelete(DeleteBehavior.NoAction);
         }

@@ -15,9 +15,36 @@ import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
 export class AccountService {
 
   public userFlag: boolean = false;
-  public authorize: AuthoriseModel = new AuthoriseModel("", "");
+  public authorize: AuthoriseModel = new AuthoriseModel("", "", false);
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+
+  public clearLocalStorage(): void {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userPage');
+  }
+
+  public setUserIdInLocalStorage(id: number): void {
+    localStorage.setItem('userId', id.toString());
+  }
+
+  public setPageInLocalStorage(page: string): void {
+    localStorage.setItem('userPage', page);
+  }
+
+  public getUserIdFromLocalStorage(): number {
+    let id = localStorage.getItem('userId');
+    if (id == null)
+      return 0;
+    return parseInt(id);
+  }
+
+  public getPageFromLocalStorage(): string {
+    let page = localStorage.getItem('userPage');
+    if (page == null)
+      return '';
+    return page;
+  }
 
   public async getAuthoriseModel(): Promise<void> {
     await this.isUserAuthorized().subscribe(data => {
@@ -71,6 +98,10 @@ export class AccountService {
 
   public getUserProfile(): Observable<UserModel> {
     return this.http.get<UserModel>(`api/account/user`);
+  }
+
+  public getUserById(id: number): Observable<UserModel> {
+    return this.http.get<UserModel>(`api/account/user/${id}`);
   }
 
   public update(model: UserUpdateModel): Observable<AuthenticatedResponse> {

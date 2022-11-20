@@ -46,6 +46,7 @@ namespace WebAPI.Controllers
             AvailabilityRequestModelForLandlord model = RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command);
             if (model == null)
                 return null;
+            await _unitOfWork.Commit();
             return model;
         }
 

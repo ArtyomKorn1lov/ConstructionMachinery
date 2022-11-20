@@ -16,14 +16,12 @@ namespace Application.Services
         private IAdvertRepository _advertRepository;
         private IAccountRepository _accountRepository;
         private IRequestRepository _requestRepository;
-        private IReviewRepository _reviewRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IAccountRepository accountRepository, IRequestRepository requestRepository, IReviewRepository reviewRepository)
+        public AdvertService(IAdvertRepository advertRepository, IAccountRepository accountRepository, IRequestRepository requestRepository)
         {
             _advertRepository = advertRepository;
             _accountRepository = accountRepository;
             _requestRepository = requestRepository;
-            _reviewRepository = reviewRepository;
         }
 
         public async Task<bool> Create(AdvertCommandCreate advert)

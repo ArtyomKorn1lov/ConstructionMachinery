@@ -110,6 +110,7 @@ namespace Application.Services
             try
             {
                 AvailabilityRequest request = await _requestRepository.GetById(id);
+                request.IsAvailable = true;
                 if (request == null)
                     return null;
                 if (await GetUserIdByAdvertId(request.AvailableTimes[0].AdvertId) != userId)
@@ -258,6 +259,18 @@ namespace Application.Services
             Advert advert = await _advertRepository.GetById(id);
             User user = await _accountRepository.GetById(advert.UserId);
             return user.Id;
+        }
+
+        public async Task<bool> IsAttention(int userId)
+        {
+            try
+            {
+                return await _requestRepository.IsAttention(userId);
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

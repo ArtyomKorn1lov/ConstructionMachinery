@@ -1,14 +1,26 @@
 <div class="header">
     <div class="header__logo">
-        <img (click)="sidenavEvent()" src="assets/menu.png">
-        <img [routerLink]="['/']" src="assets/logotype.png">
-        <img *ngIf="!accountService.userFlag" [routerLink]="['/authorize']" src="assets/account.png">
-        <div *ngIf="accountService.userFlag" class="account-ellipse" [routerLink]="['/profile']">
-            <h6 class="big-header">{{[this.accountService.authorize.name[0]]}}</h6>
+        <div class="header__nab-bar">
+            <img (click)="sidenavEvent()" src="assets/menu.png">
+        </div>
+        <div class="header__logotype">
+            <img [routerLink]="['/']" src="assets/logotype.png">
+        </div>
+        <div class="header__user-group">
+            <img [routerLink]="['/advert-confirm']" class="account-attention" *ngIf="!accountService.authorize.isAvailable && accountService.userFlag"
+                src="assets/attention_inactive.png">
+            <img [routerLink]="['/advert-confirm']" class="account-attention" *ngIf="accountService.authorize.isAvailable && accountService.userFlag"
+                src="assets/attention_active.png">
+            <img *ngIf="!accountService.userFlag" [routerLink]="['/authorize']" src="assets/account.png">
+            <div *ngIf="accountService.userFlag" class="account-ellipse" [routerLink]="['/profile']">
+                <h6 class="big-header">{{[this.accountService.authorize.name[0]]}}</h6>
+            </div>
         </div>
     </div>
     <form [formGroup]="searchForm" (submit)="onSubmith()" class="header__search">
-        <input [style.margin-left]="visibility==true?'0px':'20px'" formControlName="search" (focus)="focusIn()" (focusout)="focusOut()" type="search" class="header__search-input" placeholder="Найти лучшую технику">
-        <img (click)="onSubmith()" [style.display]="visibility==false?'block':'none'" src="assets/search-icon.png" class="header__search-icon">
+        <input [style.margin-left]="visibility==true?'0px':'20px'" formControlName="search" (focus)="focusIn()"
+            (focusout)="focusOut()" type="search" class="header__search-input" placeholder="Найти лучшую технику">
+        <img (click)="onSubmith()" [style.display]="visibility==false?'block':'none'" src="assets/search-icon.png"
+            class="header__search-icon">
     </form>
 </div>

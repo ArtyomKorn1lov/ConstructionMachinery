@@ -10,6 +10,23 @@
         align-items: flex-start;
         margin-bottom: 10px;
     }
+
+    &__nab-bar {
+        flex: 1;
+    }
+
+    &__logotype {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__user-group {
+        flex: 1;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+    }
     
     &__search {
         display: inline-flex;
@@ -39,6 +56,10 @@
             display: none;
         }
     }
+}
+
+.account-attention {
+    margin-right: 10px;
 }
 
 .account-ellipse {

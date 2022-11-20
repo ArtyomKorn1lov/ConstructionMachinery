@@ -88,5 +88,12 @@ namespace Infrastructure.Repositories
             return await _constructionMachineryDbContext.Set<AvailableTime>()
                 .Where(a => a.AdvertId == id && a.AvailabilityRequestId != null).ToListAsync();
         }
+
+        public async Task<bool> IsAttention(int userId)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().AnyAsync(advert => advert.AvailableTimes.Any(time =>
+            !_constructionMachineryDbContext.Set<AvailabilityRequest>().FirstOrDefault(request => request.Id == time.AvailabilityRequestId).IsAvailable)
+            && advert.UserId == userId);
+        }
     }
 }

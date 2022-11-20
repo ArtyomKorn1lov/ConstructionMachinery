@@ -47,7 +47,8 @@
             </div>
             <div class="vector"></div>
             <button (click)="cancel()" class="edit-button">
-                <h5 class="medium-header -title">Отменить заявку</h5>
+                <h5 *ngIf="request.requestStateId != 2" class="medium-header -title">Отменить заявку</h5>
+                <h5 *ngIf="request.requestStateId == 2" class="medium-header -title">Очистить</h5>
             </button>
         </div>
     </div>

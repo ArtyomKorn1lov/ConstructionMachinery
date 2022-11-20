@@ -21,11 +21,14 @@ namespace WebAPI.Controllers
         private IUnitOfWork _unitOfWork;
         private IAccountService _accountService;
         private ITokenService _tokenService;
-        public AccountController(IUnitOfWork unitOfWork, IAccountService accountService, ITokenService tokenService)
+        private IRequestService _requestService;
+
+        public AccountController(IUnitOfWork unitOfWork, IAccountService accountService, ITokenService tokenService, IRequestService requestService)
         {
             _unitOfWork = unitOfWork;
             _accountService = accountService;
             _tokenService = tokenService;
+            _requestService = requestService;
         }
 
         [HttpPost("login")]
@@ -107,10 +110,10 @@ namespace WebAPI.Controllers
         [HttpGet("is-authorized")]
         public async Task<AuthorizeModel> IsUserAuthorized()
         {
-            UserCommand user = await _accountService.GetUserByEmail(HttpContext.User.Identity.Name);
+            UserCommand user = await _accountService.GetUserByEmail(User.Identity.Name);
             if (user == null)
                 return null;
-            AuthorizeModel authorise = new AuthorizeModel(user.Name, user.Email);
+            AuthorizeModel authorise = new AuthorizeModel(user.Name, user.Email, await _requestService.IsAttention(user.Id));
             return authorise;
         }
 
@@ -119,6 +122,17 @@ namespace WebAPI.Controllers
         public async Task<UserModel> GetById()
         {
             int id = await _accountService.GetIdByEmail(User.Identity.Name);
+            UserCommand userCommand = await _accountService.GetById(id);
+            UserModel userModel = UserModelConverter.UserCommandConvertToUserModel(userCommand);
+            if (userModel == null)
+                return null;
+            return userModel;
+        }
+
+        [Authorize]
+        [HttpGet("user/{id}")]
+        public async Task<UserModel> GetUserById(int id)
+        {
             UserCommand userCommand = await _accountService.GetById(id);
             UserModel userModel = UserModelConverter.UserCommandConvertToUserModel(userCommand);
             if (userModel == null)

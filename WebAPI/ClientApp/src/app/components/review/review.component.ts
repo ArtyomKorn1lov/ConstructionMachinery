@@ -4,6 +4,7 @@ import { ReviewModel } from 'src/app/models/ReviewModel';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-review',
@@ -16,8 +17,15 @@ export class ReviewComponent implements OnInit {
   public scrollFlag = true;
   public reviews: ReviewModel[] = [];
   private targetRoute: string = "/review-edit";
+  private userRoute: string = "/user-profile";
 
-  constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router, private advertService: AdvertService) { }
+  constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router, private advertService: AdvertService, private accountService: AccountService) { }
+
+  public viewProfile(id: number) {
+    this.accountService.setUserIdInLocalStorage(id);
+    this.accountService.setPageInLocalStorage(this.router.url);
+    this.router.navigateByUrl(this.userRoute);
+  }
 
   public convertToNormalDate(): void {
     for(let index = 0; index < this.reviews.length; index++) {

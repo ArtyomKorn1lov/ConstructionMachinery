@@ -10,6 +10,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Address { get; set; }
+        public bool IsAvailable { get; set; }
         public int RequestStateId { get; set; }
         public int UserId { get; set; }
         public List<AvailableTime> AvailableTimes { get; set; }

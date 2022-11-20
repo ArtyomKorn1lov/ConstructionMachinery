@@ -42,6 +42,7 @@ namespace WebAPI.ModelsConverters
             {
                 Id = review.Id,
                 Description = review.Description,
+                UserId = review.UserId,
                 ReviewStateId = review.ReviewStateId,
                 Date = review.Date
             };

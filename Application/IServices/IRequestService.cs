@@ -19,5 +19,6 @@ namespace Application.IServices
         Task<bool> UpdateTimes(int requestId, List<AvailableTimeCommandForCreateRequest> times);
         Task<bool> Confirm(int id, int stateId);
         Task<bool> Remove(int id, int userId);
+        Task<bool> IsAttention(int userId);
     }
 }

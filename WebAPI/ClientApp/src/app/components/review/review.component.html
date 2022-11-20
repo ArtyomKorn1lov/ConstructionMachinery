@@ -14,7 +14,7 @@
                 <img *ngIf="review.reviewStateId < 5" class="review__star" src="assets/star_empty.png" alt="star">
                 <img *ngIf="review.reviewStateId >= 5" class="review__star" src="assets/star_fill.png" alt="star">
             </div>
-            <h5 class="small-header -name">{{review.name}}</h5>
+            <h5 (click)="viewProfile(review.userId)" class="small-header -name">{{review.name}}</h5>
         </div>
         <div class="review__info">
             <p class="primary-text">{{review.description}}</p>

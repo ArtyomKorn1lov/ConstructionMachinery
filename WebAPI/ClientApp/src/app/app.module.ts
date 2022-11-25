@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -49,9 +50,10 @@ import { ReviewEditComponent } from './pages/review-edit/review-edit.component';
 import { ContactsComponent } from './pages/contacts/contacts.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { DialogFilterComponent } from './components/dialog-filter/dialog-filter.component';
 
-export function tokenGetter() { 
-  return localStorage.getItem("jwt"); 
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
 }
 
 @NgModule({
@@ -90,6 +92,7 @@ export function tokenGetter() {
     ContactsComponent,
     CompanyComponent,
     UserProfileComponent,
+    DialogFilterComponent,
   ],
   imports: [
     JwtModule.forRoot({
@@ -109,6 +112,7 @@ export function tokenGetter() {
     MatNativeDateModule,
     MatProgressSpinnerModule,
     NgxMaterialTimepickerModule,
+    MatDialogModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([

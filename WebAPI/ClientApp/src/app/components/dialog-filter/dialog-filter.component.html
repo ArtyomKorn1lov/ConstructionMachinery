@@ -1,0 +1,23 @@
+<div class="filter-content">
+    <div class="filter-content__close">
+        <img (click)="close()" src="assets/akar-icons_cross.png">
+    </div>
+    <h1 class="big-header">Фильтры</h1>
+    <div class="filter-content__list">
+        <div (click)="price()" class="filter-content__element">
+            <h2 class="medium-header">Цена, ₽</h2>
+            <img src="assets/right.png">
+        </div>  
+        <div (click)="rating()" class="filter-content__element">
+            <h2 class="medium-header">Рейтинг</h2>
+            <img src="assets/right.png">
+        </div>  
+        <div (click)="date()" class="filter-content__element">
+            <h2 class="medium-header">Дата публикации</h2>
+            <img src="assets/right.png">
+        </div>
+        <button (click)="price()" class="secondary-authorize">
+            <h5 class="medium-header">Сбросить</h5>
+        </button>
+    </div>
+</div>

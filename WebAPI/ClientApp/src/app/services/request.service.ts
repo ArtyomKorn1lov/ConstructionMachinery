@@ -46,7 +46,7 @@ export class RequestService {
   }
 
   public checkLenght(oldLength: number, newLength: number): boolean {
-    if(oldLength >= newLength)
+    if(oldLength >= newLength || oldLength == 0)
       return false;
     return true;
   }

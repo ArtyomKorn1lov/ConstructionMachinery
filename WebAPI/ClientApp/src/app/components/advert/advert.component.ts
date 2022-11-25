@@ -28,30 +28,24 @@ export class AdvertComponent implements OnInit {
       await this.ngOnInit();
       return;
     }
-    if (param == "max") {
-      this.advertList.sort(this.isMax);
+    if (param == "max_price") {
       return;
     }
-    if (param == "min") {
-      this.advertList.sort(this.isMin);
+    if (param == "min_price") {
       return;
     }
-  }
-
-  private isMax(first: AdvertModelList, second: AdvertModelList): number {
-    if (first.price > second.price)
-      return 1;
-    if (first.price < second.price)
-      return -1;
-    return 0;
-  }
-
-  private isMin(first: AdvertModelList, second: AdvertModelList): number {
-    if (first.price < second.price)
-      return 1;
-    if (first.price > second.price)
-      return -1;
-    return 0;
+    if (param == "max_rating") {
+      return;
+    }
+    if (param == "min_rating") {
+      return;
+    }
+    if (param == "max_date") {
+      return;
+    }
+    if (param == "min_date") {
+      return;
+    }
   }
 
   public getAdvertInfo(id: number): void {

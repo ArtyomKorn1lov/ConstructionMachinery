@@ -18,34 +18,15 @@ export class AdvertComponent implements OnInit {
   public count: number = 10;
   public scrollFlag = true;
   private targetRoute: string = "advert-info";
+  private filter: string = "all";
 
   constructor(private advertService: AdvertService, private router: Router, private route: ActivatedRoute, private imageService: ImageService) { }
 
   public async sortByParam(param: string): Promise<void> {
-    if (param == "all") {
-      this.count = 10;
-      this.scrollFlag = true;
-      await this.ngOnInit();
-      return;
-    }
-    if (param == "max_price") {
-      return;
-    }
-    if (param == "min_price") {
-      return;
-    }
-    if (param == "max_rating") {
-      return;
-    }
-    if (param == "min_rating") {
-      return;
-    }
-    if (param == "max_date") {
-      return;
-    }
-    if (param == "min_date") {
-      return;
-    }
+    this.filter = param;
+    this.count = 10;
+    this.scrollFlag = true;
+    await this.ngOnInit();
   }
 
   public getAdvertInfo(id: number): void {
@@ -56,9 +37,10 @@ export class AdvertComponent implements OnInit {
       this.advertService.setPageInLocalStorage(this.page);
     this.route.queryParams.subscribe(async params => {
       const searchString = params['search'];
-      if(searchString != "")
+      if (searchString != "")
         this.advertService.setQueryParametr(searchString);
     });
+    this.advertService.setFilterInLocalStorage(this.filter);
     this.router.navigateByUrl(this.targetRoute);
     return;
   }
@@ -69,12 +51,50 @@ export class AdvertComponent implements OnInit {
       if (this.page == 'list') {
         await this.route.queryParams.subscribe(async params => {
           const searchString = params['search'];
-          if (searchString == undefined)
-            await this.advertService.getAll(this.count).subscribe(data => {
-              this.advertList = data;
-              this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-              this.flagState();
-            });
+          if (searchString == undefined) {
+            if (this.filter == "all")
+              await this.advertService.getAll(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+            if (this.filter == "max_price")
+              await this.advertService.getSortByPriceMax(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+            if (this.filter == "min_price")
+              await this.advertService.getSortByPriceMin(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+            if (this.filter == "max_rating")
+              await this.advertService.GetSortByRatingMin(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+            if (this.filter == "min_rating")
+              await this.advertService.GetSortByRatingMin(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+            if (this.filter == "max_date")
+              await this.advertService.getAll(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+            if (this.filter == "min_date")
+              await this.advertService.GetSortByDateMin(this.count).subscribe(data => {
+                this.advertList = data;
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              });
+          }
           else
             await this.advertService.getByName(searchString, this.count).subscribe(data => {
               this.advertList = data;
@@ -109,6 +129,8 @@ export class AdvertComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
+    if (this.advertService.getFilterFromLocalStorage() != '')
+      this.filter = this.advertService.getFilterFromLocalStorage();
     this.advertService.clearLocalStorage();
     this.advertService.setAdvertCreateInService(new AdvertModelCreate("", new Date(), "", "", "", 0, 0, new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);
@@ -116,13 +138,76 @@ export class AdvertComponent implements OnInit {
     if (this.page == 'list') {
       await this.route.queryParams.subscribe(async params => {
         const searchString = params['search'];
-        if (searchString == undefined)
-          await this.advertService.getAll(this.count).subscribe(async data => {
+        if (searchString == undefined) {
+          if (this.filter == "all")
+            await this.advertService.getAll(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+          if (this.filter == "max_price")
+            await this.advertService.getSortByPriceMax(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+          if (this.filter == "min_price")
+            await this.advertService.getSortByPriceMin(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+          if (this.filter == "max_rating")
+            await this.advertService.GetSortByRatingMax(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+          if (this.filter == "min_rating")
+            await this.advertService.GetSortByRatingMin(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+          if (this.filter == "max_date")
+            await this.advertService.getAll(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+          if (this.filter == "min_date")
+            await this.advertService.GetSortByDateMin(this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+        }
+        else
+          if (this.filter == "all")
+            await this.advertService.getByName(searchString, this.count).subscribe(async data => {
+              this.advertList = data;
+              await this.changeFlagState(this.advertList.length, firstCount);
+            });
+        if (this.filter == "max_price")
+          await this.advertService.getSortByPriceMaxByName(searchString, this.count).subscribe(async data => {
             this.advertList = data;
             await this.changeFlagState(this.advertList.length, firstCount);
           });
-        else
+        if (this.filter == "min_price")
+          await this.advertService.getSortByPriceMinByName(searchString, this.count).subscribe(async data => {
+            this.advertList = data;
+            await this.changeFlagState(this.advertList.length, firstCount);
+          });
+        if (this.filter == "max_rating")
+          await this.advertService.GetSortByRatingMaxByName(searchString, this.count).subscribe(async data => {
+            this.advertList = data;
+            await this.changeFlagState(this.advertList.length, firstCount);
+          });
+        if (this.filter == "min_rating")
+          await this.advertService.GetSortByRatingMinByName(searchString, this.count).subscribe(async data => {
+            this.advertList = data;
+            await this.changeFlagState(this.advertList.length, firstCount);
+          });
+        if (this.filter == "max_date")
           await this.advertService.getByName(searchString, this.count).subscribe(async data => {
+            this.advertList = data;
+            await this.changeFlagState(this.advertList.length, firstCount);
+          });
+        if (this.filter == "min_date")
+          await this.advertService.GetSortByDateMinByName(searchString, this.count).subscribe(async data => {
             this.advertList = data;
             await this.changeFlagState(this.advertList.length, firstCount);
           });

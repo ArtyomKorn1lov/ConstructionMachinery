@@ -332,5 +332,285 @@ namespace Application.Services
                 return false;
             }
         }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMax(int count)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMax(count);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMin(int count)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMin(count);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxWithoutUserId(int count, int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserId(count, id);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinWithoutUserId(int count, int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserId(count, id);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMax(int count)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMax(count);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMin(int count)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMin(count);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxWithoutUserId(int count, int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserId(count, id);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinWithoutUserId(int count, int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserId(count, id);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByDateMin(int count)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByDateMin(count);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByDateMinWithoutUserId(int count, int id)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserId(count, id);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxByName(int count, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByName(count, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinByName(int count, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinByName(count, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxWithoutUserIdByName(int count, int id, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserIdByName(count, id, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinWithoutUserIdByName(int count, int id, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserIdByName(count, id, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxByName(int count, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByName(count, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinByName(int count, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinByName(count, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxWithoutUserIdByName(int count, int id, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserIdByName(count, id, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinWithoutUserIdByName(int count, int id, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserIdByName(count, id, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByDateMinByName(int count, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinByName(count, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AdvertCommandList>> GetSortByDateMinWithoutUserIdByName(int count, int id, string name)
+        {
+            try
+            {
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserIdByName(count, id, name);
+                List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
+                return advertCommandList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

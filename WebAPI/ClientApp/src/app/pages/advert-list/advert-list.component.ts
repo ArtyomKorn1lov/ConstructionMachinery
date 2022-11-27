@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { AdvertComponent } from 'src/app/components/advert/advert.component';
 import { DialogFilterComponent } from 'src/app/components/dialog-filter/dialog-filter.component';
@@ -33,15 +33,16 @@ export class AdvertListComponent implements OnInit {
   constructor(private accountService: AccountService, private dialog: MatDialog) { }
 
   public async selectEvent(): Promise<void> {
-    //await this.child?.sortByParam(this.filter);
+    await this.child?.sortByParam(this.filterState);
   }
 
   public openFilterDialog(): void {
     const dialogRef = this.dialog.open(DialogFilterComponent);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result == undefined)
         return;
       this.filters = result.data;
+      await this.child?.sortByParam(this.filters[0].param);
     })
   }
 

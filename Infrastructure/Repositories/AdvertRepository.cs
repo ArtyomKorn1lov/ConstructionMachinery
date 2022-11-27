@@ -25,14 +25,14 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Advert>> GetAll(int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
-                .Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.EditDate).Take(count).ToListAsync();
         }
 
         public async Task<List<Advert>> GetAllWithoutUserId(int id, int count)
         {
-            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id)
-                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Take(count).ToListAsync();
         }
 
         public async Task<Advert> GetById(int id)
@@ -108,6 +108,140 @@ namespace Infrastructure.Repositories
                 .OrderBy(advert => advert.EditDate)
                 .Take(count)
                 .ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMax(int count)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMin(int count)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMaxWithoutUserId(int count, int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMinWithoutUserId(int count, int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByDateMin(int count)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.EditDate).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByDateMinWithoutUserId(int count, int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMax(int count)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Sum(review => review.ReviewStateId)).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMin(int count)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Sum(review => review.ReviewStateId)).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMaxWithoutUserId(int count, int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Sum(review => review.ReviewStateId))
+                .Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMinWithoutUserId(int count, int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Sum(review => review.ReviewStateId))
+                .Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMaxByName(int count, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .OrderBy(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMinByName(int count, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .OrderByDescending(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMaxWithoutUserIdByName(int count, int id, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByPriceMinWithoutUserIdByName(int count, int id, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMaxByName(int count, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .OrderByDescending(advert => advert.Reviews.Sum(review => review.ReviewStateId)).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMinByName(int count, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .OrderBy(advert => advert.Reviews.Sum(review => review.ReviewStateId)).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMaxWithoutUserIdByName(int count, int id, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Sum(review => review.ReviewStateId))
+                .Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByRatingMinWithoutUserIdByName(int count, int id, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Sum(review => review.ReviewStateId))
+                .Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByDateMinByName(int count, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .OrderBy(advert => advert.EditDate).Take(count).ToListAsync();
+        }
+
+        public async Task<List<Advert>> GetSortByDateMinWithoutUserIdByName(int count, int id, string name)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Take(count).ToListAsync();
         }
     }
 }

@@ -4,7 +4,7 @@
             <h6 class="big-header -content">Список объявлений:</h6>
             <div class="filter-group">
                 <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
-                    <option class="select-filter__option" *ngFor="let filter of filters" ngValue={{filter.param}}>{{filter.name}}</option>
+                    <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
                 </select>
                 <div class="filter" (click)="openFilterDialog()">
                     <img class="filter__image" src="assets/clarity_filter-solid.png">

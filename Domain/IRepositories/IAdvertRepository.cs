@@ -22,5 +22,25 @@ namespace Domain.IRepositories
         Task<int> GetLastAdvertId();
         Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id, int count);
         Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id, int count);
+        Task<List<Advert>> GetSortByPriceMax(int count);
+        Task<List<Advert>> GetSortByPriceMin(int count);
+        Task<List<Advert>> GetSortByPriceMaxWithoutUserId(int count, int id);
+        Task<List<Advert>> GetSortByPriceMinWithoutUserId(int count, int id);
+        Task<List<Advert>> GetSortByRatingMax(int count);
+        Task<List<Advert>> GetSortByRatingMin(int count);
+        Task<List<Advert>> GetSortByRatingMaxWithoutUserId(int count, int id);
+        Task<List<Advert>> GetSortByRatingMinWithoutUserId(int count, int id);
+        Task<List<Advert>> GetSortByDateMin(int count);
+        Task<List<Advert>> GetSortByDateMinWithoutUserId(int count, int id);
+        Task<List<Advert>> GetSortByPriceMaxByName(int count, string name);
+        Task<List<Advert>> GetSortByPriceMinByName(int count, string name);
+        Task<List<Advert>> GetSortByPriceMaxWithoutUserIdByName(int count, int id, string name);
+        Task<List<Advert>> GetSortByPriceMinWithoutUserIdByName(int count, int id, string name);
+        Task<List<Advert>> GetSortByRatingMaxByName(int count, string name);
+        Task<List<Advert>> GetSortByRatingMinByName(int count, string name);
+        Task<List<Advert>> GetSortByRatingMaxWithoutUserIdByName(int count, int id, string name);
+        Task<List<Advert>> GetSortByRatingMinWithoutUserIdByName(int count, int id, string name);
+        Task<List<Advert>> GetSortByDateMinByName(int count, string name);
+        Task<List<Advert>> GetSortByDateMinWithoutUserIdByName(int count, int id, string name);
     }
 }

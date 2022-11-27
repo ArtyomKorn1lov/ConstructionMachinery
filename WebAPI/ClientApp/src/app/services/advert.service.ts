@@ -20,6 +20,7 @@ export class AdvertService {
   public clearLocalStorage(): void {
     localStorage.removeItem('advertId');
     localStorage.removeItem('page');
+    localStorage.removeItem('filter');
   }
 
   public setIdInLocalStorage(id: number): void {
@@ -28,6 +29,10 @@ export class AdvertService {
 
   public setPageInLocalStorage(page: string): void {
     localStorage.setItem('page', page);
+  }
+
+  public setFilterInLocalStorage(filter: string): void {
+    localStorage.setItem('filter', filter);
   }
 
   public getIdFromLocalStorage(): number {
@@ -39,6 +44,13 @@ export class AdvertService {
 
   public getPageFromLocalStorage(): string {
     let page = localStorage.getItem('page');
+    if (page == null)
+      return '';
+    return page;
+  }
+
+  public getFilterFromLocalStorage(): string {
+    let page = localStorage.getItem('filter');
     if (page == null)
       return '';
     return page;
@@ -71,9 +83,9 @@ export class AdvertService {
       return new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [], new Date(), new Date(), 0, 0);
     return this.advertUpdate;
   }
-  
+
   public checkLenght(oldLength: number, newLength: number): boolean {
-    if(oldLength >= newLength || oldLength == 0)
+    if (oldLength >= newLength || oldLength == 0)
       return false;
     return true;
   }
@@ -118,4 +130,43 @@ export class AdvertService {
     return this.http.put(`api/advert/update`, advert, { responseType: 'text' });
   }
 
+  public getSortByPriceMax(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${count}`);
+  }
+
+  public getSortByPriceMin(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${count}`);
+  }
+
+  public GetSortByRatingMax(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${count}`);
+  }
+
+  public GetSortByRatingMin(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${count}`);
+  }
+
+  public GetSortByDateMin(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${count}`);
+  }
+
+  public getSortByPriceMaxByName(name: string, count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${name}/${count}`);
+  }
+
+  public getSortByPriceMinByName(name: string, count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${name}/${count}`);
+  }
+
+  public GetSortByRatingMaxByName(name: string, count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${name}/${count}`);
+  }
+
+  public GetSortByRatingMinByName(name: string, count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${name}/${count}`);
+  }
+
+  public GetSortByDateMinByName(name: string,count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${count}`);
+  }
 }

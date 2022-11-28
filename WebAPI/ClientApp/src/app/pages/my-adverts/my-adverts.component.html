@@ -8,6 +8,14 @@
             <button [routerLink]="['/advert-create']" class="primary-authorize">
                 <h5 class="medium-header">Создать объявление</h5>
             </button>
+            <div class="filter-group">
+                <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
+                    <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
+                </select>
+                <div class="filter" (click)="openFilterDialog()">
+                    <img class="filter__image" src="assets/clarity_filter-solid.png">
+                </div>
+            </div>
             <app-advert [page]="'my'"></app-advert>
         </div>
     </div>

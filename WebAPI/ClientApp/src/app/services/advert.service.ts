@@ -169,4 +169,25 @@ export class AdvertService {
   public GetSortByDateMinByName(name: string,count: number): Observable<AdvertModelList[]> {
     return this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${count}`);
   }
+
+  public getSortByPriceMaxByUserId(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user-price-max/${count}`);
+  }
+
+  public getSortByPriceMinByUserId(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user-price-min/${count}`);
+  }
+
+  public getSortByRatingMaxByUserId(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-max/${count}`);
+  }
+
+  public getSortByRatingMinByUserId(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-min/${count}`);
+  }
+
+  public getSortByDateMinByUserId(count: number): Observable<AdvertModelList[]> {
+    return this.http.get<AdvertModelList[]>(`api/advert/by-user-date-min/${count}`);
+  }
+
 }

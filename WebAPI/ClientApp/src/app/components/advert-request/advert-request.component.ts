@@ -3,6 +3,7 @@ import { AdvertModelForRequest } from 'src/app/models/AdvertModelForRequest';
 import { AdvertService } from 'src/app/services/advert.service';
 import { Router } from '@angular/router';
 import { RequestService } from 'src/app/services/request.service';
+import { DatetimeService } from 'src/app/services/datetime.service';
 
 @Component({
   selector: 'app-advert-request',
@@ -18,7 +19,7 @@ export class AdvertRequestComponent implements OnInit {
   private confirmListRoute = "advert-confirm/confirm-list";
   private requestListRoute = "advert-request/my-requests";
 
-  constructor(private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
 
   public navigateToRequest(id: number): void {
     if (this.page == 'in') {
@@ -31,18 +32,26 @@ export class AdvertRequestComponent implements OnInit {
     }
   }
 
+  public dateConvert(): void {
+    for (let count = 0; count < this.adverts.length; count++) {
+      this.adverts[count].editDate = new Date(this.adverts[count].editDate);
+    }
+  }
+
   public scrollEvent = async (event: any): Promise<void> => {
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.adverts.length;
       if (this.page == 'in')
         await this.advertService.getForRequestCustomer(this.count).subscribe(data => {
           this.adverts = data;
+          this.dateConvert();
           this.scrollFlag = this.advertService.checkLenght(length, this.adverts.length);
           this.flagState();
         });
       if (this.page == 'out')
         await this.advertService.getForRequestLandlord(this.count).subscribe(data => {
           this.adverts = data;
+          this.dateConvert();
           this.scrollFlag = this.advertService.checkLenght(length, this.adverts.length);
           this.flagState();
         });
@@ -71,11 +80,13 @@ export class AdvertRequestComponent implements OnInit {
     if (this.page == 'in')
       await this.advertService.getForRequestCustomer(this.count).subscribe(async data => {
         this.adverts = data;
+        this.dateConvert();
         await this.changeFlagState(this.adverts.length, firstCount);
       });
     if (this.page == 'out')
       await this.advertService.getForRequestLandlord(this.count).subscribe(async data => {
         this.adverts = data;
+        this.dateConvert();
         await this.changeFlagState(this.adverts.length, firstCount);
       });
     this.count += 10;

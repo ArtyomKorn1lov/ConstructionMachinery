@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebAPI.Models
 {
@@ -8,6 +9,7 @@ namespace WebAPI.Models
         public string Name { get; set; }
         public int Price { get; set; }
         public double AverageRating { get; set; }
+        public DateTime EditDate { get; set; }
         public List<ImageModel> Images { get; set; }
     }
 }

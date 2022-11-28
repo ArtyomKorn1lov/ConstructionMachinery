@@ -43,7 +43,7 @@ export class AdvertListComponent implements OnInit {
         return;
       this.filters = result.data;
       await this.child?.sortByParam(this.filters[0].param);
-    })
+    });
   }
 
   public async ngOnInit(): Promise<void> {

@@ -25,3 +25,29 @@
         opacity: 1.0;
     }
 }
+
+.small-header.-time {
+    margin-top: 20px;
+}
+
+.authorize-input {
+    border: 1px solid var(--color-primary-button);
+    color: var(--color-primary-button);
+}
+
+.authorize-input::-moz-placeholder {
+    color: var(--color-primary-button);
+}
+
+.authorize-input::-webkit-input-placeholder {
+    color: var(--color-primary-button);
+}
+
+.select-filter {
+    border: 1px solid var(--color-primary-button);
+    color: var(--color-primary-button);
+}
+
+.select-filter__option {
+    color: var(--color-primary-button);
+}

@@ -18,6 +18,11 @@ namespace Application.IServices
         Task<List<AdvertCommandList>> GetByName(string name, int count);
         Task<List<AdvertCommandList>> GetByNameWithoutUserId(string name, int id, int count);
         Task<List<AdvertCommandList>> GetByUserId(int id, int count);
+        Task<List<AdvertCommandList>> GetSortByPriceMaxByUserId(int id, int count);
+        Task<List<AdvertCommandList>> GetSortByPriceMinByUserId(int id, int count);
+        Task<List<AdvertCommandList>> GetSortByRatingMaxByUserId(int id, int count);
+        Task<List<AdvertCommandList>> GetSortByRatingMinByUserId(int id, int count);
+        Task<List<AdvertCommandList>> GetSortByDateMinByUserId(int id, int count);
         Task<AdvertCommandUpdate> GetForUpdate(int id);
         Task<int> GetUserIdByAdvert(int id);
         Task<int> GetLastAdvertId();

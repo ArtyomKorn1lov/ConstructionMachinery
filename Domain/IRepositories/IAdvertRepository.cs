@@ -18,6 +18,11 @@ namespace Domain.IRepositories
         Task<List<Advert>> GetByName(string name, int count);
         Task<List<Advert>> GetByNameWithoutUserId(string name, int id, int count);
         Task<List<Advert>> GetByUserId(int id, int count);
+        Task<List<Advert>> GetSortByPriceMaxByUserId(int id, int count);
+        Task<List<Advert>> GetSortByPriceMinByUserId(int id, int count);
+        Task<List<Advert>> GetSortByRatingMaxByUserId(int id, int count);
+        Task<List<Advert>> GetSortByRatingMinByUserId(int id, int count);
+        Task<List<Advert>> GetSortByDateMinByUserId(int id, int count);
         Task<Advert> GetForUpdate(int id);
         Task<int> GetLastAdvertId();
         Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id, int count);

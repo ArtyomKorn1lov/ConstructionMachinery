@@ -28,7 +28,7 @@
         flex-direction: column;
         justify-content: center;
         margin-top: 12px;
-        width: 300px;
+        width: 100%;
     }
 }
 
@@ -58,4 +58,8 @@
 .micro-text {
     margin-top: 10px;
     font-size: 12px;
+}
+
+.small-header {
+    margin-top: 10px;
 }

@@ -38,6 +38,7 @@ namespace Application.CommandsConverters
                 Name = advert.Name,
                 Price = advert.Price,
                 AverageRating = averageRating,
+                EditDate = advert.EditDate,
                 Images = advert.Images.Select(image => new ImageCommand
                 {
                     Id = image.Id,
@@ -139,6 +140,7 @@ namespace Application.CommandsConverters
             {
                 Id = advert.Id,
                 Name = advert.Name,
+                EditDate = advert.EditDate,
                 Images = advert.Images.Select(image => new ImageCommand
                 {
                     Id = image.Id,

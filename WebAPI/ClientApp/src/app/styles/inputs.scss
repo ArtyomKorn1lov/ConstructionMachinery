@@ -128,3 +128,7 @@
 .filter__image {
     flex: 1;
 }
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}

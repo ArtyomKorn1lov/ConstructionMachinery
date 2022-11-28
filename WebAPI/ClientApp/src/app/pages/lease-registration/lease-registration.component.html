@@ -12,13 +12,20 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
-            <h4 class="small-header">Выберете время заказа</h4>
+            <h4 class="small-header">Выберете дату заказа</h4>
             <div class="select-container">
-                <select class="select-filter" [(ngModel)]="currentTimeId" name="currentTimeId">
-                    <option class="select-filter__option" *ngFor="let time of times" ngValue={{time.id}}>
-                        {{datetimeService.convertDateToUTS(time.date.getDate())}}.{{datetimeService.convertDateToUTS(time.date.getMonth())}}.{{time.date.getFullYear()}}
-                        в
-                        {{datetimeService.convertDateToUTS(time.date.getHours())}}:00</option>
+                <select class="select-filter" [(ngModel)]="currentTimeIndex" name="currentTimeIndex">
+                    <option class="select-filter__option" *ngFor="let date of leaseTimes; let currentIndex = index" ngValue={{currentIndex}}>
+                        {{datetimeService.convertDateToUTS(date.date.getDate())}}.{{datetimeService.convertDateToUTS(date.date.getMonth())}}.{{date.date.getFullYear()}}
+                    </option>
+                </select>
+            </div>
+            <h4 *ngIf="currentTimeIndex != undefined" class="small-header -time">Выберете время заказа</h4>
+            <div *ngIf="currentTimeIndex != undefined" class="select-container">
+                <select class="select-filter" [(ngModel)]="currentTimeId" name="currentTimeIndex">
+                    <option class="select-filter__option" *ngFor="let time of leaseTimes[currentTimeIndex].times" ngValue={{time.id}}>
+                        {{datetimeService.convertDateToUTS(time.date.getHours())}}:00
+                    </option>
                 </select>
             </div>
             <button (click)="createRequest()" class="primary-authorize">

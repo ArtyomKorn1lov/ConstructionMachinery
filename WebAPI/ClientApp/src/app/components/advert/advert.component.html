@@ -8,19 +8,36 @@
             alt="Изображение строительной техники">
         <div class="advert__elements">
             <div class="advert__text">
-                <div *ngIf="advert.averageRating > 0" class="advert__rating">
-                    <img class="advert__star" src="assets/star_fill.png" alt="star">
-                    <img *ngIf="advert.averageRating < 2" class="advert__star" src="assets/star_empty.png" alt="star">
-                    <img *ngIf="advert.averageRating >= 2" class="advert__star" src="assets/star_fill.png" alt="star">
-                    <img *ngIf="advert.averageRating < 3" class="advert__star" src="assets/star_empty.png" alt="star">
-                    <img *ngIf="advert.averageRating >= 3" class="advert__star" src="assets/star_fill.png" alt="star">
-                    <img *ngIf="advert.averageRating < 4" class="advert__star" src="assets/star_empty.png" alt="star">
-                    <img *ngIf="advert.averageRating >= 4" class="advert__star" src="assets/star_fill.png" alt="star">
-                    <img *ngIf="advert.averageRating < 5" class="advert__star" src="assets/star_empty.png" alt="star">
-                    <img *ngIf="advert.averageRating >= 5" class="advert__star" src="assets/star_fill.png" alt="star">
+                <div>
+                    <div *ngIf="advert.averageRating > 0" class="advert__rating">
+                        <img class="advert__star" src="assets/star_fill.png" alt="star">
+                        <img *ngIf="advert.averageRating < 2" class="advert__star" src="assets/star_empty.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating >= 2" class="advert__star" src="assets/star_fill.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating < 3" class="advert__star" src="assets/star_empty.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating >= 3" class="advert__star" src="assets/star_fill.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating < 4" class="advert__star" src="assets/star_empty.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating >= 4" class="advert__star" src="assets/star_fill.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating < 5" class="advert__star" src="assets/star_empty.png"
+                            alt="star">
+                        <img *ngIf="advert.averageRating >= 5" class="advert__star" src="assets/star_fill.png"
+                            alt="star">
+                    </div>
+                    <h4 class="medium-header">{{advert.name}}</h4>
+                </div>    
+                <div>
+                    <h5 class="small-header">от {{advert.price}} ₽ / час</h5>
+                    <h6 class="small-header -time">
+                        {{datetimeService.convertDateToUTS(advert.editDate.getDate())}}.{{datetimeService.convertDateToUTS(advert.editDate.getMonth()+1)}}.{{advert.editDate.getFullYear()}}
+                        в
+                        {{datetimeService.convertDateToUTS(advert.editDate.getHours())}}:{{datetimeService.convertDateToUTS(advert.editDate.getMinutes())}}
+                    </h6>
                 </div>
-                <h4 class="medium-header">{{advert.name}}</h4>
-                <h5 class="small-header">от {{advert.price}} ₽ / час</h5>
             </div>
             <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary-authorize">
                 <p class="primary-text">Арендовать</p>

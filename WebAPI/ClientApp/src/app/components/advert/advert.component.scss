@@ -32,7 +32,7 @@
         border-radius: 5px;
         object-fit: cover;
         min-width: 129px;
-        height: 124px;
+        height: 150px;
     }
 
     &__elements {
@@ -71,12 +71,24 @@
         margin-left: 0px;
     }
 
+    .advert__text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
     .medium-header {
         margin-top: 10px;
+        margin-right: 5px;
     }
 
     .primary-text {
         font-size: 18px;
+    }
+
+    .small-header {
+        text-align: end;
     }
 }
 
@@ -114,6 +126,9 @@
 
         &__text {
             width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     }
 
@@ -123,6 +138,10 @@
 
     .primary-text {
         font-size: 18px;
+    }
+
+    .small-header {
+        text-align: end;
     }
 }
 
@@ -137,6 +156,10 @@
 
 .small-header {
     margin-top: 10px;
+
+    &.-time {
+        opacity: 0.7;
+    }
 }
 
 .primary-text.-edit {

@@ -37,6 +37,7 @@ namespace Application.Services
                 if (stateId == 2)
                     availabilityStateId = 1;
                 request.RequestStateId = stateId;
+                request.IsAvailable = true;
                 for (int count = 0; count < request.AvailableTimes.Count; count++)
                     request.AvailableTimes[count].AvailabilityStateId = availabilityStateId;
                 await _requestRepository.Confirm(request);
@@ -110,7 +111,6 @@ namespace Application.Services
             try
             {
                 AvailabilityRequest request = await _requestRepository.GetById(id);
-                request.IsAvailable = true;
                 if (request == null)
                     return null;
                 if (await GetUserIdByAdvertId(request.AvailableTimes[0].AdvertId) != userId)

@@ -12,6 +12,7 @@ namespace Application.Commands
         public string Name { get; set; }
         public int Price { get; set; }
         public double AverageRating { get; set; }
+        public DateTime EditDate { get; set; }
         public List<ImageCommand> Images { get; set; }
     }
 }

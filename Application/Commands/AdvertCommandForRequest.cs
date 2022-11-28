@@ -10,6 +10,7 @@ namespace Application.Commands
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime EditDate { get; set; }
         public List<ImageCommand> Images { get; set; }
     }
 }

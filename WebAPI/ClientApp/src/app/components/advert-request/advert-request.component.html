@@ -7,6 +7,9 @@
         <div class="request__text">
             <p class="primary-text">Объявление №{{i+1}}</p>
             <h5 class="medium-header -request">{{advert.name}}</h5>
+            <h6 class="small-header">
+                Изменено {{datetimeService.convertDateToUTS(advert.editDate.getDate())}}.{{datetimeService.convertDateToUTS(advert.editDate.getMonth()+1)}}.{{advert.editDate.getFullYear()}}
+                в {{datetimeService.convertDateToUTS(advert.editDate.getHours())}}:00</h6>
         </div>
         <button (click)="navigateToRequest(advert.id)" class="edit-button">
             <h5 class="medium-header">Открыть</h5>

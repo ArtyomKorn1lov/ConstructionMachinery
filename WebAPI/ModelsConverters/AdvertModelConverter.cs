@@ -16,6 +16,7 @@ namespace WebAPI.ModelsConverters
                 Name = commands.Name,
                 Price = commands.Price,
                 AverageRating = commands.AverageRating,
+                EditDate = commands.EditDate,
                 Images = commands.Images.Select(image => new ImageModel
                 {
                     Id = image.Id,
@@ -143,6 +144,7 @@ namespace WebAPI.ModelsConverters
             {
                 Id = command.Id,
                 Name = command.Name,
+                EditDate = command.EditDate,
                 Images = command.Images.Select(image => new ImageModel
                 {
                     Id = image.Id,

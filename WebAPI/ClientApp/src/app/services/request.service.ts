@@ -7,13 +7,14 @@ import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityReque
 import { AvailableTimeModel } from '../models/AvailableTimeModel';
 import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
 import { ConfirmModel } from '../models/ConfirmModel';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   public clearIdLocalStorage(): void {
     localStorage.removeItem('requestId');
@@ -52,34 +53,42 @@ export class RequestService {
   }
 
   public getListForCustomer(id: number, count: number): Observable<AvailabilityRequestModel[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${count}`);
   }
 
   public getListForLandlord(id: number, count: number): Observable<AvailabilityRequestModel[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${id}/${count}`);
   }
 
   public getForCustomer(id: number): Observable<AvailabilityRequestModelForCustomer> {
+    this.tokenService.tokenVerify();
     return this.http.get<AvailabilityRequestModelForCustomer>(`api/request/customer/${id}`);
   }
 
   public getForLandLord(id: number): Observable<AvailabilityRequestModelForLandlord> {
+    this.tokenService.tokenVerify();
     return this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`);
   }
 
   public getAvailableTimesByAdvertId(id: number): Observable<AvailableTimeModel[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AvailableTimeModel[]>(`api/request/times/${id}`);
   }
 
   public create(request: AvailabilityRequestModelCreate): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.post(`api/request/create`, request, { responseType: 'text' });
   }
 
   public confirm(model: ConfirmModel): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.put(`api/request/confirm`, model, { responseType: 'text' });
   }
 
   public remove(id: number): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.delete(`api/request/remove/${id}`, { responseType: 'text' });
   }
 

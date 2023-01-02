@@ -6,6 +6,7 @@ import { AdvertModelInfo } from '../models/AdvertModelInfo';
 import { AdvertModelCreate } from '../models/AdvertModelCreate';
 import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
 import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AdvertService {
   private advertUpdate: AdvertModelUpdate | undefined;
   private queryParam: string = "";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   public clearLocalStorage(): void {
     localStorage.removeItem('advertId');
@@ -99,14 +100,17 @@ export class AdvertService {
   }
 
   public createAdvert(advert: AdvertModelCreate): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.post(`api/advert/create`, advert, { responseType: 'text' });
   }
 
   public getByUser(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-user/${count}`);
   }
 
   public remove(id: number): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.delete(`api/advert/remove/${id}`, { responseType: 'text' })
   }
 
@@ -115,18 +119,22 @@ export class AdvertService {
   }
 
   public getForRequestCustomer(count: number): Observable<AdvertModelForRequest[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer/${count}`);
   }
 
   public getForRequestLandlord(count: number): Observable<AdvertModelForRequest[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-landlord/${count}`);
   }
 
   public getForUpdate(id: number): Observable<AdvertModelUpdate> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelUpdate>(`api/advert/for-update/${id}`)
   }
 
   public update(advert: AdvertModelUpdate): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.put(`api/advert/update`, advert, { responseType: 'text' });
   }
 

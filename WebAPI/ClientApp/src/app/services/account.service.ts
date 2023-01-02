@@ -8,6 +8,7 @@ import { UserModel } from '../models/UserModel';
 import { UserUpdateModel } from '../models/UserUpdateModel';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AccountService {
   public userFlag: boolean = false;
   public authorize: AuthoriseModel = new AuthoriseModel("", "", false);
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private tokenService: TokenService) { }
 
   public clearLocalStorage(): void {
     localStorage.removeItem('userId');
@@ -47,15 +48,22 @@ export class AccountService {
   }
 
   public async getAuthoriseModel(): Promise<void> {
-    await this.isUserAuthorized().subscribe(data => {
-      this.authorize = data;
-      if(data != null)
-      {
-        this.userFlag = true;
-        return;
+    await this.tokenService.tokenVerify();
+    await this.isUserAuthorized().subscribe({
+      next: (data) => {
+        if (data != null) {
+          this.authorize = data;
+          this.userFlag = true;
+          return;
+        }
+        this.authorize = new AuthoriseModel("", "", false);
+        this.userFlag = false;
+      },
+      error: (bad) => {
+        this.authorize = new AuthoriseModel("", "", false);
+        this.userFlag = false;
       }
-      this.userFlag = false;
-    })
+    });
   }
 
   public saveTokens(token: string, refreshToken: string): void {
@@ -80,7 +88,7 @@ export class AccountService {
   }
 
   public logOut(): boolean {
-    if(localStorage.getItem("jwt") == null || localStorage.getItem("refreshToken") == null) {
+    if (localStorage.getItem("jwt") == null || localStorage.getItem("refreshToken") == null) {
       return false;
     }
     else {
@@ -97,14 +105,17 @@ export class AccountService {
   }
 
   public getUserProfile(): Observable<UserModel> {
+    this.tokenService.tokenVerify();
     return this.http.get<UserModel>(`api/account/user`);
   }
 
   public getUserById(id: number): Observable<UserModel> {
+    this.tokenService.tokenVerify();
     return this.http.get<UserModel>(`api/account/user/${id}`);
   }
 
   public update(model: UserUpdateModel): Observable<AuthenticatedResponse> {
+    this.tokenService.tokenVerify();
     return this.http.put<AuthenticatedResponse>(`api/account/update`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
   }
 

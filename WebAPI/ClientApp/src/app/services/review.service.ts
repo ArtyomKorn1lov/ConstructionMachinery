@@ -5,13 +5,14 @@ import { ReviewModel } from '../models/ReviewModel';
 import { ReviewModelCreate } from '../models/ReviewModelCreate';
 import { ReviewModelUpdate } from '../models/ReviewModelUpdate';
 import { ReviewModelInfo } from '../models/ReviewModelInfo';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   public checkLenght(oldLength: number, newLength: number): boolean {
     if(oldLength >= newLength || oldLength == 0)
@@ -31,6 +32,7 @@ export class ReviewService {
   }
   
   public getByUserId(count: number): Observable<ReviewModel[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<ReviewModel[]>(`api/review/user/${count}`);
   }
 
@@ -39,18 +41,22 @@ export class ReviewService {
   }
 
   public getById(id: number): Observable<ReviewModelInfo> {
+    this.tokenService.tokenVerify();
     return this.http.get<ReviewModelInfo>(`api/review/${id}`);
   }
 
   public remove(id: number): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.delete(`api/review/${id}`, { responseType: 'text' });
   }
 
   public create(review: ReviewModelCreate): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.post(`api/review/create`, review, { responseType: 'text' });
   }
 
   public update(review: ReviewModelUpdate): Observable<string> {
+    this.tokenService.tokenVerify();
     return this.http.put(`api/review/update`, review, { responseType: 'text' });
   }
 

@@ -12,6 +12,7 @@ namespace Domain.IRepositories
         Task<List<Advert>> GetAll(int count);
         Task<List<Advert>> GetAllWithoutUserId(int id, int count);
         Task<Advert> GetById(int id);
+        Task<Advert> GetByIdForUpdate(int id);
         Task Create(Advert advert);
         Task Update(Advert advert);
         Task Remove(int id);

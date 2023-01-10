@@ -58,6 +58,8 @@ export class AdvertInfoComponent implements OnInit {
     this.advert.publishDate = new Date(this.advert.publishDate);
     this.advert.editDate = new Date(this.advert.editDate);
     this.advert.dateIssue = new Date(this.advert.dateIssue);
+    if(this.advert.availableTimes == null)
+      return;
     let day;
     let buffer;
     let sortTimes: AvailableTimeModel[];

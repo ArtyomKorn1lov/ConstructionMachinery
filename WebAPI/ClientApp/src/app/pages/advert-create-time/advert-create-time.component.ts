@@ -62,6 +62,17 @@ export class AdvertCreateTimeComponent implements OnInit {
     }
     this.advert.startDate = new Date(this.range.value.start);
     this.advert.endDate = new Date(this.range.value.end);
+    const oneDay = 1000 * 60 * 60 * 24;
+    const diffInTime = this.advert.endDate.getTime() - this.advert.startDate.getTime();
+    const diffInDays = Math.round(diffInTime / oneDay);
+    if (diffInDays <= 0) {
+      alert("Неверный диапазон дат");
+      return;
+    }
+    if (diffInDays > 14) {
+      alert("Слишком большой диапазон занимаемых дней");
+      return;
+    }
     this.advert.startTime = startHour;
     this.advert.endTime = endHour;
     let formData = new FormData();

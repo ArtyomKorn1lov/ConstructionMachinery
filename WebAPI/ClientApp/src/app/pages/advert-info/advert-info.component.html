@@ -42,8 +42,8 @@
                 <h5 class="medium-header">Описание</h5>
                 <p class="primary-text -title">{{advert.description}}</p>
             </div>
-            <div class="vector"></div>
-            <div class="title-info">
+            <div *ngIf="advert.availableTimes.length != 0" class="vector"></div>
+            <div *ngIf="advert.availableTimes.length != 0" class="title-info">
                 <h5 class="medium-header -title">Доступное время</h5>
                 <div class="day-list" *ngFor="let day of days">
                     <h5 class="medium-header -title">

@@ -38,13 +38,23 @@ namespace Infrastructure.Repositories
         public async Task<Advert> GetById(int id)
         {
             return await _constructionMachineryDbContext.Set<Advert>()
-                .Include(advert => advert.AvailableTimes).Include(advert => advert.Images).FirstOrDefaultAsync(advert => advert.Id == id);
+                .Include(advert => advert.AvailableTimes.Where(time => time.Date >= DateTime.Now))
+                .Include(advert => advert.Images)
+                .FirstOrDefaultAsync(advert => advert.Id == id);
+        }
+
+        public async Task<Advert> GetByIdForUpdate(int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.AvailableTimes)
+                .Include(advert => advert.Images)
+                .FirstOrDefaultAsync(advert => advert.Id == id);
         }
 
         public async Task<List<Advert>> GetByName(string name, int count)
         {
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
-                .Where(advert => EF.Functions.Like(advert.Name, "%"+name+"%")).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%")).OrderByDescending(advert => advert.EditDate)
                 .Include(advert => advert.Reviews).Take(count).ToListAsync();
         }
 
@@ -64,14 +74,14 @@ namespace Infrastructure.Repositories
 
         public async Task Remove(int id)
         {
-            Advert advert = await GetById(id);
+            Advert advert = await GetByIdForUpdate(id);
             if (advert != null)
                 _constructionMachineryDbContext.Set<Advert>().Remove(advert);
         }
 
         public async Task Update(Advert advert)
         {
-            Advert _advert = await GetById(advert.Id);
+            Advert _advert = await GetByIdForUpdate(advert.Id);
             _advert.CopyFrom(advert);
         }
 

@@ -101,7 +101,7 @@ export class AdvertEditComponent implements OnInit {
 
   public fillData(advert: AdvertModelUpdate): void {
     this.advertUpdate = advert;
-    this.dateIssure = this.advertUpdate.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getMonth()) + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getDate());
+    this.dateIssure = this.advertUpdate.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getMonth()+1) + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getDate());
     this.images = this.imageService.getImagesFromService();
     this.filesBase64 = this.imageService.getBases64FromService();
     this.oldImageCount = this.imageService.getOldImageCountFromService();
@@ -115,13 +115,15 @@ export class AdvertEditComponent implements OnInit {
       this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [ new ImageModel(0, "", "", 0) ], new Date(), new Date(), 0, 0));
       await this.advertService.getForUpdate(this.advertService.getIdFromLocalStorage()).subscribe(data => {
         this.advertUpdate = data;
-        this.dateIssure = this.advertUpdate.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getMonth()) + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getDate());
+        this.advertUpdate.dateIssue = new Date(this.advertUpdate.dateIssue);
+        this.dateIssure = this.advertUpdate.dateIssue.getFullYear() + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getMonth()+1) + "-" + this.datetimeService.convertDateToUTS(this.advertUpdate.dateIssue.getDate());
         this.imageService.oldImageFlag = true;
         this.oldImageCount = this.advertUpdate.images.length;
         return;
       });
     }
-    this.fillData(advert);
+    else
+      this.fillData(advert);
   }
 
 }

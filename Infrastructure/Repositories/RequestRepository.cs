@@ -46,8 +46,7 @@ namespace Infrastructure.Repositories
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
-                .Where(availabilityRequest => availabilityRequest.UserId == userId 
-                && availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id))
+                .Where(availabilityRequest => availabilityRequest.UserId == userId)
                 .OrderBy(availabilityRequest => availabilityRequest.Id)
                 .Take(count)
                 .ToListAsync();
@@ -57,8 +56,8 @@ namespace Infrastructure.Repositories
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
-                .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id
-                && _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.Id == id).UserId == userId))
+                .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time =>
+                _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.Id == id).UserId == userId))
                 .Where(availabilityRequest => availabilityRequest.RequestStateId == 3)
                 .OrderBy(availabilityRequest => availabilityRequest.Id)
                 .Take(count)

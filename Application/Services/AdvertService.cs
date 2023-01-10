@@ -278,7 +278,8 @@ namespace Application.Services
             {
                 Advert advert = await _advertRepository.GetForUpdate(id);
                 AdvertCommandUpdate advertCommand = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandUpdate(advert);
-                advertCommand = FillRangeTime(advertCommand, advert);
+                if(advert.AvailableTimes.Count != 0)
+                    advertCommand = FillRangeTime(advertCommand, advert);
                 return advertCommand;
             }
             catch

@@ -7,9 +7,9 @@
             <img [routerLink]="['/']" src="assets/logotype.png">
         </div>
         <div class="header__user-group">
-            <img [routerLink]="['/advert-confirm']" class="account-attention" *ngIf="!accountService.authorize.isAvailable && accountService.userFlag"
+            <img [routerLink]="['/confirm-list']" class="account-attention" *ngIf="!accountService.authorize.isAvailable && accountService.userFlag"
                 src="assets/attention_inactive.png">
-            <img [routerLink]="['/advert-confirm']" class="account-attention" *ngIf="accountService.authorize.isAvailable && accountService.userFlag"
+            <img [routerLink]="['/confirm-list']" class="account-attention" *ngIf="accountService.authorize.isAvailable && accountService.userFlag"
                 src="assets/attention_active.png">
             <img *ngIf="!accountService.userFlag" [routerLink]="['/authorize']" src="assets/account.png">
             <div *ngIf="accountService.userFlag" class="account-ellipse" [routerLink]="['/profile']">

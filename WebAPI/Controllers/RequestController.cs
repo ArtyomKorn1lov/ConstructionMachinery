@@ -63,10 +63,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("for-landlord/{id}/{count}")]
-        public async Task<List<AvailabilityRequestListModel>> GetListForLandlord(int id, int count)
+        [HttpGet("for-landlord/{count}")]
+        public async Task<List<AvailabilityRequestListModel>> GetListForLandlord(int count)
         {
-            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(id, await _accountService.GetIdByEmail(User.Identity.Name), count);
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(await _accountService.GetIdByEmail(User.Identity.Name), count);
             List<AvailabilityRequestListModel> models = commands.Select(command =>
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)

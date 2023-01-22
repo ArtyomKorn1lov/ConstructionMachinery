@@ -58,6 +58,22 @@ export class ReviewEditComponent implements OnInit {
     });
   }
 
+  public remove(): void {
+    this.reviewService.remove(this.review.id).subscribe({
+      next: (data) => {
+        alert(data);
+        console.log(data);
+        this.router.navigateByUrl(this.targetRoute);
+        return;
+      },
+      error: (bad) => {
+        alert("Ошибка удаления отзыва");
+        console.log(bad);
+        return;
+      }
+    });
+  }
+
   public setState(index: number): void {
     if (index == 1) {
       this.stateStars.first = true;

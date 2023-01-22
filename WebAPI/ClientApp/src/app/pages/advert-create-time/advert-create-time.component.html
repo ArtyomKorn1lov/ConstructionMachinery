@@ -19,7 +19,7 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
             </mat-form-field>
             <h5 class="small-header">Время аренды</h5>
-            <h5 class="small-header">Начальное время</h5>
+            <h5 class="small-header -transparent">Начальное время</h5>
             <input #selectorStart="ngModel" [(ngModel)]="startTime" [ngxTimepicker]="startPicker" [format]="24" readonly
                 name="startTime" class="authorize-input" type="time" required>
             <ngx-material-timepicker #startPicker></ngx-material-timepicker>
@@ -27,7 +27,7 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">Обязательное поле для заполнения</p>
             </div>
-            <h5 class="small-header">Конечное время</h5>
+            <h5 class="small-header -transparent">Конечное время</h5>
             <input #selectorEnd="ngModel" [(ngModel)]="endTime" [ngxTimepicker]="endPicker" [format]="24" readonly
                 name="endTime" class="authorize-input" type="time" required>
             <ngx-material-timepicker #endPicker></ngx-material-timepicker>

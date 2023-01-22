@@ -24,6 +24,22 @@ export class MyAdvertsComponent implements OnInit {
     {
       name: 'По убыванию цены',
       param: 'min_price',
+    },
+    {
+      name: 'С самым высоким рейтингом',
+      param: 'max_rating',
+    },
+    {
+      name: 'С самым низким рейтингом',
+      param: 'min_rating',
+    },
+    {
+      name: 'Самые новые объявления',
+      param: 'max_date',
+    },
+    {
+      name: 'Самые старые объявления',
+      param: 'min_date',
     }
   ];
 

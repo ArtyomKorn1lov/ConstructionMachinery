@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ImageService {
   private filesBase64: string[] = [];
   private oldImageCount: number = 0;
 
-  constructor(private http: HttpClient, private tokenService: TokenService) { }
+  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
 
   public setImagesInService(images: File[], bases64: string[]): void {
     this.imagesCreate = images;
@@ -37,17 +38,26 @@ export class ImageService {
   }
 
   public create(uploadImages: FormData): Observable<string> {
-    this.tokenService.tokenVerify();
+    if(!this.tokenService.tokenVerify()) {
+      this.router.navigateByUrl("authorize");
+      return new Observable();
+    }
     return this.http.post(`api/image/create`, uploadImages, { responseType: 'text' });
   }
 
   public update(uploadImage: FormData, id: number): Observable<string> {
-    this.tokenService.tokenVerify();
+    if(!this.tokenService.tokenVerify()) {
+      this.router.navigateByUrl("authorize");
+      return new Observable();
+    }
     return this.http.put(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
   }
 
   public remove(imagesId: number[]): Observable<string> {
-    this.tokenService.tokenVerify();
+    if(!this.tokenService.tokenVerify()) {
+      this.router.navigateByUrl("authorize");
+      return new Observable();
+    }
     return this.http.post(`api/image/remove`, imagesId, { responseType: 'text' });
   }
 

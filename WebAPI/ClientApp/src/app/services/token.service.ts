@@ -18,11 +18,7 @@ export class TokenService {
     if (token == null) {
       return false;
     }
-    const isRefreshSuccess = await this.tryRefreshingTokens(token);
-    if (!isRefreshSuccess) {
-      return isRefreshSuccess;
-    }
-    return isRefreshSuccess;
+    return await this.tryRefreshingTokens(token);
   }
 
   private async tryRefreshingTokens(token: string): Promise<boolean> {

@@ -16,7 +16,7 @@
             <div class="select-container">
                 <select class="select-filter" [(ngModel)]="currentTimeIndex" name="currentTimeIndex">
                     <option class="select-filter__option" *ngFor="let date of leaseTimes; let currentIndex = index" ngValue={{currentIndex}}>
-                        {{datetimeService.convertDateToUTS(date.date.getDate())}}.{{datetimeService.convertDateToUTS(date.date.getMonth())}}.{{date.date.getFullYear()}}
+                        {{datetimeService.convertDateToUTS(date.date.getDate())}}.{{datetimeService.convertDateToUTS(date.date.getMonth()+1)}}.{{date.date.getFullYear()}}
                     </option>
                 </select>
             </div>

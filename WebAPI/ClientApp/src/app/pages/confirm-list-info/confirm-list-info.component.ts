@@ -16,7 +16,7 @@ export class ConfirmListInfoComponent implements OnInit {
 
   public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, [new ImageModel(0, "", "", 0)], []);
   public date: Date = new Date();
-  private targetRoute: string = "/advert-confirm/confirm-list";
+  private targetRoute: string = "confirm-list";
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 

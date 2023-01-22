@@ -6,9 +6,9 @@ import { LoginModel } from '../models/LoginModel';
 import { AuthoriseModel } from '../models/AuthoriseModel';
 import { UserModel } from '../models/UserModel';
 import { UserUpdateModel } from '../models/UserUpdateModel';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AccountService {
   public userFlag: boolean = false;
   public authorize: AuthoriseModel = new AuthoriseModel("", "", false);
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private tokenService: TokenService) { }
+  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
 
   public clearLocalStorage(): void {
     localStorage.removeItem('userId');
@@ -71,14 +71,6 @@ export class AccountService {
     localStorage.setItem("refreshToken", refreshToken);
   }
 
-  public isAuthorized(): void {
-    const token = localStorage.getItem("jwt");
-    if (token && !this.jwtHelper.isTokenExpired(token))
-      this.userFlag = true;
-    else
-      this.userFlag = false;
-  }
-
   public registration(model: RegisterModel): Observable<AuthenticatedResponse> {
     return this.http.post<AuthenticatedResponse>(`api/account/register`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
   }
@@ -96,11 +88,13 @@ export class AccountService {
       localStorage.removeItem("refreshToken");
       localStorage.clear();
       this.userFlag = false;
+      this.authorize = new AuthoriseModel("", "", false);
       return true;
     }
   }
 
   public isUserAuthorized(): Observable<AuthoriseModel> {
+    this.tokenService.tokenVerify();
     return this.http.get<AuthoriseModel>(`api/account/is-authorized`);
   }
 

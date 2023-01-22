@@ -7,6 +7,7 @@ import { AdvertModelCreate } from '../models/AdvertModelCreate';
 import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
 import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AdvertService {
   private advertUpdate: AdvertModelUpdate | undefined;
   private queryParam: string = "";
 
-  constructor(private http: HttpClient, private tokenService: TokenService) { }
+  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
 
   public clearLocalStorage(): void {
     localStorage.removeItem('advertId');
@@ -92,10 +93,12 @@ export class AdvertService {
   }
 
   public getAll(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/adverts/${count}`);
   }
 
   public getById(id: number): Observable<AdvertModelInfo> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelInfo>(`api/advert/by-id/${id}`);
   }
 
@@ -115,6 +118,7 @@ export class AdvertService {
   }
 
   public getByName(name: string, count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}/${count}`);
   }
 
@@ -139,62 +143,77 @@ export class AdvertService {
   }
 
   public getSortByPriceMax(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${count}`);
   }
 
   public getSortByPriceMin(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${count}`);
   }
 
   public GetSortByRatingMax(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${count}`);
   }
 
   public GetSortByRatingMin(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${count}`);
   }
 
   public GetSortByDateMin(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${count}`);
   }
 
   public getSortByPriceMaxByName(name: string, count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${name}/${count}`);
   }
 
   public getSortByPriceMinByName(name: string, count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${name}/${count}`);
   }
 
   public GetSortByRatingMaxByName(name: string, count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${name}/${count}`);
   }
 
   public GetSortByRatingMinByName(name: string, count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${name}/${count}`);
   }
 
   public GetSortByDateMinByName(name: string,count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${count}`);
   }
 
   public getSortByPriceMaxByUserId(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-user-price-max/${count}`);
   }
 
   public getSortByPriceMinByUserId(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-user-price-min/${count}`);
   }
 
   public getSortByRatingMaxByUserId(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-max/${count}`);
   }
 
   public getSortByRatingMinByUserId(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-min/${count}`);
   }
 
   public getSortByDateMinByUserId(count: number): Observable<AdvertModelList[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<AdvertModelList[]>(`api/advert/by-user-date-min/${count}`);
   }
 

@@ -8,13 +8,14 @@ import { AvailableTimeModel } from '../models/AvailableTimeModel';
 import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
 import { ConfirmModel } from '../models/ConfirmModel';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
 
-  constructor(private http: HttpClient, private tokenService: TokenService) { }
+  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
 
   public clearIdLocalStorage(): void {
     localStorage.removeItem('requestId');
@@ -57,9 +58,9 @@ export class RequestService {
     return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${count}`);
   }
 
-  public getListForLandlord(id: number, count: number): Observable<AvailabilityRequestModel[]> {
+  public getListForLandlord(count: number): Observable<AvailabilityRequestModel[]> {
     this.tokenService.tokenVerify();
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${id}/${count}`);
+    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${count}`);
   }
 
   public getForCustomer(id: number): Observable<AvailabilityRequestModelForCustomer> {

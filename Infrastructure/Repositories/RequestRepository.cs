@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories
         public async Task<List<AvailableTime>> GetTimesForRequestByAdvertId(int id)
         {
             return await _constructionMachineryDbContext.Set<AvailableTime>()
-                .Where(a => a.AdvertId == id && a.AvailabilityRequestId == null).ToListAsync();
+                .Where(a => a.AdvertId == id && a.AvailabilityStateId == 1 && a.Date >= DateTime.Now).ToListAsync();
         }
 
         public async Task<AvailabilityRequest> GetById(int id)
@@ -46,18 +46,19 @@ namespace Infrastructure.Repositories
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
+                .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id))
                 .Where(availabilityRequest => availabilityRequest.UserId == userId)
                 .OrderBy(availabilityRequest => availabilityRequest.Id)
                 .Take(count)
                 .ToListAsync();
         }
 
-        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForLandlord(int id, int userId, int count)
+        public async Task<List<AvailabilityRequest>> GetByUserIdForLandlord(int userId, int count)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
                 .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time =>
-                _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.Id == id).UserId == userId))
+                _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.AvailableTimes.Any(times => times.Id == time.Id)).UserId == userId))
                 .Where(availabilityRequest => availabilityRequest.RequestStateId == 3)
                 .OrderBy(availabilityRequest => availabilityRequest.Id)
                 .Take(count)

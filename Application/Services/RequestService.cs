@@ -39,7 +39,9 @@ namespace Application.Services
                 request.RequestStateId = stateId;
                 request.IsAvailable = true;
                 for (int count = 0; count < request.AvailableTimes.Count; count++)
+                {
                     request.AvailableTimes[count].AvailabilityStateId = availabilityStateId;
+                }
                 await _requestRepository.Confirm(request);
                 return true;
             }
@@ -148,18 +150,18 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int id, int userId, int count)
+        public async Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int userId, int count)
         {
             try
             {
-                List<AvailabilityRequest> requests = await _requestRepository.GetByAdvertIdUserIdForLandlord(id, userId, count);
+                List<AvailabilityRequest> requests = await _requestRepository.GetByUserIdForLandlord(userId, count);
                 if (requests == null)
                     return null;
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
                 foreach (AvailabilityRequest request in requests)
                 {
                     commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request, request.AvailableTimes[0].Date,
-                        await GetAdvertNameById(id), await _imageRepository.GetByAdvertId(id)));
+                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId)));
                 }
                 return commands;
             }

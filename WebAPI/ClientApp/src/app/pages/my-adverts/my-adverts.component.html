@@ -12,7 +12,7 @@
                 <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
                     <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
                 </select>
-                <div class="filter" (click)="openFilterDialog()">
+                <div class="filter">
                     <img class="filter__image" src="assets/clarity_filter-solid.png">
                 </div>
             </div>

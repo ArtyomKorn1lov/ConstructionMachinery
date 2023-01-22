@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
             {
                 if (id == 0)
                     return BadRequest("error");
-                if (ReviewModelConverter.ReviewCommandCovertToModel(await _reviewService.GetById(await _accountService.GetIdByEmail(User.Identity.Name))).Id != id)
+                if (ReviewModelConverter.ReviewCommandCovertToModel(await _reviewService.GetById(id)).UserId != await _accountService.GetIdByEmail(User.Identity.Name))
                     return BadRequest("error");
                 if (await _reviewService.Remove(id))
                 {

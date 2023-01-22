@@ -6,13 +6,14 @@ import { ReviewModelCreate } from '../models/ReviewModelCreate';
 import { ReviewModelUpdate } from '../models/ReviewModelUpdate';
 import { ReviewModelInfo } from '../models/ReviewModelInfo';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
 
-  constructor(private http: HttpClient, private tokenService: TokenService) { }
+  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
 
   public checkLenght(oldLength: number, newLength: number): boolean {
     if(oldLength >= newLength || oldLength == 0)
@@ -37,6 +38,7 @@ export class ReviewService {
   }
 
   public getByAdvertId(id: number, count: number): Observable<ReviewModel[]> {
+    this.tokenService.tokenVerify();
     return this.http.get<ReviewModel[]>(`api/review/advert/${id}/${count}`);
   }
 

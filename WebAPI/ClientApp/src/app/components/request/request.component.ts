@@ -16,7 +16,7 @@ export class RequestComponent implements OnInit {
   public requests: AvailabilityRequestModel[] = [];
   public count: number = 10;
   public scrollFlag = true;
-  private confirmInfoRoute = "advert-confirm/confirm-list/info";
+  private confirmInfoRoute = "confirm-list/info";
   private requestInfoRoute = "advert-request/my-requests/info";
 
   constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router, private route: ActivatedRoute) { }
@@ -40,7 +40,7 @@ export class RequestComponent implements OnInit {
           this.flagState();
         });
       if (this.page == 'out')
-        await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
+        await this.requestService.getListForLandlord(this.count).subscribe(data => {
           this.requests = data;
           this.dateConvert();
           this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
@@ -81,7 +81,7 @@ export class RequestComponent implements OnInit {
         this.dateConvert();
       });
     if (this.page == 'out')
-      await this.requestService.getListForLandlord(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(async data => {
+      await this.requestService.getListForLandlord(this.count).subscribe(async data => {
         this.requests = data;
         await this.changeFlagState(this.requests.length, firstCount);
         this.dateConvert();

@@ -127,11 +127,6 @@ export class AdvertService {
     return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer/${count}`);
   }
 
-  public getForRequestLandlord(count: number): Observable<AdvertModelForRequest[]> {
-    this.tokenService.tokenVerify();
-    return this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-landlord/${count}`);
-  }
-
   public getForUpdate(id: number): Observable<AdvertModelUpdate> {
     this.tokenService.tokenVerify();
     return this.http.get<AdvertModelUpdate>(`api/advert/for-update/${id}`)

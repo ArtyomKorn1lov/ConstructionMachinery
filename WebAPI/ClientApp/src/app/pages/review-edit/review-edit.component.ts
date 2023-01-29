@@ -163,8 +163,8 @@ export class ReviewEditComponent implements OnInit {
       this.stateStars.first = true;
       this.stateStars.second = true;
       this.stateStars.third = true;
-      this.stateStars.fourth = false;
-      this.stateStars.fifth = true;
+      this.stateStars.fourth = true;
+      this.stateStars.fifth = false;
       this.rating = 4;
       return;
     }

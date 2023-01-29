@@ -108,18 +108,6 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id, int count)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>()
-                .Include(advert => advert.Images)
-                .Include(advert => advert.AvailableTimes)
-                .Where(advert => advert.AvailableTimes.Any(time => time.AvailabilityRequestId != null && time.AvailabilityStateId == 3))
-                .Where(advert => advert.UserId == id)
-                .OrderBy(advert => advert.EditDate)
-                .Take(count)
-                .ToListAsync();
-        }
-
         public async Task<List<Advert>> GetSortByPriceMax(int count)
         {
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)

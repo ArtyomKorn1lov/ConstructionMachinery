@@ -38,7 +38,6 @@ import { ConfirmListInfoComponent } from './pages/confirm-list-info/confirm-list
 import { MyRequestInfoComponent } from './pages/my-request-info/my-request-info.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { MyAdvertsRequestsComponent } from './pages/my-adverts-requests/my-adverts-requests.component';
-import { MyAdvertsConfirmListComponent } from './pages/my-adverts-confirm-list/my-adverts-confirm-list.component';
 import { AdvertRequestComponent } from './components/advert-request/advert-request.component';
 import { AdvertEditComponent } from './pages/advert-edit/advert-edit.component';
 import { AdvertEditTimeComponent } from './pages/advert-edit-time/advert-edit-time.component';
@@ -81,7 +80,6 @@ export function tokenGetter() {
     MyRequestInfoComponent,
     EditProfileComponent,
     MyAdvertsRequestsComponent,
-    MyAdvertsConfirmListComponent,
     AdvertRequestComponent,
     AdvertEditComponent,
     AdvertEditTimeComponent,
@@ -132,7 +130,6 @@ export function tokenGetter() {
       { path: 'confirm-list/info', component: ConfirmListInfoComponent, canActivate: [AuthGuard] },
       { path: 'advert-request/my-requests/info', component: MyRequestInfoComponent, canActivate: [AuthGuard] },
       { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthGuard] },
-      { path: 'advert-confirm', component: MyAdvertsConfirmListComponent, canActivate: [AuthGuard] },
       { path: 'advert-request', component: MyAdvertsRequestsComponent, canActivate: [AuthGuard] },
       { path: 'advert-edit', component: AdvertEditComponent, canActivate: [AuthGuard] },
       { path: 'advert-edit/time', component: AdvertEditTimeComponent, canActivate: [AuthGuard] },

@@ -51,6 +51,7 @@ export class AccountService {
     await this.tokenService.tokenVerify();
     await this.isUserAuthorized().subscribe({
       next: (data) => {
+        console.log(data);
         if (data != null) {
           this.authorize = data;
           this.userFlag = true;
@@ -60,6 +61,7 @@ export class AccountService {
         this.userFlag = false;
       },
       error: (bad) => {
+        console.log(bad);
         this.authorize = new AuthoriseModel("", "", false);
         this.userFlag = false;
       }

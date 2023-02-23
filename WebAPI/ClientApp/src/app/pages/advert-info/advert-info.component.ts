@@ -9,6 +9,7 @@ import { ImageModel } from 'src/app/models/ImageModel';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-advert-info',
@@ -26,7 +27,8 @@ export class AdvertInfoComponent implements OnInit {
   private myRoute: string = '/my-adverts';
   private editRoute: string = '/advert-edit';
 
-  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, public accountService: AccountService, private imageService: ImageService) { }
+  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, 
+    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService) { }
 
   public back(): void {
     if (this.page == 'list') {
@@ -129,6 +131,9 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public async remove(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.advert.id == 0) {
       alert("Ошибка удаления");
       return;

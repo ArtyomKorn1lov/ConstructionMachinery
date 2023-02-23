@@ -8,6 +8,7 @@ import { AvailableTimeModelForCreateRequest } from 'src/app/models/AvailableTime
 import { Router } from '@angular/router';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { LeaseTimeModel } from 'src/app/models/LeaseTimeModel';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-lease-registration',
@@ -23,9 +24,13 @@ export class LeaseRegistrationComponent implements OnInit {
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
   private targerRoute: string = "/advert-info";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, 
+    private requestService: RequestService, private router: Router, private tokenService: TokenService) { }
 
   public async createRequest(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.address == undefined || this.address.trim() == '') {
       alert("Введите адрес доставки");
       this.address = '';
@@ -116,6 +121,9 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     await this.requestService.getAvailableTimesByAdvertId(this.advertService.getIdFromLocalStorage())
     .then(
       (data) => {

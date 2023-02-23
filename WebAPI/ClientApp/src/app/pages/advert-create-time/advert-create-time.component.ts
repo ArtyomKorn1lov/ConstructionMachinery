@@ -7,6 +7,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { ImageService } from 'src/app/services/image.service';
 import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
+import { TokenService } from 'src/app/services/token.service';
 
 
 @Component({
@@ -27,9 +28,13 @@ export class AdvertCreateTimeComponent implements OnInit {
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService, private formBuilder: FormBuilder) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, 
+    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService) { }
 
   public async create(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.range.value.start == null || this.range.value.start == undefined) {
       alert("Выберите диапазон чисел");
       return;

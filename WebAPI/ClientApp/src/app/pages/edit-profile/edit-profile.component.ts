@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserUpdateModel } from 'src/app/models/UserUpdateModel';
 import { AccountService } from 'src/app/services/account.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,9 +16,12 @@ export class EditProfileComponent implements OnInit {
   public confirm_password: string | undefined;
   private targetRoute: string = "/profile";
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService) { }
 
   public async edit(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.user.email == undefined || this.user.email.trim() == '') {
       alert("Введите Email пользователя");
       this.user.email = '';
@@ -80,6 +84,9 @@ export class EditProfileComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     await this.accountService.getUserProfile()
       .then(
         (data) => {

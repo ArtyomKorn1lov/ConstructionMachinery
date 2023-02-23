@@ -4,6 +4,7 @@ import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-request',
@@ -19,7 +20,8 @@ export class RequestComponent implements OnInit {
   private confirmInfoRoute = "confirm-list/info";
   private requestInfoRoute = "advert-request/my-requests/info";
 
-  constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router, private route: ActivatedRoute) { }
+  constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router,
+    private route: ActivatedRoute, private tokenService: TokenService) { }
 
   public navigateToInfo(id: number): void {
     this.requestService.setIdInLocalStorage(id);
@@ -30,6 +32,9 @@ export class RequestComponent implements OnInit {
   }
 
   public scrollEvent = async (event: any): Promise<void> => {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.requests.length;
       if (this.page == 'in')
@@ -87,6 +92,9 @@ export class RequestComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     window.addEventListener('scroll', this.scrollEvent, true);
     this.requestService.clearIdLocalStorage();
     const firstCount = this.count;

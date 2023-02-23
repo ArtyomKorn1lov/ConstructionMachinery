@@ -137,7 +137,7 @@ export function tokenGetter() {
       { path: 'review-edit', component: ReviewEditComponent, canActivate: [AuthGuard] },
       { path: 'contacts', component: ContactsComponent },
       { path: 'company', component: CompanyComponent },
-      { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] }
+      { path: 'user-profile', component: UserProfileComponent }
     ]),
     BrowserAnimationsModule,
   ],

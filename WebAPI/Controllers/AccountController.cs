@@ -140,6 +140,16 @@ namespace WebAPI.Controllers
             return userModel;
         }
 
+        [HttpGet("user-profile/{id}")]
+        public async Task<UserModel> GetProfileById(int id)
+        {
+            UserCommand userCommand = await _accountService.GetById(id);
+            UserModel userModel = UserModelConverter.UserCommandConvertToUserModel(userCommand);
+            if (userModel == null)
+                return null;
+            return userModel;
+        }
+
         [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> Update(UserUpdateModel user)

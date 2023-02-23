@@ -19,7 +19,8 @@ export class ReviewComponent implements OnInit {
   private targetRoute: string = "/review-edit";
   private userRoute: string = "/user-profile";
 
-  constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router, private advertService: AdvertService, private accountService: AccountService) { }
+  constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router,
+    private advertService: AdvertService, private accountService: AccountService) { }
 
   public viewProfile(id: number) {
     this.accountService.setUserIdInLocalStorage(id);

@@ -5,6 +5,7 @@ import { AvailabilityRequestModelForCustomer } from 'src/app/models/Availability
 import { Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-my-request-info',
@@ -17,9 +18,13 @@ export class MyRequestInfoComponent implements OnInit {
   public date: Date = new Date();
   private targetRoute: string = "/advert-request/my-requests"
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, 
+    private requestService: RequestService, private router: Router, private tokenService: TokenService) { }
 
   public async cancel(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     this.requestService.remove(this.request.id)
       .then(
         (data) => {
@@ -40,6 +45,9 @@ export class MyRequestInfoComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     await this.requestService.getForCustomer(this.requestService.getIdFromLocalStorage())
     .then(
       (data) => {

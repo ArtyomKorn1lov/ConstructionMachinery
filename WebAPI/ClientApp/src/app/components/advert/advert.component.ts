@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-advert',
@@ -21,7 +22,8 @@ export class AdvertComponent implements OnInit {
   private targetRoute: string = "advert-info";
   private filter: string = "all";
 
-  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, private route: ActivatedRoute, private imageService: ImageService) { }
+  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
+    private route: ActivatedRoute, private imageService: ImageService, private tokenService: TokenService) { }
 
   public async sortByParam(param: string): Promise<void> {
     this.filter = param;
@@ -274,6 +276,9 @@ export class AdvertComponent implements OnInit {
         });
       }
       if (this.page == 'my') {
+        const tokenResult = await this.tokenService.tokenVerify();
+        if (!tokenResult)
+          this.router.navigate(["/authorize"]);
         if (this.filter == "all")
           await this.advertService.getByUser(this.count)
             .then(
@@ -613,6 +618,9 @@ export class AdvertComponent implements OnInit {
       });
     }
     if (this.page == 'my') {
+      const tokenResult = await this.tokenService.tokenVerify();
+      if (!tokenResult)
+        this.router.navigate(["/authorize"]);
       if (this.filter == "all")
         await this.advertService.getByUser(this.count)
           .then(

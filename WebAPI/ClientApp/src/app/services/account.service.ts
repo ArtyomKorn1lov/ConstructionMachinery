@@ -48,7 +48,12 @@ export class AccountService {
   }
 
   public async getAuthoriseModel(): Promise<void> {
-    await this.tokenService.tokenVerify();
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult) {
+      this.authorize = new AuthoriseModel("", "", false);
+      this.userFlag = false;
+      return;
+    }
     await this.isUserAuthorized()
       .then(
         (data) => {
@@ -98,22 +103,22 @@ export class AccountService {
   }
 
   public async isUserAuthorized(): Promise<AuthoriseModel> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AuthoriseModel>(`api/account/is-authorized`));
   }
 
   public async getUserProfile(): Promise<UserModel> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<UserModel>(`api/account/user`));
   }
 
   public async getUserById(id: number): Promise<UserModel> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<UserModel>(`api/account/user/${id}`));
   }
 
+  public async getProfileById(id: number): Promise<UserModel> {
+    return await lastValueFrom(this.http.get<UserModel>(`api/account/user-profile/${id}`));
+  }
+
   public async update(model: UserUpdateModel): Promise<AuthenticatedResponse> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.put<AuthenticatedResponse>(`api/account/update`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) }));
   }
 

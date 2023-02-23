@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ConfirmModel } from 'src/app/models/ConfirmModel';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-confirm-list-info',
@@ -18,9 +19,13 @@ export class ConfirmListInfoComponent implements OnInit {
   public date: Date = new Date();
   private targetRoute: string = "confirm-list";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, 
+    private requestService: RequestService, private router: Router, private tokenService: TokenService) { }
 
   public async confirm(state: number): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     let model: ConfirmModel = new ConfirmModel(this.request.id, state);
     await this.requestService.confirm(model)
       .then(
@@ -42,6 +47,9 @@ export class ConfirmListInfoComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     await this.requestService.getForLandLord(this.requestService.getIdFromLocalStorage())
       .then(
         (data) => {

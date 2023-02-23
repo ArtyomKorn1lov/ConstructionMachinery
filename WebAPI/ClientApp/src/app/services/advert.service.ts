@@ -93,122 +93,98 @@ export class AdvertService {
   }
 
   public async getAll(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${count}`));
   }
 
   public async getById(id: number): Promise<AdvertModelInfo> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelInfo>(`api/advert/by-id/${id}`));
   }
 
   public async createAdvert(advert: AdvertModelCreate): Promise<string> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.post(`api/advert/create`, advert, { responseType: 'text' }));
   }
 
   public async getByUser(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${count}`));
   }
 
   public async remove(id: number): Promise<string> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.delete(`api/advert/remove/${id}`, { responseType: 'text' }));
   }
 
   public async getByName(name: string, count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}/${count}`));
   }
 
   public async getForRequestCustomer(count: number): Promise<AdvertModelForRequest[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer/${count}`));
   }
 
   public async getForUpdate(id: number): Promise<AdvertModelUpdate> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelUpdate>(`api/advert/for-update/${id}`));
   }
 
   public async update(advert: AdvertModelUpdate): Promise<string> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.put(`api/advert/update`, advert, { responseType: 'text' }));
   }
 
   public async getSortByPriceMax(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${count}`));
   }
 
   public async getSortByPriceMin(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${count}`));
   }
 
   public async GetSortByRatingMax(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${count}`));
   }
 
   public async GetSortByRatingMin(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${count}`));
   }
 
   public async GetSortByDateMin(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${count}`));
   }
 
   public async getSortByPriceMaxByName(name: string, count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${name}/${count}`));
   }
 
   public async getSortByPriceMinByName(name: string, count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${name}/${count}`));
   }
 
   public async GetSortByRatingMaxByName(name: string, count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${name}/${count}`));
   }
 
   public async GetSortByRatingMinByName(name: string, count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${name}/${count}`));
   }
 
   public async GetSortByDateMinByName(name: string,count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${count}`));
   }
 
   public async getSortByPriceMaxByUserId(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-price-max/${count}`));
   }
 
   public async getSortByPriceMinByUserId(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-price-min/${count}`));
   }
 
   public async getSortByRatingMaxByUserId(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-max/${count}`));
   }
 
   public async getSortByRatingMinByUserId(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-min/${count}`));
   }
 
   public async getSortByDateMinByUserId(count: number): Promise<AdvertModelList[]> {
-    this.tokenService.tokenVerify();
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-date-min/${count}`));
   }
 

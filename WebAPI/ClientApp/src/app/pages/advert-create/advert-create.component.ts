@@ -5,6 +5,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-advert-create',
@@ -23,7 +24,8 @@ export class AdvertCreateComponent implements OnInit {
   public filesBase64: string[] = [];
   private targetRoute: string = "/advert-create/time";
 
-  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
+    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService) { }
 
   public uploadImage(): void {
     document.getElementById("SelectImage")?.click();
@@ -40,7 +42,10 @@ export class AdvertCreateComponent implements OnInit {
     }
   }
 
-  public crossingToAvailiableTime(): void {
+  public async crossingToAvailiableTime(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.name == undefined || this.name.trim() == '') {
       alert("Введите название объявления");
       this.name = '';

@@ -4,6 +4,7 @@ import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { ReviewModelUpdate } from 'src/app/models/ReviewModelUpdate';
 import { AccountService } from 'src/app/services/account.service';
+import { TokenService } from 'src/app/services/token.service';
 
 interface Stars {
   first: boolean;
@@ -32,9 +33,13 @@ export class ReviewEditComponent implements OnInit {
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, private accountService: AccountService) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, 
+    private accountService: AccountService, private tokenService: TokenService) { }
 
   public async update(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.rating <= 0 || this.rating > 5) {
       alert("Оцените данное объявление");
       this.rating = this.review.reviewStateId;
@@ -62,6 +67,9 @@ export class ReviewEditComponent implements OnInit {
   }
 
   public async remove(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     await this.reviewService.remove(this.review.id)
       .then(
         (data) => {
@@ -178,6 +186,9 @@ export class ReviewEditComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     await this.reviewService.getById(this.reviewService.getIdFromLocalStorage())
       .then(
         (data) => {

@@ -14,7 +14,8 @@ export class UserProfileComponent implements OnInit {
   public user: UserModel = new UserModel(0, "", "", "", new Date(), "");
   private targetRoute: string = "/";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, 
+    private router: Router) { }
 
   public back(): void {
     this.router.navigateByUrl(this.targetRoute);
@@ -24,7 +25,7 @@ export class UserProfileComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.targetRoute = this.accountService.getPageFromLocalStorage();
-    await this.accountService.getUserById(this.accountService.getUserIdFromLocalStorage())
+    await this.accountService.getProfileById(this.accountService.getUserIdFromLocalStorage())
     .then(
       (data) => {
         this.user = data;

@@ -4,6 +4,7 @@ import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ReviewModelCreate } from 'src/app/models/ReviewModelCreate';
+import { TokenService } from 'src/app/services/token.service';
 
 interface Stars {
   first: boolean;
@@ -31,9 +32,13 @@ export class ReviewCreateComponent implements OnInit {
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, private accountService: AccountService) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, 
+    private accountService: AccountService, private tokenService: TokenService) { }
 
   public async create(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.rating <= 0 || this.rating > 5) {
       alert("Оцените данное объявление");
       this.rating = 0;

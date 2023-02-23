@@ -4,6 +4,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { Router } from '@angular/router';
 import { RequestService } from 'src/app/services/request.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-advert-request',
@@ -17,7 +18,8 @@ export class AdvertRequestComponent implements OnInit {
   public scrollFlag = true;
   private requestListRoute = "advert-request/my-requests";
 
-  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
+  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private requestService: RequestService, 
+    private router: Router, private tokenService: TokenService) { }
 
   public navigateToRequest(id: number): void {
     this.requestService.setAdvertIdInLocalStorage(id);
@@ -33,6 +35,9 @@ export class AdvertRequestComponent implements OnInit {
   public scrollEvent = async (event: any): Promise<void> => {
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.adverts.length;
+      const tokenResult = await this.tokenService.tokenVerify();
+      if (!tokenResult)
+        this.router.navigate(["/authorize"]);
       await this.advertService.getForRequestCustomer(this.count)
         .then(
           (data) => {
@@ -69,6 +74,9 @@ export class AdvertRequestComponent implements OnInit {
     window.addEventListener('scroll', this.scrollEvent, true);
     this.requestService.clearAdvertIdLocalStorage();
     const firstCount = this.count;
+    const tokenResult = await this.tokenService.tokenVerify();
+      if (!tokenResult)
+        this.router.navigate(["/authorize"]);
     await this.advertService.getForRequestCustomer(this.count)
       .then(
         async (data) => {

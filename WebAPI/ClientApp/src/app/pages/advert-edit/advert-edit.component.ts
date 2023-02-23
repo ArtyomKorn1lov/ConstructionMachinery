@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { ImageService } from 'src/app/services/image.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-advert-edit',
@@ -21,7 +22,8 @@ export class AdvertEditComponent implements OnInit {
   public oldImageCount: number = 0;
   private targetRoute: string = "/advert-edit/time";
 
-  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, 
+    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService) { }
 
   public uploadImage(): void {
     document.getElementById("SelectImage")?.click();
@@ -54,7 +56,10 @@ export class AdvertEditComponent implements OnInit {
     }
   }
 
-  public crossingToAvailiableTime(): void {
+  public async crossingToAvailiableTime(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
     if (this.advertUpdate.name == undefined || this.advertUpdate.name.trim() == '') {
       alert("Введите название объявления");
       this.advertUpdate.name = '';

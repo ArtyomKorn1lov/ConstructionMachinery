@@ -25,7 +25,7 @@ export class LeaseRegistrationComponent implements OnInit {
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, private requestService: RequestService, private router: Router) { }
 
-  public createRequest(): void {
+  public async createRequest(): Promise<void> {
     if (this.address == undefined || this.address.trim() == '') {
       alert("Введите адрес доставки");
       this.address = '';
@@ -38,20 +38,23 @@ export class LeaseRegistrationComponent implements OnInit {
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
-    this.requestService.create(this.request).subscribe({
-      next: async (data) => {
-        console.log(data);
-        alert(data);
-        this.router.navigateByUrl(this.targerRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка запроса на аренду");
-        console.log(bad);
-        this.address = '';
-        return;
-      }
-    });
+    await this.requestService.create(this.request)
+      .then(
+        (data) => {
+          console.log(data);
+          alert(data);
+          this.router.navigateByUrl(this.targerRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка запроса на аренду");
+          console.log(error);
+          this.address = '';
+          return;
+        }
+      );
   }
 
   public convertToNormalDate(times: AvailableTimeModel[]): LeaseTimeModel[] {
@@ -113,8 +116,16 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    await this.requestService.getAvailableTimesByAdvertId(this.advertService.getIdFromLocalStorage()).subscribe(data => {
-      this.leaseTimes = this.convertToNormalDate(data);
-    });
+    await this.requestService.getAvailableTimesByAdvertId(this.advertService.getIdFromLocalStorage())
+    .then(
+      (data) => {
+        this.leaseTimes = this.convertToNormalDate(data);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { ReviewModel } from '../models/ReviewModel';
 import { ReviewModelCreate } from '../models/ReviewModelCreate';
 import { ReviewModelUpdate } from '../models/ReviewModelUpdate';
@@ -32,34 +32,34 @@ export class ReviewService {
     return parseInt(id);
   }
   
-  public getByUserId(count: number): Observable<ReviewModel[]> {
+  public async getByUserId(count: number): Promise<ReviewModel[]> {
     this.tokenService.tokenVerify();
-    return this.http.get<ReviewModel[]>(`api/review/user/${count}`);
+    return await lastValueFrom(this.http.get<ReviewModel[]>(`api/review/user/${count}`));
   }
 
-  public getByAdvertId(id: number, count: number): Observable<ReviewModel[]> {
+  public async getByAdvertId(id: number, count: number): Promise<ReviewModel[]> {
     this.tokenService.tokenVerify();
-    return this.http.get<ReviewModel[]>(`api/review/advert/${id}/${count}`);
+    return await lastValueFrom(this.http.get<ReviewModel[]>(`api/review/advert/${id}/${count}`));
   }
 
-  public getById(id: number): Observable<ReviewModelInfo> {
+  public async getById(id: number): Promise<ReviewModelInfo> {
     this.tokenService.tokenVerify();
-    return this.http.get<ReviewModelInfo>(`api/review/${id}`);
+    return await lastValueFrom(this.http.get<ReviewModelInfo>(`api/review/${id}`));
   }
 
-  public remove(id: number): Observable<string> {
+  public async remove(id: number): Promise<string> {
     this.tokenService.tokenVerify();
-    return this.http.delete(`api/review/${id}`, { responseType: 'text' });
+    return await lastValueFrom(this.http.delete(`api/review/${id}`, { responseType: 'text' }));
   }
 
-  public create(review: ReviewModelCreate): Observable<string> {
+  public async create(review: ReviewModelCreate): Promise<string> {
     this.tokenService.tokenVerify();
-    return this.http.post(`api/review/create`, review, { responseType: 'text' });
+    return await lastValueFrom(this.http.post(`api/review/create`, review, { responseType: 'text' }));
   }
 
-  public update(review: ReviewModelUpdate): Observable<string> {
+  public async update(review: ReviewModelUpdate): Promise<string> {
     this.tokenService.tokenVerify();
-    return this.http.put(`api/review/update`, review, { responseType: 'text' });
+    return await lastValueFrom(this.http.put(`api/review/update`, review, { responseType: 'text' }));
   }
 
 }

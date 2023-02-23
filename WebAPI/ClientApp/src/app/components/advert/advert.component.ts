@@ -47,7 +47,7 @@ export class AdvertComponent implements OnInit {
   }
 
   public convertToNormalDate(): void {
-    for(let count = 0; count < this.advertList.length; count++)
+    for (let count = 0; count < this.advertList.length; count++)
       this.advertList[count].editDate = new Date(this.advertList[count].editDate);
   }
 
@@ -59,158 +59,326 @@ export class AdvertComponent implements OnInit {
           const searchString = params['search'];
           if (searchString == undefined) {
             if (this.filter == "all")
-              await this.advertService.getAll(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getAll(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "max_price")
-              await this.advertService.getSortByPriceMax(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getSortByPriceMax(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "min_price")
-              await this.advertService.getSortByPriceMin(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getSortByPriceMin(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "max_rating")
-              await this.advertService.GetSortByRatingMax(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.GetSortByRatingMax(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "min_rating")
-              await this.advertService.GetSortByRatingMin(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.GetSortByRatingMin(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "max_date")
-              await this.advertService.getAll(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getAll(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "min_date")
-              await this.advertService.GetSortByDateMin(this.count).subscribe(data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.GetSortByDateMin(this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
           }
           else {
             if (this.filter == "all")
-              await this.advertService.getByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "max_price")
-              await this.advertService.getSortByPriceMaxByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getSortByPriceMaxByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "min_price")
-              await this.advertService.getSortByPriceMinByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getSortByPriceMinByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "max_rating")
-              await this.advertService.GetSortByRatingMaxByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.GetSortByRatingMaxByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "min_rating")
-              await this.advertService.GetSortByRatingMinByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.GetSortByRatingMinByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "max_date")
-              await this.advertService.getByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.getByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             if (this.filter == "min_date")
-              await this.advertService.GetSortByDateMinByName(searchString, this.count).subscribe(async data => {
-                this.advertList = data;
-                this.convertToNormalDate();
-                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-                this.flagState();
-              });
+              await this.advertService.GetSortByDateMinByName(searchString, this.count)
+                .then(
+                  (data) => {
+                    this.advertList = data;
+                    this.convertToNormalDate();
+                    this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                    this.flagState();
+                  }
+                )
+                .catch(
+                  (error) => {
+                    console.log(error);
+                  }
+                );
           }
         });
       }
       if (this.page == 'my') {
         if (this.filter == "all")
-          await this.advertService.getByUser(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getByUser(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
         if (this.filter == "max_price")
-          await this.advertService.getSortByPriceMaxByUserId(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getSortByPriceMaxByUserId(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
         if (this.filter == "min_price")
-          await this.advertService.getSortByPriceMinByUserId(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getSortByPriceMinByUserId(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
         if (this.filter == "max_rating")
-          await this.advertService.getSortByRatingMaxByUserId(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getSortByRatingMaxByUserId(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
         if (this.filter == "min_rating")
-          await this.advertService.getSortByRatingMinByUserId(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getSortByRatingMinByUserId(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
         if (this.filter == "max_date")
-          await this.advertService.getByUser(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getByUser(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
         if (this.filter == "min_date")
-          await this.advertService.getSortByDateMinByUserId(this.count).subscribe(async data => {
-            this.advertList = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
-            this.flagState();
-          });
+          await this.advertService.getSortByDateMinByUserId(this.count)
+            .then(
+              (data) => {
+                this.advertList = data;
+                this.convertToNormalDate();
+                this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+                this.flagState();
+              }
+            )
+            .catch(
+              (error) => {
+                console.log(error);
+              }
+            );
       }
       this.count += 10;
       this.convertToNormalDate();
@@ -244,137 +412,305 @@ export class AdvertComponent implements OnInit {
         const searchString = params['search'];
         if (searchString == undefined) {
           if (this.filter == "all")
-            await this.advertService.getAll(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getAll(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "max_price")
-            await this.advertService.getSortByPriceMax(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getSortByPriceMax(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "min_price")
-            await this.advertService.getSortByPriceMin(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getSortByPriceMin(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "max_rating")
-            await this.advertService.GetSortByRatingMax(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.GetSortByRatingMax(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "min_rating")
-            await this.advertService.GetSortByRatingMin(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.GetSortByRatingMin(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "max_date")
-            await this.advertService.getAll(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getAll(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "min_date")
-            await this.advertService.GetSortByDateMin(this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.GetSortByDateMin(this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
         }
         else {
           if (this.filter == "all")
-            await this.advertService.getByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "max_price")
-            await this.advertService.getSortByPriceMaxByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getSortByPriceMaxByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "min_price")
-            await this.advertService.getSortByPriceMinByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getSortByPriceMinByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "max_rating")
-            await this.advertService.GetSortByRatingMaxByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.GetSortByRatingMaxByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "min_rating")
-            await this.advertService.GetSortByRatingMinByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.GetSortByRatingMinByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "max_date")
-            await this.advertService.getByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.getByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
           if (this.filter == "min_date")
-            await this.advertService.GetSortByDateMinByName(searchString, this.count).subscribe(async data => {
-              this.advertList = data;
-              this.convertToNormalDate();
-              await this.changeFlagState(this.advertList.length, firstCount);
-            });
+            await this.advertService.GetSortByDateMinByName(searchString, this.count)
+              .then(
+                async (data) => {
+                  this.advertList = data;
+                  this.convertToNormalDate();
+                  await this.changeFlagState(this.advertList.length, firstCount);
+                }
+              )
+              .catch(
+                (error) => {
+                  console.log(error);
+                }
+              );
         }
       });
     }
     if (this.page == 'my') {
       if (this.filter == "all")
-        await this.advertService.getByUser(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getByUser(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.filter == "max_price")
-        await this.advertService.getSortByPriceMaxByUserId(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getSortByPriceMaxByUserId(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.filter == "min_price")
-        await this.advertService.getSortByPriceMinByUserId(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getSortByPriceMinByUserId(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.filter == "max_rating")
-        await this.advertService.getSortByRatingMaxByUserId(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getSortByRatingMaxByUserId(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.filter == "min_rating")
-        await this.advertService.getSortByRatingMinByUserId(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getSortByRatingMinByUserId(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.filter == "max_date")
-        await this.advertService.getByUser(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getByUser(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.filter == "min_date")
-        await this.advertService.getSortByDateMinByUserId(this.count).subscribe(async data => {
-          this.advertList = data;
-          this.convertToNormalDate();
-          await this.changeFlagState(this.advertList.length, firstCount);
-        });
+        await this.advertService.getSortByDateMinByUserId(this.count)
+          .then(
+            async (data) => {
+              this.advertList = data;
+              this.convertToNormalDate();
+              await this.changeFlagState(this.advertList.length, firstCount);
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
     }
     this.count += 10;
   }

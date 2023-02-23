@@ -27,10 +27,18 @@ export class ProfileComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    await this.accountService.getUserProfile().subscribe(data => {
-      this.user = data;
-      this.user.created = new Date(this.user.created);
-    });
+    await this.accountService.getUserProfile()
+      .then(
+        (data) => {
+          this.user = data;
+          this.user.created = new Date(this.user.created);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
 }

@@ -34,7 +34,7 @@ export class ReviewEditComponent implements OnInit {
 
   constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, private accountService: AccountService) { }
 
-  public update(): void {
+  public async update(): Promise<void> {
     if (this.rating <= 0 || this.rating > 5) {
       alert("Оцените данное объявление");
       this.rating = this.review.reviewStateId;
@@ -43,35 +43,41 @@ export class ReviewEditComponent implements OnInit {
     this.review.description = this.description;
     this.review.date = new Date();
     this.review.reviewStateId = this.rating;
-    this.reviewService.update(this.review).subscribe({
-      next: (data) => {
-        alert(data);
-        console.log(data);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка обновления отзыва");
-        console.log(bad);
-        return;
-      }
-    });
+    await this.reviewService.update(this.review)
+      .then(
+        (data) => {
+          alert(data);
+          console.log(data);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка обновления отзыва");
+          console.log(error);
+          return;
+        }
+      );
   }
 
-  public remove(): void {
-    this.reviewService.remove(this.review.id).subscribe({
-      next: (data) => {
-        alert(data);
-        console.log(data);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка удаления отзыва");
-        console.log(bad);
-        return;
-      }
-    });
+  public async remove(): Promise<void> {
+    await this.reviewService.remove(this.review.id)
+      .then(
+        (data) => {
+          alert(data);
+          console.log(data);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка удаления отзыва");
+          console.log(error);
+          return;
+        }
+      );
   }
 
   public setState(index: number): void {
@@ -172,15 +178,23 @@ export class ReviewEditComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    await this.reviewService.getById(this.reviewService.getIdFromLocalStorage()).subscribe(data => {
-      this.review.id = data.id;
-      this.review.description = data.description;
-      this.review.reviewStateId = data.reviewStateId;
-      this.review.advertId = data.advertId;
-      this.rating = this.review.reviewStateId;
-      this.setState(this.rating);
-      this.description = this.review.description;
-    });
+    await this.reviewService.getById(this.reviewService.getIdFromLocalStorage())
+      .then(
+        (data) => {
+          this.review.id = data.id;
+          this.review.description = data.description;
+          this.review.reviewStateId = data.reviewStateId;
+          this.review.advertId = data.advertId;
+          this.rating = this.review.reviewStateId;
+          this.setState(this.rating);
+          this.description = this.review.description;
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
 }

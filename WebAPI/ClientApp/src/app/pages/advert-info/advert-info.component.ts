@@ -30,7 +30,7 @@ export class AdvertInfoComponent implements OnInit {
 
   public back(): void {
     if (this.page == 'list') {
-      if(this.advertService.getQueryParametr() == "")
+      if (this.advertService.getQueryParametr() == "")
         this.router.navigateByUrl(this.listRoute);
       else
         this.router.navigate([this.listRoute], {
@@ -41,14 +41,14 @@ export class AdvertInfoComponent implements OnInit {
       return;
     }
     if (this.page == 'my') {
-      if(this.advertService.getQueryParametr() == "")
+      if (this.advertService.getQueryParametr() == "")
         this.router.navigateByUrl(this.myRoute);
       else
-      this.router.navigate([this.myRoute], {
-        queryParams: {
-          search: this.advertService.getQueryParametr()
-        }
-      });
+        this.router.navigate([this.myRoute], {
+          queryParams: {
+            search: this.advertService.getQueryParametr()
+          }
+        });
       return;
     }
     this.router.navigateByUrl('/');
@@ -58,7 +58,7 @@ export class AdvertInfoComponent implements OnInit {
     this.advert.publishDate = new Date(this.advert.publishDate);
     this.advert.editDate = new Date(this.advert.editDate);
     this.advert.dateIssue = new Date(this.advert.dateIssue);
-    if(this.advert.availableTimes == null)
+    if (this.advert.availableTimes == null)
       return;
     let day;
     let buffer;
@@ -128,24 +128,27 @@ export class AdvertInfoComponent implements OnInit {
     }
   }
 
-  public remove(): void {
+  public async remove(): Promise<void> {
     if (this.advert.id == 0) {
       alert("Ошибка удаления");
       return;
     }
-    this.advertService.remove(this.advert.id).subscribe({
-      next: async (data) => {
-        alert(data);
-        console.log(data);
-        this.back();
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка удаления");
-        console.log(bad);
-        return;
-      }
-    });
+    await this.advertService.remove(this.advert.id)
+      .then(
+        (data) => {
+          alert(data);
+          console.log(data);
+          this.back();
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка удаления");
+          console.log(error);
+          return;
+        }
+      );
   }
 
   public edit(): void {
@@ -158,10 +161,18 @@ export class AdvertInfoComponent implements OnInit {
     this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);
     this.page = this.advertService.getPageFromLocalStorage();
-    await this.advertService.getById(this.advertService.getIdFromLocalStorage()).subscribe(data => {
-      this.advert = data;
-      this.packageToDayModel();
-    });
+    await this.advertService.getById(this.advertService.getIdFromLocalStorage())
+      .then(
+        (data) => {
+          this.advert = data;
+          this.packageToDayModel();
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
 }

@@ -33,27 +33,30 @@ export class ReviewCreateComponent implements OnInit {
 
   constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, private accountService: AccountService) { }
 
-  public create(): void {
+  public async create(): Promise<void> {
     if (this.rating <= 0 || this.rating > 5) {
       alert("Оцените данное объявление");
       this.rating = 0;
       return;
     }
     const review = new ReviewModelCreate(this.description, new Date(), this.rating, this.advertService.getIdFromLocalStorage(), 0);
-    this.reviewService.create(review).subscribe({
-      next: (data) => {
+    await this.reviewService.create(review)
+    .then(
+      (data) => {
         alert(data);
         console.log(data);
         this.router.navigateByUrl(this.targetRoute);
         return;
-      },
-      error: (bad) => {
+      }
+    )
+    .catch(
+      (error) => {
         alert("Ошибка добавления отзыва");
-        console.log(bad);
+        console.log(error);
         this.description = "";
         return;
       }
-    });
+    );
   }
 
   public setState(index: number): void {

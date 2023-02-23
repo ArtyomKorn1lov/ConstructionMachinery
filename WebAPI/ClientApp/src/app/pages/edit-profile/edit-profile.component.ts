@@ -55,35 +55,46 @@ export class EditProfileComponent implements OnInit {
       return;
     }
     this.user.password = this.password;
-    await this.accountService.update(this.user).subscribe({
-      next: async (data) => {        
-        console.log(data);
-        alert("success");
-        const token = data.token;
-        const refreshToken = data.refreshToken;
-        this.accountService.saveTokens(token, refreshToken);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Некорректные логин и(или) пароль");
-        console.log(bad);
-        this.password = '';
-        this.confirm_password = '';
-        return;
-      }
-    });
+    await this.accountService.update(this.user)
+      .then(
+        (data) => {
+          console.log(data);
+          alert("success");
+          const token = data.token;
+          const refreshToken = data.refreshToken;
+          this.accountService.saveTokens(token, refreshToken);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Некорректные логин и(или) пароль");
+          console.log(error);
+          this.password = '';
+          this.confirm_password = '';
+          return;
+        }
+      )
   }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    await this.accountService.getUserProfile().subscribe(data => {
-      this.user.id = data.id;
-      this.user.name = data.name;
-      this.user.email = data.email;
-      this.user.phone = data.phone;
-      this.user.address = data.address;
-    });
+    await this.accountService.getUserProfile()
+      .then(
+        (data) => {
+          this.user.id = data.id;
+          this.user.name = data.name;
+          this.user.email = data.email;
+          this.user.phone = data.phone;
+          this.user.address = data.address;
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
-  
+
 }

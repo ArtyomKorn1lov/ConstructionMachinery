@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { RegisterModel } from '../models/RegisterModel';
 import { LoginModel } from '../models/LoginModel';
 import { AuthoriseModel } from '../models/AuthoriseModel';
@@ -49,23 +49,25 @@ export class AccountService {
 
   public async getAuthoriseModel(): Promise<void> {
     await this.tokenService.tokenVerify();
-    await this.isUserAuthorized().subscribe({
-      next: (data) => {
-        console.log(data);
-        if (data != null) {
-          this.authorize = data;
-          this.userFlag = true;
-          return;
+    await this.isUserAuthorized()
+      .then(
+        (data) => {
+          if (data != null) {
+            this.authorize = data;
+            this.userFlag = true;
+            return;
+          }
+          this.authorize = new AuthoriseModel("", "", false);
+          this.userFlag = false;
         }
-        this.authorize = new AuthoriseModel("", "", false);
-        this.userFlag = false;
-      },
-      error: (bad) => {
-        console.log(bad);
-        this.authorize = new AuthoriseModel("", "", false);
-        this.userFlag = false;
-      }
-    });
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+          this.authorize = new AuthoriseModel("", "", false);
+          this.userFlag = false;
+        }
+      );
   }
 
   public saveTokens(token: string, refreshToken: string): void {
@@ -73,12 +75,12 @@ export class AccountService {
     localStorage.setItem("refreshToken", refreshToken);
   }
 
-  public registration(model: RegisterModel): Observable<AuthenticatedResponse> {
-    return this.http.post<AuthenticatedResponse>(`api/account/register`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
+  public async registration(model: RegisterModel): Promise<AuthenticatedResponse> {
+    return await lastValueFrom(this.http.post<AuthenticatedResponse>(`api/account/register`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) }));
   }
 
-  public login(model: LoginModel): Observable<AuthenticatedResponse> {
-    return this.http.post<AuthenticatedResponse>(`api/account/login`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
+  public async login(model: LoginModel): Promise<AuthenticatedResponse> {
+    return await lastValueFrom(this.http.post<AuthenticatedResponse>(`api/account/login`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) }));
   }
 
   public logOut(): boolean {
@@ -95,24 +97,24 @@ export class AccountService {
     }
   }
 
-  public isUserAuthorized(): Observable<AuthoriseModel> {
+  public async isUserAuthorized(): Promise<AuthoriseModel> {
     this.tokenService.tokenVerify();
-    return this.http.get<AuthoriseModel>(`api/account/is-authorized`);
+    return await lastValueFrom(this.http.get<AuthoriseModel>(`api/account/is-authorized`));
   }
 
-  public getUserProfile(): Observable<UserModel> {
+  public async getUserProfile(): Promise<UserModel> {
     this.tokenService.tokenVerify();
-    return this.http.get<UserModel>(`api/account/user`);
+    return await lastValueFrom(this.http.get<UserModel>(`api/account/user`));
   }
 
-  public getUserById(id: number): Observable<UserModel> {
+  public async getUserById(id: number): Promise<UserModel> {
     this.tokenService.tokenVerify();
-    return this.http.get<UserModel>(`api/account/user/${id}`);
+    return await lastValueFrom(this.http.get<UserModel>(`api/account/user/${id}`));
   }
 
-  public update(model: UserUpdateModel): Observable<AuthenticatedResponse> {
+  public async update(model: UserUpdateModel): Promise<AuthenticatedResponse> {
     this.tokenService.tokenVerify();
-    return this.http.put<AuthenticatedResponse>(`api/account/update`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) });
+    return await lastValueFrom(this.http.put<AuthenticatedResponse>(`api/account/update`, model, { headers: new HttpHeaders({ "Content-Type": "application/json" }) }));
   }
 
 }

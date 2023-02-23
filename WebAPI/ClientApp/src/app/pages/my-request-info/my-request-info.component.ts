@@ -19,28 +19,39 @@ export class MyRequestInfoComponent implements OnInit {
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
-  public cancel(): void {
-    this.requestService.remove(this.request.id).subscribe({
-      next: async (data) => {
-        console.log(data);
-        alert(data);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка отмены заявки");
-        console.log(bad);
-        return;
-      }
-    });
+  public async cancel(): Promise<void> {
+    this.requestService.remove(this.request.id)
+      .then(
+        (data) => {
+          console.log(data);
+          alert(data);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка отмены заявки");
+          console.log(error);
+          return;
+        }
+      );
   }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    await this.requestService.getForCustomer(this.requestService.getIdFromLocalStorage()).subscribe(data => {
-      this.request = data;
-      this.date = new Date(this.request.availableTimeModels[0].date);
-    });
+    await this.requestService.getForCustomer(this.requestService.getIdFromLocalStorage())
+    .then(
+      (data) => {
+        this.request = data;
+        this.date = new Date(this.request.availableTimeModels[0].date);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
 }

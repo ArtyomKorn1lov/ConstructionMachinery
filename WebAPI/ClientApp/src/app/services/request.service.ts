@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { AvailabilityRequestModel } from '../models/AvailabilityRequestModel';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
@@ -53,44 +53,44 @@ export class RequestService {
     return true;
   }
 
-  public getListForCustomer(id: number, count: number): Observable<AvailabilityRequestModel[]> {
+  public async getListForCustomer(id: number, count: number): Promise<AvailabilityRequestModel[]> {
     this.tokenService.tokenVerify();
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${count}`);
+    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${count}`));
   }
 
-  public getListForLandlord(count: number): Observable<AvailabilityRequestModel[]> {
+  public async getListForLandlord(count: number): Promise<AvailabilityRequestModel[]> {
     this.tokenService.tokenVerify();
-    return this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${count}`);
+    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${count}`));
   }
 
-  public getForCustomer(id: number): Observable<AvailabilityRequestModelForCustomer> {
+  public async getForCustomer(id: number): Promise<AvailabilityRequestModelForCustomer> {
     this.tokenService.tokenVerify();
-    return this.http.get<AvailabilityRequestModelForCustomer>(`api/request/customer/${id}`);
+    return await lastValueFrom(this.http.get<AvailabilityRequestModelForCustomer>(`api/request/customer/${id}`));
   }
 
-  public getForLandLord(id: number): Observable<AvailabilityRequestModelForLandlord> {
+  public async getForLandLord(id: number): Promise<AvailabilityRequestModelForLandlord> {
     this.tokenService.tokenVerify();
-    return this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`);
+    return await lastValueFrom(this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`));
   }
 
-  public getAvailableTimesByAdvertId(id: number): Observable<AvailableTimeModel[]> {
+  public async getAvailableTimesByAdvertId(id: number): Promise<AvailableTimeModel[]> {
     this.tokenService.tokenVerify();
-    return this.http.get<AvailableTimeModel[]>(`api/request/times/${id}`);
+    return await lastValueFrom(this.http.get<AvailableTimeModel[]>(`api/request/times/${id}`));
   }
 
-  public create(request: AvailabilityRequestModelCreate): Observable<string> {
+  public async create(request: AvailabilityRequestModelCreate): Promise<string> {
     this.tokenService.tokenVerify();
-    return this.http.post(`api/request/create`, request, { responseType: 'text' });
+    return await lastValueFrom(this.http.post(`api/request/create`, request, { responseType: 'text' }));
   }
 
-  public confirm(model: ConfirmModel): Observable<string> {
+  public async confirm(model: ConfirmModel): Promise<string> {
     this.tokenService.tokenVerify();
-    return this.http.put(`api/request/confirm`, model, { responseType: 'text' });
+    return await lastValueFrom(this.http.put(`api/request/confirm`, model, { responseType: 'text' }));
   }
 
-  public remove(id: number): Observable<string> {
+  public async remove(id: number): Promise<string> {
     this.tokenService.tokenVerify();
-    return this.http.delete(`api/request/remove/${id}`, { responseType: 'text' });
+    return await lastValueFrom(this.http.delete(`api/request/remove/${id}`, { responseType: 'text' }));
   }
 
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,18 +29,28 @@ export class TokenService {
     }
     const credentials = JSON.stringify({ accessToken: token, refreshToken: refreshToken });
     let isRefreshSuccess: boolean;
-    const refreshRes = await new Promise<AuthenticatedResponse>((resolve, reject) => {
+    let refreshRes = null;
+    await lastValueFrom(
       this.http.post<AuthenticatedResponse>(`api/token/refresh`, credentials, {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
         })
-      }).subscribe({
-        next: (res: AuthenticatedResponse) => resolve(res),
-        error: (_) => { reject; isRefreshSuccess = false; }
-      });
-    });
-    localStorage.setItem("jwt", refreshRes.token);
-    localStorage.setItem("refreshToken", refreshRes.refreshToken);
+      })
+    )
+    .then(
+      (data) => {
+        refreshRes = data;
+        localStorage.setItem("jwt", refreshRes.token);
+        localStorage.setItem("refreshToken", refreshRes.refreshToken);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+        isRefreshSuccess = false;
+        return isRefreshSuccess;
+      }
+    );
     isRefreshSuccess = true;
     return isRefreshSuccess;
   }

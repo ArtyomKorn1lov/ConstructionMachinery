@@ -28,7 +28,7 @@ export class ReviewComponent implements OnInit {
   }
 
   public convertToNormalDate(): void {
-    for(let index = 0; index < this.reviews.length; index++) {
+    for (let index = 0; index < this.reviews.length; index++) {
       this.reviews[index].date = new Date(this.reviews[index].date);
     }
   }
@@ -55,25 +55,36 @@ export class ReviewComponent implements OnInit {
   public scrollEvent = async (event: any): Promise<void> => {
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.reviews.length;
-      await this.reviewService.getByAdvertId(this.advertService.getIdFromLocalStorage(), this.count).subscribe(data => {
-        this.reviews = data;
-        this.convertToNormalDate();
-        this.scrollFlag = this.reviewService.checkLenght(length, this.reviews.length);
-        this.flagState();
-      });
-      this.count += 4;
+      await this.reviewService.getByAdvertId(this.advertService.getIdFromLocalStorage(), this.count)
+        .then(
+          (data) => {
+            this.reviews = data;
+            this.convertToNormalDate();
+            this.scrollFlag = this.reviewService.checkLenght(length, this.reviews.length);
+            this.flagState();
+            this.count += 4;
+          }
+        )
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
     const firstCount = this.count;
-    await this.reviewService.getByAdvertId(this.advertService.getIdFromLocalStorage(), this.count).subscribe(async data => {
-      this.reviews = data;
-      this.convertToNormalDate();
-      await this.changeFlagState(this.reviews.length, firstCount);
-    });
-    this.count += 4;
+    await this.reviewService.getByAdvertId(this.advertService.getIdFromLocalStorage(), this.count)
+      .then(
+        async (data) => {
+          this.reviews = data;
+          this.convertToNormalDate();
+          await this.changeFlagState(this.reviews.length, firstCount);
+          this.count += 4;
+        })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   public ngOnDestroy(): void {

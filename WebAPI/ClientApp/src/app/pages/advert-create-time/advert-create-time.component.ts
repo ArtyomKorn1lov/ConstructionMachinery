@@ -29,7 +29,7 @@ export class AdvertCreateTimeComponent implements OnInit {
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, private imageService: ImageService, private formBuilder: FormBuilder) { }
 
-  public create(): void {
+  public async create(): Promise<void> {
     if (this.range.value.start == null || this.range.value.start == undefined) {
       alert("Выберите диапазон чисел");
       return;
@@ -79,43 +79,49 @@ export class AdvertCreateTimeComponent implements OnInit {
     Array.from(this.images).map((image, index) => {
       return formData.append('file' + index, image);
     });
-    this.advertService.createAdvert(this.advert).subscribe({
-      next: async (data) => {
-        console.log(data);
-        this.imageService.create(formData).subscribe({
-          next: async (data) => {
-            console.log(data);
-            alert(data);
-            this.router.navigateByUrl(this.listRoute);
-            return;
-          },
-          error: (bad) => {
-            alert("Ошибка загрузки картинки");
-            console.log(bad);
-            this.range = this.formBuilder.group({
-              start: new FormControl<Date | null>(null),
-              end: new FormControl<Date | null>(null)
-            });
-            this.range.value.end = null;
-            this.startTime = undefined;
-            this.endTime = undefined;
-            return;
-          }
-        });
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка создания объявления");
-        console.log(bad);
-        this.range = this.formBuilder.group({
-          start: new FormControl<Date | null>(null),
-          end: new FormControl<Date | null>(null)
-        });
-        this.startTime = undefined;
-        this.endTime = undefined;
-        return;
-      }
-    });
+    await this.advertService.createAdvert(this.advert)
+      .then(
+        (data) => {
+          console.log(data);
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка создания объявления");
+          console.log(error);
+          this.range = this.formBuilder.group({
+            start: new FormControl<Date | null>(null),
+            end: new FormControl<Date | null>(null)
+          });
+          this.range.value.end = null;
+          this.startTime = undefined;
+          this.endTime = undefined;
+          return;
+        }
+      );
+    await this.imageService.create(formData)
+      .then(
+        (data) => {
+          console.log(data);
+          alert(data);
+          this.router.navigateByUrl(this.listRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка загрузки картинки");
+          console.log(error);
+          this.range = this.formBuilder.group({
+            start: new FormControl<Date | null>(null),
+            end: new FormControl<Date | null>(null)
+          });
+          this.range.value.end = null;
+          this.startTime = undefined;
+          this.endTime = undefined;
+          return;
+        }
+      );
   }
 
   public async ngOnInit(): Promise<void> {

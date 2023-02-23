@@ -58,27 +58,30 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     let model = new RegisterModel(this.name, this.email, this.phone, this.address, this.password);
-    await this.accountService.registration(model).subscribe({
-      next: async (data) => {
-        console.log(data);
-        alert("success");
-        const token = data.token;
-        const refreshToken = data.refreshToken;
-        this.accountService.saveTokens(token, refreshToken);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Некорректные логин и(или) пароль");
-        console.log(bad);
-        this.email = '';
-        this.password = '';
-        this.confirm_password = '';
-        this.name = '';
-        this.phone = '';
-        return;
-      }
-    });
+    await this.accountService.registration(model)
+      .then(
+        (data) => {
+          console.log(data);
+          alert("success");
+          const token = data.token;
+          const refreshToken = data.refreshToken;
+          this.accountService.saveTokens(token, refreshToken);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Некорректные логин и(или) пароль");
+          console.log(error);
+          this.email = '';
+          this.password = '';
+          this.confirm_password = '';
+          this.name = '';
+          this.phone = '';
+          return;
+        }
+      );
   }
 
   public async ngOnInit(): Promise<void> {

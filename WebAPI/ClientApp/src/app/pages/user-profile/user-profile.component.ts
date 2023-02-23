@@ -24,10 +24,18 @@ export class UserProfileComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.targetRoute = this.accountService.getPageFromLocalStorage();
-    await this.accountService.getUserById(this.accountService.getUserIdFromLocalStorage()).subscribe(data => {
-      this.user = data;
-      this.user.created = new Date(this.user.created);
-    });
+    await this.accountService.getUserById(this.accountService.getUserIdFromLocalStorage())
+    .then(
+      (data) => {
+        this.user = data;
+        this.user.created = new Date(this.user.created);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
 }

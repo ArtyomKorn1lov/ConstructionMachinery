@@ -20,29 +20,40 @@ export class ConfirmListInfoComponent implements OnInit {
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private requestService: RequestService, private router: Router) { }
 
-  public confirm(state: number): void {
+  public async confirm(state: number): Promise<void> {
     let model: ConfirmModel = new ConfirmModel(this.request.id, state);
-    this.requestService.confirm(model).subscribe({
-      next: async (data) => {
-        console.log(data);
-        alert(data);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка подтверждения запроса");
-        console.log(bad);
-        return;
-      }
-    });
+    await this.requestService.confirm(model)
+      .then(
+        (data) => {
+          console.log(data);
+          alert(data);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка подтверждения запроса");
+          console.log(error);
+          return;
+        }
+      );
   }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
-    await this.requestService.getForLandLord(this.requestService.getIdFromLocalStorage()).subscribe(data => {
-      this.request = data;
-      this.date = new Date(this.request.availableTimeModels[0].date);
-    })
+    await this.requestService.getForLandLord(this.requestService.getIdFromLocalStorage())
+      .then(
+        (data) => {
+          this.request = data;
+          this.date = new Date(this.request.availableTimeModels[0].date);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
 }

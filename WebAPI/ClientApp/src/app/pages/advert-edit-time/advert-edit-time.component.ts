@@ -36,7 +36,7 @@ export class AdvertEditTimeComponent implements OnInit {
     return numberArray;
   }
 
-  public update(): void {
+  public async update(): Promise<void> {
     if (this.range.value.start == null || this.range.value.start == undefined) {
       alert("Выберите диапазон чисел");
       return;
@@ -88,63 +88,69 @@ export class AdvertEditTimeComponent implements OnInit {
     Array.from(this.images).map((image, index) => {
       return formData.append('file' + index, image);
     });
-    this.advertService.update(this.advert).subscribe({
-      next: async (data) => {
-        console.log(data);
-        if (!this.imageService.oldImageFlag) {
-          this.imageService.remove(numberArray).subscribe({
-            next: async (data) => {
-              console.log(data);
-              this.imageService.update(formData, this.advert.id).subscribe({
-                next: async (data) => {
-                  console.log(data);
-                  alert(data);
-                  this.router.navigateByUrl(this.infoRoute);
-                  return;
-                },
-                error: (bad) => {
-                  alert("Ошибка обновления картинки");
-                  console.log(bad);
-                  this.range = this.formBuilder.group({
-                    start: new FormControl<Date | null>(null),
-                    end: new FormControl<Date | null>(null)
-                  });
-                  this.range.value.end = null;
-                  this.startTime = "";
-                  this.endTime = "";
-                  return;
-                }
-              });
-              return;
-            },
-            error: (bad) => {
-              alert("Ошибка удаления картинки");
-              console.log(bad);
-              this.range = this.formBuilder.group({
-                start: new FormControl<Date | null>(null),
-                end: new FormControl<Date | null>(null)
-              });
-              this.range.value.end = null;
-              this.startTime = "";
-              this.endTime = "";
-              return;
-            }
-          });
+    await this.advertService.update(this.advert)
+      .then(
+        (data) => {
+          console.log(data);
         }
-        return;
-      },
-      error: (bad) => {
-        alert("Ошибка редактирования объявления");
-        console.log(bad);
-        this.range = this.formBuilder.group({
-          start: new FormControl<Date | null>(null),
-          end: new FormControl<Date | null>(null)
-        });
-        this.startTime = "";
-        this.endTime = "";
-        return;
-      }
-    });
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка редактирования объявления");
+          console.log(error);
+          this.range = this.formBuilder.group({
+            start: new FormControl<Date | null>(null),
+            end: new FormControl<Date | null>(null)
+          });
+          this.range.value.end = null;
+          this.startTime = "";
+          this.endTime = "";
+          return;
+        }
+      );
+    await this.imageService.remove(numberArray)
+      .then(
+        (data) => {
+          console.log(data);
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка удаления картинки");
+          console.log(error);
+          this.range = this.formBuilder.group({
+            start: new FormControl<Date | null>(null),
+            end: new FormControl<Date | null>(null)
+          });
+          this.range.value.end = null;
+          this.startTime = "";
+          this.endTime = "";
+          return;
+        }
+      );
+    await this.imageService.update(formData, this.advert.id)
+      .then(
+        (data) => {
+          console.log(data);
+          alert(data);
+          this.router.navigateByUrl(this.infoRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка обновления картинки");
+          console.log(error);
+          this.range = this.formBuilder.group({
+            start: new FormControl<Date | null>(null),
+            end: new FormControl<Date | null>(null)
+          });
+          this.range.value.end = null;
+          this.startTime = "";
+          this.endTime = "";
+          return;
+        }
+      );
   }
 
   public async ngOnInit(): Promise<void> {

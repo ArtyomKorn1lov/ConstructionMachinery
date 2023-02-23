@@ -29,24 +29,27 @@ export class AuthorizeComponent implements OnInit {
       return;
     }
     var model = new LoginModel(this.email, this.password);
-    await this.accountService.login(model).subscribe({
-      next: async (data) => {
-        console.log("success");
-        alert("success");
-        const token = data.token;
-        const refreshToken = data.refreshToken;
-        this.accountService.saveTokens(token, refreshToken);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      },
-      error: (bad) => {
-        alert("Некорректные логин и(или) пароль");
-        console.log(bad);
-        this.email = '';
-        this.password = '';
-        return;
-      }
-    });
+    await this.accountService.login(model)
+      .then(
+        (data) => {
+          console.log("success");
+          alert("success");
+          const token = data.token;
+          const refreshToken = data.refreshToken;
+          this.accountService.saveTokens(token, refreshToken);
+          this.router.navigateByUrl(this.targetRoute);
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Некорректные логин и(или) пароль");
+          console.log(error);
+          this.email = '';
+          this.password = '';
+          return;
+        }
+      );
   }
 
   public async ngOnInit(): Promise<void> {

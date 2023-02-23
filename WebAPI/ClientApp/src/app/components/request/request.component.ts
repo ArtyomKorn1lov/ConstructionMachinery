@@ -33,19 +33,35 @@ export class RequestComponent implements OnInit {
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.requests.length;
       if (this.page == 'in')
-        await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(data => {
-          this.requests = data;
-          this.dateConvert();
-          this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
-          this.flagState();
-        });
+        await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count)
+          .then(
+            (data) => {
+              this.requests = data;
+              this.dateConvert();
+              this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+              this.flagState();
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       if (this.page == 'out')
-        await this.requestService.getListForLandlord(this.count).subscribe(data => {
-          this.requests = data;
-          this.dateConvert();
-          this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
-          this.flagState();
-        });
+        await this.requestService.getListForLandlord(this.count)
+          .then(
+            (data) => {
+              this.requests = data;
+              this.dateConvert();
+              this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+              this.flagState();
+            }
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            }
+          );
       this.count++;
     }
   }
@@ -75,17 +91,33 @@ export class RequestComponent implements OnInit {
     this.requestService.clearIdLocalStorage();
     const firstCount = this.count;
     if (this.page == 'in')
-      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count).subscribe(async data => {
-        this.requests = data;
-        await this.changeFlagState(this.requests.length, firstCount);
-        this.dateConvert();
-      });
+      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count)
+        .then(
+          async (data) => {
+            this.requests = data;
+            await this.changeFlagState(this.requests.length, firstCount);
+            this.dateConvert();
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
     if (this.page == 'out')
-      await this.requestService.getListForLandlord(this.count).subscribe(async data => {
-        this.requests = data;
-        await this.changeFlagState(this.requests.length, firstCount);
-        this.dateConvert();
-      });
+      await this.requestService.getListForLandlord(this.count)
+        .then(
+          async (data) => {
+            this.requests = data;
+            await this.changeFlagState(this.requests.length, firstCount);
+            this.dateConvert();
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
   }
 
   public ngOnDestroy(): void {

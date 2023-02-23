@@ -33,13 +33,21 @@ export class AdvertRequestComponent implements OnInit {
   public scrollEvent = async (event: any): Promise<void> => {
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.adverts.length;
-      await this.advertService.getForRequestCustomer(this.count).subscribe(data => {
-        this.adverts = data;
-        this.dateConvert();
-        this.scrollFlag = this.advertService.checkLenght(length, this.adverts.length);
-        this.flagState();
-      });
-      this.count += 10;
+      await this.advertService.getForRequestCustomer(this.count)
+        .then(
+          (data) => {
+            this.adverts = data;
+            this.dateConvert();
+            this.scrollFlag = this.advertService.checkLenght(length, this.adverts.length);
+            this.flagState();
+            this.count += 10;
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
     }
   }
 
@@ -61,12 +69,20 @@ export class AdvertRequestComponent implements OnInit {
     window.addEventListener('scroll', this.scrollEvent, true);
     this.requestService.clearAdvertIdLocalStorage();
     const firstCount = this.count;
-    await this.advertService.getForRequestCustomer(this.count).subscribe(async data => {
-      this.adverts = data;
-      this.dateConvert();
-      await this.changeFlagState(this.adverts.length, firstCount);
-    });
-    this.count += 10;
+    await this.advertService.getForRequestCustomer(this.count)
+      .then(
+        async (data) => {
+          this.adverts = data;
+          this.dateConvert();
+          await this.changeFlagState(this.adverts.length, firstCount);
+          this.count += 10;
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   public ngOnDestroy(): void {

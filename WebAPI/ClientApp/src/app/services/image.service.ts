@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
 
@@ -37,28 +37,16 @@ export class ImageService {
     return this.oldImageCount;
   }
 
-  public create(uploadImages: FormData): Observable<string> {
-    if(!this.tokenService.tokenVerify()) {
-      this.router.navigateByUrl("authorize");
-      return new Observable();
-    }
-    return this.http.post(`api/image/create`, uploadImages, { responseType: 'text' });
+  public async create(uploadImages: FormData): Promise<string> {
+    return await lastValueFrom(this.http.post(`api/image/create`, uploadImages, { responseType: 'text' }));
   }
 
-  public update(uploadImage: FormData, id: number): Observable<string> {
-    if(!this.tokenService.tokenVerify()) {
-      this.router.navigateByUrl("authorize");
-      return new Observable();
-    }
-    return this.http.put(`api/image/update/${id}`, uploadImage, { responseType: 'text' });
+  public async update(uploadImage: FormData, id: number): Promise<string> {
+    return await lastValueFrom(this.http.put(`api/image/update/${id}`, uploadImage, { responseType: 'text' }));
   }
 
-  public remove(imagesId: number[]): Observable<string> {
-    if(!this.tokenService.tokenVerify()) {
-      this.router.navigateByUrl("authorize");
-      return new Observable();
-    }
-    return this.http.post(`api/image/remove`, imagesId, { responseType: 'text' });
+  public async remove(imagesId: number[]): Promise<string> {
+    return await lastValueFrom(this.http.post(`api/image/remove`, imagesId, { responseType: 'text' }));
   }
 
 }

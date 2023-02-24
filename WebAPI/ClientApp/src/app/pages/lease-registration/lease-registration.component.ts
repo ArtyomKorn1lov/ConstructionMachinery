@@ -5,7 +5,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { RequestService } from 'src/app/services/request.service';
 import { AvailabilityRequestModelCreate } from 'src/app/models/AvailabilityRequestModelCreate';
 import { AvailableTimeModelForCreateRequest } from 'src/app/models/AvailableTimeModelForCreateRequest';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { LeaseTimeModel } from 'src/app/models/LeaseTimeModel';
 import { TokenService } from 'src/app/services/token.service';
@@ -22,10 +22,25 @@ export class LeaseRegistrationComponent implements OnInit {
   public currentTimeIndex: number | undefined;
   public currentTimeId: number | undefined;
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
-  private targerRoute: string = "/advert-info";
+  private listRoute: string = '/advert-list';
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, 
-    private requestService: RequestService, private router: Router, private tokenService: TokenService) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService,
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public back(): void {
+    let backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      backUrl = this.listRoute;
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
 
   public async createRequest(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
@@ -48,7 +63,7 @@ export class LeaseRegistrationComponent implements OnInit {
         (data) => {
           console.log(data);
           alert(data);
-          this.router.navigateByUrl(this.targerRoute);
+          this.router.navigateByUrl(this.getBackUrl());
           return;
         }
       )
@@ -124,16 +139,25 @@ export class LeaseRegistrationComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    await this.requestService.getAvailableTimesByAdvertId(this.advertService.getIdFromLocalStorage())
-    .then(
-      (data) => {
-        this.leaseTimes = this.convertToNormalDate(data);
-      }
-    )
-    .catch(
-      (error) => {
-        console.log(error);
-      }
-    );
+    const backUrl = this.getBackUrl();
+    if (backUrl == undefined) {
+      this.router.navigateByUrl(this.listRoute);
+      return;
+    }
+    let id = 0;
+    this.route.queryParams.subscribe(params => {
+      id = params["id"];
+    });
+    await this.requestService.getAvailableTimesByAdvertId(id)
+      .then(
+        (data) => {
+          this.leaseTimes = this.convertToNormalDate(data);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }

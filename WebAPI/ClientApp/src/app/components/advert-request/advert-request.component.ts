@@ -22,8 +22,9 @@ export class AdvertRequestComponent implements OnInit {
     private router: Router, private tokenService: TokenService) { }
 
   public navigateToRequest(id: number): void {
-    this.requestService.setAdvertIdInLocalStorage(id);
-    this.router.navigateByUrl(this.requestListRoute);
+    this.router.navigate([this.requestListRoute], {
+      queryParams: { id: id }
+    });
   }
 
   public dateConvert(): void {
@@ -72,7 +73,6 @@ export class AdvertRequestComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
-    this.requestService.clearAdvertIdLocalStorage();
     const firstCount = this.count;
     const tokenResult = await this.tokenService.tokenVerify();
       if (!tokenResult)

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AdvertModelList } from '../models/AdvertModelList';
 import { AdvertModelInfo } from '../models/AdvertModelInfo';
 import { AdvertModelCreate } from '../models/AdvertModelCreate';
 import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
 import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
-import { TokenService } from './token.service';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -15,56 +14,8 @@ import { Router } from '@angular/router';
 export class AdvertService {
   private advertCreate: AdvertModelCreate | undefined;
   private advertUpdate: AdvertModelUpdate | undefined;
-  private queryParam: string = "";
 
-  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
-
-  public clearLocalStorage(): void {
-    localStorage.removeItem('advertId');
-    localStorage.removeItem('page');
-    localStorage.removeItem('filter');
-  }
-
-  public setIdInLocalStorage(id: number): void {
-    localStorage.setItem('advertId', id.toString());
-  }
-
-  public setPageInLocalStorage(page: string): void {
-    localStorage.setItem('page', page);
-  }
-
-  public setFilterInLocalStorage(filter: string): void {
-    localStorage.setItem('filter', filter);
-  }
-
-  public getIdFromLocalStorage(): number {
-    let id = localStorage.getItem('advertId');
-    if (id == null)
-      return 0;
-    return parseInt(id);
-  }
-
-  public getPageFromLocalStorage(): string {
-    let page = localStorage.getItem('page');
-    if (page == null)
-      return '';
-    return page;
-  }
-
-  public getFilterFromLocalStorage(): string {
-    let page = localStorage.getItem('filter');
-    if (page == null)
-      return '';
-    return page;
-  }
-
-  public setQueryParametr(param: string): void {
-    this.queryParam = param;
-  }
-
-  public getQueryParametr(): string {
-    return this.queryParam;
-  }
+  constructor(private http: HttpClient, private router: Router) { }
 
   public setAdvertCreateInService(advert: AdvertModelCreate): void {
     this.advertCreate = advert;

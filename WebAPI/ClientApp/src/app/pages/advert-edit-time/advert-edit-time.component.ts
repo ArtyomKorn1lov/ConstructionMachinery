@@ -4,7 +4,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { ImageService } from 'src/app/services/image.service';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { TokenService } from 'src/app/services/token.service';
 
@@ -23,11 +23,34 @@ export class AdvertEditTimeComponent implements OnInit {
   public startTime: string = "";
   public endTime: string = "";
   public images: File[] = [];
+  private myRoute: string = '/my-adverts';
   private updateRoute = "/advert-edit";
-  private infoRoute = "/advert-info";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, 
-    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService,
+    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public back(): void {
+    let backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      backUrl = this.myRoute;
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
+
+  private getInfoUrl(): string {
+    let infoUrl = "";
+    this.route.queryParams.subscribe(params => {
+      infoUrl = params["infoUrl"];
+    });
+    return infoUrl;
+  }
 
   public prepareArrayId(images: ImageModel[]): number[] {
     let numberArray = [];
@@ -138,7 +161,7 @@ export class AdvertEditTimeComponent implements OnInit {
         (data) => {
           console.log(data);
           alert(data);
-          this.router.navigateByUrl(this.infoRoute);
+          this.router.navigateByUrl(this.getInfoUrl());
           return;
         }
       )
@@ -160,10 +183,16 @@ export class AdvertEditTimeComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      this.router.navigateByUrl(this.myRoute);
+    const infoUrl = this.getInfoUrl();
+    if (infoUrl == undefined)
+      this.router.navigateByUrl(this.myRoute);
     this.advert = this.advertService.getAdvertUpdateFromService();
     this.images = this.imageService.getImagesFromService();
     if (this.advert.name == "")
-      this.router.navigateByUrl(this.updateRoute);
+      this.router.navigateByUrl(this.getBackUrl());
     this.range = this.formBuilder.group({
       start: this.advert.startDate,
       end: this.advert.endDate

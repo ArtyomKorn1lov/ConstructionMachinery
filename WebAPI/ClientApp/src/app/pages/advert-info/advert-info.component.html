@@ -62,11 +62,11 @@
                 </div>
             </div>
             <div class="vector" *ngIf="accountService.userFlag"></div>
-            <button [routerLink]="['/lease-registration']" *ngIf="page == 'list' && accountService.userFlag"
+            <button (click)="leaseRegistration()" *ngIf="page == 'list' && accountService.userFlag"
                 class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button [routerLink]="['/review-create']" *ngIf="page == 'list' && accountService.userFlag"
+            <button (click)="addReview()" *ngIf="page == 'list' && accountService.userFlag"
                 class="edit-button">
                 <h5 class="medium-header">Оставить отзыв</h5>
             </button>

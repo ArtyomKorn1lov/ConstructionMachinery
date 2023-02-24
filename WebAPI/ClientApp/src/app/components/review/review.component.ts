@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewModel } from 'src/app/models/ReviewModel';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
@@ -16,16 +16,19 @@ export class ReviewComponent implements OnInit {
   public count: number = 4;
   public scrollFlag = true;
   public reviews: ReviewModel[] = [];
-  private targetRoute: string = "/review-edit";
+  private reviewRoute: string = "/review-edit";
   private userRoute: string = "/user-profile";
 
   constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router,
-    private advertService: AdvertService, private accountService: AccountService) { }
+    private advertService: AdvertService, private route: ActivatedRoute) { }
 
   public viewProfile(id: number) {
-    this.accountService.setUserIdInLocalStorage(id);
-    this.accountService.setPageInLocalStorage(this.router.url);
-    this.router.navigateByUrl(this.userRoute);
+    this.router.navigate([this.userRoute], {
+      queryParams: {
+        id: id,
+        backUrl: this.router.url
+      }
+    });
   }
 
   public convertToNormalDate(): void {
@@ -35,8 +38,12 @@ export class ReviewComponent implements OnInit {
   }
 
   public update(id: number): void {
-    this.reviewService.setIdInLocalStorage(id);
-    this.router.navigateByUrl(this.targetRoute);
+    this.router.navigate([this.reviewRoute], {
+      queryParams: {
+        id: id,
+        backUrl: this.router.url
+      }
+    });
   }
 
   public async changeFlagState(length: number, firstCount: number): Promise<void> {
@@ -56,7 +63,11 @@ export class ReviewComponent implements OnInit {
   public scrollEvent = async (event: any): Promise<void> => {
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.reviews.length;
-      await this.reviewService.getByAdvertId(this.advertService.getIdFromLocalStorage(), this.count)
+      let id = 0;
+      this.route.params.subscribe(params => {
+        id = params["id"];
+      });
+      await this.reviewService.getByAdvertId(id, this.count)
         .then(
           (data) => {
             this.reviews = data;
@@ -74,8 +85,12 @@ export class ReviewComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
+    let id = 0;
+    this.route.params.subscribe(params => {
+      id = params["id"];
+    });
     const firstCount = this.count;
-    await this.reviewService.getByAdvertId(this.advertService.getIdFromLocalStorage(), this.count)
+    await this.reviewService.getByAdvertId(id, this.count)
       .then(
         async (data) => {
           this.reviews = data;

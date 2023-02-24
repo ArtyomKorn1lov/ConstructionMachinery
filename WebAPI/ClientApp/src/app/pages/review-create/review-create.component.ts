@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { AccountService } from 'src/app/services/account.service';
@@ -31,9 +31,37 @@ export class ReviewCreateComponent implements OnInit {
   };
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
+  private advertListRoute: string = "/advert-list";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, 
-    private accountService: AccountService, private tokenService: TokenService) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService,
+    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public back(): void {
+    let backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      backUrl = this.advertListRoute;
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getIdByQueryParams(): number {
+    let id = 0;
+    this.route.queryParams.subscribe(params => {
+      id = params["id"];
+    });
+    if (id == undefined) {
+      this.router.navigateByUrl("/");
+      return 0;
+    }
+    return id;
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
 
   public async create(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
@@ -44,24 +72,24 @@ export class ReviewCreateComponent implements OnInit {
       this.rating = 0;
       return;
     }
-    const review = new ReviewModelCreate(this.description, new Date(), this.rating, this.advertService.getIdFromLocalStorage(), 0);
+    const review = new ReviewModelCreate(this.description, new Date(), this.rating, this.getIdByQueryParams(), 0);
     await this.reviewService.create(review)
-    .then(
-      (data) => {
-        alert(data);
-        console.log(data);
-        this.router.navigateByUrl(this.targetRoute);
-        return;
-      }
-    )
-    .catch(
-      (error) => {
-        alert("Ошибка добавления отзыва");
-        console.log(error);
-        this.description = "";
-        return;
-      }
-    );
+      .then(
+        (data) => {
+          alert(data);
+          console.log(data);
+          this.router.navigateByUrl(this.getBackUrl());
+          return;
+        }
+      )
+      .catch(
+        (error) => {
+          alert("Ошибка добавления отзыва");
+          console.log(error);
+          this.description = "";
+          return;
+        }
+      );
   }
 
   public setState(index: number): void {
@@ -162,6 +190,11 @@ export class ReviewCreateComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const backUrl = this.getBackUrl();
+    if(backUrl == undefined) {
+      this.router.navigateByUrl(this.advertListRoute);
+      return;
+    }
   }
 
 }

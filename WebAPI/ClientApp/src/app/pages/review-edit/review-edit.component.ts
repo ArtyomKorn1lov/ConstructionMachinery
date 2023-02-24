@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { ReviewModelUpdate } from 'src/app/models/ReviewModelUpdate';
@@ -32,9 +32,37 @@ export class ReviewEditComponent implements OnInit {
   private review: ReviewModelUpdate = new ReviewModelUpdate(0, "", new Date(), 0, 0, 0);
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
+  private advertListRoute: string = "/advert-list";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, 
-    private accountService: AccountService, private tokenService: TokenService) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService,
+    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public back(): void {
+    let backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      backUrl = this.advertListRoute;
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
+
+  private getIdByQueryParams(): number {
+    let id = 0;
+    this.route.queryParams.subscribe(params => {
+      id = params["id"];
+    });
+    if (id == undefined) {
+      this.router.navigateByUrl("/");
+      return 0;
+    }
+    return id;
+  }
 
   public async update(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
@@ -53,7 +81,7 @@ export class ReviewEditComponent implements OnInit {
         (data) => {
           alert(data);
           console.log(data);
-          this.router.navigateByUrl(this.targetRoute);
+          this.router.navigateByUrl(this.getBackUrl());
           return;
         }
       )
@@ -75,7 +103,7 @@ export class ReviewEditComponent implements OnInit {
         (data) => {
           alert(data);
           console.log(data);
-          this.router.navigateByUrl(this.targetRoute);
+          this.router.navigateByUrl(this.getBackUrl());
           return;
         }
       )
@@ -189,7 +217,13 @@ export class ReviewEditComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    await this.reviewService.getById(this.reviewService.getIdFromLocalStorage())
+    const backUrl = this.getBackUrl();
+    if (backUrl == undefined) {
+      this.router.navigateByUrl("/");
+      return;
+    }
+    const id = this.getIdByQueryParams();
+    await this.reviewService.getById(id)
       .then(
         (data) => {
           this.review.id = data.id;

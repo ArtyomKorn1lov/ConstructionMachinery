@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { RegisterModel } from '../models/RegisterModel';
 import { LoginModel } from '../models/LoginModel';
 import { AuthoriseModel } from '../models/AuthoriseModel';
@@ -8,7 +8,6 @@ import { UserModel } from '../models/UserModel';
 import { UserUpdateModel } from '../models/UserUpdateModel';
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
 import { TokenService } from './token.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,34 +17,7 @@ export class AccountService {
   public userFlag: boolean = false;
   public authorize: AuthoriseModel = new AuthoriseModel("", "", false);
 
-  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
-
-  public clearLocalStorage(): void {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userPage');
-  }
-
-  public setUserIdInLocalStorage(id: number): void {
-    localStorage.setItem('userId', id.toString());
-  }
-
-  public setPageInLocalStorage(page: string): void {
-    localStorage.setItem('userPage', page);
-  }
-
-  public getUserIdFromLocalStorage(): number {
-    let id = localStorage.getItem('userId');
-    if (id == null)
-      return 0;
-    return parseInt(id);
-  }
-
-  public getPageFromLocalStorage(): string {
-    let page = localStorage.getItem('userPage');
-    if (page == null)
-      return '';
-    return page;
-  }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   public async getAuthoriseModel(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();

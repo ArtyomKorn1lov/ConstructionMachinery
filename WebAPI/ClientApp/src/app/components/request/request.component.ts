@@ -17,18 +17,32 @@ export class RequestComponent implements OnInit {
   public requests: AvailabilityRequestModel[] = [];
   public count: number = 10;
   public scrollFlag = true;
-  private confirmInfoRoute = "confirm-list/info";
-  private requestInfoRoute = "advert-request/my-requests/info";
+  private confirmInfoRoute = "confirm-list";
+  private requestInfoRoute = "advert-request/my-requests";
+  private advertRequestRoute = "advert-request";
 
   constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router,
     private route: ActivatedRoute, private tokenService: TokenService) { }
 
+  private getIdByQueryParams(): number {
+    let id = 0;
+    this.route.queryParams.subscribe(params => {
+      id = params["id"];
+    });
+    if (id == undefined) {
+      this.router.navigateByUrl(this.advertRequestRoute);
+      return 0;
+    }
+    return id;
+  }
+
   public navigateToInfo(id: number): void {
-    this.requestService.setIdInLocalStorage(id);
     if (this.page == 'in')
-      this.router.navigateByUrl(this.requestInfoRoute);
+      this.router.navigate([this.requestInfoRoute, id], {
+        queryParams: { backUrl: this.router.url }
+      });
     if (this.page == 'out')
-      this.router.navigateByUrl(this.confirmInfoRoute);
+      this.router.navigate([this.confirmInfoRoute, id]);
   }
 
   public scrollEvent = async (event: any): Promise<void> => {
@@ -37,8 +51,8 @@ export class RequestComponent implements OnInit {
       this.router.navigate(["/authorize"]);
     if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
       const length = this.requests.length;
-      if (this.page == 'in')
-        await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count)
+      if (this.page == 'in') {
+        await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.count)
           .then(
             (data) => {
               this.requests = data;
@@ -52,6 +66,7 @@ export class RequestComponent implements OnInit {
               console.log(error);
             }
           );
+      }
       if (this.page == 'out')
         await this.requestService.getListForLandlord(this.count)
           .then(
@@ -96,10 +111,9 @@ export class RequestComponent implements OnInit {
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
     window.addEventListener('scroll', this.scrollEvent, true);
-    this.requestService.clearIdLocalStorage();
     const firstCount = this.count;
     if (this.page == 'in')
-      await this.requestService.getListForCustomer(this.requestService.getAdvertIdInLocalStorage(), this.count)
+      await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.count)
         .then(
           async (data) => {
             this.requests = data;

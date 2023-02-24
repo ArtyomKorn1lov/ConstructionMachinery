@@ -19,7 +19,7 @@ export class AdvertComponent implements OnInit {
   public advertList: AdvertModelList[] = [];
   public count: number = 10;
   public scrollFlag = true;
-  private targetRoute: string = "advert-info";
+  private targetRoute: string = "advert-list";
   private filter: string = "all";
 
   constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
@@ -33,19 +33,9 @@ export class AdvertComponent implements OnInit {
   }
 
   public getAdvertInfo(id: number): void {
-    this.advertService.setIdInLocalStorage(id);
-    if (this.page == undefined)
-      this.advertService.setPageInLocalStorage('list');
-    else
-      this.advertService.setPageInLocalStorage(this.page);
-    this.route.queryParams.subscribe(async params => {
-      const searchString = params['search'];
-      if (searchString != "")
-        this.advertService.setQueryParametr(searchString);
+    this.router.navigate([this.targetRoute, id], {
+      queryParams: { backUrl: this.router.url }
     });
-    this.advertService.setFilterInLocalStorage(this.filter);
-    this.router.navigateByUrl(this.targetRoute);
-    return;
   }
 
   public convertToNormalDate(): void {
@@ -406,9 +396,6 @@ export class AdvertComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     window.addEventListener('scroll', this.scrollEvent, true);
-    if (this.advertService.getFilterFromLocalStorage() != '')
-      this.filter = this.advertService.getFilterFromLocalStorage();
-    this.advertService.clearLocalStorage();
     this.advertService.setAdvertCreateInService(new AdvertModelCreate("", new Date(), "", "", "", 0, 0, new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);
     const firstCount = this.count;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AvailabilityRequestModel } from '../models/AvailabilityRequestModel';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
@@ -15,37 +15,7 @@ import { Router } from '@angular/router';
 })
 export class RequestService {
 
-  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
-
-  public clearIdLocalStorage(): void {
-    localStorage.removeItem('requestId');
-  }
-
-  public clearAdvertIdLocalStorage(): void {
-    localStorage.removeItem('advertRequestId');
-  }
-
-  public setIdInLocalStorage(id: number): void {
-    localStorage.setItem('requestId', id.toString());
-  }
-
-  public getIdFromLocalStorage(): number {
-    let id = localStorage.getItem('requestId');
-    if (id == null)
-      return 0;
-    return parseInt(id);
-  }
-
-  public setAdvertIdInLocalStorage(id: number): void {
-    localStorage.setItem('advertRequestId', id.toString());
-  }
-
-  public getAdvertIdInLocalStorage(): number {
-    let id = localStorage.getItem('advertRequestId');
-    if (id == null)
-      return 0;
-    return parseInt(id);
-  }
+  constructor(private http: HttpClient) { }
 
   public checkLenght(oldLength: number, newLength: number): boolean {
     if(oldLength >= newLength || oldLength == 0)

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { RequestService } from 'src/app/services/request.service';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -16,10 +16,39 @@ export class MyRequestInfoComponent implements OnInit {
 
   public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], []);
   public date: Date = new Date();
-  private targetRoute: string = "/advert-request/my-requests"
+  private advertRequestRoute = "advert-request";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, 
-    private requestService: RequestService, private router: Router, private tokenService: TokenService) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService,
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public back(): void {
+    const backUrl = this.getBackUrl();
+    if (backUrl == undefined) {
+      this.router.navigateByUrl(this.advertRequestRoute);
+      return;
+    }
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
+
+  private getIdByQueryParams(): number {
+    let id = 0;
+    this.route.params.subscribe(params => {
+      id = params["id"];
+    });
+    if (id == undefined) {
+      this.router.navigateByUrl(this.advertRequestRoute);
+      return 0;
+    }
+    return id;
+  }
 
   public async cancel(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
@@ -30,7 +59,7 @@ export class MyRequestInfoComponent implements OnInit {
         (data) => {
           console.log(data);
           alert(data);
-          this.router.navigateByUrl(this.targetRoute);
+          this.router.navigateByUrl(this.getBackUrl());
           return;
         }
       )
@@ -48,18 +77,24 @@ export class MyRequestInfoComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    await this.requestService.getForCustomer(this.requestService.getIdFromLocalStorage())
-    .then(
-      (data) => {
-        this.request = data;
-        this.date = new Date(this.request.availableTimeModels[0].date);
-      }
-    )
-    .catch(
-      (error) => {
-        console.log(error);
-      }
-    );
+    const backUrl = this.getBackUrl();
+    if (backUrl == undefined) {
+      this.router.navigateByUrl(this.advertRequestRoute);
+      return;
+    }
+    const id = this.getIdByQueryParams();
+    await this.requestService.getForCustomer(id)
+      .then(
+        (data) => {
+          this.request = data;
+          this.date = new Date(this.request.availableTimeModels[0].date);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
 }

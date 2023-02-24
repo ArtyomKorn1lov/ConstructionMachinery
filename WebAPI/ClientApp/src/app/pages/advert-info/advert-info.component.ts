@@ -4,7 +4,7 @@ import { AdvertModelInfo } from 'src/app/models/AdvertModelInfo';
 import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { AccountService } from 'src/app/services/account.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ImageService } from 'src/app/services/image.service';
@@ -26,34 +26,43 @@ export class AdvertInfoComponent implements OnInit {
   private listRoute: string = '/advert-list';
   private myRoute: string = '/my-adverts';
   private editRoute: string = '/advert-edit';
+  private leaseRoute: string = '/lease-registration';
+  private reviewCreateRoute: string = '/review-create';
 
-  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, 
-    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService) { }
+  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
+    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public leaseRegistration(): void {
+    this.router.navigate([this.leaseRoute], {
+      queryParams: { 
+        id: this.advert.id,
+        backUrl: this.router.url 
+      }
+    });
+  }
 
   public back(): void {
-    if (this.page == 'list') {
-      if (this.advertService.getQueryParametr() == "")
-        this.router.navigateByUrl(this.listRoute);
-      else
-        this.router.navigate([this.listRoute], {
-          queryParams: {
-            search: this.advertService.getQueryParametr()
-          }
-        });
-      return;
-    }
-    if (this.page == 'my') {
-      if (this.advertService.getQueryParametr() == "")
-        this.router.navigateByUrl(this.myRoute);
-      else
-        this.router.navigate([this.myRoute], {
-          queryParams: {
-            search: this.advertService.getQueryParametr()
-          }
-        });
-      return;
-    }
-    this.router.navigateByUrl('/');
+    let backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      backUrl = this.listRoute;
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
+
+  public addReview(): void {
+    this.router.navigate([this.reviewCreateRoute], {
+      queryParams: {
+        id: this.advert.id,
+        backUrl: this.router.url
+      }
+    });
   }
 
   public packageToDayModel(): void {
@@ -157,16 +166,35 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public edit(): void {
-    this.advertService.setIdInLocalStorage(this.advert.id);
-    this.router.navigateByUrl(this.editRoute);
+    this.router.navigate([this.editRoute], {
+      queryParams: {
+        id: this.advert.id,
+        backUrl: this.router.url
+      }
+    });
+  }
+
+  private verifyPreviosPage(backUrl: string): string {
+    if (backUrl == undefined) {
+      this.router.navigateByUrl(this.listRoute);
+      return "list";
+    }
+    if (backUrl.includes(this.myRoute))
+      return "my";
+    return "list";
   }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);
-    this.page = this.advertService.getPageFromLocalStorage();
-    await this.advertService.getById(this.advertService.getIdFromLocalStorage())
+    let backUrl = this.getBackUrl();
+    this.page = this.verifyPreviosPage(backUrl);
+    let id = 0;
+    this.route.params.subscribe(params => {
+      id = params["id"];
+    });
+    await this.advertService.getById(id)
       .then(
         (data) => {
           this.advert = data;

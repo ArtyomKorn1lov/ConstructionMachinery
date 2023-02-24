@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable } from 'rxjs';
-import { TokenService } from './token.service';
-import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +12,7 @@ export class ImageService {
   private filesBase64: string[] = [];
   private oldImageCount: number = 0;
 
-  constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) { }
+  constructor(private http: HttpClient) { }
 
   public setImagesInService(images: File[], bases64: string[]): void {
     this.imagesCreate = images;

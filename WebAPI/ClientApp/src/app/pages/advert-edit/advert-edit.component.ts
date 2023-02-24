@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { AccountService } from 'src/app/services/account.service';
@@ -20,10 +20,26 @@ export class AdvertEditComponent implements OnInit {
   public images: File[] = [];
   public filesBase64: string[] = [];
   public oldImageCount: number = 0;
+  private myRoute: string = '/my-adverts';
   private targetRoute: string = "/advert-edit/time";
 
-  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, 
-    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
+    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) { }
+
+  public back(): void {
+    let backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      backUrl = this.myRoute;
+    this.router.navigateByUrl(backUrl);
+  }
+
+  private getBackUrl(): string {
+    let backUrl = "";
+    this.route.queryParams.subscribe(params => {
+      backUrl = params["backUrl"];
+    });
+    return backUrl;
+  }
 
   public uploadImage(): void {
     document.getElementById("SelectImage")?.click();
@@ -100,7 +116,12 @@ export class AdvertEditComponent implements OnInit {
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
     this.imageService.setImagesInService(this.images, this.filesBase64);
     this.imageService.setImageCountInService(this.oldImageCount);
-    this.router.navigateByUrl(this.targetRoute);
+    this.router.navigate([this.targetRoute], {
+      queryParams: {
+        backUrl: this.router.url,
+        infoUrl: this.getBackUrl()
+      }
+    });
     return;
   }
 
@@ -114,10 +135,17 @@ export class AdvertEditComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
+    const backUrl = this.getBackUrl();
+    if (backUrl == undefined)
+      this.router.navigateByUrl(this.myRoute);
     let advert = this.advertService.getAdvertUpdateFromService();
     if (advert.name == "") {
       this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
-      await this.advertService.getForUpdate(this.advertService.getIdFromLocalStorage())
+      let id = 0;
+      this.route.queryParams.subscribe(params => {
+        id = params["id"];
+      });
+      await this.advertService.getForUpdate(id)
         .then(
           (data) => {
             this.advertUpdate = data;

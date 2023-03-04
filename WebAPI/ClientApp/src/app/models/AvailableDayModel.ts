@@ -1,11 +1,11 @@
 import { AvailableTimeModel } from "./AvailableTimeModel";
 
 export class AvailableDayModel {
-    day: Date;
+    date: Date;
     times: AvailableTimeModel[];
 
-    public constructor(_day: Date, _times: AvailableTimeModel[]) {
-        this.day = _day;
+    public constructor(_date: Date, _times: AvailableTimeModel[]) {
+        this.date = _date;
         this.times = _times;
     }
 }

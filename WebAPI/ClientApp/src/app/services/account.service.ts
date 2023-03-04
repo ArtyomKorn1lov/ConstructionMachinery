@@ -19,11 +19,18 @@ export class AccountService {
 
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
+  private resetAuthParams(): void {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("refreshToken");
+    localStorage.clear();
+    this.userFlag = false;
+    this.authorize = new AuthoriseModel("", "", false);
+  }
+
   public async getAuthoriseModel(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult) {
-      this.authorize = new AuthoriseModel("", "", false);
-      this.userFlag = false;
+      this.resetAuthParams();
       return;
     }
     await this.isUserAuthorized()
@@ -34,15 +41,13 @@ export class AccountService {
             this.userFlag = true;
             return;
           }
-          this.authorize = new AuthoriseModel("", "", false);
-          this.userFlag = false;
+          this.resetAuthParams();
         }
       )
       .catch(
         (error) => {
           console.log(error);
-          this.authorize = new AuthoriseModel("", "", false);
-          this.userFlag = false;
+          this.resetAuthParams();
         }
       );
   }
@@ -65,11 +70,7 @@ export class AccountService {
       return false;
     }
     else {
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("refreshToken");
-      localStorage.clear();
-      this.userFlag = false;
-      this.authorize = new AuthoriseModel("", "", false);
+      this.resetAuthParams();
       return true;
     }
   }

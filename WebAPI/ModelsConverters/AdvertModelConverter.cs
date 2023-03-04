@@ -60,6 +60,43 @@ namespace WebAPI.ModelsConverters
             };
         }
 
+        public static AdvertModelDetail AdvertCommandDetailConvertAdvertModelDetail(AdvertCommandDetail command)
+        {
+            if (command == null)
+                return null;
+            return new AdvertModelDetail
+            {
+                Id = command.Id,
+                Name = command.Name,
+                DateIssue = command.DateIssue,
+                PTS = command.PTS,
+                VIN = command.VIN,
+                Description = command.Description,
+                PublishDate = command.PublishDate,
+                EditDate = command.EditDate,
+                Price = command.Price,
+                UserName = command.UserName,
+                Images = command.Images.Select(image => new ImageModel
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
+                AvailableDays = command.AvailableDays.Select(availableDay => new AvailableDayModel
+                {
+                    Date = availableDay.Date,
+                    Times = availableDay.Times.Select(availableTime => new AvailableTimeModel
+                    {
+                        Id = availableTime.Id,
+                        Date = availableTime.Date,
+                        AdvertId = availableTime.AdvertId,
+                        AvailabilityStateId = availableTime.AvailabilityStateId
+                    }).ToList()
+                }).ToList()
+            };
+        }
+
         public static AdvertCommandCreate AdvertModelCreateConvertAdvertCommandCreate(AdvertModelCreate model)
         {
             if (model == null)

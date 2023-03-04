@@ -113,6 +113,85 @@ namespace Application.Services
             return command;
         }
 
+        private List<AvailiableDayCommand> PackageToDayCommands(List<AvailableTimeCommand> availableTimeCommands)
+        {
+            List<AvailiableDayCommand> availiableDayCommands = new List<AvailiableDayCommand>();
+            if (availableTimeCommands.Count == 0)
+                return availiableDayCommands;
+            AvailiableDayCommand bufferCommand = new AvailiableDayCommand();
+            for (int count_j = 0; count_j < availableTimeCommands.Count; count_j++)
+            {
+                if (availableTimeCommands[count_j] != null)
+                {
+                    bufferCommand = new AvailiableDayCommand
+                    {
+                        Date = availableTimeCommands[count_j].Date,
+                        Times = new List<AvailableTimeCommand>()
+                    };
+                    for (int count_i = 0; count_i < availableTimeCommands.Count; count_i++)
+                    {
+                        if (availableTimeCommands[count_i] != null 
+                            && bufferCommand.Date.Date == availableTimeCommands[count_i].Date.Date)
+                        {
+                            bufferCommand.Times.Add(availableTimeCommands[count_i]);
+                            availableTimeCommands[count_i] = null;
+                        }
+                    }
+                    availiableDayCommands.Add(bufferCommand);
+                    bufferCommand = new AvailiableDayCommand();
+                }
+            }
+            return availiableDayCommands;
+        }
+
+        private List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands)
+        {
+            if (availiableDayCommands.Count == 0)
+                return availiableDayCommands;
+            AvailiableDayCommand bufferCommand = new AvailiableDayCommand();
+            int index = 0;
+            while (index < availiableDayCommands.Count)
+            {
+                for (int count = 0; count < availiableDayCommands.Count - index - 1; count++)
+                {
+                    if (availiableDayCommands[count].Date.Date > availiableDayCommands[count + 1].Date.Date)
+                    {
+                        bufferCommand = availiableDayCommands[count];
+                        availiableDayCommands[count] = availiableDayCommands[count + 1];
+                        availiableDayCommands[count + 1] = bufferCommand;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            while (index < availiableDayCommands.Count)
+            {
+                availiableDayCommands[index].Times = SortTimeCommands(availiableDayCommands[index].Times);
+                index++;
+            }
+            return availiableDayCommands;
+        }
+
+        private List<AvailableTimeCommand> SortTimeCommands(List<AvailableTimeCommand> availableTimeCommands)
+        {
+            AvailableTimeCommand bufferCommand = new AvailableTimeCommand();
+            int index = 0;
+            while (index < availableTimeCommands.Count)
+            {
+                for (int count = 0; count < availableTimeCommands.Count - index - 1; count++)
+                {
+                    if (availableTimeCommands[count].Date.Hour > availableTimeCommands[count + 1].Date.Hour)
+                    {
+                        bufferCommand = availableTimeCommands[count];
+                        availableTimeCommands[count] = availableTimeCommands[count + 1];
+                        availableTimeCommands[count + 1] = bufferCommand;
+                    }
+                }
+                index++;
+            }
+            return availableTimeCommands;
+        }
+
         public async Task<List<AvailableTime>> RemoveOldRequests(List<AvailableTime> newAvilableTime, List<AvailableTime> oldAvailableTime)
         {
             for(int count_new_time = 0; count_new_time < newAvilableTime.Count; count_new_time++)
@@ -195,6 +274,25 @@ namespace Application.Services
                 User user = await _accountRepository.GetById(advert.UserId);
                 AdvertCommandInfo advertCommandInfo = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandInfo(advert, user.Name);
                 return advertCommandInfo;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<AdvertCommandDetail> GetDetailAdvert(int id)
+        {
+            try
+            {
+                Advert advert = await _advertRepository.GetById(id);
+                User user = await _accountRepository.GetById(advert.UserId);
+                List<AvailiableDayCommand> availiableDayCommands = PackageToDayCommands(
+                    AdvertCommandConverter.AvailableTimeEntityConvertToCommand(advert.AvailableTimes));
+                availiableDayCommands = SortDateCommmands(availiableDayCommands);
+                AdvertCommandDetail advertCommandDetail = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandDetail(
+                    advert, user.Name, availiableDayCommands);
+                return advertCommandDetail;
             }
             catch
             {

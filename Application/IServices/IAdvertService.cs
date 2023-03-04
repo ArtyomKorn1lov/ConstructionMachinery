@@ -12,6 +12,7 @@ namespace Application.IServices
         Task<List<AdvertCommandList>> GetAll(int count);
         Task<List<AdvertCommandList>> GetAllWithoutUserId(int id, int count);
         Task<AdvertCommandInfo> GetById(int id);
+        Task<AdvertCommandDetail> GetDetailAdvert(int id);
         Task<bool> Create(AdvertCommandCreate advert);
         Task<bool> Update(AdvertCommandUpdate advert);
         Task<bool> Remove(int id);

@@ -42,12 +42,12 @@
                 <h5 class="medium-header">Описание</h5>
                 <p class="primary-text -title">{{advert.description}}</p>
             </div>
-            <div *ngIf="advert.availableTimes.length != 0" class="vector"></div>
-            <div *ngIf="advert.availableTimes.length != 0" class="title-info">
+            <div *ngIf="advert.availableDays.length != 0" class="vector"></div>
+            <div *ngIf="advert.availableDays.length != 0" class="title-info">
                 <h5 class="medium-header -title">Доступное время</h5>
-                <div class="day-list" *ngFor="let day of days">
+                <div class="day-list" *ngFor="let day of advert.availableDays">
                     <h5 class="medium-header -title">
-                        {{datetimeService.convertDateToUTS(day.day.getDate())}}.{{datetimeService.convertDateToUTS(day.day.getMonth()+1)}}.{{day.day.getFullYear()}}
+                        {{datetimeService.convertDateToUTS(day.date.getDate())}}.{{datetimeService.convertDateToUTS(day.date.getMonth()+1)}}.{{day.date.getFullYear()}}
                     </h5>
                     <div class="time-list">
                         <div *ngFor="let time of day.times">

@@ -10,6 +10,7 @@ import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
+import { AdvertModelDetail } from 'src/app/models/AdvertModelDetail';
 
 @Component({
   selector: 'app-advert-info',
@@ -18,8 +19,7 @@ import { TokenService } from 'src/app/services/token.service';
 })
 export class AdvertInfoComponent implements OnInit {
 
-  public advert: AdvertModelInfo = new AdvertModelInfo(0, "", new Date(), "", "", "", new Date(), new Date(), 0, "", [], []);
-  public days: AvailableDayModel[] = [];
+  public advert: AdvertModelDetail = new AdvertModelDetail(0, "", new Date(), "", "", "", new Date(), new Date(), 0, "", [], []);
   public month: number = 0;
   public year: number = 0;
   public page: string = '';
@@ -65,78 +65,14 @@ export class AdvertInfoComponent implements OnInit {
     });
   }
 
-  public packageToDayModel(): void {
-    this.advert.publishDate = new Date(this.advert.publishDate);
-    this.advert.editDate = new Date(this.advert.editDate);
-    this.advert.dateIssue = new Date(this.advert.dateIssue);
-    if (this.advert.availableTimes == null)
-      return;
-    let day;
-    let buffer;
-    let sortTimes: AvailableTimeModel[];
-    for (let j = 0; j < this.advert.availableTimes.length; j++) {
-      buffer = new Date(this.advert.availableTimes[j].date);
-      if (!this.contain(this.days, buffer)) {
-        sortTimes = [];
-        for (let i = 0; i < this.advert.availableTimes.length; i++) {
-          day = new Date(this.advert.availableTimes[i].date);
-          if (buffer.getDate() == day.getDate())
-            sortTimes.push(this.advert.availableTimes[i]);
-        }
-        this.days.push(new AvailableDayModel(buffer, sortTimes));
+  public convertToNormalDate(days: AvailableDayModel[]): AvailableDayModel[] {
+    for (let count_day = 0; count_day < days.length; count_day++) {
+      days[count_day].date = new Date(days[count_day].date);
+      for (let count_hour = 0; count_hour < days[count_day].times.length; count_hour++) {
+        days[count_day].times[count_hour].date = new Date(days[count_day].times[count_hour].date);
       }
     }
-    if (buffer != null) {
-      this.month = buffer.getMonth();
-      this.year = buffer.getFullYear();
-    }
-    this.convertToNormalDate();
-    this.sortByDate();
-  }
-
-  public contain(list: AvailableDayModel[], elem: Date): Boolean {
-    let firstFormat = '';
-    let secondFormat = elem.getMonth() + '.' + elem.getDate() + '.' + elem.getFullYear();
-    let flag = false;
-    for (let count = 0; count < list.length; count++) {
-      firstFormat = list[count].day.getMonth() + '.' + list[count].day.getDate() + '.' + list[count].day.getFullYear();
-      if (firstFormat == secondFormat) {
-        flag = true;
-      }
-    }
-    return flag;
-  }
-
-  public convertToNormalDate(): void {
-    for (let count_day = 0; count_day < this.days.length; count_day++) {
-      for (let count_hour = 0; count_hour < this.days[count_day].times.length; count_hour++) {
-        this.days[count_day].times[count_hour].date = new Date(this.days[count_day].times[count_hour].date);
-      }
-      this.days[count_day].times = this.datetimeService.sortByHour(this.days[count_day].times);
-    }
-  }
-
-  public sortByDate(): void {
-    let date;
-    for (let i = 0; i < this.days.length; i++) {
-      for (let j = 0; j < this.days.length - i - 1; j++) {
-        if (this.days[j].day.getFullYear() > this.days[j + 1].day.getFullYear()) {
-          date = this.days[j];
-          this.days[j] = this.days[j + 1];
-          this.days[j + 1] = date;
-        }
-        else if (this.days[j].day.getMonth() > this.days[j + 1].day.getMonth()) {
-          date = this.days[j];
-          this.days[j] = this.days[j + 1];
-          this.days[j + 1] = date;
-        }
-        else if (this.days[j].day.getDate() > this.days[j + 1].day.getDate()) {
-          date = this.days[j];
-          this.days[j] = this.days[j + 1];
-          this.days[j + 1] = date;
-        }
-      }
-    }
+    return days;
   }
 
   public async remove(): Promise<void> {
@@ -194,11 +130,14 @@ export class AdvertInfoComponent implements OnInit {
     this.route.params.subscribe(params => {
       id = params["id"];
     });
-    await this.advertService.getById(id)
+    await this.advertService.getDetailAdvert(id)
       .then(
         (data) => {
           this.advert = data;
-          this.packageToDayModel();
+          this.advert.availableDays = this.convertToNormalDate(this.advert.availableDays);
+          this.advert.publishDate = new Date(this.advert.publishDate);
+          this.advert.editDate = new Date(this.advert.editDate);
+          this.advert.dateIssue = new Date(this.advert.dateIssue);
         }
       )
       .catch(

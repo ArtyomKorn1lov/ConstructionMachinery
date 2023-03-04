@@ -7,6 +7,7 @@ import { AdvertModelCreate } from '../models/AdvertModelCreate';
 import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
 import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
 import { Router } from '@angular/router';
+import { AdvertModelDetail } from '../models/AdvertModelDetail';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,10 @@ export class AdvertService {
 
   public async getById(id: number): Promise<AdvertModelInfo> {
     return await lastValueFrom(this.http.get<AdvertModelInfo>(`api/advert/by-id/${id}`));
+  }
+
+  public async getDetailAdvert(id: number): Promise<AdvertModelDetail> {
+    return await lastValueFrom(this.http.get<AdvertModelDetail>(`api/advert/detail/${id}`));
   }
 
   public async createAdvert(advert: AdvertModelCreate): Promise<string> {

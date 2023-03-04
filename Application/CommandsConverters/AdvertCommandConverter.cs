@@ -82,6 +82,48 @@ namespace Application.CommandsConverters
             };
         }
 
+        public static AdvertCommandDetail AdvertEntityConvertToAdvertCommandDetail(Advert advert, string name, List<AvailiableDayCommand> availiableDayCommands)
+        {
+            if (advert == null)
+                return null;
+            return new AdvertCommandDetail
+            {
+                Id = advert.Id,
+                Name = advert.Name,
+                DateIssue = advert.DateIssue,
+                PTS = advert.PTS,
+                VIN = advert.VIN,
+                Description = advert.Description,
+                PublishDate = advert.PublishDate,
+                EditDate = advert.EditDate,
+                Price = advert.Price,
+                UserName = name,
+                Images = advert.Images.Select(image => new ImageCommand
+                {
+                    Id = image.Id,
+                    Path = image.Path,
+                    RelativePath = image.RelativePath,
+                    AdvertId = image.AdvertId
+                }).ToList(),
+                AvailableDays = availiableDayCommands
+            };
+        }
+
+        public static List<AvailableTimeCommand> AvailableTimeEntityConvertToCommand(List<AvailableTime> availableTimes)
+        {
+            if (availableTimes == null)
+                return null;
+            List<AvailableTimeCommand> timeCommands = new List<AvailableTimeCommand>();
+            timeCommands = availableTimes.Select(time => new AvailableTimeCommand
+            {
+                Id = time.Id,
+                Date = time.Date,
+                AdvertId = time.AdvertId,
+                AvailabilityStateId = time.AvailabilityStateId
+            }).ToList();
+            return timeCommands;
+        }
+
         public static AdvertCommandUpdate AdvertEntityConvertToAdvertCommandUpdate(Advert advert)
         {
             if (advert == null)

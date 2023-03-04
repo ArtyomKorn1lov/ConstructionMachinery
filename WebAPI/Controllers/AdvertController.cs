@@ -62,6 +62,15 @@ namespace WebAPI.Controllers
             return advert;
         }
 
+        [HttpGet("detail/{id}")]
+        public async Task<AdvertModelDetail> GetDetailAdvert(int id)
+        {
+            AdvertModelDetail advert = AdvertModelConverter.AdvertCommandDetailConvertAdvertModelDetail(await _advertService.GetDetailAdvert(id));
+            if (advert == null)
+                return null;
+            return advert;
+        }
+
         [HttpGet("by-name/{name}/{count}")]
         public async Task<List<AdvertModelList>> GetByName(string name, int count)
         {

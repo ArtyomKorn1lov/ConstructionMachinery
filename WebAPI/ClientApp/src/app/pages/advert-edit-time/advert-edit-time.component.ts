@@ -20,8 +20,14 @@ export class AdvertEditTimeComponent implements OnInit {
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
+  public invalidRange: boolean = false;
+  public messageRange: string | undefined;
   public startTime: string = "";
+  public invalidStartTime: boolean = false;
+  public messageStartTime: string | undefined;
   public endTime: string = "";
+  public invalidEndTime: boolean = false;
+  public messageEndTime: string | undefined;
   public images: File[] = [];
   private myRoute: string = '/my-adverts';
   private updateRoute = "/advert-edit";
@@ -61,54 +67,120 @@ export class AdvertEditTimeComponent implements OnInit {
     return numberArray;
   }
 
-  public async update(): Promise<void> {
-    const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
-      this.router.navigate(["/authorize"]);
-    if (this.range.value.start == null || this.range.value.start == undefined) {
-      alert("Выберите диапазон чисел");
-      return;
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateForm(): boolean {
+    let valid = true;
+    let toScroll = true;
+    if (this.range.controls.start.errors != null || this.range.controls.end.errors != null) {
+      document.getElementById("datePicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+      toScroll = false;
+      valid = false;
     }
-    if (this.range.value.end == null || this.range.value.end == undefined) {
-      alert("Выберете диапазон чисел");
-      return;
+    if (this.range.value.start == null || this.range.value.end == null) {
+      this.messageRange = "Выберете дни аренды";
+      this.invalidRange = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("datePicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.startTime == null || this.startTime == undefined) {
-      alert("Выберете диапазон времени");
-      return;
+      this.messageStartTime = "Выберете диапазон времени";
+      this.invalidStartTime = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("startPicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.endTime == null || this.endTime == undefined) {
-      alert("Выберете диапазон времени");
-      return;
+      this.messageEndTime = "Выберете диапазон времени";
+      this.invalidEndTime = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("endPicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
-    if (this.images == null || this.images == undefined) {
-      this.images = [];
-    }
-    let startHour = parseInt(this.startTime);
-    let endHour = parseInt(this.endTime);
-    if (startHour > endHour) {
-      alert("Неверный диапазон времени");
-      return;
-    }
-    if (this.advert == null || this.advert == undefined) {
-      alert("Ошибка формирования объявления, поля с предыдущей страницы равны нулю");
-      return;
-    }
+    return valid;
+  }
+
+  private dateRangeValid(): boolean {
+    if (this.range.value.start == null || this.range.value.end == null)
+      return false;
+    if (this.advert == null || this.advert == undefined)
+      return false;
+    let valid = true;
+    let toScroll = true;
     this.advert.startDate = new Date(this.range.value.start);
     this.advert.endDate = new Date(this.range.value.end);
     const oneDay = 1000 * 60 * 60 * 24;
     const diffInTime = this.advert.endDate.getTime() - this.advert.startDate.getTime();
     const diffInDays = Math.round(diffInTime / oneDay);
     if (diffInDays <= 0) {
-      alert("Неверный диапазон дат");
-      return;
+      this.messageRange = "Неверный диапазон дат";
+      this.invalidRange = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("datePicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (diffInDays > 14) {
-      alert("Слишком большой диапазон занимаемых дней");
-      return;
+      this.messageRange = "Слишком большой диапазон занимаемых дней";
+      this.invalidRange = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("datePicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
-    this.advert.startTime = startHour;
-    this.advert.endTime = endHour;
+    return valid;
+  }
+
+  private timeRangeValid(): boolean {
+    if (this.advert == null || this.advert == undefined)
+      return false;
+    if (this.startTime == null || this.endTime == null)
+      return false;
+    let valid = true;
+    let toScroll = true;
+    let startHour = parseInt(this.startTime);
+    let endHour = parseInt(this.endTime);
+    if (startHour > endHour) {
+      this.messageStartTime = "Неверный диапазон времени";
+      this.invalidStartTime = true;
+      this.messageEndTime = "Неверный диапазон времени";
+      this.invalidEndTime = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("endPicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    else {
+      this.advert.startTime = startHour;
+      this.advert.endTime = endHour;
+    }
+    return valid;
+  }
+
+  public async update(): Promise<void> {
+    const tokenResult = await this.tokenService.tokenVerify();
+    if (!tokenResult)
+      this.router.navigate(["/authorize"]);
+    if (!this.validateForm())
+      return;
+    if (this.advert == null || this.advert == undefined)
+      return;
+    if (!this.dateRangeValid())
+      return;
+    if (!this.timeRangeValid())
+      return;
     let numberArray: number[] = []
     if (!this.imageService.oldImageFlag)
       numberArray = this.prepareArrayId(this.advert.images);

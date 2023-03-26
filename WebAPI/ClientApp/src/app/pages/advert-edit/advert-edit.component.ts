@@ -20,6 +20,18 @@ export class AdvertEditComponent implements OnInit {
   public images: File[] = [];
   public filesBase64: string[] = [];
   public oldImageCount: number = 0;
+  public invalidName: boolean = false;
+  public messageName: string | undefined;
+  public invalidDateIssure: boolean = false;
+  public messageDateIssure: string | undefined;
+  public invalidPTS: boolean = false;
+  public messagePTS: string | undefined;
+  public invalidVIN: boolean = false;
+  public messageVIN: string | undefined;
+  public invalidPice: boolean = false;
+  public messagePice: string | undefined;
+  public invalidImage: boolean = false;
+  public messageImage: string | undefined;
   private myRoute: string = '/my-adverts';
   private targetRoute: string = "/advert-edit/time";
 
@@ -56,6 +68,18 @@ export class AdvertEditComponent implements OnInit {
     }
   }
 
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  public numberOnly(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   public removeFromDownloadImages(image: ImageModel): void {
     let index = this.advertUpdate.images.indexOf(image);
     if (index != -1) {
@@ -72,43 +96,79 @@ export class AdvertEditComponent implements OnInit {
     }
   }
 
+  private validateForm(): boolean {
+    let valid = true;
+    let toScroll = true;
+    if (this.advertUpdate.name == undefined || this.advertUpdate.name.trim() == '') {
+      this.messageName = "Введите название объявления";
+      this.invalidName = true;
+      this.advertUpdate.name = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("name")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.advertUpdate.price == undefined || this.advertUpdate.price == 0) {
+      this.messagePice = "Введите стоимость часа работы";
+      this.invalidPice = true;
+      this.advertUpdate.price = 0;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("price")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.dateIssure == undefined || this.dateIssure.trim() == '') {
+      this.messageDateIssure = "Введите год выпуска";
+      this.invalidDateIssure = true;
+      this.dateIssure = undefined;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("dateIssure")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.advertUpdate.pts == undefined || this.advertUpdate.pts.trim() == '') {
+      this.messagePTS = "Введите ПТС или ПСМ";
+      this.invalidPTS = true;
+      this.advertUpdate.pts = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("pts")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.advertUpdate.vin == undefined || this.advertUpdate.vin.trim() == '') {
+      this.messageVIN = "Введите VIN, номер кузова или SN";
+      this.invalidVIN = true;
+      this.advertUpdate.vin = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("vin")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if ((this.images == null || this.images == undefined || this.images.length < 1)
+      && (this.advertUpdate.images == null || this.advertUpdate.images == undefined || this.advertUpdate.images.length < 1)) {
+      this.messageImage = "Не выбран файл";
+      this.invalidImage = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("images")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    return valid;
+  }
+
   public async crossingToAvailiableTime(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if (this.advertUpdate.name == undefined || this.advertUpdate.name.trim() == '') {
-      alert("Введите название объявления");
-      this.advertUpdate.name = '';
+    if (!this.validateForm())
       return;
-    }
-    if (this.advertUpdate.price == undefined || this.advertUpdate.price == 0) {
-      alert("Введите стоимость часа работы");
-      this.advertUpdate.price = 0;
-      return;
-    }
-    if (this.dateIssure == undefined || this.dateIssure.trim() == '') {
-      alert("Введите год выпуска");
-      this.dateIssure = "";
-      return;
-    }
-    if (this.advertUpdate.pts == undefined || this.advertUpdate.pts.trim() == '') {
-      alert("Введите ПТС или ПСМ");
-      this.advertUpdate.pts = '';
-      return;
-    }
-    if (this.advertUpdate.vin == undefined || this.advertUpdate.vin.trim() == '') {
-      alert("Введите VIN, номер кузова или SN");
-      this.advertUpdate.vin = '';
-      return;
-    }
-    if (this.images == null || this.images == undefined) {
-      this.images = [];
-    }
-    if (this.images != null || this.images != undefined) {
-      this.imageService.oldImageFlag = false;
-    }
-    if ((this.images == null || this.images == undefined) && (this.advertUpdate.images == null || this.advertUpdate.images == undefined)) {
-      alert("Не выбран файл");
+    if (this.dateIssure == undefined) {
       return;
     }
     const issure = new Date(this.dateIssure);

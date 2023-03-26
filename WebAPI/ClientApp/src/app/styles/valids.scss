@@ -26,3 +26,7 @@
     font-size: 12px;
     color: var(--color-invalid-text);
 }
+
+.-invalid {
+    border: 2px solid var(--color-invalid-text) !important;
+}

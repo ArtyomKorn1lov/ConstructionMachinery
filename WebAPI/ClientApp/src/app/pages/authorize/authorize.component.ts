@@ -12,22 +12,52 @@ import { LoginModel } from 'src/app/models/LoginModel';
 export class AuthorizeComponent implements OnInit {
 
   public email: string | undefined;
+  public invalidEmail: boolean = false;
+  public messageEmail: string | undefined;
   public password: string | undefined;
+  public invalidPassword: boolean = false;
+  public messagePassword: string | undefined;
   private targetRoute: string = "/";
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async login(): Promise<void> {
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateLogin(): boolean {
+    let valid = true;
+    let toScroll = true;
     if (this.email == undefined || this.email.trim() == '') {
-      alert("Введите email пользователя");
+      this.invalidEmail = true;
+      this.messageEmail = "Введите email пользователя";
       this.email = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("email")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.password == undefined || this.password.trim() == '') {
-      alert("Введите пароль");
+      this.invalidPassword = true;
+      this.messagePassword = "Введите пароль";
       this.password = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("password")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
+    return valid;
+  }
+
+  public async login(): Promise<void> {
+    if (!this.validateLogin())
+      return;
+    if (this.email == undefined)
+      return;
+    if (this.password == undefined)
+      return;
     var model = new LoginModel(this.email, this.password);
     await this.accountService.login(model)
       .then(

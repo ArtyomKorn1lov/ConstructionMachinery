@@ -29,6 +29,8 @@ export class ReviewCreateComponent implements OnInit {
     fourth: false,
     fifth: false
   };
+  public invalidStars: boolean = false;
+  public messageStars: string | undefined;
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
   private advertListRoute: string = "/advert-list";
@@ -63,15 +65,32 @@ export class ReviewCreateComponent implements OnInit {
     return backUrl;
   }
 
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateReview(): boolean {
+    let valid = true;
+    let toScroll = true;
+    if (this.rating <= 0 || this.rating > 5) {
+      this.messageStars = "Оцените данное объявление";
+      this.invalidStars = true;
+      this.rating = 0;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("star")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    return valid;
+  }
+
   public async create(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if (this.rating <= 0 || this.rating > 5) {
-      alert("Оцените данное объявление");
-      this.rating = 0;
+    if (!this.validateReview())
       return;
-    }
     const review = new ReviewModelCreate(this.description, new Date(), this.rating, this.getIdByQueryParams(), 0);
     await this.reviewService.create(review)
       .then(
@@ -191,7 +210,7 @@ export class ReviewCreateComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();
     const backUrl = this.getBackUrl();
-    if(backUrl == undefined) {
+    if (backUrl == undefined) {
       this.router.navigateByUrl(this.advertListRoute);
       return;
     }

@@ -30,6 +30,8 @@ export class ReviewEditComponent implements OnInit {
   };
   public description: string = "";
   private review: ReviewModelUpdate = new ReviewModelUpdate(0, "", new Date(), 0, 0, 0);
+  public invalidStars: boolean = false;
+  public messageStars: string | undefined;
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
   private advertListRoute: string = "/advert-list";
@@ -64,15 +66,32 @@ export class ReviewEditComponent implements OnInit {
     return id;
   }
 
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateReview(): boolean {
+    let valid = true;
+    let toScroll = true;
+    if (this.rating <= 0 || this.rating > 5) {
+      this.messageStars = "Оцените данное объявление";
+      this.invalidStars = true;
+      this.rating = 0;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("star")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    return valid;
+  }
+
   public async update(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if (this.rating <= 0 || this.rating > 5) {
-      alert("Оцените данное объявление");
-      this.rating = this.review.reviewStateId;
+    if(!this.validateReview())
       return;
-    }
     this.review.description = this.description;
     this.review.date = new Date();
     this.review.reviewStateId = this.rating;

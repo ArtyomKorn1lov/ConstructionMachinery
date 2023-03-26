@@ -8,7 +8,7 @@
             <h5 class="small-header">Опишите ваш отзыв</h5>
             <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание"></textarea>
             <h5 class="small-header">Оцените данное объявление</h5>
-            <div class="star">
+            <div id="star" class="star" (click)="invalidStars = resetValidFlag()">
                 <img *ngIf="!stateStars.first" (click)="setState(1)" class="star__item" src="assets/star_empty.png" alt="star">
                 <img *ngIf="stateStars.first" (click)="removeState(1)" class="star__item" src="assets/star_fill.png" alt="star">
                 <img *ngIf="!stateStars.second" (click)="setState(2)" class="star__item" src="assets/star_empty.png" alt="star">
@@ -19,6 +19,10 @@
                 <img *ngIf="stateStars.fourth" (click)="removeState(4)" class="star__item" src="assets/star_fill.png" alt="star">
                 <img *ngIf="!stateStars.fifth" (click)="setState(5)" class="star__item" src="assets/star_empty.png" alt="star">
                 <img *ngIf="stateStars.fifth" (click)="removeState(5)" class="star__item" src="assets/star_fill.png" alt="star">
+            </div>
+            <div class="valid-container" *ngIf="invalidStars">
+                <img class="valid-container__image" src="assets/valid_mark.png">
+                <p class="valid-container__text">{{messageStars}}</p>
             </div>
             <button (click)="update()" class="edit-button">
                 <h5 class="medium-header">Редактировать</h5>

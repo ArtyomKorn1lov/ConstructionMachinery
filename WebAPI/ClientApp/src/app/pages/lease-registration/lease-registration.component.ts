@@ -19,8 +19,12 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public leaseTimes: LeaseTimeModel[] = [];
   public address: string = "";
+  public invalidAddress: boolean = false;
+  public messageAddress: string | undefined;
   public currentTimeIndex: number | undefined;
   public currentTimeId: number | undefined;
+  public invalidCurrentTimeId: boolean = false;
+  public messageCurrentTimeId: string | undefined;
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
   private listRoute: string = '/advert-list';
 
@@ -42,19 +46,43 @@ export class LeaseRegistrationComponent implements OnInit {
     return backUrl;
   }
 
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateRequest(): boolean {
+    let valid = true;
+    let toScroll = true;
+    if (this.address == undefined || this.address.trim() == '') {
+      this.messageAddress = "Введите адрес доставки";
+      this.invalidAddress = true;
+      this.address = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("address")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.currentTimeId == 0 || this.currentTimeId == undefined) {
+      this.messageCurrentTimeId = "Выберете время доставки";
+      this.invalidCurrentTimeId = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("time")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    return valid;
+  }
+
   public async createRequest(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if (this.address == undefined || this.address.trim() == '') {
-      alert("Введите адрес доставки");
-      this.address = '';
+    if (!this.validateRequest())
       return;
-    }
-    if (this.currentTimeId == 0 || this.currentTimeId == undefined) {
-      alert("Выберете время доставки");
+    if (this.currentTimeId == 0 || this.currentTimeId == undefined)
       return;
-    }
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);

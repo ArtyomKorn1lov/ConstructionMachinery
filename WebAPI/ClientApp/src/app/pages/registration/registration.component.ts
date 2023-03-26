@@ -11,52 +11,116 @@ import { Router } from '@angular/router';
 export class RegistrationComponent implements OnInit {
 
   public email: string | undefined;
+  public invalidEmail: boolean = false;
+  public messageEmail: string | undefined;
   public password: string | undefined;
+  public invalidPassword: boolean = false;
+  public messagePassword: string | undefined;
   public confirm_password: string | undefined;
+  public invalidConfirm: boolean = false;
+  public messageConfirm: string | undefined;
   public name: string | undefined;
+  public invalidName: boolean = false;
+  public messageName: string | undefined;
   public phone: string | undefined;
+  public invalidPhone: boolean = false;
+  public messagePhone: string | undefined;
   public address: string | undefined;
+  public invalidAddress: boolean = false;
+  public messageAddress: string | undefined;
   private targetRoute: string = "/";
 
   constructor(private accountService: AccountService, private router: Router) { }
 
-  public async registration(): Promise<void> {
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateRegistration(): boolean {
+    let valid = true;
+    let toScroll = true;
     if (this.email == undefined || this.email.trim() == '') {
-      alert("Введите Email пользователя");
+      this.invalidEmail = true;
+      this.messageEmail = "Введите Email пользователя";
       this.email = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("email")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.password == undefined || this.password.trim() == '') {
-      alert("Введите пароль");
+      this.invalidPassword = true;
+      this.messagePassword = "Введите пароль";
       this.password = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("password")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.confirm_password == undefined || this.password.trim() == '') {
-      alert("Подтвердите пароль");
+      this.invalidConfirm = true;
+      this.messageConfirm = "Подтвердите пароль";
       this.confirm_password = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("confirm")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.name == undefined || this.name.trim() == '') {
-      alert("Введите ФИО пользователя");
+      this.invalidName = true;
+      this.messageName = "Введите ФИО пользователя";
       this.name = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("name")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.phone == undefined || this.phone.trim() == '') {
-      alert("Введите номер телефона");
+      this.invalidPhone = true;
+      this.messagePhone = "Введите номер телефона";
       this.phone = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("phone")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.address == undefined || this.address.trim() == '') {
-      alert("Введите ардрес арендодателя");
+      this.invalidAddress = true;
+      this.messageAddress = "Введите ардрес арендодателя";
       this.address = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("address")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
     if (this.confirm_password != this.password) {
-      alert("Пароли не совпадают, проверьте пароли");
+      this.invalidPassword = true;
+      this.messagePassword = "Пароли не совпадают, проверьте пароли";
+      this.invalidConfirm = true;
+      this.messageConfirm = "Пароли не совпадают, проверьте пароли";
       this.password = '';
       this.confirm_password = '';
-      return;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("password")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
     }
+    return valid;
+  }
+
+  public async registration(): Promise<void> {
+    if (!this.validateRegistration())
+      return;
+    if (this.email == undefined || this.password == undefined || this.confirm_password == undefined
+      || this.name == undefined || this.phone == undefined || this.address == undefined)
+      return;
     let model = new RegisterModel(this.name, this.email, this.phone, this.address, this.password);
     await this.accountService.registration(model)
       .then(

@@ -14,50 +14,114 @@ export class EditProfileComponent implements OnInit {
   public user: UserUpdateModel = new UserUpdateModel(0, "", "", "", "", "");
   public password: string | undefined;
   public confirm_password: string | undefined;
+  public invalidEmail: boolean = false;
+  public messageEmail: string | undefined;
+  public invalidPassword: boolean = false;
+  public messagePassword: string | undefined;
+  public invalidConfirm: boolean = false;
+  public messageConfirm: string | undefined;
+  public invalidName: boolean = false;
+  public messageName: string | undefined;
+  public invalidPhone: boolean = false;
+  public messagePhone: string | undefined;
+  public invalidAddress: boolean = false;
+  public messageAddress: string | undefined;
   private targetRoute: string = "/profile";
 
   constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService) { }
+
+  public resetValidFlag(): boolean {
+    return false;
+  }
+
+  private validateEdit(): boolean {
+    let valid = true;
+    let toScroll = true;
+    if (this.user.email == undefined || this.user.email.trim() == '') {
+      this.invalidEmail = true;
+      this.messageEmail = "Введите Email пользователя";
+      this.user.email = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("email")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.password == undefined || this.password.trim() == '') {
+      this.invalidPassword = true;
+      this.messagePassword = "Введите пароль";
+      this.password = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("password")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.confirm_password == undefined || this.password.trim() == '') {
+      this.invalidConfirm = true;
+      this.messageConfirm = "Подтвердите пароль";
+      this.confirm_password = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("confirm")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.user.name == undefined || this.user.name.trim() == '') {
+      this.invalidName = true;
+      this.messageName = "Введите ФИО пользователя";
+      this.user.name = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("name")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.user.phone == undefined || this.user.phone.trim() == '') {
+      this.invalidPhone = true;
+      this.messagePhone = "Введите номер телефона";
+      this.user.phone = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("phone")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.user.address == undefined || this.user.address.trim() == '') {
+      this.invalidAddress = true;
+      this.messageAddress = "Введите ардрес арендодателя";
+      this.user.address = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("address")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.confirm_password != this.password) {
+      this.invalidPassword = true;
+      this.messagePassword = "Пароли не совпадают, проверьте пароли";
+      this.invalidConfirm = true;
+      this.messageConfirm = "Пароли не совпадают, проверьте пароли";
+      this.password = '';
+      this.confirm_password = '';
+      valid = false;
+      if (toScroll) {
+        document.getElementById("password")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    return valid;
+  }
 
   public async edit(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if (this.user.email == undefined || this.user.email.trim() == '') {
-      alert("Введите Email пользователя");
-      this.user.email = '';
+    if (!this.validateEdit())
       return;
-    }
-    if (this.password == undefined || this.password.trim() == '') {
-      alert("Введите пароль");
-      this.password = '';
+    if (this.user.email == undefined || this.password == undefined || this.confirm_password == undefined
+      || this.user.name == undefined || this.user.phone == undefined || this.user.address == undefined)
       return;
-    }
-    if (this.confirm_password == undefined || this.password.trim() == '') {
-      alert("Подтвердите пароль");
-      this.confirm_password = '';
-      return;
-    }
-    if (this.user.name == undefined || this.user.name.trim() == '') {
-      alert("Введите ФИО пользователя");
-      this.user.name = '';
-      return;
-    }
-    if (this.user.phone == undefined || this.user.phone.trim() == '') {
-      alert("Введите номер телефона");
-      this.user.phone = '';
-      return;
-    }
-    if (this.user.address == undefined || this.user.address.trim() == '') {
-      alert("Введите ардрес арендодателя");
-      this.user.address = '';
-      return;
-    }
-    if (this.confirm_password != this.password) {
-      alert("Пароли не совпадают, проверьте пароли");
-      this.password = '';
-      this.confirm_password = '';
-      return;
-    }
     this.user.password = this.password;
     await this.accountService.update(this.user)
       .then(

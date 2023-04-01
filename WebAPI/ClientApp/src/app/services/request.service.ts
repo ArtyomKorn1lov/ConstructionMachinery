@@ -4,11 +4,11 @@ import { lastValueFrom } from 'rxjs';
 import { AvailabilityRequestModel } from '../models/AvailabilityRequestModel';
 import { AvailabilityRequestModelForCustomer } from 'src/app/models/AvailabilityRequestModelForCustomer';
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
-import { AvailableTimeModel } from '../models/AvailableTimeModel';
 import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
 import { ConfirmModel } from '../models/ConfirmModel';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
+import { AvailableDayModel } from '../models/AvailableDayModel';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +39,8 @@ export class RequestService {
     return await lastValueFrom(this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`));
   }
 
-  public async getAvailableTimesByAdvertId(id: number): Promise<AvailableTimeModel[]> {
-    return await lastValueFrom(this.http.get<AvailableTimeModel[]>(`api/request/times/${id}`));
+  public async getAvailableTimesByAdvertId(id: number): Promise<AvailableDayModel[]> {
+    return await lastValueFrom(this.http.get<AvailableDayModel[]>(`api/request/times/${id}`));
   }
 
   public async create(request: AvailabilityRequestModelCreate): Promise<string> {

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AdvertModelCreate } from 'src/app/models/AdvertModelCreate';
 import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
+import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -19,11 +20,12 @@ export class AdvertComponent implements OnInit {
   public advertList: AdvertModelList[] = [];
   public count: number = 10;
   public scrollFlag = true;
-  private targetRoute: string = "advert-list";
+  private listRoute: string = "advert-list";
+  private myRoute: string = "my-adverts";
   private filter: string = "all";
 
   constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
-    private route: ActivatedRoute, private imageService: ImageService, private tokenService: TokenService) { }
+    private route: ActivatedRoute, private imageService: ImageService, public accountService: AccountService, private tokenService: TokenService) { }
 
   public async sortByParam(param: string): Promise<void> {
     this.filter = param;
@@ -33,9 +35,16 @@ export class AdvertComponent implements OnInit {
   }
 
   public getAdvertInfo(id: number): void {
-    this.router.navigate([this.targetRoute, id], {
-      queryParams: { backUrl: this.router.url }
-    });
+    if (this.page == 'my') {
+      this.router.navigate([this.myRoute, id], {
+        queryParams: { backUrl: this.router.url }
+      });
+    }
+    else {
+      this.router.navigate([this.listRoute, id], {
+        queryParams: { backUrl: this.router.url }
+      });
+    }
   }
 
   public convertToNormalDate(): void {

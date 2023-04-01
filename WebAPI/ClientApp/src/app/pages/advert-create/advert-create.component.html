@@ -61,8 +61,9 @@
                 </div>
                 <div [ngClass]="{ '-invalid': invalidImage }" (click)="invalidImage = resetValidFlag()"
                     *ngIf="images.length < 6" (click)="uploadImage()" class="photo__download">
-                    <img src="assets/photo.png">
-                    <p class="primary-text -download">Добавить</p>
+                    <img *ngIf="!invalidImage" src="assets/photo.png">
+                    <img *ngIf="invalidImage" src="assets/photo_invalid.png">
+                    <p [ngClass]="{ '-invalid-text': invalidImage }" class="primary-text -download">Добавить</p>
                 </div>
             </div>
             <div class="valid-container" *ngIf="invalidImage">

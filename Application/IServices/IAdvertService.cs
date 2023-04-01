@@ -9,6 +9,8 @@ namespace Application.IServices
 {
     public interface IAdvertService
     {
+        List<AvailiableDayCommand> PackageToDayCommands(List<AvailableTimeCommand> availableTimeCommands);
+        List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands);
         Task<List<AdvertCommandList>> GetAll(int count);
         Task<List<AdvertCommandList>> GetAllWithoutUserId(int id, int count);
         Task<AdvertCommandInfo> GetById(int id);

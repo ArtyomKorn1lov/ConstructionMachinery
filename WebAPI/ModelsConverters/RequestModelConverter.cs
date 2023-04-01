@@ -108,16 +108,20 @@ namespace WebAPI.ModelsConverters
             };
         }
 
-        public static AvailableTimeModel CommandConvertToAvailableTimeModel(AvailableTimeCommand command)
+        public static AvailableDayModel CommandConvertToAvailableDayModel(AvailiableDayCommand command)
         {
             if (command == null)
                 return null;
-            return new AvailableTimeModel
+            return new AvailableDayModel
             {
-                Id = command.Id,
                 Date = command.Date,
-                AdvertId = command.AdvertId,
-                AvailabilityStateId = command.AdvertId
+                Times = command.Times.Select(availableTime => new AvailableTimeModel
+                {
+                    Id = availableTime.Id,
+                    Date = availableTime.Date,
+                    AdvertId = availableTime.AdvertId,
+                    AvailabilityStateId = availableTime.AvailabilityStateId
+                }).ToList()
             };
         }
     }

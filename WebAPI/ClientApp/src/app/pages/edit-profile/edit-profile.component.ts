@@ -89,7 +89,7 @@ export class EditProfileComponent implements OnInit {
     }
     if (this.user.address == undefined || this.user.address.trim() == '') {
       this.invalidAddress = true;
-      this.messageAddress = "Введите ардрес арендодателя";
+      this.messageAddress = "Введите адрес арендодателя";
       this.user.address = '';
       valid = false;
       if (toScroll) {

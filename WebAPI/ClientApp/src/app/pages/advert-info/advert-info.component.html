@@ -62,12 +62,13 @@
                 </div>
             </div>
             <div class="vector" *ngIf="accountService.userFlag"></div>
-            <button (click)="leaseRegistration()" *ngIf="page == 'list' && accountService.userFlag"
+            <button (click)="leaseRegistration()"
+                *ngIf="page == 'list' && accountService.userFlag && advert.availableDays.length != 0"
                 class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button (click)="addReview()" *ngIf="page == 'list' && accountService.userFlag"
-                class="edit-button">
+            <button (click)="addReview()" *ngIf="page == 'list' && accountService.userFlag" class="edit-button"
+                [ngClass]="{ 'primary-authorize': advert.availableDays.length == 0, 'edit-button': advert.availableDays.length != 0 }">
                 <h5 class="medium-header">Оставить отзыв</h5>
             </button>
             <button (click)="edit()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">

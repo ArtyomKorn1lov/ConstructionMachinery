@@ -113,7 +113,7 @@ namespace Application.Services
             return command;
         }
 
-        private List<AvailiableDayCommand> PackageToDayCommands(List<AvailableTimeCommand> availableTimeCommands)
+        public List<AvailiableDayCommand> PackageToDayCommands(List<AvailableTimeCommand> availableTimeCommands)
         {
             List<AvailiableDayCommand> availiableDayCommands = new List<AvailiableDayCommand>();
             if (availableTimeCommands.Count == 0)
@@ -144,7 +144,7 @@ namespace Application.Services
             return availiableDayCommands;
         }
 
-        private List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands)
+        public List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands)
         {
             if (availiableDayCommands.Count == 0)
                 return availiableDayCommands;

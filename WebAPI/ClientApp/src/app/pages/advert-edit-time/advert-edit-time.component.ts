@@ -61,7 +61,7 @@ export class AdvertEditTimeComponent implements OnInit {
   public prepareArrayId(images: ImageModel[]): number[] {
     let numberArray = [];
     for (let count = 0; count < images.length; count++) {
-      if (images[count].path == "")
+      if (images[count].path.trim() == "")
         numberArray.push(images[count].id);
     }
     return numberArray;
@@ -182,7 +182,7 @@ export class AdvertEditTimeComponent implements OnInit {
     if (!this.timeRangeValid())
       return;
     let numberArray: number[] = []
-    if (!this.imageService.oldImageFlag)
+    if (this.imageService.oldImageFlag)
       numberArray = this.prepareArrayId(this.advert.images);
     let formData = new FormData();
     Array.from(this.images).map((image, index) => {

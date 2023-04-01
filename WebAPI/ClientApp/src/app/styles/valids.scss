@@ -30,3 +30,7 @@
 .-invalid {
     border: 2px solid var(--color-invalid-text) !important;
 }
+
+.-invalid-text {
+    color: var(--color-invalid-text) !important;
+}

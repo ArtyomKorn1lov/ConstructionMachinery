@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 import { AccountService } from 'src/app/services/account.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { RequestService } from 'src/app/services/request.service';
@@ -7,7 +6,7 @@ import { AvailabilityRequestModelCreate } from 'src/app/models/AvailabilityReque
 import { AvailableTimeModelForCreateRequest } from 'src/app/models/AvailableTimeModelForCreateRequest';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatetimeService } from 'src/app/services/datetime.service';
-import { LeaseTimeModel } from 'src/app/models/LeaseTimeModel';
+import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -17,7 +16,7 @@ import { TokenService } from 'src/app/services/token.service';
 })
 export class LeaseRegistrationComponent implements OnInit {
 
-  public leaseTimes: LeaseTimeModel[] = [];
+  public leaseTimes: AvailableDayModel[] = [];
   public address: string = "";
   public invalidAddress: boolean = false;
   public messageAddress: string | undefined;
@@ -105,61 +104,14 @@ export class LeaseRegistrationComponent implements OnInit {
       );
   }
 
-  public convertToNormalDate(times: AvailableTimeModel[]): LeaseTimeModel[] {
-    for (let count = 0; count < times.length; count++) {
-      times[count].date = new Date(times[count].date);
-    }
-    times = this.datetimeService.sortByHour(times);
-    times = this.sortByDate(times);
-    return this.contain(times);
-  }
-
-  public sortByDate(times: AvailableTimeModel[]): AvailableTimeModel[] {
-    var date;
-    for (let i = 0; i < times.length; i++) {
-      for (let j = 0; j < times.length - i - 1; j++) {
-        if (times[j].date.getFullYear() > times[j + 1].date.getFullYear()) {
-          date = times[j];
-          times[j] = times[j + 1];
-          times[j + 1] = date;
-        }
-        else if (times[j].date.getMonth() > times[j + 1].date.getMonth()) {
-          date = times[j];
-          times[j] = times[j + 1];
-          times[j + 1] = date;
-        }
-        else if (times[j].date.getDate() > times[j + 1].date.getDate()) {
-          date = times[j];
-          times[j] = times[j + 1];
-          times[j + 1] = date;
-        }
+  public convertToNormalDate(days: AvailableDayModel[]): AvailableDayModel[] {
+    for (let count_day = 0; count_day < days.length; count_day++) {
+      days[count_day].date = new Date(days[count_day].date);
+      for (let count_hour = 0; count_hour < days[count_day].times.length; count_hour++) {
+        days[count_day].times[count_hour].date = new Date(days[count_day].times[count_hour].date);
       }
     }
-    return times;
-  }
-
-  public contain(times: AvailableTimeModel[]): LeaseTimeModel[] {
-    let leaseTimes: LeaseTimeModel[] = [];
-    for (let i = 0; i < times.length; i++) {
-      if (!this.findInList(leaseTimes, times[i].date)) {
-        leaseTimes.push(new LeaseTimeModel(times[i].date, []));
-        for (let j = 0; j < times.length; j++) {
-          if (times[i].date.getMonth() + '.' + times[i].date.getDate() + '.' + times[i].date.getFullYear() == times[j].date.getMonth() + '.' + times[j].date.getDate() + '.' + times[j].date.getFullYear()) {
-            leaseTimes[leaseTimes.length - 1].times.push(times[j]);
-          }
-        }
-      }
-    }
-    return leaseTimes;
-  }
-
-  public findInList(leaseTimes: LeaseTimeModel[], date: Date): boolean {
-    for (let count = 0; count < leaseTimes.length; count++) {
-      if (leaseTimes[count].date.getMonth() + '.' + leaseTimes[count].date.getDate() + '.' + leaseTimes[count].date.getFullYear() == date.getMonth() + '.' + date.getDate() + '.' + date.getFullYear()) {
-        return true;
-      }
-    }
-    return false;
+    return days;
   }
 
   public async ngOnInit(): Promise<void> {

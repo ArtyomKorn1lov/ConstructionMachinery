@@ -17,13 +17,16 @@ namespace Application.Services
         private IAccountRepository _accountRepository;
         private IAdvertRepository _advertRepository;
         private IImageRepository _imageRepository;
+        private IAdvertService _advertService;
 
-        public RequestService(IRequestRepository requestRepository, IAccountRepository accountRepository , IAdvertRepository advertRepository, IImageRepository imageRepository)
+        public RequestService(IRequestRepository requestRepository, IAccountRepository accountRepository , IAdvertRepository advertRepository, 
+            IImageRepository imageRepository, IAdvertService advertService)
         {
             _requestRepository = requestRepository;
             _accountRepository = accountRepository;
             _advertRepository = advertRepository;
             _imageRepository = imageRepository;
+            _advertService = advertService;
         }
 
         public async Task<bool> Confirm(int id, int stateId)
@@ -183,7 +186,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailableTimeCommand>> GetAvailableTimesByAdvertId(int id, int userId)
+        public async Task<List<AvailiableDayCommand>> GetAvailableTimesByAdvertId(int id, int userId)
         {
             try
             {
@@ -194,7 +197,9 @@ namespace Application.Services
                 if (advert == null)
                     return null;
                 List<AvailableTimeCommand> commands = times.Select(time => RequestCommandConverter.EntityConvertToAvailableTimeCommand(time)).ToList();
-                return commands;
+                List<AvailiableDayCommand> dayCommands = _advertService.PackageToDayCommands(commands);
+                dayCommands = _advertService.SortDateCommmands(dayCommands);
+                return dayCommands;
             }
             catch
             {

@@ -28,7 +28,7 @@
                         <img *ngIf="advert.averageRating >= 5" class="advert__star" src="assets/star_fill.png"
                             alt="star">
                     </div>
-                    <h4 class="medium-header">{{advert.name}}</h4>
+                    <h4 (click)="getAdvertInfo(advert.id)" class="medium-header">{{advert.name}}</h4>
                 </div>
                 <div>
                     <h5 class="small-header">от {{advert.price}} ₽ / час</h5>
@@ -39,11 +39,14 @@
                     </h6>
                 </div>
             </div>
-            <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'list'" class="primary-authorize">
+            <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
                 <p class="primary-text">Арендовать</p>
             </button>
             <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'my'" class="edit-button">
                 <p class="primary-text -edit">Подробнее</p>
+            </button>
+            <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'list' && !accountService.userFlag" class="primary-authorize">
+                <p class="primary-text">Подробнее</p>
             </button>
         </div>
     </div>

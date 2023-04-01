@@ -76,10 +76,10 @@ namespace WebAPI.Controllers
 
         [Authorize]
         [HttpGet("times/{id}")]
-        public async Task<List<AvailableTimeModel>> GetAvailableTimesByAdvertId(int id)
+        public async Task<List<AvailableDayModel>> GetAvailableTimesByAdvertId(int id)
         {
-            List<AvailableTimeCommand> commands = await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(User.Identity.Name));
-            List<AvailableTimeModel> models = commands.Select(command => RequestModelConverter.CommandConvertToAvailableTimeModel(command)).ToList();
+            List<AvailiableDayCommand> commands = await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(User.Identity.Name));
+            List<AvailableDayModel> models = commands.Select(command => RequestModelConverter.CommandConvertToAvailableDayModel(command)).ToList();
             if (models == null)
                 return null;
             return models;

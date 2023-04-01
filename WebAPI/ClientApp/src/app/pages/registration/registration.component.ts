@@ -91,7 +91,7 @@ export class RegistrationComponent implements OnInit {
     }
     if (this.address == undefined || this.address.trim() == '') {
       this.invalidAddress = true;
-      this.messageAddress = "Введите ардрес арендодателя";
+      this.messageAddress = "Введите адрес арендодателя";
       this.address = '';
       valid = false;
       if (toScroll) {

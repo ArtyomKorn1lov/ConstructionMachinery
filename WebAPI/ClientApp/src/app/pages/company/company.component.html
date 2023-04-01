@@ -8,34 +8,44 @@
                     техникой в виде приложения "Авто Помощник". Вы можете опубликовать своё объявление
                     с определённым временем работы, которое увидят другие пользователи, что позволяет создать достаточно
                     удобный сервис бронирования строительной техники.</p>
-                <p class="medium-header">В "Авто Помощнике" вы можете с как с персонального компьютера, так и со
-                    смартфона выполнять размещать и бронировать объявления где угодно и куда угодно.</p>
+                <p class="medium-header">На "Авто Помощнике" вы можете с персонального компьютера, так и со
+                    смартфона размещать и бронировать объявления где угодно и куда угодно.</p>
                 <p class="medium-header">В нашей компании очень отзывчивый персонал, если у вас возникла какая либо
                     проблема, наша команда попытается как можно быстрее ответить вам.</p>
             </div>
             <div class="company__form">
                 <h2 class="big-header -form">Остались вопросы?<br>Пишите нам!</h2>
-                <h3 class="small-header">Введите ваше имя</h3>
-                <input #slectorName="ngModel" [(ngModel)]="name" name="name" class="authorize-input" type="text" placeholder="Имя" required>
-                <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched">
+                <h3 class="small-header">Введите ваше ФИО</h3>
+                <input [ngClass]="{ '-invalid': invalidName }" (click)="invalidName = resetValidFlag()"
+                    #slectorName="ngModel" [(ngModel)]="name" name="name" id="name" class="authorize-input" type="text"
+                    placeholder="Имя" required>
+                <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched || invalidName" maxlength="100">
                     <img class="valid-container__image" src="assets/valid_mark.png">
-                    <p class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="!invalidName" class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="invalidName" class="valid-container__text">{{messageName}}</p>
                 </div>
                 <h3 class="small-header">Введите вашу электронную почту</h3>
-                <input #slectorEmail="ngModel" [(ngModel)]="email" name="name" class="authorize-input" type="text" placeholder="Email" required>
-                <div class="valid-container" *ngIf="slectorEmail.invalid && slectorEmail.touched">
+                <input [ngClass]="{ '-invalid': invalidEmail }" (click)="invalidEmail = resetValidFlag()"
+                    #slectorEmail="ngModel" [(ngModel)]="email" name="email" id="email" class="authorize-input"
+                    type="text" placeholder="Email" required>
+                <div class="valid-container" *ngIf="slectorEmail.invalid && slectorEmail.touched || invalidEmail" maxlength="100">
                     <img class="valid-container__image" src="assets/valid_mark.png">
-                    <p class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="!invalidEmail" class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="invalidEmail" class="valid-container__text">{{messageEmail}}</p>
                 </div>
-                <h3 class="small-header">Введите ваш Телефон</h3>
-                <input #slectorPhone="ngModel" [(ngModel)]="phone" name="name" class="authorize-input" type="tel" placeholder="Телефон" required>
-                <div class="valid-container" *ngIf="slectorPhone.invalid && slectorPhone.touched">
+                <h3 class="small-header">Введите ваш номер телефона</h3>
+                <input [ngClass]="{ '-invalid': invalidPhone }" (click)="invalidPhone = resetValidFlag()"
+                    #slectorPhone="ngModel" [(ngModel)]="phone" name="phone" id="phone" class="authorize-input"
+                    type="text" placeholder="Телефон" required>
+                <div class="valid-container" *ngIf="slectorPhone.invalid && slectorPhone.touched || invalidPhone" maxlength="100">
                     <img class="valid-container__image" src="assets/valid_mark.png">
-                    <p class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="!invalidPhone" class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="invalidPhone" class="valid-container__text">{{messagePhone}}</p>
                 </div>
                 <h3 class="small-header">Опишите ваш вопрос</h3>
-                <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание"></textarea>
-                <button class="secondary-authorize">
+                <textarea [(ngModel)]="description" name="description" class="advert-textarea"
+                    placeholder="Введите описание" maxlength="500"></textarea>
+                <button (click)="sendMail()" class="secondary-authorize">
                     <h4 class="medium-header">Отправить</h4>
                 </button>
             </div>

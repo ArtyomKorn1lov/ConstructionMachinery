@@ -41,7 +41,7 @@
                 <p *ngIf="!invalidVIN" class="valid-container__text">Обязательное поле для заполнения</p>
                 <p *ngIf="invalidVIN" class="valid-container__text">{{messageVIN}}</p>
             </div>
-            <h5 class="small-header">Цена в час</h5>
+            <h5 class="small-header">Цена ₽ / час</h5>
             <input [ngClass]="{ '-invalid': invalidPice }" (click)="invalidPice = resetValidFlag()"
                 #slectorPrice="ngModel" [(ngModel)]="price" id="price" name="price" class="authorize-input"
                 type="text" placeholder="Введите цену" maxlength="12" (keypress)="numberOnly($event)" required>

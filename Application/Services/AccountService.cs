@@ -107,6 +107,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return false;
                 await _accountRepository.Remove(id);
                 return true;
             }

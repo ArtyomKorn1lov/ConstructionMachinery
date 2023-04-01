@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
                 name = await _accountService.GetUserNameById(commands[index].UserId);
                 models[index].Name = name;
                 user = await _accountService.GetUserByEmail(User.Identity.Name);
-                if(user != null)
+                if (user != null)
                     if (name == user.Name)
                         models[index].IsAuthorized = true;
                     else
@@ -97,12 +97,10 @@ namespace WebAPI.Controllers
                     return BadRequest("error");
                 if (ReviewModelConverter.ReviewCommandCovertToModel(await _reviewService.GetById(id)).UserId != await _accountService.GetIdByEmail(User.Identity.Name))
                     return BadRequest("error");
-                if (await _reviewService.Remove(id))
-                {
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (!await _reviewService.Remove(id))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {
@@ -116,15 +114,13 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if(review == null)
+                if (review == null)
                     return BadRequest("error");
                 review.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
-                if(await _reviewService.Create(ReviewModelConverter.ReviewModelCreateConvertToCommand(review)))
-                {
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (await _reviewService.Create(ReviewModelConverter.ReviewModelCreateConvertToCommand(review)))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {
@@ -141,12 +137,10 @@ namespace WebAPI.Controllers
                 if (review == null)
                     return BadRequest("error");
                 review.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
-                if(await _reviewService.Update(ReviewModelConverter.ReviewModelUpdateConvertToCommand(review)))
-                {
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (await _reviewService.Update(ReviewModelConverter.ReviewModelUpdateConvertToCommand(review)))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {

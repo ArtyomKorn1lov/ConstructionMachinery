@@ -2,13 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Application.IServices;
 using WebAPI.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Application.Commands;
 using WebAPI.ModelsConverters;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -39,21 +36,19 @@ namespace WebAPI.Controllers
                 if (model is null)
                     return BadRequest("error");
                 model.Password = _accountService.HashPassword(model.Password);
-                if (await _accountService.GetLoginResult(model.Email, model.Password))
+                if (!await _accountService.GetLoginResult(model.Email, model.Password))
+                    return BadRequest("error");
+                int accountId = await _accountService.GetIdByEmail(model.Email);
+                List<Claim> identity = GetIdentity(model.Email);
+                string accessToken = _tokenService.GenerateAccessToken(identity);
+                string refreshToken = _tokenService.GenerateRefreshToken();
+                await _accountService.SetUserToken(accountId, refreshToken);
+                await _unitOfWork.Commit();
+                return Ok(new AuthenticatedResponse
                 {
-                    int accountId = await _accountService.GetIdByEmail(model.Email);
-                    List<Claim> identity = GetIdentity(model.Email);
-                    string accessToken = _tokenService.GenerateAccessToken(identity);
-                    string refreshToken = _tokenService.GenerateRefreshToken();
-                    await _accountService.SetUserToken(accountId, refreshToken);
-                    await _unitOfWork.Commit();
-                    return Ok(new AuthenticatedResponse
-                    {
-                        Token = accessToken,
-                        RefreshToken = refreshToken
-                    });
-                }
-                return BadRequest("error");
+                    Token = accessToken,
+                    RefreshToken = refreshToken
+                });
             }
             catch
             {
@@ -68,28 +63,24 @@ namespace WebAPI.Controllers
             {
                 if (model is null)
                     return BadRequest("error");
-                if (await _accountService.GetRegisterResult(model.Email))
-                {
-                    model.Password = _accountService.HashPassword(model.Password);
-                    UserCreateCommand userCreateCommand = UserModelConverter.RegisterModelConvertToUserCreateCommand(model);
-                    if (await _accountService.Create(userCreateCommand))
-                    {
-                        await _unitOfWork.Commit();
-                        int accountId = await _accountService.GetIdByEmail(model.Email);
-                        List<Claim> identity = GetIdentity(model.Email);
-                        string accessToken = _tokenService.GenerateAccessToken(identity);
-                        string refreshToken = _tokenService.GenerateRefreshToken();
-                        await _accountService.SetUserToken(accountId, refreshToken);
-                        await _unitOfWork.Commit();
-                        return Ok(new AuthenticatedResponse
-                        {
-                            Token = accessToken,
-                            RefreshToken = refreshToken
-                        });
-                    }
+                if (!await _accountService.GetRegisterResult(model.Email))
                     return BadRequest("error");
-                }
-                return BadRequest("error");
+                model.Password = _accountService.HashPassword(model.Password);
+                UserCreateCommand userCreateCommand = UserModelConverter.RegisterModelConvertToUserCreateCommand(model);
+                if (!await _accountService.Create(userCreateCommand))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                int accountId = await _accountService.GetIdByEmail(model.Email);
+                List<Claim> identity = GetIdentity(model.Email);
+                string accessToken = _tokenService.GenerateAccessToken(identity);
+                string refreshToken = _tokenService.GenerateRefreshToken();
+                await _accountService.SetUserToken(accountId, refreshToken);
+                await _unitOfWork.Commit();
+                return Ok(new AuthenticatedResponse
+                {
+                    Token = accessToken,
+                    RefreshToken = refreshToken
+                });
             }
             catch
             {
@@ -158,31 +149,25 @@ namespace WebAPI.Controllers
             {
                 UserModel getUser = UserModelConverter.UserCommandConvertToUserModel(await _accountService.GetById(user.Id));
                 if (getUser == null)
-                {
                     return BadRequest("error");
-                }
                 if (!await _accountService.GetRegisterResult(user.Email) && getUser.Email != user.Email)
-                {
                     return BadRequest("error");
-                }
                 user.Password = _accountService.HashPassword(user.Password);
                 UserUpdateCommand userCommand = UserModelConverter.UserUpdateModelConvertToUserUpdateCommand(user);
-                if (await _accountService.Update(userCommand))
+                if (!await _accountService.Update(userCommand))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                int accountId = await _accountService.GetIdByEmail(userCommand.Email);
+                List<Claim> identity = GetIdentity(userCommand.Email);
+                string accessToken = _tokenService.GenerateAccessToken(identity);
+                string refreshToken = _tokenService.GenerateRefreshToken();
+                await _accountService.SetUserToken(accountId, refreshToken);
+                await _unitOfWork.Commit();
+                return Ok(new AuthenticatedResponse
                 {
-                    await _unitOfWork.Commit();
-                    int accountId = await _accountService.GetIdByEmail(userCommand.Email);
-                    List<Claim> identity = GetIdentity(userCommand.Email);
-                    string accessToken = _tokenService.GenerateAccessToken(identity);
-                    string refreshToken = _tokenService.GenerateRefreshToken();
-                    await _accountService.SetUserToken(accountId, refreshToken);
-                    await _unitOfWork.Commit();
-                    return Ok(new AuthenticatedResponse
-                    {
-                        Token = accessToken,
-                        RefreshToken = refreshToken
-                    });
-                }
-                return BadRequest("error");
+                    Token = accessToken,
+                    RefreshToken = refreshToken
+                });
             }
             catch
             {
@@ -196,12 +181,10 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (await _accountService.Remove(id))
-                {
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (!await _accountService.Remove(id))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {

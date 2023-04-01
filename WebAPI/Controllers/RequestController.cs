@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
         public async Task<List<AvailabilityRequestListModel>> GetListForCustomer(int id, int count)
         {
             List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, await _accountService.GetIdByEmail(User.Identity.Name), count);
-            List<AvailabilityRequestListModel> models = commands.Select(command => 
+            List<AvailabilityRequestListModel> models = commands.Select(command =>
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
                 return null;
@@ -95,18 +95,16 @@ namespace WebAPI.Controllers
                     return BadRequest("error");
                 model.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 model.RequestStateId = 3;
-                if(await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
-                {
-                    await _unitOfWork.Commit();
-                    int requestId = await _requestService.GetLastRequestId();
-                    if (requestId == 0)
-                        return BadRequest("error");
-                    List<AvailableTimeCommandForCreateRequest> times = model.AvailableTimeModelForCreateRequests.Select(time => RequestModelConverter.AvailableTimeModelForCreateRequestConvertToCommand(time)).ToList();
-                    await _requestService.UpdateTimes(requestId, times);
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (!await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                int requestId = await _requestService.GetLastRequestId();
+                if (requestId == 0)
+                    return BadRequest("error");
+                List<AvailableTimeCommandForCreateRequest> times = model.AvailableTimeModelForCreateRequests.Select(time => RequestModelConverter.AvailableTimeModelForCreateRequestConvertToCommand(time)).ToList();
+                await _requestService.UpdateTimes(requestId, times);
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {
@@ -122,12 +120,10 @@ namespace WebAPI.Controllers
             {
                 if (model.RequestStateId != 1 && model.RequestStateId != 2 && model.RequestStateId != 3)
                     return BadRequest("error");
-                if (await _requestService.Confirm(model.Id, model.RequestStateId))
-                {
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (!await _requestService.Confirm(model.Id, model.RequestStateId))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {
@@ -142,12 +138,10 @@ namespace WebAPI.Controllers
             try
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                if (await _requestService.Remove(id, userId))
-                {
-                    await _unitOfWork.Commit();
-                    return Ok("success");
-                }
-                return BadRequest("error");
+                if (!await _requestService.Remove(id, userId))
+                    return BadRequest("error");
+                await _unitOfWork.Commit();
+                return Ok("success");
             }
             catch
             {

@@ -49,9 +49,7 @@ namespace WebAPI.Controllers
                 Directory.CreateDirectory(folderPath);
                 IFormFileCollection files = Request.Form.Files;
                 if (files.Any(f => f.Length == 0))
-                {
                     return BadRequest("error");
-                }
                 int countName = 0;
                 foreach (IFormFile uploadImage in files)
                 {
@@ -61,7 +59,8 @@ namespace WebAPI.Controllers
                     {
                         await uploadImage.CopyToAsync(fileStream);
                     }
-                    path = _serverDirectory + _currentDirectory + advertId.ToString() + "/" + (advertId + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    path = _serverDirectory + _currentDirectory + advertId.ToString() + "/" + (advertId + countName).ToString()
+                        + System.IO.Path.GetExtension(uploadImage.FileName);
                     string relativePath = _currentDirectory + advertId.ToString();
                     ImageModelCreate image = new ImageModelCreate
                     {
@@ -90,12 +89,10 @@ namespace WebAPI.Controllers
                 string folderPath = _appEnvironment.WebRootPath + _currentDirectory + id.ToString();
                 IFormFileCollection files = Request.Form.Files;
                 if (files.Any(f => f.Length == 0))
-                {
                     return BadRequest("error");
-                }
                 AdvertModelInfo advert = AdvertModelConverter.AdvertCommandInfoConvertAdvertModelInfo(await _advertService.GetById(id));
                 int countName = 0;
-                if(advert.Images.Count != 0)
+                if (advert.Images.Count != 0)
                 {
                     Regex regex = new Regex(@"\/\d+\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
                     Match match = regex.Match(advert.Images[advert.Images.Count - 1].Path);
@@ -138,15 +135,16 @@ namespace WebAPI.Controllers
             {
                 if (imagesId == null)
                     return BadRequest("error");
-                foreach(int id in imagesId)
+                foreach (int id in imagesId)
                 {
                     ImageCommand image = await _imageService.GetById(id);
                     string path = image.Path;
                     path = path.Replace(_serverDirectory, "");
-                    path = _appEnvironment.WebRootPath + path; 
-                    await _imageService.Remove(id, path);
+                    path = _appEnvironment.WebRootPath + path;
+                    if (!await _imageService.Remove(id, path))
+                        return BadRequest("error");
+                    await _unitOfWork.Commit();
                 }
-                await _unitOfWork.Commit();
                 return Ok("success");
             }
             catch

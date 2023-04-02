@@ -20,5 +20,6 @@ namespace Domain.IRepositories
         Task<AvailabilityRequest> GetById(int id);
         Task UpdateTime(int id, int requestId, int state);
         Task<bool> IsAttention(int userId);
+        Task<AvailableTime> GetTimeById(int id);
     }
 }

@@ -120,7 +120,8 @@ namespace WebAPI.Controllers
             {
                 if (model.RequestStateId != 1 && model.RequestStateId != 2 && model.RequestStateId != 3)
                     return BadRequest("error");
-                if (!await _requestService.Confirm(model.Id, model.RequestStateId))
+                int currentUserId = await _accountService.GetIdByEmail(User.Identity.Name);
+                if (!await _requestService.Confirm(model.Id, model.RequestStateId, currentUserId))
                     return BadRequest("error");
                 await _unitOfWork.Commit();
                 return Ok("success");

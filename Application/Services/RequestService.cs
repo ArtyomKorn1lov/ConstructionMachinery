@@ -29,11 +29,22 @@ namespace Application.Services
             _advertService = advertService;
         }
 
-        public async Task<bool> Confirm(int id, int stateId)
+        public async Task<bool> Confirm(int id, int stateId, int userId)
         {
             try
             {
+                if (id <= 0 || stateId <= 0)
+                    return false;
                 AvailabilityRequest request = await _requestRepository.GetById(id);
+                if (request == null)
+                    return false;
+                if (request.Id != id)
+                    return false;
+                if (request.AvailableTimes.Count <= 0)
+                    return false;
+                int requestByAdvertUserId = await _advertService.GetUserIdByAdvert(request.AvailableTimes[0].AdvertId);
+                if (requestByAdvertUserId != userId)
+                    return false;
                 int availabilityStateId = 3;
                 if (stateId == 1)
                     availabilityStateId = 2;
@@ -58,13 +69,13 @@ namespace Application.Services
         {
             try
             {
-                if(request != null)
-                {
-                    AvailabilityRequest entityRequest = RequestCommandConverter.AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(request);
-                    await _requestRepository.Create(entityRequest);
-                    return true;
-                }
-                return false;
+                if (request == null)
+                    return false;
+                if (request.Address == null || request.Address.Trim() == "")
+                    return false;
+                AvailabilityRequest entityRequest = RequestCommandConverter.AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(request);
+                await _requestRepository.Create(entityRequest);
+                return true;
             }
             catch
             {
@@ -76,15 +87,21 @@ namespace Application.Services
         {
             try
             {
-                if (requestId == 0)
+                if (requestId <= 0)
                     return false;
-                if(times != null)
+                if (times == null)
+                    return false;
+                foreach (AvailableTimeCommandForCreateRequest time in times)
                 {
-                    foreach (AvailableTimeCommandForCreateRequest time in times)
-                        await _requestRepository.UpdateTime(time.Id, requestId, 3);
-                    return true;
+                    AvailableTime currentElement = await _requestRepository.GetTimeById(time.Id);
+                    if (currentElement == null)
+                        return false;
+                    AvailabilityRequest request = await _requestRepository.GetById(requestId);
+                    if (request == null)
+                        return false;
+                    await _requestRepository.UpdateTime(time.Id, requestId, 3);
                 }
-                return false;
+                return true;
             }
             catch
             {
@@ -96,10 +113,14 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || userId <= 0)
+                    return null;
                 AvailabilityRequest request = await _requestRepository.GetById(id);
                 if (request == null)
                     return null;
                 if (request.UserId != userId)
+                    return null;
+                if (request.AvailableTimes.Count <= 0)
                     return null;
                 AvailabilityRequestCommandForCustomer commandForCustomer = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request,
                     await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId));
@@ -115,12 +136,16 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || userId <= 0)
+                    return null;
                 AvailabilityRequest request = await _requestRepository.GetById(id);
                 if (request == null)
                     return null;
                 if (await GetUserIdByAdvertId(request.AvailableTimes[0].AdvertId) != userId)
                     return null;
                 if (request.RequestStateId != 3)
+                    return null;
+                if (request.AvailableTimes.Count <= 0)
                     return null;
                 AvailabilityRequestCommandForLandlord commandForLandlord = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
                     await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId));
@@ -136,6 +161,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || userId <= 0 || count < 0)
+                    return null;
                 List<AvailabilityRequest> requests = await _requestRepository.GetByAdvertIdUserIdForCustomer(id, userId, count);
                 if (requests == null)
                     return null;
@@ -157,6 +184,8 @@ namespace Application.Services
         {
             try
             {
+                if (userId <= 0 || count < 0)
+                    return null;
                 List<AvailabilityRequest> requests = await _requestRepository.GetByUserIdForLandlord(userId, count);
                 if (requests == null)
                     return null;
@@ -190,11 +219,15 @@ namespace Application.Services
         {
             try
             {
+                if (userId <= 0 || id <= 0)
+                    return null;
                 Advert advert = await _advertRepository.GetById(id);
+                if (advert == null)
+                    return null;
                 if (advert.UserId == userId)
                     return null;
                 List<AvailableTime> times = await _requestRepository.GetTimesForRequestByAdvertId(id);
-                if (advert == null)
+                if (times == null)
                     return null;
                 List<AvailableTimeCommand> commands = times.Select(time => RequestCommandConverter.EntityConvertToAvailableTimeCommand(time)).ToList();
                 List<AvailiableDayCommand> dayCommands = _advertService.PackageToDayCommands(commands);
@@ -211,17 +244,17 @@ namespace Application.Services
         {
             try
             {
+                if (userId <= 0 || id <= 0)
+                    return false;
                 AvailabilityRequest request = await _requestRepository.GetById(id);
                 if (request.UserId != userId)
                     return false;
-                if (request.AvailableTimes != null)
-                {
-                    foreach (AvailableTime time in request.AvailableTimes)
-                        await _requestRepository.UpdateTime(time.Id, request.Id, 1);
-                    await _requestRepository.Remove(id);
-                    return true;
-                }
-                return false;
+                if (request.AvailableTimes == null)
+                    return false;
+                foreach (AvailableTime time in request.AvailableTimes)
+                    await _requestRepository.UpdateTime(time.Id, request.Id, 1);
+                await _requestRepository.Remove(id);
+                return true;
             }
             catch
             {

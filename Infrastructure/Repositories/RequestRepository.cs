@@ -35,6 +35,11 @@ namespace Infrastructure.Repositories
                 .Where(a => a.AdvertId == id && a.AvailabilityStateId == 1 && a.Date >= DateTime.Now).ToListAsync();
         }
 
+        public async Task<AvailableTime> GetTimeById(int id)
+        {
+            return await _constructionMachineryDbContext.Set<AvailableTime>().FirstOrDefaultAsync(a => a.Id == id);
+        }
+
         public async Task<AvailabilityRequest> GetById(int id)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()

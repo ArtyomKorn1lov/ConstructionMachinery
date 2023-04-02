@@ -26,7 +26,7 @@ namespace Application.IServices
         Task<List<AdvertCommandList>> GetSortByRatingMaxByUserId(int id, int count);
         Task<List<AdvertCommandList>> GetSortByRatingMinByUserId(int id, int count);
         Task<List<AdvertCommandList>> GetSortByDateMinByUserId(int id, int count);
-        Task<AdvertCommandUpdate> GetForUpdate(int id);
+        Task<AdvertCommandUpdate> GetForUpdate(int id, int userId);
         Task<int> GetUserIdByAdvert(int id);
         Task<int> GetLastAdvertId();
         Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id, int count);

@@ -17,7 +17,7 @@ namespace Application.IServices
         Task<List<AvailiableDayCommand>> GetAvailableTimesByAdvertId(int id, int userId);
         Task<bool> Create(AvailabilityRequestCommandCreate request);
         Task<bool> UpdateTimes(int requestId, List<AvailableTimeCommandForCreateRequest> times);
-        Task<bool> Confirm(int id, int stateId);
+        Task<bool> Confirm(int id, int stateId, int userId);
         Task<bool> Remove(int id, int userId);
         Task<bool> IsAttention(int userId);
     }

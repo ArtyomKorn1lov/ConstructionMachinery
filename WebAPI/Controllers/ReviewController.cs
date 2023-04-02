@@ -117,7 +117,7 @@ namespace WebAPI.Controllers
                 if (review == null)
                     return BadRequest("error");
                 review.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
-                if (await _reviewService.Create(ReviewModelConverter.ReviewModelCreateConvertToCommand(review)))
+                if (!await _reviewService.Create(ReviewModelConverter.ReviewModelCreateConvertToCommand(review)))
                     return BadRequest("error");
                 await _unitOfWork.Commit();
                 return Ok("success");
@@ -137,7 +137,7 @@ namespace WebAPI.Controllers
                 if (review == null)
                     return BadRequest("error");
                 review.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
-                if (await _reviewService.Update(ReviewModelConverter.ReviewModelUpdateConvertToCommand(review)))
+                if (!await _reviewService.Update(ReviewModelConverter.ReviewModelUpdateConvertToCommand(review)))
                     return BadRequest("error");
                 await _unitOfWork.Commit();
                 return Ok("success");

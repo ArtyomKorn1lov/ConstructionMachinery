@@ -25,7 +25,11 @@ namespace Application.Services
         {
             try
             {
-                if(image == null)
+                if (image == null)
+                    return false;
+                if (image.Path == null || image.Path.Trim() == "")
+                    return false;
+                if (image.RelativePath == null || image.Path.Trim() == "")
                     return false;
                 await _imageRepository.Create(ImageCommandConverter.ImageCommandCreateConvertToEntity(image));
                 return true;
@@ -40,7 +44,7 @@ namespace Application.Services
         {
             try
             {
-                if (id == 0)
+                if (id <= 0)
                     return null;
                 List<Image> images = await _imageRepository.GetByAdvertId(id);
                 List<ImageCommand> commands = images.Select(image => ImageCommandConverter.EntityConvertToImageCommand(image)).ToList();
@@ -56,7 +60,7 @@ namespace Application.Services
         {
             try
             {
-                if (id == 0)
+                if (id <= 0)
                     return null;
                 Image image = await _imageRepository.GetById(id);
                 return ImageCommandConverter.EntityConvertToImageCommand(image);
@@ -71,9 +75,9 @@ namespace Application.Services
         {
             try
             {
-                if (id == 0)
+                if (id <= 0)
                     return false;
-                if (path == null)
+                if (path == null || path.Trim() == "")
                     return false;
                 await _imageRepository.Remove(id);
                 File.Delete(path);
@@ -89,12 +93,16 @@ namespace Application.Services
         {
             try
             {
-                if(image != null)
-                {
-                    await _imageRepository.Update(ImageCommandConverter.ImageCommandConvertToEntity(image));
-                    return true;
-                }
-                return false;
+                if (image != null)
+                    return false;
+                if (image.Id <= 0 || image.AdvertId <= 0)
+                    return false;
+                if (image.Path == null || image.Path.Trim() == "")
+                    return false;
+                if (image.RelativePath == null || image.Path.Trim() == "")
+                    return false;
+                await _imageRepository.Update(ImageCommandConverter.ImageCommandConvertToEntity(image));
+                return true;
             }
             catch
             {

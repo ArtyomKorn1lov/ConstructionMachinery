@@ -28,18 +28,30 @@ namespace Application.Services
         {
             try
             {
-                if(advert != null)
-                {
-                    advert.PublishDate = DateTime.Now;
-                    advert.EditDate = advert.PublishDate;
-                    Advert advertEntity = AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert);
-                    List<AvailableTime> availableTimes = FillAvailableTime(advert.StartDate, advert.EndDate, advert.StartTime, advert.EndTime);
-                    availableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
-                    advertEntity.AvailableTimes = availableTimes;
-                    await _advertRepository.Create(advertEntity);
-                    return true;
-                }
-                return false;
+                if (advert == null)
+                    return false;
+                if (advert.UserId <= 0)
+                    return false;
+                if (advert.Name == null || advert.Name.Trim() == "")
+                    return false;
+                if (advert.PTS == null || advert.PTS.Trim() == "")
+                    return false;
+                if (advert.VIN == null || advert.VIN.Trim() == "")
+                    return false;
+                if (advert.Price <= 0)
+                    return false;
+                if (advert.StartDate > advert.EndDate)
+                    return false;
+                if (advert.StartTime > advert.EndTime)
+                    return false;
+                advert.PublishDate = DateTime.Now;
+                advert.EditDate = advert.PublishDate;
+                Advert advertEntity = AdvertCommandConverter.AdvertCommandCreateConvertToAdvertEntity(advert);
+                List<AvailableTime> availableTimes = FillAvailableTime(advert.StartDate, advert.EndDate, advert.StartTime, advert.EndTime);
+                availableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+                advertEntity.AvailableTimes = availableTimes;
+                await _advertRepository.Create(advertEntity);
+                return true;
             }
             catch
             {
@@ -51,18 +63,35 @@ namespace Application.Services
         {
             try
             {
-                if (advertCommand != null)
-                {
-                    advertCommand.EditDate = DateTime.Now;
-                    List<AvailableTime> times = await _requestRepository.GetTimesForRemoveRequestByAdvertId(advertCommand.Id);
-                    Advert advert = AdvertCommandConverter.AdvertCommandUpdateConvertToAdvertEntity(advertCommand);
-                    List<AvailableTime> newAvailableTime = FillAvailableTime(advertCommand.StartDate, advertCommand.EndDate, advertCommand.StartTime, advertCommand.EndTime);
-                    newAvailableTime = await RemoveOldRequests(newAvailableTime, times);
-                    advert.AvailableTimes = newAvailableTime;
-                    await _advertRepository.Update(advert);
-                    return true;
-                }
-                return false;
+                if (advertCommand == null)
+                    return false;
+                if (advertCommand.Id <= 0)
+                    return false;
+                Advert currentAdvert = await _advertRepository.GetById(advertCommand.Id);
+                if (currentAdvert == null)
+                    return false;
+                if (advertCommand.UserId <= 0)
+                    return false;
+                if (advertCommand.Name == null || advertCommand.Name.Trim() == "")
+                    return false;
+                if (advertCommand.PTS == null || advertCommand.PTS.Trim() == "")
+                    return false;
+                if (advertCommand.VIN == null || advertCommand.VIN.Trim() == "")
+                    return false;
+                if (advertCommand.Price <= 0)
+                    return false;
+                if (advertCommand.StartDate > advertCommand.EndDate)
+                    return false;
+                if (advertCommand.StartTime > advertCommand.EndTime)
+                    return false;
+                advertCommand.EditDate = DateTime.Now;
+                List<AvailableTime> times = await _requestRepository.GetTimesForRemoveRequestByAdvertId(advertCommand.Id);
+                Advert advert = AdvertCommandConverter.AdvertCommandUpdateConvertToAdvertEntity(advertCommand);
+                List<AvailableTime> newAvailableTime = FillAvailableTime(advertCommand.StartDate, advertCommand.EndDate, advertCommand.StartTime, advertCommand.EndTime);
+                newAvailableTime = await RemoveOldRequests(newAvailableTime, times);
+                advert.AvailableTimes = newAvailableTime;
+                await _advertRepository.Update(advert);
+                return true;
             }
             catch
             {
@@ -76,16 +105,16 @@ namespace Application.Services
             endDate = endDate.ToLocalTime();
             List<DateTime> dates = new List<DateTime>();
             DateTime date = new DateTime(startDate.Year, startDate.Month, startDate.Day);
-            while(date <= endDate)
+            while (date <= endDate)
             {
                 dates.Add(date);
                 date = date.AddDays(1);
             }
             List<AvailableTime> availableTimes = new List<AvailableTime>();
             int currentHour = startTime;
-            for(int count = 0; count < dates.Count; count++)
+            for (int count = 0; count < dates.Count; count++)
             {
-                while(currentHour <= endTime)
+                while (currentHour <= endTime)
                 {
                     dates[count] = dates[count].AddHours(currentHour);
                     availableTimes.Add(new AvailableTime
@@ -130,7 +159,7 @@ namespace Application.Services
                     };
                     for (int count_i = 0; count_i < availableTimeCommands.Count; count_i++)
                     {
-                        if (availableTimeCommands[count_i] != null 
+                        if (availableTimeCommands[count_i] != null
                             && bufferCommand.Date.Date == availableTimeCommands[count_i].Date.Date)
                         {
                             bufferCommand.Times.Add(availableTimeCommands[count_i]);
@@ -194,11 +223,11 @@ namespace Application.Services
 
         public async Task<List<AvailableTime>> RemoveOldRequests(List<AvailableTime> newAvilableTime, List<AvailableTime> oldAvailableTime)
         {
-            for(int count_new_time = 0; count_new_time < newAvilableTime.Count; count_new_time++)
+            for (int count_new_time = 0; count_new_time < newAvilableTime.Count; count_new_time++)
             {
-                for(int count_old_time = 0; count_old_time < oldAvailableTime.Count; count_old_time++)
+                for (int count_old_time = 0; count_old_time < oldAvailableTime.Count; count_old_time++)
                 {
-                    if(oldAvailableTime[count_old_time] != null)
+                    if (oldAvailableTime[count_old_time] != null)
                     {
                         if (newAvilableTime[count_new_time].Date == oldAvailableTime[count_old_time].Date)
                         {
@@ -208,9 +237,9 @@ namespace Application.Services
                     }
                 }
             }
-            foreach(AvailableTime time in oldAvailableTime)
+            foreach (AvailableTime time in oldAvailableTime)
             {
-                if(time != null)
+                if (time != null)
                 {
                     await _requestRepository.Remove((int)time.AvailabilityRequestId);
                 }
@@ -222,7 +251,7 @@ namespace Application.Services
         {
             int rating = 0;
             double result = 0;
-            if(reviews == null)
+            if (reviews == null)
                 return result;
             if (reviews.Count == 0)
                 return result;
@@ -237,11 +266,13 @@ namespace Application.Services
             }
             return result;
         }
-            
+
         public async Task<List<AdvertCommandList>> GetAll(int count)
         {
             try
             {
+                if (count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetAll(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -256,6 +287,13 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || count < 0)
+                    return null;
+                User currentUser = await _accountRepository.GetById(id);
+                if (currentUser == null)
+                    return null;
+                if (currentUser.Id != id)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -270,8 +308,18 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return null;
                 Advert advert = await _advertRepository.GetById(id);
+                if (advert == null)
+                    return null;
+                if (advert.Id != id)
+                    return null;
                 User user = await _accountRepository.GetById(advert.UserId);
+                if (user == null)
+                    return null;
+                if (user.Id != advert.UserId)
+                    return null;
                 AdvertCommandInfo advertCommandInfo = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandInfo(advert, user.Name);
                 return advertCommandInfo;
             }
@@ -285,8 +333,18 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return null;
                 Advert advert = await _advertRepository.GetById(id);
+                if (advert == null)
+                    return null;
+                if (advert.Id != id)
+                    return null;
                 User user = await _accountRepository.GetById(advert.UserId);
+                if (user == null)
+                    return null;
+                if (user.Id != advert.UserId)
+                    return null;
                 List<AvailiableDayCommand> availiableDayCommands = PackageToDayCommands(
                     AdvertCommandConverter.AvailableTimeEntityConvertToCommand(advert.AvailableTimes));
                 availiableDayCommands = SortDateCommmands(availiableDayCommands);
@@ -304,6 +362,8 @@ namespace Application.Services
         {
             try
             {
+                if (name == null || name.Trim() == "" || count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetByName(name, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -318,6 +378,8 @@ namespace Application.Services
         {
             try
             {
+                if (name == null || name.Trim() == "" || count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetByNameWithoutUserId(name, id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -332,6 +394,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -346,6 +410,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForCustomer(id, count);
                 List<AdvertCommandForRequest> commands = adverts.Select(advert => AdvertCommandConverter.AdvertConvertToAdvertCommandForRequest(advert)).ToList();
                 return commands;
@@ -356,13 +422,21 @@ namespace Application.Services
             }
         }
 
-        public async Task<AdvertCommandUpdate> GetForUpdate(int id)
+        public async Task<AdvertCommandUpdate> GetForUpdate(int id, int userId)
         {
             try
             {
+                if (id <= 0 || userId <= 0)
+                    return null;
                 Advert advert = await _advertRepository.GetForUpdate(id);
+                if (advert == null)
+                    return null;
+                if (advert.Id != id)
+                    return null;
+                if (userId != advert.UserId)
+                    return null;
                 AdvertCommandUpdate advertCommand = AdvertCommandConverter.AdvertEntityConvertToAdvertCommandUpdate(advert);
-                if(advert.AvailableTimes.Count != 0)
+                if (advert.AvailableTimes.Count > 0)
                     advertCommand = FillRangeTime(advertCommand, advert);
                 return advertCommand;
             }
@@ -388,7 +462,11 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return 0;
                 Advert advert = await _advertRepository.GetById(id);
+                if (advert == null)
+                    return 0;
                 return advert.UserId;
             }
             catch
@@ -401,10 +479,12 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return false;
                 List<AvailableTime> times = await _requestRepository.GetTimesForRemoveRequestByAdvertId(id);
-                if(times.Count != 0)
+                if (times.Count != 0)
                 {
-                    foreach(AvailableTime time in times)
+                    foreach (AvailableTime time in times)
                     {
                         await _requestRepository.Remove((int)time.AvailabilityRequestId);
                     }
@@ -422,6 +502,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMax(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -436,6 +518,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMin(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -450,6 +534,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserId(count, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -464,6 +550,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserId(count, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -478,6 +566,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMax(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -492,6 +582,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMin(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -506,6 +598,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserId(count, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -520,6 +614,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserId(count, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -534,6 +630,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByDateMin(count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -548,6 +646,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserId(count, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -562,6 +662,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByName(count, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -576,6 +678,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMinByName(count, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -590,6 +694,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserIdByName(count, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -604,6 +710,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserIdByName(count, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -618,6 +726,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByName(count, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -632,6 +742,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMinByName(count, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -646,6 +758,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserIdByName(count, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -660,6 +774,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserIdByName(count, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -674,6 +790,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByDateMinByName(count, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -688,6 +806,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserIdByName(count, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -702,6 +822,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -716,6 +838,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByPriceMinByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -730,6 +854,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -744,6 +870,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByRatingMinByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
@@ -758,6 +886,8 @@ namespace Application.Services
         {
             try
             {
+                if (count < 0 || id <= 0)
+                    return null;
                 List<Advert> adverts = await _advertRepository.GetSortByDateMinByUserId(id, count);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;

@@ -26,6 +26,12 @@ namespace Application.Services
             {
                 if (mail == null)
                     return false;
+                if (mail.Name == null || mail.Name.Trim() == "")
+                    return false;
+                if (mail.Email == null || mail.Email.Trim() == "")
+                    return false;
+                if (mail.Phone == null || mail.Phone.Trim() == "")
+                    return false;
                 mail.Created = DateTime.Now;
                 await _mailRepository.SaveMail(MailCommandConverter.MailCommandConvertToEntity(mail));
                 return true;

@@ -416,7 +416,8 @@ namespace WebAPI.Controllers
         [HttpGet("for-update/{id}")]
         public async Task<AdvertModelUpdate> GetForUpdate(int id)
         {
-            AdvertModelUpdate advert = AdvertModelConverter.AdvertCommandUpdateConvertAdvertModelUpdate(await _advertService.GetForUpdate(id));
+            int userId = await _accountService.GetIdByEmail(User.Identity.Name);
+            AdvertModelUpdate advert = AdvertModelConverter.AdvertCommandUpdateConvertAdvertModelUpdate(await _advertService.GetForUpdate(id, userId));
             if (advert == null)
                 return null;
             return advert;

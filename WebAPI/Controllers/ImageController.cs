@@ -23,16 +23,19 @@ namespace WebAPI.Controllers
         private IUnitOfWork _unitOfWork;
         private IImageService _imageService;
         private IAdvertService _advertService;
+        private IAccountService _accountService;
         private IWebHostEnvironment _appEnvironment;
         private const string _currentDirectory = "/Files/";
         private const string _serverDirectory = "https://localhost:5001";
 
-        public ImageController(IUnitOfWork unitOfWork, IImageService imageService, IWebHostEnvironment appEnvironment, IAdvertService advertService)
+        public ImageController(IUnitOfWork unitOfWork, IImageService imageService, IWebHostEnvironment appEnvironment, 
+            IAdvertService advertService, IAccountService accountService)
         {
             _unitOfWork = unitOfWork;
             _imageService = imageService;
             _appEnvironment = appEnvironment;
             _advertService = advertService;
+            _accountService = accountService;
         }
 
         [Authorize]
@@ -43,7 +46,11 @@ namespace WebAPI.Controllers
             try
             {
                 int advertId = await _advertService.GetLastAdvertId();
-                if (advertId == 0)
+                if (advertId <= 0)
+                    return BadRequest("error");
+                int userIdByAdvertId = await _advertService.GetUserIdByAdvert(advertId);
+                int currentUserId = await _accountService.GetUserIdByLogin(User.Identity.Name);
+                if (userIdByAdvertId != currentUserId)
                     return BadRequest("error");
                 string folderPath = _appEnvironment.WebRootPath + _currentDirectory + advertId.ToString();
                 Directory.CreateDirectory(folderPath);
@@ -69,8 +76,8 @@ namespace WebAPI.Controllers
                         AdvertId = advertId
                     };
                     await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
+                    await _unitOfWork.Commit();
                 }
-                await _unitOfWork.Commit();
                 return Ok("success");
             }
             catch
@@ -86,6 +93,15 @@ namespace WebAPI.Controllers
         {
             try
             {
+                if (id <= 0)
+                    return BadRequest("error");
+                AdvertCommandInfo advertCommandInfo = await _advertService.GetById(id);
+                if (advertCommandInfo == null)
+                    return BadRequest("error");
+                int userIdByAdvertId = await _advertService.GetUserIdByAdvert(id);
+                int currentUserId = await _accountService.GetUserIdByLogin(User.Identity.Name);
+                if (userIdByAdvertId != currentUserId)
+                    return BadRequest("error");
                 string folderPath = _appEnvironment.WebRootPath + _currentDirectory + id.ToString();
                 IFormFileCollection files = Request.Form.Files;
                 if (files.Any(f => f.Length == 0))
@@ -117,8 +133,8 @@ namespace WebAPI.Controllers
                         AdvertId = id
                     };
                     await _imageService.Create(ImageModelConverter.ModelConvertToImageCommandCreate(image));
+                    await _unitOfWork.Commit();
                 }
-                await _unitOfWork.Commit();
                 return Ok("success");
             }
             catch
@@ -138,6 +154,12 @@ namespace WebAPI.Controllers
                 foreach (int id in imagesId)
                 {
                     ImageCommand image = await _imageService.GetById(id);
+                    if (image == null)
+                        return BadRequest("error");
+                    int userIdByAdvertId = await _advertService.GetUserIdByAdvert(image.AdvertId);
+                    int currentUserId = await _accountService.GetUserIdByLogin(User.Identity.Name);
+                    if (userIdByAdvertId != currentUserId)
+                        return BadRequest("error");
                     string path = image.Path;
                     path = path.Replace(_serverDirectory, "");
                     path = _appEnvironment.WebRootPath + path;

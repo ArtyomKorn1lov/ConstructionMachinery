@@ -14,17 +14,28 @@ namespace Application.Services
     public class ReviewService : IReviewService
     {
         private IReviewRepository _reviewRepository;
+        private IAdvertRepository _advertRepository;
 
-        public ReviewService(IReviewRepository reviewRepository)
+        public ReviewService(IReviewRepository reviewRepository, IAdvertRepository advertRepository)
         {
             _reviewRepository = reviewRepository;
+            _advertRepository = advertRepository;
         }
 
         public async Task<bool> Create(ReviewCommandCreate review)
         {
             try
             {
-                if(review == null)
+                if (review == null)
+                    return false;
+                if (review.ReviewStateId < 1 && review.ReviewStateId > 5)
+                    return false;
+                if (review.AdvertId <= 0)
+                    return false;
+                Advert advert = await _advertRepository.GetById(review.AdvertId);
+                if (advert == null)
+                    return false;
+                if (advert.UserId == review.UserId)
                     return false;
                 review.Date = review.Date.ToLocalTime();
                 await _reviewRepository.Create(ReviewCommandConverter.ReviewCommandCreateConvertToEntity(review));
@@ -40,6 +51,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || count < 0)
+                    return null;
                 List<Review> reviews = await _reviewRepository.GetByAdvertId(id, count);
                 List<ReviewCommand> commands = reviews.Select(review => ReviewCommandConverter.ReviewEntityConvertToCommand(review)).ToList();
                 return commands;
@@ -54,6 +67,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return null;
                 ReviewCommand review = ReviewCommandConverter.ReviewEntityConvertToCommand(await _reviewRepository.GetById(id));
                 return review;
             }
@@ -67,6 +82,8 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || count < 0)
+                    return null;
                 List<Review> reviews = await _reviewRepository.GetByUserId(id, count);
                 List<ReviewCommand> commands = reviews.Select(review => ReviewCommandConverter.ReviewEntityConvertToCommand(review)).ToList();
                 return commands;
@@ -81,7 +98,7 @@ namespace Application.Services
         {
             try
             {
-                if (id == 0)
+                if (id <= 0)
                     return false;
                 await _reviewRepository.Remove(id);
                 return true;
@@ -97,6 +114,20 @@ namespace Application.Services
             try
             {
                 if (review == null)
+                    return false;
+                if (review.UserId <= 0)
+                    return false;
+                if (review.ReviewStateId <= 1 && review.ReviewStateId >= 5)
+                    return false;
+                if (review.AdvertId <= 0)
+                    return false;
+                Advert advert = await _advertRepository.GetById(review.AdvertId);
+                if (advert == null)
+                    return false;
+                if (advert.UserId == review.UserId)
+                    return false;
+                ReviewCommand currentReview = await GetById(review.Id);
+                if (currentReview.UserId != review.UserId)
                     return false;
                 review.Date = review.Date.ToLocalTime();
                 await _reviewRepository.Update(ReviewCommandConverter.ReviewCommandUpdateConvertToEntity(review));

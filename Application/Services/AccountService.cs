@@ -32,13 +32,21 @@ namespace Application.Services
         {
             try
             {
-                if(user != null)
-                {
-                    user.Created = DateTime.Now;
-                    await _accountRepository.Create(UserCommandConverter.UserCreateCommandConvertToUserEntity(user));
-                    return true;
-                }
-                return false;
+                if (user == null)
+                    return false;
+                if (user.Password.Trim() == "" || user.Password == null)
+                    return false;
+                if (user.Name.Trim() == "" || user.Name == null)
+                    return false;
+                if (user.Email.Trim() == "" || user.Email == null)
+                    return false;
+                if (user.Phone.Trim() == "" || user.Phone == null)
+                    return false;
+                if (user.Address.Trim() == "" || user.Address == null)
+                    return false;
+                user.Created = DateTime.Now;
+                await _accountRepository.Create(UserCommandConverter.UserCreateCommandConvertToUserEntity(user));
+                return true;
             }
             catch
             {
@@ -50,8 +58,12 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return null;
                 UserCommand user = UserCommandConverter.UserEntityConvertToUserCommand(await _accountRepository.GetById(id));
                 if (user == null)
+                    return null;
+                if (id != user.Id)
                     return null;
                 return user;
             }
@@ -65,15 +77,14 @@ namespace Application.Services
         {
             try
             {
-                if (email == null || password == null)
-                {
+                if (email == null || password == null
+                    || email.Trim() == "" || password.Trim() == "")
                     return false;
-                }
                 User user = await _accountRepository.GetLoginModel(email, password);
-                if(user == null)
-                {
+                if (user == null)
                     return false;
-                }
+                if (email != user.Email || password != user.Password)
+                    return false;
                 return true;
             }
             catch
@@ -86,16 +97,12 @@ namespace Application.Services
         {
             try
             {
-                if (email == null)
-                {
+                if (email == null || email.Trim() == "")
                     return false;
-                }
                 User user = await _accountRepository.GetRegisterModel(email);
-                if (user == null)
-                {
-                    return true;
-                }
-                return false;
+                if (user != null)
+                    return false;
+                return true;
             }
             catch
             {
@@ -108,6 +115,11 @@ namespace Application.Services
             try
             {
                 if (id <= 0)
+                    return false;
+                User currentUser = await _accountRepository.GetById(id);
+                if (currentUser == null)
+                    return false;
+                if (currentUser.Id != id)
                     return false;
                 await _accountRepository.Remove(id);
                 return true;
@@ -122,12 +134,25 @@ namespace Application.Services
         {
             try
             {
-                if(user != null)
-                {
-                    await _accountRepository.Update(UserCommandConverter.UserUpdateCommandConvertToUserEntity(user));
-                    return true;
-                }
-                return false;
+                if (user == null || user.Id <= 0)
+                    return false;
+                User currentUser = await _accountRepository.GetById(user.Id);
+                if (currentUser == null)
+                    return false;
+                if (currentUser.Id != user.Id)
+                    return false;
+                if (user.Password.Trim() == "" || user.Password == null)
+                    return false;
+                if (user.Name.Trim() == "" || user.Name == null)
+                    return false;
+                if (user.Email.Trim() == "" || user.Email == null)
+                    return false;
+                if (user.Phone.Trim() == "" || user.Phone == null)
+                    return false;
+                if (user.Address.Trim() == "" || user.Address == null)
+                    return false;
+                await _accountRepository.Update(UserCommandConverter.UserUpdateCommandConvertToUserEntity(user));
+                return true;
             }
             catch
             {
@@ -139,10 +164,12 @@ namespace Application.Services
         {
             try
             {
-                if (email == null)
+                if (email == null || email.Trim() == "")
                     return 0;
                 User user = await _accountRepository.GetRegisterModel(email);
                 if (user == null)
+                    return 0;
+                if (user.Email != email)
                     return 0;
                 return user.Id;
             }
@@ -156,10 +183,12 @@ namespace Application.Services
         {
             try
             {
-                if (email == null)
+                if (email == null || email.Trim() == "")
                     return null;
                 User user = await _accountRepository.GetRegisterModel(email);
                 if (user == null)
+                    return null;
+                if (user.Email != email)
                     return null;
                 return UserCommandConverter.UserEntityConvertToUserCommand(user);
             }
@@ -173,7 +202,13 @@ namespace Application.Services
         {
             try
             {
+                if (email == null || email.Trim() == "")
+                    return null;
                 User user = await _accountRepository.GetRegisterModel(email);
+                if (user == null)
+                    return null;
+                if (user.Email != email)
+                    return null;
                 UserTokenCommand command = UserCommandConverter.UserEntityConvertToUserToken(user);
                 return command;
             }
@@ -187,8 +222,12 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || refreshToken == null || refreshToken.Trim() == "")
+                    return false;
                 User user = await _accountRepository.GetById(id);
                 if (user == null)
+                    return false;
+                if (id != user.Id)
                     return false;
                 user.RefreshToken = refreshToken;
                 user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
@@ -204,8 +243,12 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0 || refreshToken == null || refreshToken.Trim() == "")
+                    return false;
                 User user = await _accountRepository.GetById(id);
                 if (user == null)
+                    return false;
+                if (id != user.Id)
                     return false;
                 user.RefreshToken = refreshToken;
                 return true;
@@ -220,7 +263,13 @@ namespace Application.Services
         {
             try
             {
+                if (email == null || email.Trim() == "")
+                    return 0;
                 User user = await _accountRepository.GetRegisterModel(email);
+                if (user == null)
+                    return 0;
+                if (user.Email != email)
+                    return 0;
                 return user.Id;
             }
             catch
@@ -233,7 +282,13 @@ namespace Application.Services
         {
             try
             {
+                if (id <= 0)
+                    return null;
                 User user = await _accountRepository.GetById(id);
+                if (user == null)
+                    return null;
+                if (user.Id != id)
+                    return null;
                 return user.Name;
             }
             catch

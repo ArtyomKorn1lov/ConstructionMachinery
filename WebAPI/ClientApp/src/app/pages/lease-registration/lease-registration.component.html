@@ -2,7 +2,7 @@
     <div class="content">
         <div (click)="back()" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header -back">Оформление аренды:</h5>
+            <h5 class="medium-header -back">{{this.titleService.getTitle()}}:</h5>
         </div>
         <form class="content__elements">
             <h4 class="small-header">Адрес доставки</h4>

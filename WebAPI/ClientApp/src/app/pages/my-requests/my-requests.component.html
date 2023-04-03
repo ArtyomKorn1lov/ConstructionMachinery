@@ -2,7 +2,7 @@
     <div class="content">
         <div [routerLink]="['/advert-request']" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header -back">Исходящие заявки</h5>
+            <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <div class="content__elements">
             <app-request [page]="'in'"></app-request>

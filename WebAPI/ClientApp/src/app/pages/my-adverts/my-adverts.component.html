@@ -2,7 +2,7 @@
     <div class="content">
         <div [routerLink]="['/private-area']" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header -back">Мои объявления</h5>
+            <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <div class="content__elements">
             <button [routerLink]="['/advert-create']" class="primary-authorize">

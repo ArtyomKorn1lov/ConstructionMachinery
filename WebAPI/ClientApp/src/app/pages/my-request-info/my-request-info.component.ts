@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-my-request-info',
@@ -18,8 +19,10 @@ export class MyRequestInfoComponent implements OnInit {
   public date: Date = new Date();
   private advertRequestRoute = "advert-request";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService,
-    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, public titleService: Title,
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Исходящая заявка");
+  }
 
   public back(): void {
     const backUrl = this.getBackUrl();
@@ -88,6 +91,9 @@ export class MyRequestInfoComponent implements OnInit {
         (data) => {
           this.request = data;
           this.date = new Date(this.request.availableTimeModels[0].date);
+          if (data != null)
+            this.titleService.setTitle("Заявка от " + this.datetimeService.convertDateToUTS(this.date.getDate()) + "." + this.datetimeService.convertDateToUTS(this.date.getMonth() + 1)
+              + "." + this.date.getFullYear() + " в " + this.datetimeService.convertDateToUTS(this.date.getHours()) + ":00");
         }
       )
       .catch(

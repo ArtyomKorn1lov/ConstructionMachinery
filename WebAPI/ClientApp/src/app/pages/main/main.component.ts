@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TechniqueTypeList } from 'src/app/models/TechniqueTypeList';
 import { AccountService } from 'src/app/services/account.service';
-import { AdvertService } from 'src/app/services/advert.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-main',
@@ -14,7 +14,9 @@ export class MainComponent implements OnInit {
   public techniqueObject: TechniqueTypeList = new TechniqueTypeList();;
   private targetRoute: string = "/advert-list";
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router, public titleService: Title) {
+    this.titleService.setTitle("Автопомощник");
+  }
 
   public search(name: string): void {
     this.router.navigate([this.targetRoute], {

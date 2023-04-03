@@ -8,6 +8,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -34,8 +35,10 @@ export class AdvertCreateTimeComponent implements OnInit {
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService,
-    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, public titleService: Title,
+    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService) {
+    this.titleService.setTitle("Новое объявление");
+  }
 
   public resetValidFlag(): boolean {
     return false;

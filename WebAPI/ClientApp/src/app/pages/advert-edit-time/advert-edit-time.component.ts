@@ -7,6 +7,7 @@ import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-advert-edit-time',
@@ -32,8 +33,10 @@ export class AdvertEditTimeComponent implements OnInit {
   private myRoute: string = '/my-adverts';
   private updateRoute = "/advert-edit";
 
-  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService,
-    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, public titleService: Title,
+    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Редактировать объявление");
+  }
 
   public back(): void {
     let backUrl = this.getBackUrl();

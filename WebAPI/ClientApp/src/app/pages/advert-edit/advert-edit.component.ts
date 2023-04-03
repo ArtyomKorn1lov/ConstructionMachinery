@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdvertModelUpdate } from 'src/app/models/AdvertModelUpdate';
 import { ImageModel } from 'src/app/models/ImageModel';
@@ -35,8 +36,10 @@ export class AdvertEditComponent implements OnInit {
   private myRoute: string = '/my-adverts';
   private targetRoute: string = "/advert-edit/time";
 
-  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
-    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, public titleService: Title,
+    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) {
+      this.titleService.setTitle("Редактировать объявление");
+  }
 
   public back(): void {
     let backUrl = this.getBackUrl();

@@ -5,6 +5,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ReviewModelCreate } from 'src/app/models/ReviewModelCreate';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 interface Stars {
   first: boolean;
@@ -35,8 +36,10 @@ export class ReviewCreateComponent implements OnInit {
   private targetRoute: string = "/advert-info";
   private advertListRoute: string = "/advert-list";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService,
-    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, public titleService: Title,
+    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Добавить отзыв");
+  }
 
   public back(): void {
     let backUrl = this.getBackUrl();

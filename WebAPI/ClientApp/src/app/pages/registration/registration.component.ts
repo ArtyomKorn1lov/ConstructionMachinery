@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { RegisterModel } from 'src/app/models/RegisterModel';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-registration',
@@ -30,7 +31,9 @@ export class RegistrationComponent implements OnInit {
   public messageAddress: string | undefined;
   private targetRoute: string = "/";
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router, public titleService: Title) {
+    this.titleService.setTitle("Регистрация");
+  }
 
   public resetValidFlag(): boolean {
     return false;

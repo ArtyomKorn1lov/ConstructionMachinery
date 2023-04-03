@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UserUpdateModel } from 'src/app/models/UserUpdateModel';
 import { AccountService } from 'src/app/services/account.service';
@@ -28,7 +29,9 @@ export class EditProfileComponent implements OnInit {
   public messageAddress: string | undefined;
   private targetRoute: string = "/profile";
 
-  constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService) { }
+  constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService, public titleService: Title) {
+    this.titleService.setTitle("Редактирование профиля");
+  }
 
   public resetValidFlag(): boolean {
     return false;

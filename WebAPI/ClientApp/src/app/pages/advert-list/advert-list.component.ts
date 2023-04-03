@@ -4,6 +4,7 @@ import { AdvertComponent } from 'src/app/components/advert/advert.component';
 import { DialogFilterComponent } from 'src/app/components/dialog-filter/dialog-filter.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Filter } from 'src/app/models/Filter';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-advert-list',
@@ -46,7 +47,9 @@ export class AdvertListComponent implements OnInit {
   public filterState: string = "all";
   @ViewChild(AdvertComponent) child: AdvertComponent | undefined;
 
-  constructor(private accountService: AccountService, private dialog: MatDialog) { }
+  constructor(private accountService: AccountService, private dialog: MatDialog, public titleService: Title,) {
+    this.titleService.setTitle("Список объявлений");
+  }
 
   public async selectEvent(): Promise<void> {
     await this.child?.sortByParam(this.filterState);

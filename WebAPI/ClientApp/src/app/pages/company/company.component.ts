@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { MailService } from 'src/app/services/mail.service';
 import { MailModel } from 'src/app/models/MailModel';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-company',
@@ -21,7 +22,9 @@ export class CompanyComponent implements OnInit {
   public messageEmail: string | undefined;
   public description: string = "";
 
-  constructor(private accountService: AccountService, private mailService: MailService) { }
+  constructor(private accountService: AccountService, private mailService: MailService, public titleService: Title) {
+    this.titleService.setTitle("О компании");
+   }
 
   public resetValidFlag(): boolean {
     return false;

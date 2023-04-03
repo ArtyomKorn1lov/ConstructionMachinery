@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-advert-create',
@@ -37,8 +38,10 @@ export class AdvertCreateComponent implements OnInit {
   private myRoute: string = '/my-adverts';
   private targetRoute: string = "/advert-create/time";
 
-  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
-    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(private datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, public titleService: Title,
+    private accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Новое объявление");
+  }
 
   public back(): void {
     let backUrl = this.getBackUrl();
@@ -91,7 +94,7 @@ export class AdvertCreateComponent implements OnInit {
       this.name = '';
       valid = false;
       if (toScroll) {
-        document.getElementById("name")?.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
+        document.getElementById("name")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }
@@ -101,7 +104,7 @@ export class AdvertCreateComponent implements OnInit {
       this.price = undefined;
       valid = false;
       if (toScroll) {
-        document.getElementById("price")?.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
+        document.getElementById("price")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }
@@ -111,7 +114,7 @@ export class AdvertCreateComponent implements OnInit {
       this.dateIssure = undefined;
       valid = false;
       if (toScroll) {
-        document.getElementById("dateIssure")?.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
+        document.getElementById("dateIssure")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }
@@ -121,7 +124,7 @@ export class AdvertCreateComponent implements OnInit {
       this.pts = '';
       valid = false;
       if (toScroll) {
-        document.getElementById("pts")?.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
+        document.getElementById("pts")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }
@@ -131,7 +134,7 @@ export class AdvertCreateComponent implements OnInit {
       this.vin = '';
       valid = false;
       if (toScroll) {
-        document.getElementById("vin")?.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
+        document.getElementById("vin")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }
@@ -140,7 +143,7 @@ export class AdvertCreateComponent implements OnInit {
       this.invalidImage = true;
       valid = false;
       if (toScroll) {
-        document.getElementById("images")?.scrollIntoView({block: "center", inline: "center", behavior: "smooth"});
+        document.getElementById("images")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }

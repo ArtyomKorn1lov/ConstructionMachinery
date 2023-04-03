@@ -1,7 +1,7 @@
 <div class="flex-centered">
     <div class="content">
         <div class="content__elements">
-            <h6 class="big-header -content">Список объявлений:</h6>
+            <h6 class="big-header -content">{{this.titleService.getTitle()}}:</h6>
             <div class="filter-group">
                 <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
                     <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>

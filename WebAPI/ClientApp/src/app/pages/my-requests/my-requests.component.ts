@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -8,7 +9,9 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class MyRequestsComponent implements OnInit {
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, public titleService: Title) {
+    this.titleService.setTitle("Исходящие заявки");
+  }
 
   public async ngOnInit(): Promise<void> {
     await this.accountService.getAuthoriseModel();

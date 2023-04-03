@@ -7,6 +7,7 @@ import { ConfirmModel } from 'src/app/models/ConfirmModel';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-confirm-list-info',
@@ -20,8 +21,10 @@ export class ConfirmListInfoComponent implements OnInit {
   private privateAreaRoute: string = "private-area";
   private confirmListRoute = "confirm-list";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService,
-    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, public titleService: Title,
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Подтверждение заявки");
+  }
 
   private getIdByQueryParams(): number {
     let id = 0;
@@ -69,6 +72,10 @@ export class ConfirmListInfoComponent implements OnInit {
         (data) => {
           this.request = data;
           this.date = new Date(this.request.availableTimeModels[0].date);
+          if (this.date != null)
+            this.titleService.setTitle("Заявка от " + this.datetimeService.convertDateToUTS(this.date.getDate()) + "."
+              + this.datetimeService.convertDateToUTS(this.date.getMonth() + 1) + "." + this.date.getFullYear()
+              + " в " + this.datetimeService.convertDateToUTS(this.date.getHours()) + ":00");
         }
       )
       .catch(

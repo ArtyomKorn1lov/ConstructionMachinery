@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AdvertService } from 'src/app/services/advert.service';
-import { AdvertModelInfo } from 'src/app/models/AdvertModelInfo';
-import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { AccountService } from 'src/app/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +9,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
 import { AdvertModelDetail } from 'src/app/models/AdvertModelDetail';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-advert-info',
@@ -29,14 +28,16 @@ export class AdvertInfoComponent implements OnInit {
   private leaseRoute: string = '/lease-registration';
   private reviewCreateRoute: string = '/review-create';
 
-  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
-    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, public titleService: Title,
+    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) {
+      this.titleService.setTitle("Информация об объявлении");
+  }
 
   public leaseRegistration(): void {
     this.router.navigate([this.leaseRoute], {
-      queryParams: { 
+      queryParams: {
         id: this.advert.id,
-        backUrl: this.router.url 
+        backUrl: this.router.url
       }
     });
   }
@@ -138,6 +139,8 @@ export class AdvertInfoComponent implements OnInit {
           this.advert.publishDate = new Date(this.advert.publishDate);
           this.advert.editDate = new Date(this.advert.editDate);
           this.advert.dateIssue = new Date(this.advert.dateIssue);
+          if (this.advert.name != null && this.advert.name.trim() != "")
+            this.titleService.setTitle(this.advert.name);
         }
       )
       .catch(

@@ -4,6 +4,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { Router } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +16,10 @@ export class ProfileComponent implements OnInit {
   public user: UserModel = new UserModel(0, "", "", "", new Date(), "");
   private targetRoute: string = "/";
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private router: Router, private tokenService: TokenService) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private router: Router,
+    private tokenService: TokenService, public titleService: Title) {
+    this.titleService.setTitle("Профиль пользователя");
+  }
 
   public async logout(): Promise<void> {
     if (this.accountService.logOut()) {

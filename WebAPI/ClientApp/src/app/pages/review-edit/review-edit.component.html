@@ -2,7 +2,7 @@
     <div class="content">
         <div (click)="back()" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header -back">Редактировать отзыв</h5>
+            <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <form class="content__elements">
             <h5 class="small-header">Опишите ваш отзыв</h5>

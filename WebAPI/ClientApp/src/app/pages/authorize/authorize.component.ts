@@ -3,6 +3,7 @@ import { AuthoriseModel } from 'src/app/models/AuthoriseModel';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { LoginModel } from 'src/app/models/LoginModel';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-authorize',
@@ -19,7 +20,9 @@ export class AuthorizeComponent implements OnInit {
   public messagePassword: string | undefined;
   private targetRoute: string = "/";
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router, public titleService: Title) {
+    this.titleService.setTitle("Войти в личный кабинет");
+  }
 
   public resetValidFlag(): boolean {
     return false;

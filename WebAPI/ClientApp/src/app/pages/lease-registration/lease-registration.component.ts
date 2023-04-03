@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lease-registration',
@@ -27,8 +28,10 @@ export class LeaseRegistrationComponent implements OnInit {
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
   private listRoute: string = '/advert-list';
 
-  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService,
-    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, public titleService: Title,
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Оформление аренды");
+  }
 
   public back(): void {
     let backUrl = this.getBackUrl();

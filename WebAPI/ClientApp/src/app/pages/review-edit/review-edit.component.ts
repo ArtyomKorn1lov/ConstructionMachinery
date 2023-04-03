@@ -5,6 +5,7 @@ import { AdvertService } from 'src/app/services/advert.service';
 import { ReviewModelUpdate } from 'src/app/models/ReviewModelUpdate';
 import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
+import { Title } from '@angular/platform-browser';
 
 interface Stars {
   first: boolean;
@@ -36,8 +37,10 @@ export class ReviewEditComponent implements OnInit {
   private targetRoute: string = "/advert-info";
   private advertListRoute: string = "/advert-list";
 
-  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService,
-    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, public titleService: Title,
+    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) {
+    this.titleService.setTitle("Редактировать отзыв");
+  }
 
   public back(): void {
     let backUrl = this.getBackUrl();
@@ -90,7 +93,7 @@ export class ReviewEditComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if(!this.validateReview())
+    if (!this.validateReview())
       return;
     this.review.description = this.description;
     this.review.date = new Date();

@@ -26,6 +26,7 @@ export class LeaseRegistrationComponent implements OnInit {
   public invalidCurrentTimeId: boolean = false;
   public messageCurrentTimeId: string | undefined;
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
+  public spinnerFlag = false;
   private listRoute: string = '/advert-list';
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, public titleService: Title,
@@ -78,19 +79,28 @@ export class LeaseRegistrationComponent implements OnInit {
   }
 
   public async createRequest(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
-    if (!this.validateRequest())
       return;
-    if (this.currentTimeId == 0 || this.currentTimeId == undefined)
+    }
+    if (!this.validateRequest()) {
+      this.spinnerFlag = false;
       return;
+    }
+    if (this.currentTimeId == 0 || this.currentTimeId == undefined) {
+      this.spinnerFlag = false;
+      return;
+    }
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
     await this.requestService.create(this.request)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert(data);
           this.router.navigateByUrl(this.getBackUrl());
@@ -99,6 +109,7 @@ export class LeaseRegistrationComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка запроса на аренду");
           console.log(error);
           this.address = '';
@@ -118,6 +129,7 @@ export class LeaseRegistrationComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)

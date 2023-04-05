@@ -17,6 +17,7 @@ export class MyRequestInfoComponent implements OnInit {
 
   public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], []);
   public date: Date = new Date();
+  public spinnerFlag = false;
   private advertRequestRoute = "advert-request";
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, public titleService: Title,
@@ -54,12 +55,17 @@ export class MyRequestInfoComponent implements OnInit {
   }
 
   public async cancel(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
+      return;
+    }
     this.requestService.remove(this.request.id)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert(data);
           this.router.navigateByUrl(this.getBackUrl());
@@ -68,6 +74,7 @@ export class MyRequestInfoComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка отмены заявки");
           console.log(error);
           return;
@@ -76,6 +83,7 @@ export class MyRequestInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)

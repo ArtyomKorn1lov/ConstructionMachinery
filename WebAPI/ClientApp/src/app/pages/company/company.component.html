@@ -45,9 +45,12 @@
                 <h3 class="small-header">Опишите ваш вопрос</h3>
                 <textarea [(ngModel)]="description" name="description" class="advert-textarea"
                     placeholder="Введите описание" maxlength="500"></textarea>
-                <button (click)="sendMail()" class="secondary-authorize">
+                <button *ngIf="!spinnerFlag" (click)="sendMail()" class="secondary-authorize">
                     <h4 class="medium-header">Отправить</h4>
                 </button>
+                <div *ngIf="spinnerFlag" class="load-spinner">
+                    <mat-spinner></mat-spinner>
+                </div>
             </div>
         </div>
     </div>

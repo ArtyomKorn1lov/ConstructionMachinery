@@ -24,9 +24,12 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">{{messageStars}}</p>
             </div>
-            <button (click)="create()" class="primary-authorize">
+            <button *ngIf="!spinnerFlag" (click)="create()" class="primary-authorize">
                 <h5 class="medium-header">Добавить</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
         </form>
     </div>
 </div>

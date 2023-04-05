@@ -37,12 +37,15 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button (click)="confirm(1)" class="primary-authorize">
+            <button *ngIf="!spinnerFlag" (click)="confirm(1)" class="primary-authorize">
                 <h5 class="medium-header">Подтвердить</h5>
             </button>
-            <button (click)="confirm(2)" class="edit-button">
+            <button *ngIf="!spinnerFlag" (click)="confirm(2)" class="edit-button">
                 <h5 class="medium-header">Отказать</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
         </div>
     </div>
 </div>

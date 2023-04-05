@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-contacts',
@@ -8,11 +9,12 @@ import { Title } from '@angular/platform-browser';
 })
 export class ContactsComponent implements OnInit {
 
-  constructor(public titleService: Title) {
+  constructor(public titleService: Title, private accountService: AccountService) {
     this.titleService.setTitle("Контактная информация");
   }
 
-  ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
+    await this.accountService.getAuthoriseModel();
   }
 
 }

@@ -32,6 +32,7 @@ export class ReviewCreateComponent implements OnInit {
   };
   public invalidStars: boolean = false;
   public messageStars: string | undefined;
+  public spinnerFlag = false;
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
   private advertListRoute: string = "/advert-list";
@@ -89,15 +90,22 @@ export class ReviewCreateComponent implements OnInit {
   }
 
   public async create(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
-    if (!this.validateReview())
       return;
+    }
+    if (!this.validateReview()) {
+      this.spinnerFlag = false;
+      return;
+    }
     const review = new ReviewModelCreate(this.description, new Date(), this.rating, this.getIdByQueryParams(), 0);
     await this.reviewService.create(review)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           alert(data);
           console.log(data);
           this.router.navigateByUrl(this.getBackUrl());
@@ -106,6 +114,7 @@ export class ReviewCreateComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка добавления отзыва");
           console.log(error);
           this.description = "";
@@ -211,6 +220,7 @@ export class ReviewCreateComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const backUrl = this.getBackUrl();
     if (backUrl == undefined) {

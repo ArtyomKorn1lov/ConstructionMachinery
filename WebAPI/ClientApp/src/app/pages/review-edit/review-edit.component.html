@@ -24,12 +24,15 @@
                 <img class="valid-container__image" src="assets/valid_mark.png">
                 <p class="valid-container__text">{{messageStars}}</p>
             </div>
-            <button (click)="update()" class="edit-button">
+            <button *ngIf="!spinnerFlag" (click)="update()" class="edit-button">
                 <h5 class="medium-header">Редактировать</h5>
             </button>
-            <button (click)="remove()" class="secondary-authorize">
+            <button *ngIf="!spinnerFlag" (click)="remove()" class="secondary-authorize">
                 <h5 class="medium-header">Удалить отзыв</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
         </form>
     </div>
 </div>

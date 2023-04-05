@@ -27,6 +27,7 @@ export class EditProfileComponent implements OnInit {
   public messagePhone: string | undefined;
   public invalidAddress: boolean = false;
   public messageAddress: string | undefined;
+  public spinnerFlag = false;
   private targetRoute: string = "/profile";
 
   constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService, public titleService: Title) {
@@ -117,18 +118,27 @@ export class EditProfileComponent implements OnInit {
   }
 
   public async edit(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
-    if (!this.validateEdit())
       return;
+    }
+    if (!this.validateEdit()) {
+      this.spinnerFlag = false;
+      return;
+    }
     if (this.user.email == undefined || this.password == undefined || this.confirm_password == undefined
-      || this.user.name == undefined || this.user.phone == undefined || this.user.address == undefined)
+      || this.user.name == undefined || this.user.phone == undefined || this.user.address == undefined) {
+      this.spinnerFlag = false;
       return;
+    }
     this.user.password = this.password;
     await this.accountService.update(this.user)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert("success");
           const token = data.token;
@@ -140,6 +150,7 @@ export class EditProfileComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Некорректные логин и(или) пароль");
           console.log(error);
           this.password = '';
@@ -150,6 +161,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)

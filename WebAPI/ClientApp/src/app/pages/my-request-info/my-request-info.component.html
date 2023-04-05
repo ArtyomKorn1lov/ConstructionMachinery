@@ -46,10 +46,13 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button (click)="cancel()" class="edit-button">
+            <button *ngIf="!spinnerFlag" (click)="cancel()" class="edit-button">
                 <h5 *ngIf="request.requestStateId != 2" class="medium-header -title">Отменить заявку</h5>
                 <h5 *ngIf="request.requestStateId == 2" class="medium-header -title">Очистить</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
         </div>
     </div>
 </div>

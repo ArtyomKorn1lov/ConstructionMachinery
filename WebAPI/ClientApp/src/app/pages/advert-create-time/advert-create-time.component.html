@@ -50,9 +50,12 @@
                 <p *ngIf="!invalidEndTime" class="valid-container__text">Обязательное поле для заполнения</p>
                 <p *ngIf="invalidEndTime" class="valid-container__text">{{messageEndTime}}</p>
             </div>
-            <button (click)="create()" class="primary-authorize">
+            <button *ngIf="!spinnerFlag" (click)="create()" class="primary-authorize">
                 <h5 class="medium-header">Выложить объявление</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
         </form>
     </div>
 </div>

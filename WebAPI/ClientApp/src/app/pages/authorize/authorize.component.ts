@@ -18,6 +18,7 @@ export class AuthorizeComponent implements OnInit {
   public password: string | undefined;
   public invalidPassword: boolean = false;
   public messagePassword: string | undefined;
+  public spinnerFlag = false;
   private targetRoute: string = "/";
 
   constructor(private accountService: AccountService, private router: Router, public titleService: Title) {
@@ -55,16 +56,24 @@ export class AuthorizeComponent implements OnInit {
   }
 
   public async login(): Promise<void> {
-    if (!this.validateLogin())
+    this.spinnerFlag = true;
+    if (!this.validateLogin()) {
+      this.spinnerFlag = false;
       return;
-    if (this.email == undefined)
+    }
+    if (this.email == undefined) {
+      this.spinnerFlag = false;
       return;
-    if (this.password == undefined)
+    }
+    if (this.password == undefined) {
+      this.spinnerFlag = false;
       return;
+    }
     var model = new LoginModel(this.email, this.password);
     await this.accountService.login(model)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log("success");
           alert("success");
           const token = data.token;
@@ -76,6 +85,7 @@ export class AuthorizeComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Некорректные логин и(или) пароль");
           console.log(error);
           this.email = '';
@@ -86,6 +96,7 @@ export class AuthorizeComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
   }
 

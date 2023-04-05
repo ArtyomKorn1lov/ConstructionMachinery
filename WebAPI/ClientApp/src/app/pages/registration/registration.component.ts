@@ -29,6 +29,7 @@ export class RegistrationComponent implements OnInit {
   public address: string | undefined;
   public invalidAddress: boolean = false;
   public messageAddress: string | undefined;
+  public spinnerFlag = false;
   private targetRoute: string = "/";
 
   constructor(private accountService: AccountService, private router: Router, public titleService: Title) {
@@ -119,15 +120,21 @@ export class RegistrationComponent implements OnInit {
   }
 
   public async registration(): Promise<void> {
-    if (!this.validateRegistration())
+    this.spinnerFlag = true;
+    if (!this.validateRegistration()) {
+      this.spinnerFlag = false;
       return;
+    }
     if (this.email == undefined || this.password == undefined || this.confirm_password == undefined
-      || this.name == undefined || this.phone == undefined || this.address == undefined)
+      || this.name == undefined || this.phone == undefined || this.address == undefined) {
+      this.spinnerFlag = false;
       return;
+    }
     let model = new RegisterModel(this.name, this.email, this.phone, this.address, this.password);
     await this.accountService.registration(model)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert("success");
           const token = data.token;
@@ -139,6 +146,7 @@ export class RegistrationComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Некорректные логин и(или) пароль");
           console.log(error);
           this.email = '';
@@ -152,6 +160,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
   }
 

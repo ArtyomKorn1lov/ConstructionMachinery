@@ -33,6 +33,7 @@ export class ReviewEditComponent implements OnInit {
   private review: ReviewModelUpdate = new ReviewModelUpdate(0, "", new Date(), 0, 0, 0);
   public invalidStars: boolean = false;
   public messageStars: string | undefined;
+  public spinnerFlag = false;
   private rating: number = 0;
   private targetRoute: string = "/advert-info";
   private advertListRoute: string = "/advert-list";
@@ -90,17 +91,24 @@ export class ReviewEditComponent implements OnInit {
   }
 
   public async update(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
-    if (!this.validateReview())
       return;
+    }
+    if (!this.validateReview()) {
+      this.spinnerFlag = false;
+      return;
+    }
     this.review.description = this.description;
     this.review.date = new Date();
     this.review.reviewStateId = this.rating;
     await this.reviewService.update(this.review)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           alert(data);
           console.log(data);
           this.router.navigateByUrl(this.getBackUrl());
@@ -109,6 +117,7 @@ export class ReviewEditComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка обновления отзыва");
           console.log(error);
           return;
@@ -117,12 +126,17 @@ export class ReviewEditComponent implements OnInit {
   }
 
   public async remove(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
+      return;
+    }
     await this.reviewService.remove(this.review.id)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           alert(data);
           console.log(data);
           this.router.navigateByUrl(this.getBackUrl());
@@ -131,6 +145,7 @@ export class ReviewEditComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка удаления отзыва");
           console.log(error);
           return;
@@ -235,6 +250,7 @@ export class ReviewEditComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)

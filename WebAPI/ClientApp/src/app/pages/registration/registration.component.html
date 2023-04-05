@@ -59,9 +59,12 @@
                 <p *ngIf="!invalidAddress" class="valid-container__text">Обязательное поле для заполнения</p>
                 <p *ngIf="invalidAddress" class="valid-container__text">{{messageAddress}}</p>
             </div>
-            <button class="primary-authorize" (click)="registration()">
+            <button *ngIf="!spinnerFlag" class="primary-authorize" (click)="registration()">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
             <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете согласие на
                 обработку персональных данных.</p>
         </form>

@@ -22,6 +22,7 @@ export class AdvertInfoComponent implements OnInit {
   public month: number = 0;
   public year: number = 0;
   public page: string = '';
+  public spinnerFlag = false;
   private listRoute: string = '/advert-list';
   private myRoute: string = '/my-adverts';
   private editRoute: string = '/advert-edit';
@@ -77,16 +78,22 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public async remove(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
+      return;
+    }
     if (this.advert.id == 0) {
+      this.spinnerFlag = false;
       alert("Ошибка удаления");
       return;
     }
     await this.advertService.remove(this.advert.id)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           alert(data);
           console.log(data);
           this.back();
@@ -95,6 +102,7 @@ export class AdvertInfoComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка удаления");
           console.log(error);
           return;
@@ -122,6 +130,7 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     this.advertService.setAdvertUpdateInService(new AdvertModelUpdate(0, "", new Date(), "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date(), 0, 0));
     this.imageService.setImagesInService([], []);

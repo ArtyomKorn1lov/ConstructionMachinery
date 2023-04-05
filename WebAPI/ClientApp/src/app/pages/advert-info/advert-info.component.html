@@ -67,16 +67,19 @@
                 class="primary-authorize">
                 <h5 class="medium-header">Арендовать</h5>
             </button>
-            <button (click)="addReview()" *ngIf="page == 'list' && accountService.userFlag" class="edit-button"
+            <button (click)="addReview()" *ngIf="page == 'list' && accountService.userFlag && !spinnerFlag" class="edit-button"
                 [ngClass]="{ 'primary-authorize': advert.availableDays.length == 0, 'edit-button': advert.availableDays.length != 0 }">
                 <h5 class="medium-header">Оставить отзыв</h5>
             </button>
-            <button (click)="edit()" *ngIf="page == 'my' && accountService.userFlag" class="primary-authorize">
+            <button (click)="edit()" *ngIf="page == 'my' && accountService.userFlag && !spinnerFlag" class="primary-authorize">
                 <h5 class="medium-header">Редактировать</h5>
             </button>
-            <button (click)="remove()" *ngIf="page == 'my' && accountService.userFlag" class="edit-button">
+            <button (click)="remove()" *ngIf="page == 'my' && accountService.userFlag && !spinnerFlag" class="edit-button">
                 <h5 class="medium-header">Снять публикацию</h5>
             </button>
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
             <app-review></app-review>
         </div>
     </div>

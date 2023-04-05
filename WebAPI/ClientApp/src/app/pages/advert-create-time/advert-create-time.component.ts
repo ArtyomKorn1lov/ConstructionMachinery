@@ -32,6 +32,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   public invalidEndTime: boolean = false;
   public messageEndTime: string | undefined;
   public images: File[] = [];
+  public spinnerFlag = false;
   private createRoute = "/advert-create";
   private listRoute = "/my-adverts";
 
@@ -143,17 +144,29 @@ export class AdvertCreateTimeComponent implements OnInit {
   }
 
   public async create(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
-    if (!this.validateForm())
       return;
-    if (this.advert == null || this.advert == undefined)
+    }
+    if (!this.validateForm()) {
+      this.spinnerFlag = false;
       return;
-    if (!this.dateRangeValid())
+    }
+    if (this.advert == null || this.advert == undefined) {
+      this.spinnerFlag = false;
       return;
-    if (!this.timeRangeValid())
+    }
+    if (!this.dateRangeValid()) {
+      this.spinnerFlag = false;
       return;
+    }
+    if (!this.timeRangeValid()) {
+      this.spinnerFlag = false;
+      return;
+    }
     let formData = new FormData();
     Array.from(this.images).map((image, index) => {
       return formData.append('file' + index, image);
@@ -166,6 +179,7 @@ export class AdvertCreateTimeComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка создания объявления");
           console.log(error);
           this.range = this.formBuilder.group({
@@ -181,6 +195,7 @@ export class AdvertCreateTimeComponent implements OnInit {
     await this.imageService.create(formData)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert(data);
           this.router.navigateByUrl(this.listRoute);
@@ -189,6 +204,7 @@ export class AdvertCreateTimeComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка загрузки картинки");
           console.log(error);
           this.range = this.formBuilder.group({
@@ -204,6 +220,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     this.advert = this.advertService.getAdvertCreateFromService();
     if (this.advert.name == "")

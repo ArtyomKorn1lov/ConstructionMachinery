@@ -20,13 +20,16 @@
                 <p *ngIf="!invalidPassword" class="valid-container__text">Обязательное поле для заполнения</p>
                 <p *ngIf="invalidPassword" class="valid-container__text">{{messagePassword}}</p>
             </div>
-            <button (click)="login()" class="primary-authorize">
+            <button *ngIf="!spinnerFlag" (click)="login()" class="primary-authorize">
                 <h5 class="medium-header">Войти</h5>
             </button>
-            <button [routerLink]="['/registration']" class="secondary-authorize">
+            <div *ngIf="spinnerFlag" class="load-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
+            <button *ngIf="!spinnerFlag" [routerLink]="['/registration']" class="secondary-authorize">
                 <h5 class="medium-header">Зарегистрироваться</h5>
             </button>
-            <div class="social-network">
+            <div *ngIf="!spinnerFlag" class="social-network">
                 <div class="social-network__element">
                     <img class="google-image" src="assets/google.png">
                     <h5 class="medium-header">Авторизация через Google</h5>

@@ -21,6 +21,7 @@ export class CompanyComponent implements OnInit {
   public invalidEmail: boolean = false;
   public messageEmail: string | undefined;
   public description: string = "";
+  public spinnerFlag = false;
 
   constructor(private accountService: AccountService, private mailService: MailService, public titleService: Title) {
     this.titleService.setTitle("О компании");
@@ -67,22 +68,32 @@ export class CompanyComponent implements OnInit {
   }
 
   public async sendMail(): Promise<void> {
-    if (!this.validateForm())
+    this.spinnerFlag = true;
+    if (!this.validateForm()) {
+      this.spinnerFlag = false;
       return;
-    if (this.name == undefined || this.email == undefined || this.phone == undefined)
+    }
+    if (this.name == undefined || this.email == undefined || this.phone == undefined) {
+      this.spinnerFlag = false;
       return;
+    }
     const mail = new MailModel(this.name, this.email, this.phone, this.description);
     await this.mailService.sendMail(mail)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert(data);
-          location.reload();
+          this.name = undefined;
+          this.phone = undefined;
+          this.email = undefined;
+          this.description = "";
           return;
         }
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка отправки формы");
           console.log(error);
           this.name = '';
@@ -95,6 +106,7 @@ export class CompanyComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
   }
 

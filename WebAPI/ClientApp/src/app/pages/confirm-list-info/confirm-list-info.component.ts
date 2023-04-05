@@ -18,6 +18,7 @@ export class ConfirmListInfoComponent implements OnInit {
 
   public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, [new ImageModel(0, "", "", 0)], []);
   public date: Date = new Date();
+  public spinnerFlag = false;
   private privateAreaRoute: string = "private-area";
   private confirmListRoute = "confirm-list";
 
@@ -39,13 +40,18 @@ export class ConfirmListInfoComponent implements OnInit {
   }
 
   public async confirm(state: number): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
+      return;
+    }
     let model: ConfirmModel = new ConfirmModel(this.request.id, state);
     await this.requestService.confirm(model)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert(data);
           this.router.navigateByUrl(this.confirmListRoute);
@@ -54,6 +60,7 @@ export class ConfirmListInfoComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка подтверждения запроса");
           console.log(error);
           return;
@@ -62,6 +69,7 @@ export class ConfirmListInfoComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)

@@ -30,6 +30,7 @@ export class AdvertEditTimeComponent implements OnInit {
   public invalidEndTime: boolean = false;
   public messageEndTime: string | undefined;
   public images: File[] = [];
+  public spinnerFlag = false;
   private myRoute: string = '/my-adverts';
   private updateRoute = "/advert-edit";
 
@@ -173,17 +174,29 @@ export class AdvertEditTimeComponent implements OnInit {
   }
 
   public async update(): Promise<void> {
+    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
-    if (!tokenResult)
+    if (!tokenResult) {
+      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
-    if (!this.validateForm())
       return;
-    if (this.advert == null || this.advert == undefined)
+    }
+    if (!this.validateForm()) {
+      this.spinnerFlag = false;
       return;
-    if (!this.dateRangeValid())
+    }
+    if (this.advert == null || this.advert == undefined) {
+      this.spinnerFlag = false;
       return;
-    if (!this.timeRangeValid())
+    }
+    if (!this.dateRangeValid()) {
+      this.spinnerFlag = false;
       return;
+    }
+    if (!this.timeRangeValid()) {
+      this.spinnerFlag = false;
+      return;
+    }
     let numberArray: number[] = []
     if (this.imageService.oldImageFlag)
       numberArray = this.prepareArrayId(this.advert.images);
@@ -199,6 +212,7 @@ export class AdvertEditTimeComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка редактирования объявления");
           console.log(error);
           this.range = this.formBuilder.group({
@@ -219,6 +233,7 @@ export class AdvertEditTimeComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка удаления картинки");
           console.log(error);
           this.range = this.formBuilder.group({
@@ -234,6 +249,7 @@ export class AdvertEditTimeComponent implements OnInit {
     await this.imageService.update(formData, this.advert.id)
       .then(
         (data) => {
+          this.spinnerFlag = false;
           console.log(data);
           alert(data);
           this.router.navigateByUrl(this.getInfoUrl());
@@ -242,6 +258,7 @@ export class AdvertEditTimeComponent implements OnInit {
       )
       .catch(
         (error) => {
+          this.spinnerFlag = false;
           alert("Ошибка обновления картинки");
           console.log(error);
           this.range = this.formBuilder.group({
@@ -257,6 +274,7 @@ export class AdvertEditTimeComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    this.spinnerFlag = false;
     await this.accountService.getAuthoriseModel();
     const backUrl = this.getBackUrl();
     if (backUrl == undefined)

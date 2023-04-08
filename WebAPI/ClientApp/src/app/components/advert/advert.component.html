@@ -1,56 +1,62 @@
 <p class="micro-text">Показано {{advertList.length}} объявления</p>
-<article class="advert" *ngFor="let advert of advertList">
-    <div class="advert__line"></div>
-    <div class="advert__content">
-        <img class="advert__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}"
-            alt="Изображение строительной техники">
-        <img class="advert__image" *ngIf="advert.images.length == 0" src="assets/default.jpg"
-            alt="Изображение строительной техники">
-        <div class="advert__elements">
-            <div class="advert__text">
+<div class="advert-list">
+    <article class="advert" *ngFor="let advert of advertList">
+        <div class="advert__line -mobile"></div>
+        <div class="advert__content">
+            <div class="advert__line -desktop"></div>
+            <img class="advert__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}"
+                alt="Изображение строительной техники">
+            <img class="advert__image" *ngIf="advert.images.length == 0" src="assets/default.jpg"
+                alt="Изображение строительной техники">
+            <div class="advert__elements">
                 <div>
-                    <div *ngIf="advert.averageRating > 0" class="advert__rating">
-                        <img class="advert__star" src="assets/star_fill.png" alt="star">
-                        <img *ngIf="advert.averageRating < 2" class="advert__star" src="assets/star_empty.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating >= 2" class="advert__star" src="assets/star_fill.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating < 3" class="advert__star" src="assets/star_empty.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating >= 3" class="advert__star" src="assets/star_fill.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating < 4" class="advert__star" src="assets/star_empty.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating >= 4" class="advert__star" src="assets/star_fill.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating < 5" class="advert__star" src="assets/star_empty.png"
-                            alt="star">
-                        <img *ngIf="advert.averageRating >= 5" class="advert__star" src="assets/star_fill.png"
-                            alt="star">
+                    <div class="advert__text">
+                        <div>
+                            <div *ngIf="advert.averageRating > 0" class="advert__rating">
+                                <img class="advert__star" src="assets/star_fill.png" alt="star">
+                                <img *ngIf="advert.averageRating < 2" class="advert__star" src="assets/star_empty.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating >= 2" class="advert__star" src="assets/star_fill.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating < 3" class="advert__star" src="assets/star_empty.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating >= 3" class="advert__star" src="assets/star_fill.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating < 4" class="advert__star" src="assets/star_empty.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating >= 4" class="advert__star" src="assets/star_fill.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating < 5" class="advert__star" src="assets/star_empty.png"
+                                    alt="star">
+                                <img *ngIf="advert.averageRating >= 5" class="advert__star" src="assets/star_fill.png"
+                                    alt="star">
+                            </div>
+                            <h4 (click)="getAdvertInfo(advert.id)" class="medium-header">{{advert.name}}</h4>
+                        </div>
+                        <h5 class="small-header">от {{advert.price}} ₽ / час</h5>
                     </div>
-                    <h4 (click)="getAdvertInfo(advert.id)" class="medium-header">{{advert.name}}</h4>
-                </div>
-                <div>
-                    <h5 class="small-header">от {{advert.price}} ₽ / час</h5>
                     <h6 class="small-header -time">
                         {{datetimeService.convertDateToUTS(advert.editDate.getDate())}}.{{datetimeService.convertDateToUTS(advert.editDate.getMonth()+1)}}.{{advert.editDate.getFullYear()}}
                         в
                         {{datetimeService.convertDateToUTS(advert.editDate.getHours())}}:{{datetimeService.convertDateToUTS(advert.editDate.getMinutes())}}
                     </h6>
                 </div>
+                <button [ngClass]="{'-list-button': advert.averageRating > 0 }" (click)="getAdvertInfo(advert.id)"
+                    *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
+                    <p class="primary-text">Арендовать</p>
+                </button>
+                <button [ngClass]="{'-list-button': advert.averageRating > 0 }" (click)="getAdvertInfo(advert.id)"
+                    *ngIf="page == 'my'" class="edit-button">
+                    <p class="primary-text -edit">Подробнее</p>
+                </button>
+                <button [ngClass]="{'-list-button': advert.averageRating > 0 }" (click)="getAdvertInfo(advert.id)"
+                    *ngIf="page == 'list' && !accountService.userFlag" class="primary-authorize">
+                    <p class="primary-text">Подробнее</p>
+                </button>
             </div>
-            <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'list' && accountService.userFlag" class="primary-authorize">
-                <p class="primary-text">Арендовать</p>
-            </button>
-            <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'my'" class="edit-button">
-                <p class="primary-text -edit">Подробнее</p>
-            </button>
-            <button (click)="getAdvertInfo(advert.id)" *ngIf="page == 'list' && !accountService.userFlag" class="primary-authorize">
-                <p class="primary-text">Подробнее</p>
-            </button>
         </div>
-    </div>
-</article>
+    </article>
+</div>
 <div *ngIf="scrollFlag == true" class="load-spinner">
     <mat-spinner></mat-spinner>
 </div>

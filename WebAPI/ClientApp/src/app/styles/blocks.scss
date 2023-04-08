@@ -84,3 +84,36 @@
     align-items: center;
     margin-top: 26px;
 }
+
+.list-section {
+    display: block;
+    //justify-content: space-between;
+}
+
+.list-section__category {
+    margin-top: 26px;
+    margin-right: 20px;
+}
+
+.list-section__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.category__content {
+    display: flex;
+    flex-direction: column;
+    padding: 45px 19px;
+    background: #232323;
+    border-radius: 15px;
+}
+
+.category__line {
+    margin-top: 16px;
+    border: 2px solid rgba(22, 22, 22, 0.3);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.big-header.-category {
+    margin-top: 16px;
+}

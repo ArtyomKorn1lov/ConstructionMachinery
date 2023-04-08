@@ -1,0 +1,25 @@
+.list-section__category {
+    display: none;
+}
+
+@media (min-width: 450px) {
+    
+}
+
+@media (min-width: 780px) {
+    .list-section {
+        display: flex;
+    }
+
+    .list-section__category {
+        display: block;
+    }
+
+    .list-section__content {
+        align-items: center;
+    }
+
+    .select-filter {
+        width: 400px;
+    }
+}

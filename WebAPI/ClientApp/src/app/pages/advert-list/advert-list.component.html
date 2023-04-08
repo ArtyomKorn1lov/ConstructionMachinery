@@ -2,15 +2,56 @@
     <div class="content">
         <div class="content__elements">
             <h6 class="big-header -content">{{this.titleService.getTitle()}}:</h6>
-            <div class="filter-group">
-                <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
-                    <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
-                </select>
-                <div class="filter">
-                    <img class="filter__image" src="assets/clarity_filter-solid.png">
+            <div class="list-section">
+                <div class="list-section__category">
+                    <div class="category__content">
+                        <h6 class="big-header">Автовышки</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Автокраны</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Бетононасосы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Бульдозеры</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Гидромолоты</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Грунторезы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Компрессоры</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Манипуляторы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Минипогрузчики</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Полуприцепы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Самосвалы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Тралы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Фронтальные погрузчики</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Экскаваторы</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Экскаваторы-погрузчики JCB</h6>
+                        <div class="category__line"></div>
+                        <h6 class="big-header -category">Ямобуры</h6>
+                    </div>
                 </div>
-            </div>            
-            <app-advert [page]="'list'"></app-advert>
+                <div class="list-section__content">
+                    <div class="filter-group">
+                        <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
+                            <option class="select-filter__option" *ngFor="let filter of filters;"
+                                ngValue={{filter.param}}>
+                                {{filter.name}}</option>
+                        </select>
+                        <div class="filter">
+                            <img class="filter__image" src="assets/clarity_filter-solid.png">
+                        </div>
+                    </div>
+                    <app-advert [page]="'list'"></app-advert>
+                </div>
+            </div>
         </div>
     </div>
 </div>

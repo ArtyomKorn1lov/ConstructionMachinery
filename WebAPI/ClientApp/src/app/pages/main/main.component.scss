@@ -8,22 +8,15 @@
     justify-content: center;
 }
 
-@media (min-width: 390px) {
-
-    .content__wrap {
-        justify-content: space-between;
-    }
-}
-
 .technique-type {
     display: flex;
-    margin-top: 15px;
+    margin: 10px 10px;
 
     &__element {
         display: flex;
         flex-direction: column;
         width: 140px;
-        padding: 18px;
+        padding: 12px;
         border-radius: 15px;
         box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.35);
         background: #E8E8E8;
@@ -38,4 +31,8 @@
 
 .technique-type__element img + .small-header {
     margin-top: 15px;
+}
+
+.big-header.-content {
+    margin-bottom: 23px;
 }

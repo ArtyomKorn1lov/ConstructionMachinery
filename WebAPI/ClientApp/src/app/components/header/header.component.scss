@@ -2,12 +2,14 @@
     display: flex;
     flex-direction: column;
     padding: 19px 28px;
+    width: 100%;
+    max-width: 1184px;
     background: var(--color-secondary-button);
 
     &__logo {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         margin-bottom: 10px;
     }
 
@@ -19,6 +21,10 @@
         flex: 1;
         display: flex;
         justify-content: center;
+
+        &.-mini {
+            display: none;
+        }
     }
 
     &__user-group {
@@ -27,7 +33,7 @@
         justify-content: end;
         align-items: center;
     }
-    
+
     &__search {
         display: inline-flex;
         align-items: center;
@@ -35,6 +41,10 @@
         border: 1px solid black;
         border-radius: 5px;
         background: var(--color-primary-text);
+
+        &.-top {
+            display: none;
+        }
     }
 
     &__search-icon {
@@ -52,10 +62,24 @@
         border: 0;
         color: var(--color-secondary-button);
         background: transparent;
+
         &.-hidden {
             display: none;
         }
     }
+
+    &__top-menu {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+    }
+}
+
+.big-header.-menu {
+    margin-left: 20px;
+    margin-right: 20px;
+    text-decoration: none;
 }
 
 .account-attention {
@@ -71,4 +95,72 @@
     border-radius: 30px;
     width: 30px;
     height: 30px;
+}
+
+.authorize-account {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.primary-text.-register {
+    display: none;
+    text-align: center;
+    margin-top: 5px;
+}
+
+@media (min-width: 780px) {
+    .header {
+        &__nab-bar {
+            display: none;
+        }
+
+        &__logo {
+            align-items: center;
+        }
+
+        &__logotype {
+            justify-content: start;
+        }
+
+        &__search {
+            display: none;
+
+            &.-top {
+                margin-left: 20px;
+                display: inline-flex;
+                width: 100%;
+                max-width: 640px;
+                margin-right: 20px;
+            }
+        }
+
+        &__top-menu {
+            display: flex;
+        }
+    }
+
+    .primary-text.-register {
+        display: block;
+    }
+}
+
+@media (max-width: 878px) {
+    .big-header.-menu {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 310px) {
+    .header {
+        &__logotype {
+            display: none;
+
+            &.-mini {
+                display: flex;
+            }
+        }
+    }
 }

@@ -3,7 +3,7 @@
         <app-navigarion (event)="drawer.toggle()"></app-navigarion>
     </mat-drawer>
     <mat-drawer-content style="display: flex;">
-        <app-header (event)="drawer.toggle()"></app-header>
+        <app-header class="flex-centered" (event)="drawer.toggle()"></app-header>
         <div class="page__element">
             <router-outlet></router-outlet>
         </div>

@@ -2,3 +2,67 @@
     background: #373737 !important;
     border-radius: 15px !important;
 }
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.dialog-content__close {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.dialog-content__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.big-header.-dialog {
+    text-align: center;
+}
+
+.dialog-content__list {
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-content__element {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+}
+
+.dialog-content__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 14px 0;
+}
+
+.primary-authorize.-dialog-confirm {
+    width: 100%;
+    max-width: 200px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.edit-button.-dialog-confirm {
+    width: 100%;
+    max-width: 200px;
+    margin-top: 10px;
+}
+
+@media (max-width: 360px) {
+    .dialog-content__controls {
+        flex-direction: column;
+    }
+
+    .primary-authorize.-dialog-confirm {
+        margin-right: 0px;
+    }
+}

@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ImageModel } from 'src/app/models/ImageModel';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-advert-edit-time',
@@ -35,7 +37,8 @@ export class AdvertEditTimeComponent implements OnInit {
   private updateRoute = "/advert-edit";
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, public titleService: Title,
-    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService, private route: ActivatedRoute) {
+    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService, private route: ActivatedRoute,
+    private dialog: MatDialog) {
     this.titleService.setTitle("Редактировать объявление");
   }
 
@@ -213,7 +216,7 @@ export class AdvertEditTimeComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка редактирования объявления");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка редактирования объявления" } });
           console.log(error);
           this.range = this.formBuilder.group({
             start: new FormControl<Date | null>(null),
@@ -234,7 +237,7 @@ export class AdvertEditTimeComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка удаления картинки");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка удаления картинки" } });
           console.log(error);
           this.range = this.formBuilder.group({
             start: new FormControl<Date | null>(null),
@@ -251,7 +254,6 @@ export class AdvertEditTimeComponent implements OnInit {
         (data) => {
           this.spinnerFlag = false;
           console.log(data);
-          alert(data);
           this.router.navigateByUrl(this.getInfoUrl());
           return;
         }
@@ -259,7 +261,7 @@ export class AdvertEditTimeComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка обновления картинки");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка обновления картинки" } });
           console.log(error);
           this.range = this.formBuilder.group({
             start: new FormControl<Date | null>(null),

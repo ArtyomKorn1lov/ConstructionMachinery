@@ -6,6 +6,8 @@ import { AccountService } from 'src/app/services/account.service';
 import { ReviewModelCreate } from 'src/app/models/ReviewModelCreate';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 interface Stars {
   first: boolean;
@@ -38,7 +40,7 @@ export class ReviewCreateComponent implements OnInit {
   private advertListRoute: string = "/advert-list";
 
   constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, public titleService: Title,
-    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) {
+    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute, private dialog: MatDialog) {
     this.titleService.setTitle("Добавить отзыв");
   }
 
@@ -106,7 +108,6 @@ export class ReviewCreateComponent implements OnInit {
       .then(
         (data) => {
           this.spinnerFlag = false;
-          alert(data);
           console.log(data);
           this.router.navigateByUrl(this.getBackUrl());
           return;
@@ -115,7 +116,7 @@ export class ReviewCreateComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка добавления отзыва");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка добавления отзыва" } });
           console.log(error);
           this.description = "";
           return;

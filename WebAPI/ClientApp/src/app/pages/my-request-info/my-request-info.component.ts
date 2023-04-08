@@ -7,6 +7,9 @@ import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-my-request-info',
@@ -21,7 +24,7 @@ export class MyRequestInfoComponent implements OnInit {
   private advertRequestRoute = "advert-request";
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, public titleService: Title,
-    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) {
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute, private dialog: MatDialog) {
     this.titleService.setTitle("Исходящая заявка");
   }
 
@@ -55,31 +58,42 @@ export class MyRequestInfoComponent implements OnInit {
   }
 
   public async cancel(): Promise<void> {
-    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult) {
-      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
       return;
     }
-    this.requestService.remove(this.request.id)
-      .then(
-        (data) => {
-          this.spinnerFlag = false;
-          console.log(data);
-          alert(data);
-          this.router.navigateByUrl(this.getBackUrl());
-          return;
-        }
-      )
-      .catch(
-        (error) => {
-          this.spinnerFlag = false;
-          alert("Ошибка отмены заявки");
-          console.log(error);
-          return;
-        }
-      );
+    let dialogMessage = "Вы уверены, что хотите отменить текущую заявку?";
+    if (this.request.requestStateId == 2) {
+      dialogMessage = "Удалить данную заявку?";
+    }
+    const confirmDialog = this.dialog.open(DialogConfirmComponent, { data: { message: dialogMessage } });
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result.flag) {
+        this.spinnerFlag = true;
+        this.requestService.remove(this.request.id)
+          .then(
+            (data) => {
+              this.spinnerFlag = false;
+              console.log(data);
+              this.router.navigateByUrl(this.getBackUrl());
+              return;
+            }
+          )
+          .catch(
+            (error) => {
+              this.spinnerFlag = false;
+              let messageAlert = "Ошибка отмены заявки";
+              if (this.request.requestStateId == 2)
+                messageAlert = "Ошибка очистки заявки";
+              const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: messageAlert } });
+              console.log(error);
+              return;
+            }
+          );
+      }
+      return;
+    });
   }
 
   public async ngOnInit(): Promise<void> {

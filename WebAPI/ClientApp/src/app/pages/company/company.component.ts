@@ -3,6 +3,8 @@ import { AccountService } from 'src/app/services/account.service';
 import { MailService } from 'src/app/services/mail.service';
 import { MailModel } from 'src/app/models/MailModel';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-company',
@@ -23,7 +25,7 @@ export class CompanyComponent implements OnInit {
   public description: string = "";
   public spinnerFlag = false;
 
-  constructor(private accountService: AccountService, private mailService: MailService, public titleService: Title) {
+  constructor(private accountService: AccountService, private mailService: MailService, public titleService: Title, private dialog: MatDialog) {
     this.titleService.setTitle("О компании");
    }
 
@@ -83,7 +85,6 @@ export class CompanyComponent implements OnInit {
         (data) => {
           this.spinnerFlag = false;
           console.log(data);
-          alert(data);
           this.name = undefined;
           this.phone = undefined;
           this.email = undefined;
@@ -94,7 +95,7 @@ export class CompanyComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка отправки формы");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка отправки формы" } });
           console.log(error);
           this.name = '';
           this.phone = '';

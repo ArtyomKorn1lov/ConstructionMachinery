@@ -8,6 +8,9 @@ import { ImageModel } from 'src/app/models/ImageModel';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-confirm-list-info',
@@ -23,7 +26,7 @@ export class ConfirmListInfoComponent implements OnInit {
   private confirmListRoute = "confirm-list";
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, public titleService: Title,
-    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) {
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute, private dialog: MatDialog) {
     this.titleService.setTitle("Подтверждение заявки");
   }
 
@@ -40,32 +43,39 @@ export class ConfirmListInfoComponent implements OnInit {
   }
 
   public async confirm(state: number): Promise<void> {
-    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult) {
-      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
       return;
     }
-    let model: ConfirmModel = new ConfirmModel(this.request.id, state);
-    await this.requestService.confirm(model)
-      .then(
-        (data) => {
-          this.spinnerFlag = false;
-          console.log(data);
-          alert(data);
-          this.router.navigateByUrl(this.confirmListRoute);
-          return;
-        }
-      )
-      .catch(
-        (error) => {
-          this.spinnerFlag = false;
-          alert("Ошибка подтверждения запроса");
-          console.log(error);
-          return;
-        }
-      );
+    let dialogMessage = "Подтвердить данную заявку?";
+    if (state == 2)
+      dialogMessage = "Отказать в бронировании?"
+    const confirmDialog = this.dialog.open(DialogConfirmComponent, { data: { message: dialogMessage } });
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result.flag) {
+        this.spinnerFlag = true;
+        let model: ConfirmModel = new ConfirmModel(this.request.id, state);
+        await this.requestService.confirm(model)
+          .then(
+            (data) => {
+              this.spinnerFlag = false;
+              console.log(data);
+              this.router.navigateByUrl(this.confirmListRoute);
+              return;
+            }
+          )
+          .catch(
+            (error) => {
+              this.spinnerFlag = false;
+              const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка подтверждения заявки" } });
+              console.log(error);
+              return;
+            }
+          );
+      }
+      return;
+    });
   }
 
   public async ngOnInit(): Promise<void> {

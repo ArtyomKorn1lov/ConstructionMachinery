@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 import { UserUpdateModel } from 'src/app/models/UserUpdateModel';
 import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -30,7 +32,7 @@ export class EditProfileComponent implements OnInit {
   public spinnerFlag = false;
   private targetRoute: string = "/profile";
 
-  constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService, public titleService: Title) {
+  constructor(private accountService: AccountService, private router: Router, private tokenService: TokenService, public titleService: Title, private dialog: MatDialog) {
     this.titleService.setTitle("Редактирование профиля");
   }
 
@@ -140,7 +142,6 @@ export class EditProfileComponent implements OnInit {
         (data) => {
           this.spinnerFlag = false;
           console.log(data);
-          alert("success");
           const token = data.token;
           const refreshToken = data.refreshToken;
           this.accountService.saveTokens(token, refreshToken);
@@ -151,7 +152,7 @@ export class EditProfileComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Некорректные логин и(или) пароль");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка редактирования профиля" } });
           console.log(error);
           this.password = '';
           this.confirm_password = '';

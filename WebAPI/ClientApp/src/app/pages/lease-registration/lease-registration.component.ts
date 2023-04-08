@@ -9,6 +9,8 @@ import { DatetimeService } from 'src/app/services/datetime.service';
 import { AvailableDayModel } from 'src/app/models/AvailableDayModel';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-lease-registration',
@@ -30,7 +32,7 @@ export class LeaseRegistrationComponent implements OnInit {
   private listRoute: string = '/advert-list';
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private advertService: AdvertService, public titleService: Title,
-    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute) {
+    private requestService: RequestService, private router: Router, private tokenService: TokenService, private route: ActivatedRoute, private dialog: MatDialog) {
     this.titleService.setTitle("Оформление аренды");
   }
 
@@ -102,7 +104,6 @@ export class LeaseRegistrationComponent implements OnInit {
         (data) => {
           this.spinnerFlag = false;
           console.log(data);
-          alert(data);
           this.router.navigateByUrl(this.getBackUrl());
           return;
         }
@@ -110,7 +111,7 @@ export class LeaseRegistrationComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка запроса на аренду");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка запроса на аренду" } });
           console.log(error);
           this.address = '';
           return;

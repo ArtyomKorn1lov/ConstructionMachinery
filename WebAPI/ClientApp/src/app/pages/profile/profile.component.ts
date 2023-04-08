@@ -5,6 +5,9 @@ import { DatetimeService } from 'src/app/services/datetime.service';
 import { Router } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-profile',
@@ -17,17 +20,23 @@ export class ProfileComponent implements OnInit {
   private targetRoute: string = "/";
 
   constructor(public datetimeService: DatetimeService, private accountService: AccountService, private router: Router,
-    private tokenService: TokenService, public titleService: Title) {
+    private tokenService: TokenService, public titleService: Title, private dialog: MatDialog) {
     this.titleService.setTitle("Профиль пользователя");
   }
 
   public async logout(): Promise<void> {
-    if (this.accountService.logOut()) {
-      alert("Успешный выход");
-      this.router.navigateByUrl(this.targetRoute);
-    }
-    else
-      alert("Ошибка выхода");
+    const confirmDialog = this.dialog.open(DialogConfirmComponent, { data: { message: "Вы уверены, что хотите выйти?" } });
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result.flag) {
+        if (this.accountService.logOut()) {
+          this.router.navigateByUrl(this.targetRoute);
+        }
+        else {
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка выхода" } });
+        }
+      }
+      return;
+    }); 
   }
 
   public async ngOnInit(): Promise<void> {

@@ -9,6 +9,8 @@ import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRA
 import { DateAdapter } from '@angular/material/core';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 
 @Component({
@@ -37,7 +39,7 @@ export class AdvertCreateTimeComponent implements OnInit {
   private listRoute = "/my-adverts";
 
   constructor(private advertService: AdvertService, private router: Router, private accountService: AccountService, public titleService: Title,
-    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService) {
+    private imageService: ImageService, private formBuilder: FormBuilder, private tokenService: TokenService, private dialog: MatDialog) {
     this.titleService.setTitle("Новое объявление");
   }
 
@@ -180,7 +182,7 @@ export class AdvertCreateTimeComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка создания объявления");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка создания объявления" } });
           console.log(error);
           this.range = this.formBuilder.group({
             start: new FormControl<Date | null>(null),
@@ -197,7 +199,6 @@ export class AdvertCreateTimeComponent implements OnInit {
         (data) => {
           this.spinnerFlag = false;
           console.log(data);
-          alert(data);
           this.router.navigateByUrl(this.listRoute);
           return;
         }
@@ -205,7 +206,7 @@ export class AdvertCreateTimeComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка загрузки картинки");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка загрузки картинки" } });
           console.log(error);
           this.range = this.formBuilder.group({
             start: new FormControl<Date | null>(null),

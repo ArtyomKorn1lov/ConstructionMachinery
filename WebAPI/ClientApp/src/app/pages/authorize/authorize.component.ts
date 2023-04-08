@@ -4,6 +4,8 @@ import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { LoginModel } from 'src/app/models/LoginModel';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-authorize',
@@ -21,7 +23,7 @@ export class AuthorizeComponent implements OnInit {
   public spinnerFlag = false;
   private targetRoute: string = "/";
 
-  constructor(private accountService: AccountService, private router: Router, public titleService: Title) {
+  constructor(private accountService: AccountService, private router: Router, public titleService: Title, private dialog: MatDialog) {
     this.titleService.setTitle("Войти в личный кабинет");
   }
 
@@ -75,7 +77,6 @@ export class AuthorizeComponent implements OnInit {
         (data) => {
           this.spinnerFlag = false;
           console.log("success");
-          alert("success");
           const token = data.token;
           const refreshToken = data.refreshToken;
           this.accountService.saveTokens(token, refreshToken);
@@ -86,7 +87,7 @@ export class AuthorizeComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Некорректные логин и(или) пароль");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Некорректные логин и(или) пароль" } });
           console.log(error);
           this.email = '';
           this.password = '';

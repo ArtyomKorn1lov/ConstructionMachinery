@@ -10,6 +10,9 @@ import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
 import { AdvertModelDetail } from 'src/app/models/AdvertModelDetail';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
 
 @Component({
   selector: 'app-advert-info',
@@ -30,8 +33,9 @@ export class AdvertInfoComponent implements OnInit {
   private reviewCreateRoute: string = '/review-create';
 
   constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router, public titleService: Title,
-    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute) {
-      this.titleService.setTitle("Информация об объявлении");
+    public accountService: AccountService, private imageService: ImageService, private tokenService: TokenService, private route: ActivatedRoute,
+    private dialog: MatDialog) {
+    this.titleService.setTitle("Информация об объявлении");
   }
 
   public leaseRegistration(): void {
@@ -78,36 +82,39 @@ export class AdvertInfoComponent implements OnInit {
   }
 
   public async remove(): Promise<void> {
-    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult) {
-      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
       return;
     }
     if (this.advert.id == 0) {
-      this.spinnerFlag = false;
       alert("Ошибка удаления");
       return;
     }
-    await this.advertService.remove(this.advert.id)
-      .then(
-        (data) => {
-          this.spinnerFlag = false;
-          alert(data);
-          console.log(data);
-          this.back();
-          return;
-        }
-      )
-      .catch(
-        (error) => {
-          this.spinnerFlag = false;
-          alert("Ошибка удаления");
-          console.log(error);
-          return;
-        }
-      );
+    const confirmDialog = this.dialog.open(DialogConfirmComponent, { data: { message: "Вы уверены, что хотите снять публикацию данного объявления?" } });
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result.flag) {
+        this.spinnerFlag = true;
+        await this.advertService.remove(this.advert.id)
+          .then(
+            (data) => {
+              this.spinnerFlag = false;
+              console.log(data);
+              this.back();
+              return;
+            }
+          )
+          .catch(
+            (error) => {
+              this.spinnerFlag = false;
+              const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка удаления" } });
+              console.log(error);
+              return;
+            }
+          );
+      }
+      return;
+    });
   }
 
   public edit(): void {

@@ -6,6 +6,9 @@ import { ReviewModelUpdate } from 'src/app/models/ReviewModelUpdate';
 import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
 
 interface Stars {
   first: boolean;
@@ -39,7 +42,7 @@ export class ReviewEditComponent implements OnInit {
   private advertListRoute: string = "/advert-list";
 
   constructor(private router: Router, private reviewService: ReviewService, private advertService: AdvertService, public titleService: Title,
-    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute) {
+    private accountService: AccountService, private tokenService: TokenService, private route: ActivatedRoute, private dialog: MatDialog) {
     this.titleService.setTitle("Редактировать отзыв");
   }
 
@@ -109,7 +112,6 @@ export class ReviewEditComponent implements OnInit {
       .then(
         (data) => {
           this.spinnerFlag = false;
-          alert(data);
           console.log(data);
           this.router.navigateByUrl(this.getBackUrl());
           return;
@@ -118,7 +120,7 @@ export class ReviewEditComponent implements OnInit {
       .catch(
         (error) => {
           this.spinnerFlag = false;
-          alert("Ошибка обновления отзыва");
+          const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка обновления отзыва" } });
           console.log(error);
           return;
         }
@@ -126,31 +128,35 @@ export class ReviewEditComponent implements OnInit {
   }
 
   public async remove(): Promise<void> {
-    this.spinnerFlag = true;
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult) {
-      this.spinnerFlag = false;
       this.router.navigate(["/authorize"]);
       return;
     }
-    await this.reviewService.remove(this.review.id)
-      .then(
-        (data) => {
-          this.spinnerFlag = false;
-          alert(data);
-          console.log(data);
-          this.router.navigateByUrl(this.getBackUrl());
-          return;
-        }
-      )
-      .catch(
-        (error) => {
-          this.spinnerFlag = false;
-          alert("Ошибка удаления отзыва");
-          console.log(error);
-          return;
-        }
-      );
+    const confirmDialog = this.dialog.open(DialogConfirmComponent, { data: { message: "Вы уверены, что хотите удалить данный отзыв?" } });
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result.flag) {
+        this.spinnerFlag = true;
+        await this.reviewService.remove(this.review.id)
+          .then(
+            (data) => {
+              this.spinnerFlag = false;
+              console.log(data);
+              this.router.navigateByUrl(this.getBackUrl());
+              return;
+            }
+          )
+          .catch(
+            (error) => {
+              this.spinnerFlag = false;
+              const alertDialog = this.dialog.open(DialogNoticeComponent, { data: { message: "Ошибка удаления отзыва" } });
+              console.log(error);
+              return;
+            }
+          );
+      }
+      return;
+    });
   }
 
   public setState(index: number): void {

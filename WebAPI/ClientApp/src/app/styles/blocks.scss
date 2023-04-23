@@ -32,6 +32,11 @@
     padding: 24px 20px;
 }
 
+.content__info {
+    display: flex;
+    flex-direction: column;
+}
+
 .big-header.-content {
     text-align: center;
 }

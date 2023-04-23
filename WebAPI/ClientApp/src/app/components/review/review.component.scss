@@ -20,6 +20,7 @@
 
 .edit-button {
     margin-top: 12px;
+    width: 100%;
 }
 
 .vector {
@@ -78,4 +79,23 @@
     .review__star {
         margin-top: 5px;
     }
-  }
+}
+
+@media (min-width: 600px) {
+    .elements__review {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .review {
+        width: 350px;
+        padding: 20px;
+        flex-direction: row;
+    }
+
+    .review__content {
+        width: 350px;
+        justify-content: space-between;
+    }
+}

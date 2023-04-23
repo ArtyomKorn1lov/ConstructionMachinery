@@ -90,6 +90,40 @@
         rgba(0, 0, 0, 0.006) 91.9%,
         transparent);
   }
+
+  &__arrow {
+    display: none;
+    background-color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    z-index: 2;
+
+    &.-left {
+      left: 12px;
+    }
+
+    &.-right {
+      right: 12px;
+    }
+
+    & svg {
+      height: 20px;
+      margin: 10px;
+      width: 20px;
+    }
+  }
+}
+
+.gallery:hover .gallery__arrow {
+  display: block;
+
+  &.-inactive {
+    opacity: 0.3;
+  }
 }
 
 @media (max-width: 380px) {
@@ -98,6 +132,37 @@
 
     &__image {
       height: 250px;
+    }
+  }
+}
+
+@media (min-width: 480px) {
+  .gallery {
+    height: 350px;
+
+    &__image {
+      height: 350px;
+    }
+  }
+}
+
+@media (min-width: 580px) {
+  .gallery {
+    height: 400px;
+
+    &__image {
+      height: 400px;
+    }
+  }
+}
+
+@media (min-width: 680px) {
+  .gallery {
+    width: 680px;
+    height: 450px;
+
+    &__image {
+      height: 450px;
     }
   }
 }

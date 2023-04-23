@@ -8,4 +8,20 @@
     <div class="gallery__dot" *ngFor="let image of images; let currIndex = index"
       [ngClass]="{ '-active': currIndex == activeIndex }"></div>
   </div>
+  <div *ngIf="images.length > 1" class="gallery__arrow -left" [ngClass]="{ '-inactive': activeIndex < 1 }" (click)="clickNext()">
+    <svg fill="currentColor" viewBox="0 0 32 32">
+      <path fill-rule="evenodd"
+        d="M12.707 8.373a1 1 0 00-1.414-1.414l-8.667 8.666a1 1 0 000 1.415l8.667 8.667a1 1 0 101.414-1.415l-6.96-6.96 22.922-.011a1 1 0 10-.001-2l-22.92.011 6.96-6.96z"
+        clip-rule="evenodd">
+      </path>
+    </svg>
+  </div>
+  <div *ngIf="images.length > 1" class="gallery__arrow -right" [ngClass]="{ '-inactive': activeIndex >= images.length - 1 }" (click)="clickPrev()">
+    <svg fill="currentColor" viewBox="0 0 32 32">
+      <path fill-rule="evenodd"
+        d="M19.294 24.293a1 1 0 101.414 1.414l8.667-8.667a1 1 0 000-1.414l-8.667-8.667a1 1 0 10-1.414 1.414l6.96 6.96-22.922.011a1 1 0 00.001 2l22.92-.011-6.96 6.96z"
+        clip-rule="evenodd">
+      </path>
+    </svg>
+  </div>
 </div>

@@ -34,6 +34,14 @@ export class GalleryComponent implements OnInit {
     }
   }
 
+  public clickNext(): void {
+    this.moveGallery(SwipeDirection.Right);
+  }
+
+  public clickPrev(): void {
+    this.moveGallery(SwipeDirection.Left);
+  }
+
   public touchStart(event: TouchEvent): void {
     if (this.images.length !== 1) {
       this.posX = event.targetTouches.item(0)?.pageX;

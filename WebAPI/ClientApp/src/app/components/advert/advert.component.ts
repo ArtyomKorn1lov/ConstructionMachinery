@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { AdvertModelList } from 'src/app/models/AdvertModelList';
 import { AdvertService } from 'src/app/services/advert.service';
 import { Router } from '@angular/router';
@@ -272,6 +272,7 @@ export class AdvertComponent implements OnInit {
                   }
                 );
           }
+          this.advertService.advertLenght = this.advertList.length;
         });
       }
       if (this.page == 'my') {
@@ -383,6 +384,7 @@ export class AdvertComponent implements OnInit {
                 console.log(error);
               }
             );
+        this.advertService.advertLenght = this.advertList.length;
       }
       this.count += 10;
       this.convertToNormalDate();
@@ -611,6 +613,7 @@ export class AdvertComponent implements OnInit {
                 }
               );
         }
+        this.advertService.advertLenght = this.advertList.length;
       });
     }
     if (this.page == 'my') {
@@ -715,6 +718,7 @@ export class AdvertComponent implements OnInit {
               console.log(error);
             }
           );
+      this.advertService.advertLenght = this.advertList.length;
     }
     this.count += 10;
   }

@@ -87,12 +87,11 @@
 
 .list-section {
     display: block;
-    //justify-content: space-between;
 }
 
 .list-section__category {
     margin-top: 26px;
-    margin-right: 20px;
+    margin-right: 50px;
 }
 
 .list-section__content {
@@ -116,4 +115,13 @@
 
 .big-header.-category {
     margin-top: 16px;
+}
+
+.property-filter {
+    display: flex;
+    background: var(--color-background);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
 }

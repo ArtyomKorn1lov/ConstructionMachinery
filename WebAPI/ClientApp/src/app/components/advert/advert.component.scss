@@ -54,6 +54,10 @@
 
 .medium-header {
     color: var(--color-primary-button);
+
+    &.-desktop {
+        display: none;
+    }
 }
 
 .micro-text {
@@ -78,6 +82,7 @@
     width: 100%;
     margin-bottom: 15px;
 }
+
 
 @media (max-width: 400px) {
     .advert {
@@ -131,6 +136,14 @@
     .medium-header {
         margin-top: 10px;
         margin-right: 10px;
+
+        &.-desktop {
+            display: block;
+        }
+
+        &.-mobile {
+            display: none;
+        }
     }
 
     .primary-text {
@@ -198,6 +211,14 @@
     .medium-header {
         margin-top: 10px;
         margin-right: 10px;
+
+        &.-desktop {
+            display: block;
+        }
+
+        &.-mobile {
+            display: none;
+        }
     }
 
     .primary-text {
@@ -233,8 +254,10 @@
     }
 }
 
-@media (min-width: 780px) {
+@media (min-width: 500px) {
     .micro-text {
-        text-align: center;
+        &.-mobile {
+            display: none;
+        }
     }
 }

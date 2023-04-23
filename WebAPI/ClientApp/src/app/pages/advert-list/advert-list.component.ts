@@ -5,6 +5,7 @@ import { DialogFilterComponent } from 'src/app/components/dialog-filter/dialog-f
 import { MatDialog } from '@angular/material/dialog';
 import { Filter } from 'src/app/models/Filter';
 import { Title } from '@angular/platform-browser';
+import { AdvertService } from 'src/app/services/advert.service';
 
 @Component({
   selector: 'app-advert-list',
@@ -47,7 +48,7 @@ export class AdvertListComponent implements OnInit {
   public filterState: string = "all";
   @ViewChild(AdvertComponent) child: AdvertComponent | undefined;
 
-  constructor(private accountService: AccountService, private dialog: MatDialog, public titleService: Title,) {
+  constructor(private accountService: AccountService, private dialog: MatDialog, public titleService: Title, public advertService: AdvertService) {
     this.titleService.setTitle("Список объявлений");
   }
 

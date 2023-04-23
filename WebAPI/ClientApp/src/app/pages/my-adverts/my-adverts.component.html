@@ -5,15 +5,23 @@
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <div class="content__elements">
-            <button [routerLink]="['/advert-create']" class="primary-authorize">
-                <h5 class="medium-header">Создать объявление</h5>
-            </button>
-            <div class="filter-group">
-                <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
-                    <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
-                </select>
-                <div class="filter">
-                    <img class="filter__image" src="assets/clarity_filter-solid.png">
+            <div class="list-section">
+                <div class="property-filter">
+                    <h6 class="big-header">Фильтр по свойствам находится в разработке</h6>
+                </div>
+                <div class="list-section__content">
+                    <button [routerLink]="['/advert-create']" class="primary-authorize">
+                        <h5 class="medium-header">Создать объявление</h5>
+                    </button>
+                    <div class="filter-group">
+                        <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
+                            <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
+                        </select>
+                        <div class="filter">
+                            <img class="filter__image" src="assets/clarity_filter-solid.png">
+                        </div>
+                    </div>
+                    <p class="micro-text -desktop">Показано {{advertService.advertLenght}} объявлений</p>
                 </div>
             </div>
             <app-advert [page]="'my'"></app-advert>

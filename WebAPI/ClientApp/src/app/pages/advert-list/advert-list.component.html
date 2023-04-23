@@ -39,14 +39,22 @@
                     </div>
                 </div>
                 <div class="list-section__content">
-                    <div class="filter-group">
-                        <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
-                            <option class="select-filter__option" *ngFor="let filter of filters;"
-                                ngValue={{filter.param}}>
-                                {{filter.name}}</option>
-                        </select>
-                        <div class="filter">
-                            <img class="filter__image" src="assets/clarity_filter-solid.png">
+                    <div class="content__filter">
+                        <div class="filter__section">
+                            <div class="filter-group">
+                                <div class="property-filter">
+                                    <h6 class="big-header">Фильтр по свойствам находится в разработке</h6>
+                                </div>
+                                <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
+                                    <option class="select-filter__option" *ngFor="let filter of filters;"
+                                        ngValue={{filter.param}}>
+                                        {{filter.name}}</option>
+                                </select>
+                                <div class="filter">
+                                    <img class="filter__image" src="assets/clarity_filter-solid.png">
+                                </div>
+                            </div>
+                            <p class="micro-text -desktop">Показано {{advertService.advertLenght}} объявлений</p>
                         </div>
                     </div>
                     <app-advert [page]="'list'"></app-advert>

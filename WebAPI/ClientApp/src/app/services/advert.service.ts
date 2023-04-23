@@ -15,6 +15,7 @@ import { AdvertModelDetail } from '../models/AdvertModelDetail';
 export class AdvertService {
   private advertCreate: AdvertModelCreate | undefined;
   private advertUpdate: AdvertModelUpdate | undefined;
+  public advertLenght: number = 0;
 
   constructor(private http: HttpClient, private router: Router) { }
 

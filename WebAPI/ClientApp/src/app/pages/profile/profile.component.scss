@@ -21,6 +21,9 @@
 }
 
 @media (min-width: 600px) {
+    .big-header.-content {
+        color: var(--color-primary-button);
+    }
 
     .content__centered {
         display: flex;

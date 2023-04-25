@@ -51,3 +51,29 @@
 .select-filter__option {
     color: var(--color-primary-button);
 }
+
+.content__fields {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 500px) { 
+    .content__elements {
+        align-items: center;
+    }
+
+    .content__fields {
+        width: 400px;
+    }
+}
+
+@media (min-width: 600px) {
+    .content__fields {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        background: #373737;
+        box-shadow: 0px 0px 59px 8px rgba(0, 0, 0, 0.4);
+        border-radius: 5px;
+        padding: 50px;
+    }
+}

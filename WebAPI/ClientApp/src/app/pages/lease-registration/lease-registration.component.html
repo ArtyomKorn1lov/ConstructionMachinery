@@ -5,50 +5,52 @@
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}:</h5>
         </div>
         <form class="content__elements">
-            <h4 class="small-header">Адрес доставки</h4>
-            <input id="address" type="text" class="authorize-input" #slectorAddress="ngModel" [(ngModel)]="address"
-                name="address" [ngClass]="{ '-invalid': invalidAddress }" (click)="invalidAddress = resetValidFlag()"
-                placeholder="Введите адрес" maxlength="100" required>
-            <div class="valid-container" *ngIf="slectorAddress.invalid && slectorAddress.touched || invalidAddress">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidAddress" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidAddress" class="valid-container__text">{{messageAddress}}</p>
-            </div>
-            <h4 class="small-header">Выберете дату заказа</h4>
-            <div id="time" class="select-container">
-                <select [ngClass]="{ '-invalid': invalidCurrentTimeId }"
-                    (click)="invalidCurrentTimeId = resetValidFlag()" class="select-filter"
-                    [(ngModel)]="currentTimeIndex" name="currentTimeIndex">
-                    <option class="select-filter__option" *ngFor="let date of leaseTimes; let currentIndex = index"
-                        ngValue={{currentIndex}}>
-                        {{datetimeService.convertDateToUTS(date.date.getDate())}}.{{datetimeService.convertDateToUTS(date.date.getMonth()+1)}}.{{date.date.getFullYear()}}
-                    </option>
-                </select>
-            </div>
-            <div class="valid-container" *ngIf="invalidCurrentTimeId">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p class="valid-container__text">{{messageCurrentTimeId}}</p>
-            </div>
-            <h4 *ngIf="currentTimeIndex != undefined" class="small-header -time">Выберете время заказа</h4>
-            <div *ngIf="currentTimeIndex != undefined" class="select-container">
-                <select [ngClass]="{ '-invalid': invalidCurrentTimeId }"
-                    (click)="invalidCurrentTimeId = resetValidFlag()" class="select-filter" [(ngModel)]="currentTimeId"
-                    name="currentTimeIndex">
-                    <option class="select-filter__option" *ngFor="let time of leaseTimes[currentTimeIndex].times"
-                        ngValue={{time.id}}>
-                        {{datetimeService.convertDateToUTS(time.date.getHours())}}:00
-                    </option>
-                </select>
-            </div>
-            <div class="valid-container" *ngIf="invalidCurrentTimeId && currentTimeIndex != undefined">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p class="valid-container__text">{{messageCurrentTimeId}}</p>
-            </div>
-            <button *ngIf="!spinnerFlag" (click)="createRequest()" class="primary-authorize">
-                <h5 class="medium-header">Отправить заявку</h5>
-            </button>
-            <div *ngIf="spinnerFlag" class="load-spinner">
-                <mat-spinner></mat-spinner>
+            <div class="content__fields">
+                <h4 class="small-header">Адрес доставки</h4>
+                <input id="address" type="text" class="authorize-input" #slectorAddress="ngModel" [(ngModel)]="address"
+                    name="address" [ngClass]="{ '-invalid': invalidAddress }"
+                    (click)="invalidAddress = resetValidFlag()" placeholder="Введите адрес" maxlength="100" required>
+                <div class="valid-container" *ngIf="slectorAddress.invalid && slectorAddress.touched || invalidAddress">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p *ngIf="!invalidAddress" class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="invalidAddress" class="valid-container__text">{{messageAddress}}</p>
+                </div>
+                <h4 class="small-header">Выберете дату заказа</h4>
+                <div id="time" class="select-container">
+                    <select [ngClass]="{ '-invalid': invalidCurrentTimeId }"
+                        (click)="invalidCurrentTimeId = resetValidFlag()" class="select-filter"
+                        [(ngModel)]="currentTimeIndex" name="currentTimeIndex">
+                        <option class="select-filter__option" *ngFor="let date of leaseTimes; let currentIndex = index"
+                            ngValue={{currentIndex}}>
+                            {{datetimeService.convertDateToUTS(date.date.getDate())}}.{{datetimeService.convertDateToUTS(date.date.getMonth()+1)}}.{{date.date.getFullYear()}}
+                        </option>
+                    </select>
+                </div>
+                <div class="valid-container" *ngIf="invalidCurrentTimeId">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p class="valid-container__text">{{messageCurrentTimeId}}</p>
+                </div>
+                <h4 *ngIf="currentTimeIndex != undefined" class="small-header -time">Выберете время заказа</h4>
+                <div *ngIf="currentTimeIndex != undefined" class="select-container">
+                    <select [ngClass]="{ '-invalid': invalidCurrentTimeId }"
+                        (click)="invalidCurrentTimeId = resetValidFlag()" class="select-filter"
+                        [(ngModel)]="currentTimeId" name="currentTimeIndex">
+                        <option class="select-filter__option" *ngFor="let time of leaseTimes[currentTimeIndex].times"
+                            ngValue={{time.id}}>
+                            {{datetimeService.convertDateToUTS(time.date.getHours())}}:00
+                        </option>
+                    </select>
+                </div>
+                <div class="valid-container" *ngIf="invalidCurrentTimeId && currentTimeIndex != undefined">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p class="valid-container__text">{{messageCurrentTimeId}}</p>
+                </div>
+                <button *ngIf="!spinnerFlag" (click)="createRequest()" class="primary-authorize">
+                    <h5 class="medium-header">Отправить заявку</h5>
+                </button>
+                <div *ngIf="spinnerFlag" class="load-spinner">
+                    <mat-spinner></mat-spinner>
+                </div>
             </div>
         </form>
     </div>

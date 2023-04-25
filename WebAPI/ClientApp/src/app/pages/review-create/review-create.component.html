@@ -5,30 +5,43 @@
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <form class="content__elements">
-            <h5 class="small-header">Опишите ваш отзыв</h5>
-            <textarea [(ngModel)]="description" name="description" class="advert-textarea" placeholder="Введите описание" maxlength="500"></textarea>
-            <h5 class="small-header">Оцените данное объявление</h5>
-            <div id="star" class="star" (click)="invalidStars = resetValidFlag()">
-                <img *ngIf="!stateStars.first" (click)="setState(1)" class="star__item" src="assets/star_empty.png" alt="star">
-                <img *ngIf="stateStars.first" (click)="removeState(1)" class="star__item" src="assets/star_fill.png" alt="star">
-                <img *ngIf="!stateStars.second" (click)="setState(2)" class="star__item" src="assets/star_empty.png" alt="star">
-                <img *ngIf="stateStars.second" (click)="removeState(2)" class="star__item" src="assets/star_fill.png" alt="star">
-                <img *ngIf="!stateStars.third" (click)="setState(3)" class="star__item" src="assets/star_empty.png" alt="star">
-                <img *ngIf="stateStars.third" (click)="removeState(3)" class="star__item" src="assets/star_fill.png" alt="star">
-                <img *ngIf="!stateStars.fourth" (click)="setState(4)" class="star__item" src="assets/star_empty.png" alt="star">
-                <img *ngIf="stateStars.fourth" (click)="removeState(4)" class="star__item" src="assets/star_fill.png" alt="star">
-                <img *ngIf="!stateStars.fifth" (click)="setState(5)" class="star__item" src="assets/star_empty.png" alt="star">
-                <img *ngIf="stateStars.fifth" (click)="removeState(5)" class="star__item" src="assets/star_fill.png" alt="star">
-            </div>
-            <div class="valid-container" *ngIf="invalidStars">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p class="valid-container__text">{{messageStars}}</p>
-            </div>
-            <button *ngIf="!spinnerFlag" (click)="create()" class="primary-authorize">
-                <h5 class="medium-header">Добавить</h5>
-            </button>
-            <div *ngIf="spinnerFlag" class="load-spinner">
-                <mat-spinner></mat-spinner>
+            <div class="content__fields">
+                <h5 class="small-header">Опишите ваш отзыв</h5>
+                <textarea [(ngModel)]="description" name="description" class="advert-textarea"
+                    placeholder="Введите описание" maxlength="500"></textarea>
+                <h5 class="small-header">Оцените данное объявление</h5>
+                <div id="star" class="star" (click)="invalidStars = resetValidFlag()">
+                    <img *ngIf="!stateStars.first" (click)="setState(1)" class="star__item" src="assets/star_empty.png"
+                        alt="star">
+                    <img *ngIf="stateStars.first" (click)="removeState(1)" class="star__item" src="assets/star_fill.png"
+                        alt="star">
+                    <img *ngIf="!stateStars.second" (click)="setState(2)" class="star__item" src="assets/star_empty.png"
+                        alt="star">
+                    <img *ngIf="stateStars.second" (click)="removeState(2)" class="star__item"
+                        src="assets/star_fill.png" alt="star">
+                    <img *ngIf="!stateStars.third" (click)="setState(3)" class="star__item" src="assets/star_empty.png"
+                        alt="star">
+                    <img *ngIf="stateStars.third" (click)="removeState(3)" class="star__item" src="assets/star_fill.png"
+                        alt="star">
+                    <img *ngIf="!stateStars.fourth" (click)="setState(4)" class="star__item" src="assets/star_empty.png"
+                        alt="star">
+                    <img *ngIf="stateStars.fourth" (click)="removeState(4)" class="star__item"
+                        src="assets/star_fill.png" alt="star">
+                    <img *ngIf="!stateStars.fifth" (click)="setState(5)" class="star__item" src="assets/star_empty.png"
+                        alt="star">
+                    <img *ngIf="stateStars.fifth" (click)="removeState(5)" class="star__item" src="assets/star_fill.png"
+                        alt="star">
+                </div>
+                <div class="valid-container" *ngIf="invalidStars">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p class="valid-container__text">{{messageStars}}</p>
+                </div>
+                <button *ngIf="!spinnerFlag" (click)="create()" class="primary-authorize">
+                    <h5 class="medium-header">Добавить</h5>
+                </button>
+                <div *ngIf="spinnerFlag" class="load-spinner">
+                    <mat-spinner></mat-spinner>
+                </div>
             </div>
         </form>
     </div>

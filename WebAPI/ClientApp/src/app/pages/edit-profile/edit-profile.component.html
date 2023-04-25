@@ -5,68 +5,81 @@
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <form class="content__elements">
-            <h5 class="small-header">Email пользователя</h5>
-            <input id="email" [ngClass]="{ '-invalid': invalidEmail }" (click)="invalidEmail = resetValidFlag()"
-                #slectorEmail="ngModel" [(ngModel)]="user.email" name="email" class="authorize-input" type="email"
-                placeholder="Email" required>
-            <div class="valid-container" *ngIf="slectorEmail.invalid && slectorEmail.touched || invalidEmail">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidEmail" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidEmail" class="valid-container__text">{{messageEmail}}</p>
+            <div class="profile__sections">
+                <div class="profile__fields">
+                    <h5 class="small-header">Email пользователя</h5>
+                    <input id="email" [ngClass]="{ '-invalid': invalidEmail }" (click)="invalidEmail = resetValidFlag()"
+                        #slectorEmail="ngModel" [(ngModel)]="user.email" name="email" class="authorize-input"
+                        type="email" placeholder="Email" required>
+                    <div class="valid-container" *ngIf="slectorEmail.invalid && slectorEmail.touched || invalidEmail">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidEmail" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidEmail" class="valid-container__text">{{messageEmail}}</p>
+                    </div>
+                    <h5 class="small-header">Пароль пользователя</h5>
+                    <input id="password" [ngClass]="{ '-invalid': invalidPassword }"
+                        (click)="invalidPassword = resetValidFlag()" #slectorPassword="ngModel" [(ngModel)]="password"
+                        name="password" class="authorize-input" type="password" placeholder="Пароль" required>
+                    <div class="valid-container"
+                        *ngIf="slectorPassword.invalid && slectorPassword.touched || invalidPassword">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidPassword" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidPassword" class="valid-container__text">{{messagePassword}}</p>
+                    </div>
+                    <h5 class="small-header">Повторите пароль</h5>
+                    <input id="confirm" [ngClass]="{ '-invalid': invalidConfirm }"
+                        (click)="invalidConfirm = resetValidFlag()" #slectorConfirm="ngModel"
+                        [(ngModel)]="confirm_password" name="confirm_password" class="authorize-input" type="password"
+                        placeholder="Подтвердите пароль" required>
+                    <div class="valid-container"
+                        *ngIf="slectorConfirm.invalid && slectorConfirm.touched || invalidConfirm">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidConfirm" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidConfirm" class="valid-container__text">{{messageConfirm}}</p>
+                    </div>
+                </div>
+                <div class="profile__fields">
+                    <h5 class="small-header">Фамилия Имя Отчество</h5>
+                    <input id="name" [ngClass]="{ '-invalid': invalidName }" (click)="invalidName = resetValidFlag()"
+                        #slectorName="ngModel" [(ngModel)]="user.name" name="name" class="authorize-input" type="text"
+                        placeholder="ФИО" required>
+                    <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched || invalidName">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidName" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidName" class="valid-container__text">{{messageName}}</p>
+                    </div>
+                    <h5 class="small-header">Номер телефона</h5>
+                    <input id="phone" [ngClass]="{ '-invalid': invalidPhone }" (click)="invalidPhone = resetValidFlag()"
+                        #slectorPhone="ngModel" [(ngModel)]="user.phone" name="phone" class="authorize-input"
+                        type="text" placeholder="Телефон" required>
+                    <div class="valid-container" *ngIf="slectorPhone.invalid && slectorPhone.touched || invalidPhone">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidPhone" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidPhone" class="valid-container__text">{{messagePhone}}</p>
+                    </div>
+                    <h5 class="small-header">Адрес арендодателя</h5>
+                    <input id="address" [ngClass]="{ '-invalid': invalidAddress }"
+                        (click)="invalidAddress = resetValidFlag()" #slectorAddress="ngModel" [(ngModel)]="user.address"
+                        name="address" class="authorize-input" type="text" placeholder="Адрес" required>
+                    <div class="valid-container"
+                        *ngIf="slectorAddress.invalid && slectorAddress.touched || invalidAddress">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidAddress" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidAddress" class="valid-container__text">{{messageAddress}}</p>
+                    </div>
+                </div>
             </div>
-            <h5 class="small-header">Пароль пользователя</h5>
-            <input id="password" [ngClass]="{ '-invalid': invalidPassword }"
-                (click)="invalidPassword = resetValidFlag()" #slectorPassword="ngModel" [(ngModel)]="password"
-                name="password" class="authorize-input" type="password" placeholder="Пароль" required>
-            <div class="valid-container" *ngIf="slectorPassword.invalid && slectorPassword.touched || invalidPassword">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidPassword" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidPassword" class="valid-container__text">{{messagePassword}}</p>
+            <div class="profile__interact">
+                <button *ngIf="!spinnerFlag" class="primary-authorize" (click)="edit()">
+                    <h5 class="medium-header">Подвердить изменения</h5>
+                </button>
+                <div *ngIf="spinnerFlag" class="load-spinner">
+                    <mat-spinner></mat-spinner>
+                </div>
+                <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете
+                    согласие на
+                    обработку персональных данных.</p>
             </div>
-            <h5 class="small-header">Повторите пароль</h5>
-            <input id="confirm" [ngClass]="{ '-invalid': invalidConfirm }" (click)="invalidConfirm = resetValidFlag()"
-                #slectorConfirm="ngModel" [(ngModel)]="confirm_password" name="confirm_password" class="authorize-input"
-                type="password" placeholder="Подтвердите пароль" required>
-            <div class="valid-container" *ngIf="slectorConfirm.invalid && slectorConfirm.touched || invalidConfirm">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidConfirm" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidConfirm" class="valid-container__text">{{messageConfirm}}</p>
-            </div>
-            <h5 class="small-header">Фамилия Имя Отчество</h5>
-            <input id="name" [ngClass]="{ '-invalid': invalidName }" (click)="invalidName = resetValidFlag()"
-                #slectorName="ngModel" [(ngModel)]="user.name" name="name" class="authorize-input" type="text"
-                placeholder="ФИО" required>
-            <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched || invalidName">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidName" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidName" class="valid-container__text">{{messageName}}</p>
-            </div>
-            <h5 class="small-header">Номер телефона</h5>
-            <input id="phone" [ngClass]="{ '-invalid': invalidPhone }" (click)="invalidPhone = resetValidFlag()"
-                #slectorPhone="ngModel" [(ngModel)]="user.phone" name="phone" class="authorize-input" type="text"
-                placeholder="Телефон" required>
-            <div class="valid-container" *ngIf="slectorPhone.invalid && slectorPhone.touched || invalidPhone">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidPhone" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidPhone" class="valid-container__text">{{messagePhone}}</p>
-            </div>
-            <h5 class="small-header">Адрес арендодателя</h5>
-            <input id="address" [ngClass]="{ '-invalid': invalidAddress }" (click)="invalidAddress = resetValidFlag()"
-                #slectorAddress="ngModel" [(ngModel)]="user.address" name="address" class="authorize-input" type="text"
-                placeholder="Адрес" required>
-            <div class="valid-container" *ngIf="slectorAddress.invalid && slectorAddress.touched || invalidAddress">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidAddress" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidAddress" class="valid-container__text">{{messageAddress}}</p>
-            </div>
-            <button *ngIf="!spinnerFlag" class="primary-authorize" (click)="edit()">
-                <h5 class="medium-header">Подвердить изменения</h5>
-            </button>
-            <div *ngIf="spinnerFlag" class="load-spinner">
-                <mat-spinner></mat-spinner>
-            </div>
-            <p class="micro-text">Нажимая на кнопку вы соглашаетесь с политикой конфиденциальности и даете согласие на
-                обработку персональных данных.</p>
         </form>
     </div>
 </div>

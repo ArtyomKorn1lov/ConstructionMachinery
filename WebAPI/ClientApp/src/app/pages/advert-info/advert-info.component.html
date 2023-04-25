@@ -64,6 +64,9 @@
                         class="edit-button -desktop">
                         <h5 class="medium-header">Снять публикацию</h5>
                     </button>
+                    <div *ngIf="spinnerFlag" class="load-spinner -desktop">
+                        <mat-spinner></mat-spinner>
+                    </div>
                 </div>
             </div>
             <div class="content__info">
@@ -105,12 +108,12 @@
                     class="edit-button -mobile">
                     <h5 class="medium-header">Снять публикацию</h5>
                 </button>
+                <div *ngIf="spinnerFlag" class="load-spinner -mobile">
+                    <mat-spinner></mat-spinner>
+                </div>
             </div>
         </div>
         <div class="content__elements -reviews">
-            <div *ngIf="spinnerFlag" class="load-spinner">
-                <mat-spinner></mat-spinner>
-            </div>
             <app-review></app-review>
         </div>
     </div>

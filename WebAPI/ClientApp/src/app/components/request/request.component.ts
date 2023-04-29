@@ -59,6 +59,7 @@ export class RequestComponent implements OnInit {
               this.dateConvert();
               this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
               this.flagState();
+              this.count += 10;
             }
           )
           .catch(
@@ -75,6 +76,7 @@ export class RequestComponent implements OnInit {
               this.dateConvert();
               this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
               this.flagState();
+              this.count += 10;
             }
           )
           .catch(
@@ -119,6 +121,7 @@ export class RequestComponent implements OnInit {
             this.requests = data;
             await this.changeFlagState(this.requests.length, firstCount);
             this.dateConvert();
+            this.count += 10;
           }
         )
         .catch(
@@ -133,6 +136,7 @@ export class RequestComponent implements OnInit {
             this.requests = data;
             await this.changeFlagState(this.requests.length, firstCount);
             this.dateConvert();
+            this.count += 10;
           }
         )
         .catch(

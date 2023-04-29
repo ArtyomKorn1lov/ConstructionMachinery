@@ -5,56 +5,58 @@
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <form class="content__elements">
-            <h4 class="big-header -content">Выберете доступное время для аренды</h4>
-            <h5 class="small-header">Дни аренды (максимум 14 дней)</h5>
-            <mat-form-field [ngClass]="{ '-invalid': invalidRange }" id="datePicker" class="date-picker"
-                appearance="fill">
-                <mat-label class="date-picker__element">Введите диапазон дней</mat-label>
-                <mat-date-range-input [ngClass]="{ '-invalid': invalidRange }" (click)="invalidRange = resetValidFlag()"
-                    [formGroup]="range" [rangePicker]="picker">
-                    <input class="date-picker__element" matStartDate formControlName="start"
-                        placeholder="Начальный день">
-                    <input class="date-picker__element" matEndDate formControlName="end" placeholder="Конечный">
-                </mat-date-range-input>
-                <mat-hint class="date-picker__element">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle (click)="invalidRange = resetValidFlag()" matSuffix
-                    [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-                <mat-error *ngIf="range.controls.start.errors != null">Ошибка в начальной дате</mat-error>
-                <mat-error *ngIf="range.controls.end.errors != null && range.controls.start.errors == null">Ошибка в
-                    конечной дате</mat-error>
-                <mat-error *ngIf="invalidRange">{{messageRange}}</mat-error>
-            </mat-form-field>
-            <div class="valid-container" *ngIf="invalidRange">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p class="valid-container__text">{{messageRange}}</p>
-            </div>
-            <h5 class="small-header">Время аренды</h5>
-            <h5 class="small-header -transparent">Начальное время</h5>
-            <input [ngClass]="{ '-invalid': invalidStartTime }" (click)="invalidStartTime = resetValidFlag()"
-                id="startPicker" #selectorStart="ngModel" [(ngModel)]="startTime" [ngxTimepicker]="startPicker"
-                [format]="24" readonly name="startTime" class="authorize-input" type="time" required>
-            <ngx-material-timepicker #startPicker></ngx-material-timepicker>
-            <div class="valid-container" *ngIf="selectorStart.invalid && selectorStart.touched || invalidStartTime">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidStartTime" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidStartTime" class="valid-container__text">{{messageStartTime}}</p>
-            </div>
-            <h5 class="small-header -transparent">Конечное время</h5>
-            <input [ngClass]="{ '-invalid': invalidEndTime }" (click)="invalidEndTime = resetValidFlag()" id="endPicker"
-                #selectorEnd="ngModel" [(ngModel)]="endTime" [ngxTimepicker]="endPicker" [format]="24" readonly
-                name="endTime" class="authorize-input" type="time" required>
-            <ngx-material-timepicker #endPicker></ngx-material-timepicker>
-            <div class="valid-container" *ngIf="selectorEnd.invalid && selectorEnd.touched || invalidEndTime">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidEndTime" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidEndTime" class="valid-container__text">{{messageEndTime}}</p>
-            </div>
-            <button *ngIf="!spinnerFlag" (click)="update()" class="primary-authorize">
-                <h5 class="medium-header">Выложить объявление</h5>
-            </button>
-            <div *ngIf="spinnerFlag" class="load-spinner">
-                <mat-spinner></mat-spinner>
+            <div class="advert__sections">
+                <h4 class="big-header -content">Выберете доступное время для аренды</h4>
+                <h5 class="small-header">Дни аренды (максимум 14 дней)</h5>
+                <mat-form-field [ngClass]="{ '-invalid': invalidRange }" id="datePicker" class="date-picker"
+                    appearance="fill">
+                    <mat-label class="date-picker__element">Введите диапазон дней</mat-label>
+                    <mat-date-range-input [ngClass]="{ '-invalid': invalidRange }"
+                        (click)="invalidRange = resetValidFlag()" [formGroup]="range" [rangePicker]="picker">
+                        <input class="date-picker__element" matStartDate formControlName="start"
+                            placeholder="Начальный день">
+                        <input class="date-picker__element" matEndDate formControlName="end" placeholder="Конечный">
+                    </mat-date-range-input>
+                    <mat-hint class="date-picker__element">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle (click)="invalidRange = resetValidFlag()" matSuffix
+                        [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                    <mat-error *ngIf="range.controls.start.errors != null">Ошибка в начальной дате</mat-error>
+                    <mat-error *ngIf="range.controls.end.errors != null && range.controls.start.errors == null">Ошибка в
+                        конечной дате</mat-error>
+                    <mat-error *ngIf="invalidRange">{{messageRange}}</mat-error>
+                </mat-form-field>
+                <div class="valid-container" *ngIf="invalidRange">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p class="valid-container__text">{{messageRange}}</p>
+                </div>
+                <h5 class="small-header">Время аренды</h5>
+                <h5 class="small-header -transparent">Начальное время</h5>
+                <input [ngClass]="{ '-invalid': invalidStartTime }" (click)="invalidStartTime = resetValidFlag()"
+                    id="startPicker" #selectorStart="ngModel" [(ngModel)]="startTime" [ngxTimepicker]="startPicker"
+                    [format]="24" readonly name="startTime" class="authorize-input" type="time" required>
+                <ngx-material-timepicker #startPicker></ngx-material-timepicker>
+                <div class="valid-container" *ngIf="selectorStart.invalid && selectorStart.touched || invalidStartTime">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p *ngIf="!invalidStartTime" class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="invalidStartTime" class="valid-container__text">{{messageStartTime}}</p>
+                </div>
+                <h5 class="small-header -transparent">Конечное время</h5>
+                <input [ngClass]="{ '-invalid': invalidEndTime }" (click)="invalidEndTime = resetValidFlag()"
+                    id="endPicker" #selectorEnd="ngModel" [(ngModel)]="endTime" [ngxTimepicker]="endPicker"
+                    [format]="24" readonly name="endTime" class="authorize-input" type="time" required>
+                <ngx-material-timepicker #endPicker></ngx-material-timepicker>
+                <div class="valid-container" *ngIf="selectorEnd.invalid && selectorEnd.touched || invalidEndTime">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p *ngIf="!invalidEndTime" class="valid-container__text">Обязательное поле для заполнения</p>
+                    <p *ngIf="invalidEndTime" class="valid-container__text">{{messageEndTime}}</p>
+                </div>
+                <button *ngIf="!spinnerFlag" (click)="update()" class="primary-authorize">
+                    <h5 class="medium-header">Выложить объявление</h5>
+                </button>
+                <div *ngIf="spinnerFlag" class="load-spinner">
+                    <mat-spinner></mat-spinner>
+                </div>
             </div>
         </form>
     </div>

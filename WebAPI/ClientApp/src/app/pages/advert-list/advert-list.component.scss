@@ -39,11 +39,16 @@
     }
 
     .list-section__content {
+        width: 100%;
         margin-top: 26px;
     }
 
     .list-section__category {
         display: block;
+    }
+
+    .category__content {
+        max-width: 165px;
     }
 
     .content__filter {

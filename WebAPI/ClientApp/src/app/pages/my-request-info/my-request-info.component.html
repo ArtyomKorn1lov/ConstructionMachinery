@@ -5,7 +5,9 @@
             <h5 class="medium-header -back">Исходящая заявка</h5>
         </div>
         <h4 class="big-header -content">Заявка на аренду</h4>
-        <app-gallery *ngIf="request.images.length != 0" [images]="request.images"></app-gallery>
+        <div *ngIf="request.images.length != 0" class="content__gallery">
+            <app-gallery [images]="request.images"></app-gallery>
+        </div>
         <div class="content__elements">
             <div class="title-info">
                 <h4 class="big-header">{{request.advertName}}</h4>

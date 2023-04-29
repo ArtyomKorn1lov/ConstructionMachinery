@@ -5,80 +5,93 @@
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <form class="content__elements">
-            <h5 class="small-header">Название техники</h5>
-            <input [ngClass]="{ '-invalid': invalidName }" (click)="invalidName = resetValidFlag()"
-                #slectorName="ngModel" [(ngModel)]="advertUpdate.name" id="name" name="name" class="authorize-input"
-                type="text" placeholder="Введите название техники" maxlength="100" required>
-            <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched || invalidName">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidName" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidName" class="valid-container__text">{{messageName}}</p>
-            </div>
-            <h5 class="small-header">Год выпуска</h5>
-            <input [ngClass]="{ '-invalid': invalidDateIssure }" (mouseover)="invalidDateIssure = resetValidFlag()"
-                #slectorDate="ngModel" [(ngModel)]="dateIssure" name="dateIssure" id="dateIssure"
-                class="authorize-input" type="date" placeholder="Выберете дату" required>
-            <div class="valid-container" *ngIf="slectorDate.invalid && slectorDate.touched || invalidDateIssure">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidDateIssure" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidDateIssure" class="valid-container__text">{{messageDateIssure}}</p>
-            </div>
-            <h5 class="small-header">ПТС или ПСМ</h5>
-            <input [ngClass]="{ '-invalid': invalidPTS }" (click)="invalidPTS = resetValidFlag()" #slectorPTS="ngModel"
-                [(ngModel)]="advertUpdate.pts" name="pts" id="pts" class="authorize-input" type="text"
-                placeholder="Введите данные" maxlength="100" required>
-            <div class="valid-container" *ngIf="slectorPTS.invalid && slectorPTS.touched || invalidPTS">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidPTS" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidPTS" class="valid-container__text">{{messagePTS}}</p>
-            </div>
-            <h5 class="small-header">VIN, номер кузова или SN</h5>
-            <input [ngClass]="{ '-invalid': invalidVIN }" (click)="invalidVIN = resetValidFlag()" #slectorVIN="ngModel"
-                [(ngModel)]="advertUpdate.vin" name="vin" id="vin" class="authorize-input" type="text"
-                placeholder="Введите данные" maxlength="100" required>
-            <div class="valid-container" *ngIf="slectorVIN.invalid && slectorVIN.touched || invalidVIN">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidVIN" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidVIN" class="valid-container__text">{{messageVIN}}</p>
-            </div>
-            <h5 class="small-header">Цена в час</h5>
-            <input [ngClass]="{ '-invalid': invalidPice }" (click)="invalidPice = resetValidFlag()"
-                #slectorPrice="ngModel" [(ngModel)]="advertUpdate.price" name="price" id="price" class="authorize-input"
-                type="text" placeholder="Введите цену" maxlength="12" (keypress)="numberOnly($event)" required>
-            <div class="valid-container" *ngIf="slectorPrice.invalid && slectorPrice.touched || invalidPice">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p *ngIf="!invalidPice" class="valid-container__text">Обязательное поле для заполнения</p>
-                <p *ngIf="invalidPice" class="valid-container__text">{{messagePice}}</p>
-            </div>
-            <h5 class="small-header">Описание объявления</h5>
-            <textarea [(ngModel)]="advertUpdate.description" name="description" class="advert-textarea"
-                placeholder="Введите описание" maxlength="500"></textarea>
-            <h5 class="small-header">Добавьте фотографию</h5>
-            <div id="images" class="photo">
-                <div *ngFor="let image of advertUpdate.images" class="photo__list">
-                    <img *ngIf="image.path != ''" src="{{image.path}}" class="photo__element"
-                        alt="Изображение строительной техники">
-                    <div *ngIf="image.path != ''" (click)="removeFromDownloadImages(image)" class="photo__close"></div>
+            <div class="advert__sections">
+                <div class="advert__fields -left">
+                    <h5 class="small-header">Название техники</h5>
+                    <input [ngClass]="{ '-invalid': invalidName }" (click)="invalidName = resetValidFlag()"
+                        #slectorName="ngModel" [(ngModel)]="advertUpdate.name" id="name" name="name"
+                        class="authorize-input" type="text" placeholder="Введите название техники" maxlength="100"
+                        required>
+                    <div class="valid-container" *ngIf="slectorName.invalid && slectorName.touched || invalidName">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidName" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidName" class="valid-container__text">{{messageName}}</p>
+                    </div>
+                    <h5 class="small-header">Год выпуска</h5>
+                    <input [ngClass]="{ '-invalid': invalidDateIssure }"
+                        (mouseover)="invalidDateIssure = resetValidFlag()" #slectorDate="ngModel"
+                        [(ngModel)]="dateIssure" name="dateIssure" id="dateIssure" class="authorize-input" type="date"
+                        placeholder="Выберете дату" required>
+                    <div class="valid-container"
+                        *ngIf="slectorDate.invalid && slectorDate.touched || invalidDateIssure">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidDateIssure" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidDateIssure" class="valid-container__text">{{messageDateIssure}}</p>
+                    </div>
+                    <h5 class="small-header">ПТС или ПСМ</h5>
+                    <input [ngClass]="{ '-invalid': invalidPTS }" (click)="invalidPTS = resetValidFlag()"
+                        #slectorPTS="ngModel" [(ngModel)]="advertUpdate.pts" name="pts" id="pts" class="authorize-input"
+                        type="text" placeholder="Введите данные" maxlength="100" required>
+                    <div class="valid-container" *ngIf="slectorPTS.invalid && slectorPTS.touched || invalidPTS">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidPTS" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidPTS" class="valid-container__text">{{messagePTS}}</p>
+                    </div>
                 </div>
-                <div *ngFor="let fileBase64 of filesBase64" class="photo__list">
-                    <img src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
-                    <div (click)="removeFromUploadImages(fileBase64)" class="photo__close"></div>
-                </div>
-                <div [ngClass]="{ '-invalid': invalidImage }" (click)="invalidImage = resetValidFlag()"
-                    *ngIf="oldImageCount + filesBase64.length < 6" (click)="uploadImage()" class="photo__download">
-                    <img *ngIf="!invalidImage" src="assets/photo.png">
-                    <img *ngIf="invalidImage" src="assets/photo_invalid.png">
-                    <p [ngClass]="{ '-invalid-text': invalidImage }" class="primary-text -download">Добавить</p>
+                <div class="advert__fields -right">
+                    <h5 class="small-header">VIN, номер кузова или SN</h5>
+                    <input [ngClass]="{ '-invalid': invalidVIN }" (click)="invalidVIN = resetValidFlag()"
+                        #slectorVIN="ngModel" [(ngModel)]="advertUpdate.vin" name="vin" id="vin" class="authorize-input"
+                        type="text" placeholder="Введите данные" maxlength="100" required>
+                    <div class="valid-container" *ngIf="slectorVIN.invalid && slectorVIN.touched || invalidVIN">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidVIN" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidVIN" class="valid-container__text">{{messageVIN}}</p>
+                    </div>
+                    <h5 class="small-header">Цена в час</h5>
+                    <input [ngClass]="{ '-invalid': invalidPice }" (click)="invalidPice = resetValidFlag()"
+                        #slectorPrice="ngModel" [(ngModel)]="advertUpdate.price" name="price" id="price"
+                        class="authorize-input" type="text" placeholder="Введите цену" maxlength="12"
+                        (keypress)="numberOnly($event)" required>
+                    <div class="valid-container" *ngIf="slectorPrice.invalid && slectorPrice.touched || invalidPice">
+                        <img class="valid-container__image" src="assets/valid_mark.png">
+                        <p *ngIf="!invalidPice" class="valid-container__text">Обязательное поле для заполнения</p>
+                        <p *ngIf="invalidPice" class="valid-container__text">{{messagePice}}</p>
+                    </div>
+                    <h5 class="small-header">Описание объявления</h5>
+                    <textarea [(ngModel)]="advertUpdate.description" name="description" class="advert-textarea"
+                        placeholder="Введите описание" maxlength="500"></textarea>
                 </div>
             </div>
-            <div class="valid-container" *ngIf="invalidImage">
-                <img class="valid-container__image" src="assets/valid_mark.png">
-                <p class="valid-container__text">{{messageImage}}</p>
+            <div class="advert__interact">
+                <h5 class="small-header">Добавьте фотографию</h5>
+                <div id="images" class="photo">
+                    <div *ngFor="let image of advertUpdate.images" class="photo__list">
+                        <img *ngIf="image.path != ''" src="{{image.path}}" class="photo__element"
+                            alt="Изображение строительной техники">
+                        <div *ngIf="image.path != ''" (click)="removeFromDownloadImages(image)" class="photo__close">
+                        </div>
+                    </div>
+                    <div *ngFor="let fileBase64 of filesBase64" class="photo__list">
+                        <img src="{{fileBase64}}" class="photo__element" alt="Изображение строительной техники">
+                        <div (click)="removeFromUploadImages(fileBase64)" class="photo__close"></div>
+                    </div>
+                    <div [ngClass]="{ '-invalid': invalidImage }" (click)="invalidImage = resetValidFlag()"
+                        *ngIf="oldImageCount + filesBase64.length < 6" (click)="uploadImage()" class="photo__download">
+                        <img *ngIf="!invalidImage" src="assets/photo.png">
+                        <img *ngIf="invalidImage" src="assets/photo_invalid.png">
+                        <p [ngClass]="{ '-invalid-text': invalidImage }" class="primary-text -download">Добавить</p>
+                    </div>
+                </div>
+                <div class="valid-container" *ngIf="invalidImage">
+                    <img class="valid-container__image" src="assets/valid_mark.png">
+                    <p class="valid-container__text">{{messageImage}}</p>
+                </div>
+                <input (change)="download($event)" id="SelectImage" type="file" accept="image/*">
+                <button (click)="crossingToAvailiableTime()" class="primary-authorize">
+                    <h5 class="medium-header">Продолжить</h5>
+                </button>
             </div>
-            <input (change)="download($event)" id="SelectImage" type="file" accept="image/*">
-            <button (click)="crossingToAvailiableTime()" class="primary-authorize">
-                <h5 class="medium-header">Продолжить</h5>
-            </button>
         </form>
     </div>
 </div>

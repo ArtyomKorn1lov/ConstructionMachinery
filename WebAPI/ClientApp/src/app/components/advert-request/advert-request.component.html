@@ -1,21 +1,28 @@
 <p class="micro-text">Показано {{adverts.length}} объявлений</p>
-<article class="request" *ngFor="let advert of adverts; let i = index">
-    <div class="request__line"></div>
-    <div class="request__content">
-        <img class="request__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}" alt="Изображение строительной техники">
-        <img class="request__image" *ngIf="advert.images.length == 0" src="assets/default.jpg" alt="Изображение строительной техники">
-        <div class="request__text">
-            <p class="primary-text">Объявление №{{i+1}}</p>
-            <h5 class="medium-header -request">{{advert.name}}</h5>
-            <h6 class="small-header">
-                Изменено {{datetimeService.convertDateToUTS(advert.editDate.getDate())}}.{{datetimeService.convertDateToUTS(advert.editDate.getMonth()+1)}}.{{advert.editDate.getFullYear()}}
-                в {{datetimeService.convertDateToUTS(advert.editDate.getHours())}}:00</h6>
+<div class="list__request">
+    <article class="request" *ngFor="let advert of adverts; let i = index">
+        <div class="request__line"></div>
+        <div class="request__content">
+            <img class="request__image" *ngIf="advert.images.length != 0" src="{{advert.images[0].path}}"
+                alt="Изображение строительной техники">
+            <img class="request__image" *ngIf="advert.images.length == 0" src="assets/default.jpg"
+                alt="Изображение строительной техники">
+            <div>
+                <div class="request__text">
+                    <p class="primary-text">Объявление №{{i+1}}</p>
+                    <h5 class="medium-header -request">{{advert.name}}</h5>
+                    <h6 class="small-header">
+                        Изменено
+                        {{datetimeService.convertDateToUTS(advert.editDate.getDate())}}.{{datetimeService.convertDateToUTS(advert.editDate.getMonth()+1)}}.{{advert.editDate.getFullYear()}}
+                        в {{datetimeService.convertDateToUTS(advert.editDate.getHours())}}:00</h6>
+                </div>
+                <button (click)="navigateToRequest(advert.id)" class="edit-button">
+                    <h5 class="medium-header">Открыть</h5>
+                </button>
+            </div>
         </div>
-        <button (click)="navigateToRequest(advert.id)" class="edit-button">
-            <h5 class="medium-header">Открыть</h5>
-        </button>
-    </div>
-</article>
+    </article>
+</div>
 <div *ngIf="scrollFlag" class="load-spinner">
     <mat-spinner></mat-spinner>
 </div>

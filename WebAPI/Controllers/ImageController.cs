@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
                     {
                         await uploadImage.CopyToAsync(fileStream);
                     }
-                    path = _serverDirectory + _currentDirectory + advertId.ToString() + "/" + (advertId + countName).ToString()
+                    path = _currentDirectory + advertId.ToString() + "/" + (advertId + countName).ToString()
                         + System.IO.Path.GetExtension(uploadImage.FileName);
                     string relativePath = _currentDirectory + advertId.ToString();
                     ImageModelCreate image = new ImageModelCreate
@@ -124,7 +124,7 @@ namespace WebAPI.Controllers
                     {
                         await uploadImage.CopyToAsync(fileStream);
                     }
-                    path = _serverDirectory + _currentDirectory + id.ToString() + "/" + (id + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
+                    path = _currentDirectory + id.ToString() + "/" + (id + countName).ToString() + System.IO.Path.GetExtension(uploadImage.FileName);
                     string relativePath = _currentDirectory + id.ToString();
                     ImageModelCreate image = new ImageModelCreate
                     {

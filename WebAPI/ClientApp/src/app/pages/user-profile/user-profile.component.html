@@ -4,25 +4,27 @@
             <img src="assets/back-cursor.png">
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
-        <div class="content__elements">
-            <h4 class="big-header -content">{{user.name}}</h4>
-            <div class="icon-container">
-                <img src="assets/octicon_calendar.png">
-                <h5 class="medium-header">На Авто Помощнике с
-                    {{datetimeService.convertDateToUTS(user.created.getDate())}}.{{datetimeService.convertDateToUTS(user.created.getMonth()+1)}}.{{user.created.getFullYear()}}
-                </h5>
-            </div>
-            <div class="icon-container">
-                <img src="/assets/lucide_mail.png">
-                <h5 class="medium-header">{{user.email}}</h5>
-            </div>
-            <div class="icon-container">
-                <img src="assets/lucide_phone.png">
-                <h5 class="medium-header">{{user.phone}}</h5>
-            </div>
-            <div class="icon-container">
-                <img src="assets/octicon_location.png">
-                <h5 class="medium-header">{{user.address}}</h5>
+        <div class="content__centered">
+            <div class="content__elements">
+                <h4 class="big-header -content">{{user.name}}</h4>
+                <div class="icon-container">
+                    <img src="assets/octicon_calendar.png">
+                    <h5 class="medium-header">На Авто Помощнике с
+                        {{datetimeService.convertDateToUTS(user.created.getDate())}}.{{datetimeService.convertDateToUTS(user.created.getMonth()+1)}}.{{user.created.getFullYear()}}
+                    </h5>
+                </div>
+                <div class="icon-container">
+                    <img src="/assets/lucide_mail.png">
+                    <h5 class="medium-header">{{user.email}}</h5>
+                </div>
+                <div class="icon-container">
+                    <img src="assets/lucide_phone.png">
+                    <h5 class="medium-header">{{user.phone}}</h5>
+                </div>
+                <div class="icon-container">
+                    <img src="assets/octicon_location.png">
+                    <h5 class="medium-header">{{user.address}}</h5>
+                </div>
             </div>
         </div>
     </div>

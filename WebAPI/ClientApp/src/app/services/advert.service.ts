@@ -40,7 +40,7 @@ export class AdvertService {
   }
 
   public checkLenght(oldLength: number, newLength: number): boolean {
-    if (oldLength >= newLength || oldLength == 0)
+    if (oldLength >= newLength)
       return false;
     return true;
   }

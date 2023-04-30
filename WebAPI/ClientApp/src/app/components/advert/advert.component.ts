@@ -395,7 +395,11 @@ export class AdvertComponent implements OnInit {
     if (this.advertList.length < 10) {
       this.scrollFlag = false;
       this.flagState();
-      return
+      return;
+    }
+    if (this.advertList.length % 10 != 0) {
+      this.scrollFlag = false;
+      this.flagState();
     }
   }
 

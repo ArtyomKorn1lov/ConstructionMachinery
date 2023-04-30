@@ -6,8 +6,6 @@ import { AvailabilityRequestModelForCustomer } from 'src/app/models/Availability
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
 import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
 import { ConfirmModel } from '../models/ConfirmModel';
-import { TokenService } from './token.service';
-import { Router } from '@angular/router';
 import { AvailableDayModel } from '../models/AvailableDayModel';
 
 @Injectable({
@@ -18,7 +16,7 @@ export class RequestService {
   constructor(private http: HttpClient) { }
 
   public checkLenght(oldLength: number, newLength: number): boolean {
-    if(oldLength >= newLength || oldLength == 0)
+    if(oldLength >= newLength)
       return false;
     return true;
   }

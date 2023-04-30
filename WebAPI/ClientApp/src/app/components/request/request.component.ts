@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { AvailabilityRequestModel } from 'src/app/models/AvailabilityRequestModel';
 import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { TokenService } from 'src/app/services/token.service';
+import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-request',
@@ -20,6 +21,7 @@ export class RequestComponent implements OnInit {
   private confirmInfoRoute = "confirm-list";
   private requestInfoRoute = "advert-request/my-requests";
   private advertRequestRoute = "advert-request";
+  @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router,
     private route: ActivatedRoute, private tokenService: TokenService) { }
@@ -45,47 +47,44 @@ export class RequestComponent implements OnInit {
       this.router.navigate([this.confirmInfoRoute, id]);
   }
 
-  public scrollEvent = async (event: any): Promise<void> => {
+  public async loadNewElements(): Promise<void> {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
-      const length = this.requests.length;
-      if (this.page == 'in') {
-        await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.count)
-          .then(
-            (data) => {
-              this.requests = data;
-              this.dateConvert();
-              this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
-              this.flagState();
-              this.count += 10;
-            }
-          )
-          .catch(
-            (error) => {
-              console.log(error);
-            }
-          );
-      }
-      if (this.page == 'out')
-        await this.requestService.getListForLandlord(this.count)
-          .then(
-            (data) => {
-              this.requests = data;
-              this.dateConvert();
-              this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
-              this.flagState();
-              this.count += 10;
-            }
-          )
-          .catch(
-            (error) => {
-              console.log(error);
-            }
-          );
-      this.count++;
+    const length = this.requests.length;
+    if (this.page == 'in') {
+      await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.count)
+        .then(
+          (data) => {
+            this.requests = data;
+            this.dateConvert();
+            this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+            this.changeFlagState();
+            this.count += 10;
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
     }
+    if (this.page == 'out')
+      await this.requestService.getListForLandlord(this.count)
+        .then(
+          (data) => {
+            this.requests = data;
+            this.dateConvert();
+            this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+            this.changeFlagState();
+            this.count += 10;
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
   }
 
   public dateConvert(): void {
@@ -94,8 +93,13 @@ export class RequestComponent implements OnInit {
     }
   }
 
-  public async changeFlagState(length: number, firstCount: number): Promise<void> {
-    if (length < firstCount) {
+  public async changeFlagState(): Promise<void> {
+    if (this.requests.length < 10) {
+      this.scrollFlag = false;
+      this.flagState();
+      return;
+    }
+    if (this.requests.length % 10 != 0) {
       this.scrollFlag = false;
       this.flagState();
     }
@@ -104,7 +108,6 @@ export class RequestComponent implements OnInit {
   public flagState(): void {
     if (this.scrollFlag == false) {
       this.count = 0;
-      window.removeEventListener('scroll', this.scrollEvent, true);
     }
   }
 
@@ -112,41 +115,33 @@ export class RequestComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    window.addEventListener('scroll', this.scrollEvent, true);
-    const firstCount = this.count;
-    if (this.page == 'in')
-      await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.count)
-        .then(
-          async (data) => {
-            this.requests = data;
-            await this.changeFlagState(this.requests.length, firstCount);
-            this.dateConvert();
-            this.count += 10;
-          }
-        )
-        .catch(
-          (error) => {
-            console.log(error);
-          }
-        );
-    if (this.page == 'out')
-      await this.requestService.getListForLandlord(this.count)
-        .then(
-          async (data) => {
-            this.requests = data;
-            await this.changeFlagState(this.requests.length, firstCount);
-            this.dateConvert();
-            this.count += 10;
-          }
-        )
-        .catch(
-          (error) => {
-            console.log(error);
-          }
-        );
   }
 
-  public ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.scrollEvent, true);
+  public async ngAfterViewInit(): Promise<void> {
+    this.lazySpinner.forEach((view: ElementRef) =>
+      this.createAndObserve(view).subscribe({
+        next: async (response) => {
+          if (response) {
+            await this.loadNewElements();
+          }
+        }
+      })
+    );
+  }
+
+  private createAndObserve(element: ElementRef): Observable<boolean> {
+    return new Observable((observer) => {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        observer.next(entries);
+      });
+      intersectionObserver.observe(element.nativeElement);
+      return () => {
+        intersectionObserver.disconnect();
+      };
+    }).pipe(
+      mergeMap((entries: any) => entries),
+      map((entry: any) => entry.isIntersecting),
+      distinctUntilChanged()
+    );
   }
 }

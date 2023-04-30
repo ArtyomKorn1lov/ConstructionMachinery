@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewModel } from 'src/app/models/ReviewModel';
 import { ReviewService } from 'src/app/services/review.service';
 import { AdvertService } from 'src/app/services/advert.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
-import { AccountService } from 'src/app/services/account.service';
+import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-review',
@@ -18,6 +18,7 @@ export class ReviewComponent implements OnInit {
   public reviews: ReviewModel[] = [];
   private reviewRoute: string = "/review-edit";
   private userRoute: string = "/user-profile";
+  @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router,
     private advertService: AdvertService, private route: ActivatedRoute) { }
@@ -46,8 +47,13 @@ export class ReviewComponent implements OnInit {
     });
   }
 
-  public async changeFlagState(length: number, firstCount: number): Promise<void> {
-    if (length < firstCount) {
+  public async changeFlagState(): Promise<void> {
+    if (this.reviews.length < 4) {
+      this.scrollFlag = false;
+      this.flagState();
+      return;
+    }
+    if (this.reviews.length % 4 != 0) {
       this.scrollFlag = false;
       this.flagState();
     }
@@ -56,55 +62,59 @@ export class ReviewComponent implements OnInit {
   public flagState(): void {
     if (this.scrollFlag == false) {
       this.count = 0;
-      window.removeEventListener('scroll', this.scrollEvent, true);
     }
   }
 
-  public scrollEvent = async (event: any): Promise<void> => {
-    if (event.target.scrollingElement.offsetHeight + event.target.scrollingElement.scrollTop >= event.target.scrollingElement.scrollHeight) {
-      const length = this.reviews.length;
-      let id = 0;
-      this.route.params.subscribe(params => {
-        id = params["id"];
-      });
-      await this.reviewService.getByAdvertId(id, this.count)
-        .then(
-          (data) => {
-            this.reviews = data;
-            this.convertToNormalDate();
-            this.scrollFlag = this.reviewService.checkLenght(length, this.reviews.length);
-            this.flagState();
-            this.count += 4;
-          }
-        )
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  public async ngOnInit(): Promise<void> {
-    window.addEventListener('scroll', this.scrollEvent, true);
+  public async loadNewElements(): Promise<void> {
+    const length = this.reviews.length;
     let id = 0;
     this.route.params.subscribe(params => {
       id = params["id"];
     });
-    const firstCount = this.count;
     await this.reviewService.getByAdvertId(id, this.count)
       .then(
-        async (data) => {
+        (data) => {
           this.reviews = data;
           this.convertToNormalDate();
-          await this.changeFlagState(this.reviews.length, firstCount);
+          this.scrollFlag = this.reviewService.checkLenght(length, this.reviews.length);
+          this.changeFlagState();
           this.count += 4;
-        })
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  public async ngOnInit(): Promise<void> {
   }
 
-  public ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.scrollEvent, true);
+  public async ngAfterViewInit(): Promise<void> {
+    this.lazySpinner.forEach((view: ElementRef) =>
+      this.createAndObserve(view).subscribe({
+        next: async (response) => {
+          if (response) {
+            await this.loadNewElements();
+          }
+        }
+      })
+    );
+  }
+
+  private createAndObserve(element: ElementRef): Observable<boolean> {
+    return new Observable((observer) => {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        observer.next(entries);
+      });
+      intersectionObserver.observe(element.nativeElement);
+      return () => {
+        intersectionObserver.disconnect();
+      };
+    }).pipe(
+      mergeMap((entries: any) => entries),
+      map((entry: any) => entry.isIntersecting),
+      distinctUntilChanged()
+    );
   }
 
 }

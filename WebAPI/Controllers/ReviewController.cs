@@ -27,10 +27,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("user/{count}")]
-        public async Task<List<ReviewModel>> GetByUserId(int count)
+        [HttpGet("user/{page}")]
+        public async Task<List<ReviewModel>> GetByUserId(int page)
         {
-            List<ReviewCommand> commands = await _reviewService.GetByUserId(await _accountService.GetIdByEmail(User.Identity.Name), count);
+            List<ReviewCommand> commands = await _reviewService.GetByUserId(await _accountService.GetIdByEmail(User.Identity.Name), page);
             List<ReviewModel> models = commands.Select(command => ReviewModelConverter.ReviewCommandCovertToModel(command)).ToList();
             string name = "";
             UserCommand user = new UserCommand();
@@ -49,10 +49,10 @@ namespace WebAPI.Controllers
             return models;
         }
 
-        [HttpGet("advert/{id}/{count}")]
-        public async Task<List<ReviewModel>> GetByAdvertId(int id, int count)
+        [HttpGet("advert/{id}/{page}")]
+        public async Task<List<ReviewModel>> GetByAdvertId(int id, int page)
         {
-            List<ReviewCommand> commands = await _reviewService.GetByAdvertId(id, count);
+            List<ReviewCommand> commands = await _reviewService.GetByAdvertId(id, page);
             List<ReviewModel> models = commands.Select(command => ReviewModelConverter.ReviewCommandCovertToModel(command)).ToList();
             string name = "";
             UserCommand user = new UserCommand();

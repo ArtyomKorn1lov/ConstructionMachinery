@@ -9,8 +9,8 @@ namespace Domain.IRepositories
 {
     public interface IReviewRepository
     {
-        Task<List<Review>> GetByUserId(int id, int count);
-        Task<List<Review>> GetByAdvertId(int id, int count);
+        Task<List<Review>> GetByUserId(int id, int page);
+        Task<List<Review>> GetByAdvertId(int id, int page);
         Task<Review> GetById(int id);
         Task Create(Review review);
         Task Update(Review review);

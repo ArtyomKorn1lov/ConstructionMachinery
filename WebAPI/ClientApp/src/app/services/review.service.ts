@@ -19,12 +19,12 @@ export class ReviewService {
     return true;
   }
   
-  public async getByUserId(count: number): Promise<ReviewModel[]> {
-    return await lastValueFrom(this.http.get<ReviewModel[]>(`api/review/user/${count}`));
+  public async getByUserId(page: number): Promise<ReviewModel[]> {
+    return await lastValueFrom(this.http.get<ReviewModel[]>(`api/review/user/${page}`));
   }
 
-  public async getByAdvertId(id: number, count: number): Promise<ReviewModel[]> {
-    return await lastValueFrom(this.http.get<ReviewModel[]>(`api/review/advert/${id}/${count}`));
+  public async getByAdvertId(id: number, page: number): Promise<ReviewModel[]> {
+    return await lastValueFrom(this.http.get<ReviewModel[]>(`api/review/advert/${id}/${page}`));
   }
 
   public async getById(id: number): Promise<ReviewModelInfo> {

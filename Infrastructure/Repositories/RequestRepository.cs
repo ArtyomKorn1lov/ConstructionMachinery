@@ -12,6 +12,7 @@ namespace Infrastructure.Repositories
     public class RequestRepository : IRequestRepository
     {
         private ConstructionMachineryDbContext _constructionMachineryDbContext;
+        private const int TAKE_COUNT = 10;
 
         public RequestRepository(ConstructionMachineryDbContext constructionMachineryDbContext)
         {
@@ -47,18 +48,18 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(availabilityRequest => availabilityRequest.Id == id);
         }
 
-        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId, int count)
+        public async Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId, int page)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
                 .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id))
                 .Where(availabilityRequest => availabilityRequest.UserId == userId)
                 .OrderBy(availabilityRequest => availabilityRequest.Id)
-                .Take(count)
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT)
                 .ToListAsync();
         }
 
-        public async Task<List<AvailabilityRequest>> GetByUserIdForLandlord(int userId, int count)
+        public async Task<List<AvailabilityRequest>> GetByUserIdForLandlord(int userId, int page)
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
@@ -66,7 +67,7 @@ namespace Infrastructure.Repositories
                 _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.AvailableTimes.Any(times => times.Id == time.Id)).UserId == userId))
                 .Where(availabilityRequest => availabilityRequest.RequestStateId == 3)
                 .OrderBy(availabilityRequest => availabilityRequest.Id)
-                .Take(count)
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT)
                 .ToListAsync();
         }
 

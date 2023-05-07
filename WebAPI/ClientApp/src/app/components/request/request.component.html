@@ -22,6 +22,6 @@
         </div>
     </article>
 </div>
-<div *ngIf="scrollFlag" class="load-spinner" #lazySpinner>
+<div [ngClass]="{'-hide': !scrollFlag}" class="load-spinner" #lazySpinner>
     <mat-spinner></mat-spinner>
 </div>

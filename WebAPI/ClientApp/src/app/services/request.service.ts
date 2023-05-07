@@ -21,12 +21,12 @@ export class RequestService {
     return true;
   }
 
-  public async getListForCustomer(id: number, count: number): Promise<AvailabilityRequestModel[]> {
-    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${count}`));
+  public async getListForCustomer(id: number, page: number): Promise<AvailabilityRequestModel[]> {
+    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-customer/${id}/${page}`));
   }
 
-  public async getListForLandlord(count: number): Promise<AvailabilityRequestModel[]> {
-    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${count}`));
+  public async getListForLandlord(page: number): Promise<AvailabilityRequestModel[]> {
+    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${page}`));
   }
 
   public async getForCustomer(id: number): Promise<AvailabilityRequestModelForCustomer> {

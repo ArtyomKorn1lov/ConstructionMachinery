@@ -10,8 +10,8 @@ namespace Application.IServices
 {
     public interface IReviewService
     {
-        Task<List<ReviewCommand>> GetByUserId(int id, int count);
-        Task<List<ReviewCommand>> GetByAdvertId(int id, int count);
+        Task<List<ReviewCommand>> GetByUserId(int id, int page);
+        Task<List<ReviewCommand>> GetByAdvertId(int id, int page);
         Task<ReviewCommand> GetById(int id);
         Task<bool> Create(ReviewCommandCreate review);
         Task<bool> Update(ReviewCommandUpdate review);

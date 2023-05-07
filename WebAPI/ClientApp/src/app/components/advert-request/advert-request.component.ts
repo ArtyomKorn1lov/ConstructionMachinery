@@ -15,7 +15,7 @@ import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
 export class AdvertRequestComponent implements OnInit {
 
   public adverts: AdvertModelForRequest[] = [];
-  public count: number = 10;
+  public pagination: number = 0;
   public scrollFlag = true;
   private requestListRoute = "advert-request/my-requests";
   @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
@@ -40,14 +40,14 @@ export class AdvertRequestComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    await this.advertService.getForRequestCustomer(this.count)
+    await this.advertService.getForRequestCustomer(this.pagination)
       .then(
         (data) => {
-          this.adverts = data;
+          this.adverts = this.adverts.concat(data);
           this.dateConvert();
           this.scrollFlag = this.advertService.checkLenght(length, this.adverts.length);
           this.changeFlagState();
-          this.count += 10;
+          this.pagination++;
         }
       )
       .catch(
@@ -71,7 +71,7 @@ export class AdvertRequestComponent implements OnInit {
 
   public flagState(): void {
     if (this.scrollFlag == false) {
-      this.count = 0;
+      this.pagination = 0;
     }
   }
 

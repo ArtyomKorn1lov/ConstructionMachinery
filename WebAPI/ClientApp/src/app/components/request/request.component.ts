@@ -16,7 +16,7 @@ export class RequestComponent implements OnInit {
 
   @Input() page: string | undefined;
   public requests: AvailabilityRequestModel[] = [];
-  public count: number = 10;
+  public pagination: number = 0;
   public scrollFlag = true;
   private confirmInfoRoute = "confirm-list";
   private requestInfoRoute = "advert-request/my-requests";
@@ -53,14 +53,14 @@ export class RequestComponent implements OnInit {
       this.router.navigate(["/authorize"]);
     const length = this.requests.length;
     if (this.page == 'in') {
-      await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.count)
+      await this.requestService.getListForCustomer(this.getIdByQueryParams(), this.pagination)
         .then(
           (data) => {
-            this.requests = data;
+            this.requests = this.requests.concat(data);
             this.dateConvert();
             this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
             this.changeFlagState();
-            this.count += 10;
+            this.pagination++;
           }
         )
         .catch(
@@ -70,14 +70,14 @@ export class RequestComponent implements OnInit {
         );
     }
     if (this.page == 'out')
-      await this.requestService.getListForLandlord(this.count)
+      await this.requestService.getListForLandlord(this.pagination)
         .then(
           (data) => {
-            this.requests = data;
+            this.requests = this.requests.concat(data);
             this.dateConvert();
             this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
             this.changeFlagState();
-            this.count += 10;
+            this.pagination++;
           }
         )
         .catch(
@@ -107,7 +107,7 @@ export class RequestComponent implements OnInit {
 
   public flagState(): void {
     if (this.scrollFlag == false) {
-      this.count = 0;
+      this.pagination = 0;
     }
   }
 

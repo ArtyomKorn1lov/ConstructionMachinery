@@ -12,6 +12,7 @@ namespace Infrastructure.Repositories
     public class ReviewRepository : IReviewRepository
     {
         private ConstructionMachineryDbContext _constructionMachineryDbContext;
+        private const int TAKE_COUNT = 4;
 
         public ReviewRepository(ConstructionMachineryDbContext constructionMachineryDbContext)
         {
@@ -23,9 +24,9 @@ namespace Infrastructure.Repositories
             await _constructionMachineryDbContext.Set<Review>().AddAsync(review);
         }
 
-        public async Task<List<Review>> GetByAdvertId(int id, int count)
+        public async Task<List<Review>> GetByAdvertId(int id, int page)
         {
-            return await _constructionMachineryDbContext.Set<Review>().Where(review => review.AdvertId == id).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Review>().Where(review => review.AdvertId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
         public async Task<Review> GetById(int id)
@@ -33,9 +34,9 @@ namespace Infrastructure.Repositories
             return await _constructionMachineryDbContext.Set<Review>().FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetByUserId(int id, int count)
+        public async Task<List<Review>> GetByUserId(int id, int page)
         {
-            return await _constructionMachineryDbContext.Set<Review>().Where(review => review.UserId == id).Take(count).ToListAsync();
+            return await _constructionMachineryDbContext.Set<Review>().Where(review => review.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
         public async Task Remove(int id)

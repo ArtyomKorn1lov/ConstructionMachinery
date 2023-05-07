@@ -47,13 +47,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<ReviewCommand>> GetByAdvertId(int id, int count)
+        public async Task<List<ReviewCommand>> GetByAdvertId(int id, int page)
         {
             try
             {
-                if (id <= 0 || count < 0)
+                if (id <= 0 || page < 0)
                     return null;
-                List<Review> reviews = await _reviewRepository.GetByAdvertId(id, count);
+                List<Review> reviews = await _reviewRepository.GetByAdvertId(id, page);
                 List<ReviewCommand> commands = reviews.Select(review => ReviewCommandConverter.ReviewEntityConvertToCommand(review)).ToList();
                 return commands;
             }
@@ -78,13 +78,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<ReviewCommand>> GetByUserId(int id, int count)
+        public async Task<List<ReviewCommand>> GetByUserId(int id, int page)
         {
             try
             {
-                if (id <= 0 || count < 0)
+                if (id <= 0 || page < 0)
                     return null;
-                List<Review> reviews = await _reviewRepository.GetByUserId(id, count);
+                List<Review> reviews = await _reviewRepository.GetByUserId(id, page);
                 List<ReviewCommand> commands = reviews.Select(review => ReviewCommandConverter.ReviewEntityConvertToCommand(review)).ToList();
                 return commands;
             }

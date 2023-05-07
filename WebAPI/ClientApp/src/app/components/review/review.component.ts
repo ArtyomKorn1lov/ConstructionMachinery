@@ -13,7 +13,7 @@ import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
 })
 export class ReviewComponent implements OnInit {
 
-  public count: number = 4;
+  public pagination: number = 0;
   public scrollFlag = true;
   public reviews: ReviewModel[] = [];
   private reviewRoute: string = "/review-edit";
@@ -21,7 +21,7 @@ export class ReviewComponent implements OnInit {
   @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private reviewService: ReviewService, private router: Router,
-    private advertService: AdvertService, private route: ActivatedRoute) { }
+    private route: ActivatedRoute) { }
 
   public viewProfile(id: number) {
     this.router.navigate([this.userRoute], {
@@ -61,7 +61,7 @@ export class ReviewComponent implements OnInit {
 
   public flagState(): void {
     if (this.scrollFlag == false) {
-      this.count = 0;
+      this.pagination = 0;
     }
   }
 
@@ -71,14 +71,14 @@ export class ReviewComponent implements OnInit {
     this.route.params.subscribe(params => {
       id = params["id"];
     });
-    await this.reviewService.getByAdvertId(id, this.count)
+    await this.reviewService.getByAdvertId(id, this.pagination)
       .then(
         (data) => {
-          this.reviews = data;
+          this.reviews = this.reviews.concat(data);
           this.convertToNormalDate();
           this.scrollFlag = this.reviewService.checkLenght(length, this.reviews.length);
           this.changeFlagState();
-          this.count += 4;
+          this.pagination++;
         }
       )
       .catch((error) => {

@@ -19,7 +19,7 @@ export class AdvertComponent implements OnInit {
 
   @Input() page: string | undefined;
   public advertList: AdvertModelList[] = [];
-  public count: number = 10;
+  public pagination: number = 0;
   public scrollFlag = true;
   private listRoute: string = "advert-list";
   private myRoute: string = "my-adverts";
@@ -30,10 +30,11 @@ export class AdvertComponent implements OnInit {
     private route: ActivatedRoute, private imageService: ImageService, public accountService: AccountService, private tokenService: TokenService) { }
 
   public async sortByParam(param: string): Promise<void> {
-    this.filter = param;
-    this.count = 10;
-    this.scrollFlag = true;
     this.advertList = [];
+    this.advertService.advertLenght = 0;
+    this.filter = param;
+    this.pagination = 0;
+    this.scrollFlag = true;
   }
 
   public getAdvertInfo(id: number): void {
@@ -61,10 +62,10 @@ export class AdvertComponent implements OnInit {
         const searchString = params['search'];
         if (searchString == undefined) {
           if (this.filter == "all")
-            await this.advertService.getAll(this.count)
+            await this.advertService.getAll(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -76,10 +77,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_price")
-            await this.advertService.getSortByPriceMax(this.count)
+            await this.advertService.getSortByPriceMax(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -91,10 +92,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "min_price")
-            await this.advertService.getSortByPriceMin(this.count)
+            await this.advertService.getSortByPriceMin(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -106,10 +107,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_rating")
-            await this.advertService.GetSortByRatingMax(this.count)
+            await this.advertService.GetSortByRatingMax(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -121,10 +122,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "min_rating")
-            await this.advertService.GetSortByRatingMin(this.count)
+            await this.advertService.GetSortByRatingMin(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -136,10 +137,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_date")
-            await this.advertService.getAll(this.count)
+            await this.advertService.getAll(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -151,10 +152,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "min_date")
-            await this.advertService.GetSortByDateMin(this.count)
+            await this.advertService.GetSortByDateMin(this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -168,10 +169,10 @@ export class AdvertComponent implements OnInit {
         }
         else {
           if (this.filter == "all")
-            await this.advertService.getByName(searchString, this.count)
+            await this.advertService.getByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -183,10 +184,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_price")
-            await this.advertService.getSortByPriceMaxByName(searchString, this.count)
+            await this.advertService.getSortByPriceMaxByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -198,10 +199,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "min_price")
-            await this.advertService.getSortByPriceMinByName(searchString, this.count)
+            await this.advertService.getSortByPriceMinByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -213,10 +214,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_rating")
-            await this.advertService.GetSortByRatingMaxByName(searchString, this.count)
+            await this.advertService.GetSortByRatingMaxByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -228,10 +229,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "min_rating")
-            await this.advertService.GetSortByRatingMinByName(searchString, this.count)
+            await this.advertService.GetSortByRatingMinByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -243,10 +244,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_date")
-            await this.advertService.getByName(searchString, this.count)
+            await this.advertService.getByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -258,10 +259,10 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "min_date")
-            await this.advertService.GetSortByDateMinByName(searchString, this.count)
+            await this.advertService.GetSortByDateMinByName(searchString, this.pagination)
               .then(
                 (data) => {
-                  this.advertList = data;
+                  this.advertList = this.advertList.concat(data);
                   this.convertToNormalDate();
                   this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
                   this.changeFlagState();
@@ -281,10 +282,10 @@ export class AdvertComponent implements OnInit {
       if (!tokenResult)
         this.router.navigate(["/authorize"]);
       if (this.filter == "all")
-        await this.advertService.getByUser(this.count)
+        await this.advertService.getByUser(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -296,10 +297,10 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "max_price")
-        await this.advertService.getSortByPriceMaxByUserId(this.count)
+        await this.advertService.getSortByPriceMaxByUserId(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -311,10 +312,10 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "min_price")
-        await this.advertService.getSortByPriceMinByUserId(this.count)
+        await this.advertService.getSortByPriceMinByUserId(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -326,10 +327,10 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "max_rating")
-        await this.advertService.getSortByRatingMaxByUserId(this.count)
+        await this.advertService.getSortByRatingMaxByUserId(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -341,10 +342,10 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "min_rating")
-        await this.advertService.getSortByRatingMinByUserId(this.count)
+        await this.advertService.getSortByRatingMinByUserId(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -356,10 +357,10 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "max_date")
-        await this.advertService.getByUser(this.count)
+        await this.advertService.getByUser(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -371,10 +372,10 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "min_date")
-        await this.advertService.getSortByDateMinByUserId(this.count)
+        await this.advertService.getSortByDateMinByUserId(this.pagination)
           .then(
             (data) => {
-              this.advertList = data;
+              this.advertList = this.advertList.concat(data);
               this.convertToNormalDate();
               this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
               this.changeFlagState();
@@ -387,7 +388,7 @@ export class AdvertComponent implements OnInit {
           );
       this.advertService.advertLenght = this.advertList.length;
     }
-    this.count += 10;
+    this.pagination++;
     this.convertToNormalDate();
   }
 
@@ -405,7 +406,7 @@ export class AdvertComponent implements OnInit {
 
   public flagState(): void {
     if (this.scrollFlag == false) {
-      this.count = 0;
+      this.pagination = 0;
     }
   }
 

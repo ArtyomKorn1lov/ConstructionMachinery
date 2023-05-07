@@ -45,8 +45,8 @@ export class AdvertService {
     return true;
   }
 
-  public async getAll(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${count}`));
+  public async getAll(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${page}`));
   }
 
   public async getById(id: number): Promise<AdvertModelInfo> {
@@ -61,20 +61,20 @@ export class AdvertService {
     return await lastValueFrom(this.http.post(`api/advert/create`, advert, { responseType: 'text' }));
   }
 
-  public async getByUser(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${count}`));
+  public async getByUser(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${page}`));
   }
 
   public async remove(id: number): Promise<string> {
     return await lastValueFrom(this.http.delete(`api/advert/remove/${id}`, { responseType: 'text' }));
   }
 
-  public async getByName(name: string, count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}/${count}`));
+  public async getByName(name: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-name/${name}/${page}`));
   }
 
-  public async getForRequestCustomer(count: number): Promise<AdvertModelForRequest[]> {
-    return await lastValueFrom(this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer/${count}`));
+  public async getForRequestCustomer(page: number): Promise<AdvertModelForRequest[]> {
+    return await lastValueFrom(this.http.get<AdvertModelForRequest[]>(`api/advert/adverts-for-request-customer/${page}`));
   }
 
   public async getForUpdate(id: number): Promise<AdvertModelUpdate> {
@@ -85,64 +85,64 @@ export class AdvertService {
     return await lastValueFrom(this.http.put(`api/advert/update`, advert, { responseType: 'text' }));
   }
 
-  public async getSortByPriceMax(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${count}`));
+  public async getSortByPriceMax(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${page}`));
   }
 
-  public async getSortByPriceMin(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${count}`));
+  public async getSortByPriceMin(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${page}`));
   }
 
-  public async GetSortByRatingMax(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${count}`));
+  public async GetSortByRatingMax(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${page}`));
   }
 
-  public async GetSortByRatingMin(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${count}`));
+  public async GetSortByRatingMin(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${page}`));
   }
 
-  public async GetSortByDateMin(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${count}`));
+  public async GetSortByDateMin(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${page}`));
   }
 
-  public async getSortByPriceMaxByName(name: string, count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${name}/${count}`));
+  public async getSortByPriceMaxByName(name: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-max/${name}/${page}`));
   }
 
-  public async getSortByPriceMinByName(name: string, count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${name}/${count}`));
+  public async getSortByPriceMinByName(name: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-price-min/${name}/${page}`));
   }
 
-  public async GetSortByRatingMaxByName(name: string, count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${name}/${count}`));
+  public async GetSortByRatingMaxByName(name: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-max/${name}/${page}`));
   }
 
-  public async GetSortByRatingMinByName(name: string, count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${name}/${count}`));
+  public async GetSortByRatingMinByName(name: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${name}/${page}`));
   }
 
-  public async GetSortByDateMinByName(name: string,count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${count}`));
+  public async GetSortByDateMinByName(name: string,page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${page}`));
   }
 
-  public async getSortByPriceMaxByUserId(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-price-max/${count}`));
+  public async getSortByPriceMaxByUserId(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-price-max/${page}`));
   }
 
-  public async getSortByPriceMinByUserId(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-price-min/${count}`));
+  public async getSortByPriceMinByUserId(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-price-min/${page}`));
   }
 
-  public async getSortByRatingMaxByUserId(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-max/${count}`));
+  public async getSortByRatingMaxByUserId(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-max/${page}`));
   }
 
-  public async getSortByRatingMinByUserId(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-min/${count}`));
+  public async getSortByRatingMinByUserId(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-rating-min/${page}`));
   }
 
-  public async getSortByDateMinByUserId(count: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-date-min/${count}`));
+  public async getSortByDateMinByUserId(page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user-date-min/${page}`));
   }
 
 }

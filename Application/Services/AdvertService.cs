@@ -99,49 +99,6 @@ namespace Application.Services
             }
         }
 
-        private List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
-        {
-            startDate = startDate.ToLocalTime();
-            endDate = endDate.ToLocalTime();
-            List<DateTime> dates = new List<DateTime>();
-            DateTime date = new DateTime(startDate.Year, startDate.Month, startDate.Day);
-            while (date <= endDate)
-            {
-                dates.Add(date);
-                date = date.AddDays(1);
-            }
-            List<AvailableTime> availableTimes = new List<AvailableTime>();
-            int currentHour = startTime;
-            for (int count = 0; count < dates.Count; count++)
-            {
-                while (currentHour <= endTime)
-                {
-                    dates[count] = dates[count].AddHours(currentHour);
-                    availableTimes.Add(new AvailableTime
-                    {
-                        Date = dates[count],
-                        AvailabilityStateId = 1
-                    });
-                    dates[count] = dates[count].AddHours(-currentHour);
-                    currentHour++;
-                }
-                currentHour = startTime;
-            }
-            return availableTimes;
-        }
-
-        private AdvertCommandUpdate FillRangeTime(AdvertCommandUpdate command, Advert advert)
-        {
-            advert.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
-            command.StartDate = advert.AvailableTimes[0].Date;
-            command.EndDate = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date;
-            string start = advert.AvailableTimes[0].Date.ToString("HH");
-            string end = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date.ToString("HH");
-            command.StartTime = Int32.Parse(start);
-            command.EndTime = Int32.Parse(end);
-            return command;
-        }
-
         public List<AvailiableDayCommand> PackageToDayCommands(List<AvailableTimeCommand> availableTimeCommands)
         {
             List<AvailiableDayCommand> availiableDayCommands = new List<AvailiableDayCommand>();
@@ -173,54 +130,6 @@ namespace Application.Services
             return availiableDayCommands;
         }
 
-        public List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands)
-        {
-            if (availiableDayCommands.Count == 0)
-                return availiableDayCommands;
-            AvailiableDayCommand bufferCommand = new AvailiableDayCommand();
-            int index = 0;
-            while (index < availiableDayCommands.Count)
-            {
-                for (int count = 0; count < availiableDayCommands.Count - index - 1; count++)
-                {
-                    if (availiableDayCommands[count].Date.Date > availiableDayCommands[count + 1].Date.Date)
-                    {
-                        bufferCommand = availiableDayCommands[count];
-                        availiableDayCommands[count] = availiableDayCommands[count + 1];
-                        availiableDayCommands[count + 1] = bufferCommand;
-                    }
-                }
-                index++;
-            }
-            index = 0;
-            while (index < availiableDayCommands.Count)
-            {
-                availiableDayCommands[index].Times = SortTimeCommands(availiableDayCommands[index].Times);
-                index++;
-            }
-            return availiableDayCommands;
-        }
-
-        private List<AvailableTimeCommand> SortTimeCommands(List<AvailableTimeCommand> availableTimeCommands)
-        {
-            AvailableTimeCommand bufferCommand = new AvailableTimeCommand();
-            int index = 0;
-            while (index < availableTimeCommands.Count)
-            {
-                for (int count = 0; count < availableTimeCommands.Count - index - 1; count++)
-                {
-                    if (availableTimeCommands[count].Date.Hour > availableTimeCommands[count + 1].Date.Hour)
-                    {
-                        bufferCommand = availableTimeCommands[count];
-                        availableTimeCommands[count] = availableTimeCommands[count + 1];
-                        availableTimeCommands[count + 1] = bufferCommand;
-                    }
-                }
-                index++;
-            }
-            return availableTimeCommands;
-        }
-
         public async Task<List<AvailableTime>> RemoveOldRequests(List<AvailableTime> newAvilableTime, List<AvailableTime> oldAvailableTime)
         {
             for (int count_new_time = 0; count_new_time < newAvilableTime.Count; count_new_time++)
@@ -247,33 +156,13 @@ namespace Application.Services
             return newAvilableTime;
         }
 
-        private double GetAverageRating(List<Review> reviews)
-        {
-            int rating = 0;
-            double result = 0;
-            if (reviews == null)
-                return result;
-            if (reviews.Count == 0)
-                return result;
-            foreach (Review review in reviews)
-            {
-                rating = rating + review.ReviewStateId;
-            }
-            if (rating > 0)
-            {
-                result = rating / reviews.Count;
-                result = Math.Round(result, 2);
-            }
-            return result;
-        }
-
-        public async Task<List<AdvertCommandList>> GetAll(int count)
+        public async Task<List<AdvertCommandList>> GetAll(int page)
         {
             try
             {
-                if (count < 0)
+                if (page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetAll(count);
+                List<Advert> adverts = await _advertRepository.GetAll(page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -283,18 +172,18 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetAllWithoutUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetAllWithoutUserId(int id, int page)
         {
             try
             {
-                if (id <= 0 || count < 0)
+                if (id <= 0 || page < 0)
                     return null;
                 User currentUser = await _accountRepository.GetById(id);
                 if (currentUser == null)
                     return null;
                 if (currentUser.Id != id)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetAllWithoutUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -358,13 +247,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetByName(string name, int count)
+        public async Task<List<AdvertCommandList>> GetByName(string name, int page)
         {
             try
             {
-                if (name == null || name.Trim() == "" || count < 0)
+                if (name == null || name.Trim() == "" || page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetByName(name, count);
+                List<Advert> adverts = await _advertRepository.GetByName(name, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -390,13 +279,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetByUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetByUserId(int id, int page)
         {
             try
             {
-                if (id <= 0 || count < 0)
+                if (id <= 0 || page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetByUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetByUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -406,13 +295,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id, int count)
+        public async Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id, int page)
         {
             try
             {
-                if (id <= 0 || count < 0)
+                if (id <= 0 || page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForCustomer(id, count);
+                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForCustomer(id, page);
                 List<AdvertCommandForRequest> commands = adverts.Select(advert => AdvertCommandConverter.AdvertConvertToAdvertCommandForRequest(advert)).ToList();
                 return commands;
             }
@@ -498,13 +387,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMax(int count)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMax(int page)
         {
             try
             {
-                if (count < 0)
+                if (page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMax(count);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMax(page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -514,13 +403,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMin(int count)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMin(int page)
         {
             try
             {
-                if (count < 0)
+                if (page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMin(count);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMin(page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -530,13 +419,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMaxWithoutUserId(int count, int id)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxWithoutUserId(int page, int id)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserId(count, id);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserId(page, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -546,13 +435,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMinWithoutUserId(int count, int id)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinWithoutUserId(int page, int id)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserId(count, id);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserId(page, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -562,13 +451,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMax(int count)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMax(int page)
         {
             try
             {
-                if (count < 0)
+                if (page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMax(count);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMax(page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -578,13 +467,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMin(int count)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMin(int page)
         {
             try
             {
-                if (count < 0)
+                if (page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMin(count);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMin(page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -594,13 +483,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMaxWithoutUserId(int count, int id)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxWithoutUserId(int page, int id)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserId(count, id);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserId(page, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -610,13 +499,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMinWithoutUserId(int count, int id)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinWithoutUserId(int page, int id)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserId(count, id);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserId(page, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -626,13 +515,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByDateMin(int count)
+        public async Task<List<AdvertCommandList>> GetSortByDateMin(int page)
         {
             try
             {
-                if (count < 0)
+                if (page < 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByDateMin(count);
+                List<Advert> adverts = await _advertRepository.GetSortByDateMin(page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -642,13 +531,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByDateMinWithoutUserId(int count, int id)
+        public async Task<List<AdvertCommandList>> GetSortByDateMinWithoutUserId(int page, int id)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserId(count, id);
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserId(page, id);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -658,13 +547,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMaxByName(int count, string name)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxByName(int page, string name)
         {
             try
             {
-                if (count < 0 || name == null || name.Trim() == "")
+                if (page < 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByName(count, name);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByName(page, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -674,13 +563,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMinByName(int count, string name)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinByName(int page, string name)
         {
             try
             {
-                if (count < 0 || name == null || name.Trim() == "")
+                if (page < 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMinByName(count, name);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinByName(page, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -690,13 +579,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMaxWithoutUserIdByName(int count, int id, string name)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxWithoutUserIdByName(int page, int id, string name)
         {
             try
             {
-                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                if (page < 0 || id <= 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserIdByName(count, id, name);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxWithoutUserIdByName(page, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -706,13 +595,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMinWithoutUserIdByName(int count, int id, string name)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinWithoutUserIdByName(int page, int id, string name)
         {
             try
             {
-                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                if (page < 0 || id <= 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserIdByName(count, id, name);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinWithoutUserIdByName(page, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -722,13 +611,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMaxByName(int count, string name)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxByName(int page, string name)
         {
             try
             {
-                if (count < 0 || name == null || name.Trim() == "")
+                if (page < 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByName(count, name);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByName(page, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -738,13 +627,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMinByName(int count, string name)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinByName(int page, string name)
         {
             try
             {
-                if (count < 0 || name == null || name.Trim() == "")
+                if (page < 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMinByName(count, name);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinByName(page, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -754,13 +643,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMaxWithoutUserIdByName(int count, int id, string name)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxWithoutUserIdByName(int page, int id, string name)
         {
             try
             {
-                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                if (page < 0 || id <= 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserIdByName(count, id, name);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxWithoutUserIdByName(page, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -770,13 +659,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMinWithoutUserIdByName(int count, int id, string name)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinWithoutUserIdByName(int page, int id, string name)
         {
             try
             {
-                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                if (page < 0 || id <= 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserIdByName(count, id, name);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinWithoutUserIdByName(page, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -786,13 +675,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByDateMinByName(int count, string name)
+        public async Task<List<AdvertCommandList>> GetSortByDateMinByName(int page, string name)
         {
             try
             {
-                if (count < 0 || name == null || name.Trim() == "")
+                if (page < 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByDateMinByName(count, name);
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinByName(page, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -802,13 +691,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByDateMinWithoutUserIdByName(int count, int id, string name)
+        public async Task<List<AdvertCommandList>> GetSortByDateMinWithoutUserIdByName(int page, int id, string name)
         {
             try
             {
-                if (count < 0 || id <= 0 || name == null || name.Trim() == "")
+                if (page < 0 || id <= 0 || name == null || name.Trim() == "")
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserIdByName(count, id, name);
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinWithoutUserIdByName(page, id, name);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -818,13 +707,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMaxByUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMaxByUserId(int id, int page)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMaxByUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -834,13 +723,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByPriceMinByUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetSortByPriceMinByUserId(int id, int page)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByPriceMinByUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetSortByPriceMinByUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -850,13 +739,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMaxByUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMaxByUserId(int id, int page)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMaxByUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -866,13 +755,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByRatingMinByUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetSortByRatingMinByUserId(int id, int page)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByRatingMinByUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetSortByRatingMinByUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -882,13 +771,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AdvertCommandList>> GetSortByDateMinByUserId(int id, int count)
+        public async Task<List<AdvertCommandList>> GetSortByDateMinByUserId(int id, int page)
         {
             try
             {
-                if (count < 0 || id <= 0)
+                if (page < 0 || id <= 0)
                     return null;
-                List<Advert> adverts = await _advertRepository.GetSortByDateMinByUserId(id, count);
+                List<Advert> adverts = await _advertRepository.GetSortByDateMinByUserId(id, page);
                 List<AdvertCommandList> advertCommandList = adverts.Select(advert => AdvertCommandConverter.AdvertEntityConvertToAdvertCommandList(advert, GetAverageRating(advert.Reviews))).ToList();
                 return advertCommandList;
             }
@@ -896,6 +785,117 @@ namespace Application.Services
             {
                 return null;
             }
+        }
+
+        public List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands)
+        {
+            if (availiableDayCommands.Count == 0)
+                return availiableDayCommands;
+            AvailiableDayCommand bufferCommand = new AvailiableDayCommand();
+            int index = 0;
+            while (index < availiableDayCommands.Count)
+            {
+                for (int count = 0; count < availiableDayCommands.Count - index - 1; count++)
+                {
+                    if (availiableDayCommands[count].Date.Date > availiableDayCommands[count + 1].Date.Date)
+                    {
+                        bufferCommand = availiableDayCommands[count];
+                        availiableDayCommands[count] = availiableDayCommands[count + 1];
+                        availiableDayCommands[count + 1] = bufferCommand;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            while (index < availiableDayCommands.Count)
+            {
+                availiableDayCommands[index].Times = SortTimeCommands(availiableDayCommands[index].Times);
+                index++;
+            }
+            return availiableDayCommands;
+        }
+
+        private List<AvailableTimeCommand> SortTimeCommands(List<AvailableTimeCommand> availableTimeCommands)
+        {
+            AvailableTimeCommand bufferCommand = new AvailableTimeCommand();
+            int index = 0;
+            while (index < availableTimeCommands.Count)
+            {
+                for (int count = 0; count < availableTimeCommands.Count - index - 1; count++)
+                {
+                    if (availableTimeCommands[count].Date.Hour > availableTimeCommands[count + 1].Date.Hour)
+                    {
+                        bufferCommand = availableTimeCommands[count];
+                        availableTimeCommands[count] = availableTimeCommands[count + 1];
+                        availableTimeCommands[count + 1] = bufferCommand;
+                    }
+                }
+                index++;
+            }
+            return availableTimeCommands;
+        }
+
+        private List<AvailableTime> FillAvailableTime(DateTime startDate, DateTime endDate, int startTime, int endTime)
+        {
+            startDate = startDate.ToLocalTime();
+            endDate = endDate.ToLocalTime();
+            List<DateTime> dates = new List<DateTime>();
+            DateTime date = new DateTime(startDate.Year, startDate.Month, startDate.Day);
+            while (date <= endDate)
+            {
+                dates.Add(date);
+                date = date.AddDays(1);
+            }
+            List<AvailableTime> availableTimes = new List<AvailableTime>();
+            int currentHour = startTime;
+            for (int count = 0; count < dates.Count; count++)
+            {
+                while (currentHour <= endTime)
+                {
+                    dates[count] = dates[count].AddHours(currentHour);
+                    availableTimes.Add(new AvailableTime
+                    {
+                        Date = dates[count],
+                        AvailabilityStateId = 1
+                    });
+                    dates[count] = dates[count].AddHours(-currentHour);
+                    currentHour++;
+                }
+                currentHour = startTime;
+            }
+            return availableTimes;
+        }
+
+        private AdvertCommandUpdate FillRangeTime(AdvertCommandUpdate command, Advert advert)
+        {
+            advert.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+            command.StartDate = advert.AvailableTimes[0].Date;
+            command.EndDate = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date;
+            string start = advert.AvailableTimes[0].Date.ToString("HH");
+            string end = advert.AvailableTimes[advert.AvailableTimes.Count - 1].Date.ToString("HH");
+            command.StartTime = Int32.Parse(start);
+            command.EndTime = Int32.Parse(end);
+            return command;
+        }
+
+        private double GetAverageRating(List<Review> reviews)
+        {
+            int rating = 0;
+            double result = 0;
+            if (reviews == null)
+                return result;
+            if (reviews.Count == 0)
+                return result;
+            foreach (Review review in reviews)
+            {
+                rating = rating + review.ReviewStateId;
+            }
+            if (rating > 0)
+            {
+                result = rating / reviews.Count;
+                result = Math.Round(result, 2);
+            }
+            return result;
         }
     }
 }

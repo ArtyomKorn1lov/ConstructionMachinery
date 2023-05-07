@@ -32,20 +32,20 @@ namespace WebAPI.Controllers
             _imageService = imageService;
         }
 
-        [HttpGet("adverts/{count}")]
-        public async Task<List<AdvertModelList>> GetAll(int count)
+        [HttpGet("adverts/{page}")]
+        public async Task<List<AdvertModelList>> GetAll(int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetAllWithoutUserId(userId, count);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetAllWithoutUserId(userId, page);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetAll(count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetAll(page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -71,20 +71,20 @@ namespace WebAPI.Controllers
             return advert;
         }
 
-        [HttpGet("by-name/{name}/{count}")]
-        public async Task<List<AdvertModelList>> GetByName(string name, int count)
+        [HttpGet("by-name/{name}/{page}")]
+        public async Task<List<AdvertModelList>> GetByName(string name, int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetByNameWithoutUserId(name, userId, count);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetByNameWithoutUserId(name, userId, page);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetByName(name, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetByName(name, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -92,20 +92,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-price-max/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByPriceMax(int count)
+        [HttpGet("by-price-max/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByPriceMax(int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMaxWithoutUserId(count, userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMaxWithoutUserId(page, userId);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMax(count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMax(page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -113,20 +113,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-price-min/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByPriceMin(int count)
+        [HttpGet("by-price-min/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByPriceMin(int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMinWithoutUserId(count, userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMinWithoutUserId(page, userId);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMin(count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMin(page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -134,20 +134,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-rating-max/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByRatingMax(int count)
+        [HttpGet("by-rating-max/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByRatingMax(int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMaxWithoutUserId(count, userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMaxWithoutUserId(page, userId);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMax(count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMax(page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -155,20 +155,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-rating-min/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByRatingMin(int count)
+        [HttpGet("by-rating-min/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByRatingMin(int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMinWithoutUserId(count, userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMinWithoutUserId(page, userId);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMin(count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMin(page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -176,20 +176,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-date-min/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByDateMin(int count)
+        [HttpGet("by-date-min/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByDateMin(int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByDateMinWithoutUserId(count, userId);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByDateMinWithoutUserId(page, userId);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserCommands == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByDateMin(count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByDateMin(page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertCommands == null)
@@ -197,20 +197,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-price-max/{name}/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByPriceMaxByName(string name, int count)
+        [HttpGet("by-price-max/{name}/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByPriceMaxByName(string name, int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMaxWithoutUserIdByName(count, userId, name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMaxWithoutUserIdByName(page, userId, name);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMaxByName(count, name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMaxByName(page, name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -218,20 +218,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-price-min/{name}/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByPriceMinByName(string name, int count)
+        [HttpGet("by-price-min/{name}/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByPriceMinByName(string name, int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMinWithoutUserIdByName(count, userId, name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByPriceMinWithoutUserIdByName(page, userId, name);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMinByName(count, name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMinByName(page, name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -239,20 +239,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-rating-max/{name}/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByRatingMaxByName(string name, int count)
+        [HttpGet("by-rating-max/{name}/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByRatingMaxByName(string name, int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMaxWithoutUserIdByName(count, userId, name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMaxWithoutUserIdByName(page, userId, name);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMaxByName(count, name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMaxByName(page, name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -260,20 +260,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-rating-min/{name}/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByRatingMinByName(string name, int count)
+        [HttpGet("by-rating-min/{name}/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByRatingMinByName(string name, int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMinWithoutUserIdByName(count, userId, name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByRatingMinWithoutUserIdByName(page, userId, name);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMinByName(count, name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMinByName(page, name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -281,20 +281,20 @@ namespace WebAPI.Controllers
             return advertModels;
         }
 
-        [HttpGet("by-date-min/{name}/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByDateMinByName(string name, int count)
+        [HttpGet("by-date-min/{name}/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByDateMinByName(string name, int page)
         {
             if (User.Identity.Name != null)
             {
                 int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByDateMinWithoutUserIdByName(count, userId, name);
+                List<AdvertCommandList> advertUserCommands = await _advertService.GetSortByDateMinWithoutUserIdByName(page, userId, name);
                 List<AdvertModelList> advertUserModels = advertUserCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
                 if (advertUserModels == null)
                     return null;
                 return advertUserModels;
             }
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByDateMinByName(count, name);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByDateMinByName(page, name);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -303,11 +303,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user/{count}")]
-        public async Task<List<AdvertModelList>> GetByUser(int count)
+        [HttpGet("by-user/{page}")]
+        public async Task<List<AdvertModelList>> GetByUser(int page)
         {
             int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetByUserId(userId, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -316,11 +316,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user-price-max/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByPriceMaxByUserId(int count)
+        [HttpGet("by-user-price-max/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByPriceMaxByUserId(int page)
         {
             int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMaxByUserId(userId, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMaxByUserId(userId, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -329,11 +329,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user-price-min/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByPriceMinByUserId(int count)
+        [HttpGet("by-user-price-min/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByPriceMinByUserId(int page)
         {
             int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMinByUserId(userId, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByPriceMinByUserId(userId, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -342,11 +342,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user-rating-max/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByRatingMaxByUserId(int count)
+        [HttpGet("by-user-rating-max/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByRatingMaxByUserId(int page)
         {
             int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMaxByUserId(userId, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMaxByUserId(userId, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -355,11 +355,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user-rating-min/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByRatingMinByUserId(int count)
+        [HttpGet("by-user-rating-min/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByRatingMinByUserId(int page)
         {
             int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMinByUserId(userId, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByRatingMinByUserId(userId, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -368,11 +368,11 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-user-date-min/{count}")]
-        public async Task<List<AdvertModelList>> GetSortByDateMinByUserId(int count)
+        [HttpGet("by-user-date-min/{page}")]
+        public async Task<List<AdvertModelList>> GetSortByDateMinByUserId(int page)
         {
             int userId = await _accountService.GetIdByEmail(User.Identity.Name);
-            List<AdvertCommandList> advertCommands = await _advertService.GetSortByDateMinByUserId(userId, count);
+            List<AdvertCommandList> advertCommands = await _advertService.GetSortByDateMinByUserId(userId, page);
             List<AdvertModelList> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandListConvertAdvertModelList(advertCommand)).ToList();
             if (advertModels == null)
@@ -381,10 +381,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("adverts-for-request-customer/{count}")]
-        public async Task<List<AdvertModelForRequest>> GetForRequestCustomer(int count)
+        [HttpGet("adverts-for-request-customer/{page}")]
+        public async Task<List<AdvertModelForRequest>> GetForRequestCustomer(int page)
         {
-            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), count);
+            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestCustomer(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), page);
             List<AdvertModelForRequest> advertModels = advertCommands.Select(advertCommand =>
                 AdvertModelConverter.AdvertCommandForRequestConvertModel(advertCommand)).ToList();
             if (advertModels == null)

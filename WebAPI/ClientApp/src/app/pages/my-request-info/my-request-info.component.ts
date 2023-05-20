@@ -18,8 +18,9 @@ import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-n
 })
 export class MyRequestInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], []);
-  public date: Date = new Date();
+  public request: AvailabilityRequestModelForCustomer = new AvailabilityRequestModelForCustomer(0, "", "", "", "", 0, 0, [new ImageModel(0, "", "", 0)], new Date(), new Date());
+  public startRent: Date = new Date();
+  public endRent: Date = new Date();
   public spinnerFlag = false;
   private advertRequestRoute = "advert-request";
 
@@ -112,10 +113,11 @@ export class MyRequestInfoComponent implements OnInit {
       .then(
         (data) => {
           this.request = data;
-          this.date = new Date(this.request.availableTimeModels[0].date);
+          this.startRent = new Date(this.request.startRent);
+          this.endRent = new Date(this.request.endRent);
           if (data != null)
-            this.titleService.setTitle("Заявка от " + this.datetimeService.convertDateToUTS(this.date.getDate()) + "." + this.datetimeService.convertDateToUTS(this.date.getMonth() + 1)
-              + "." + this.date.getFullYear() + " в " + this.datetimeService.convertDateToUTS(this.date.getHours()) + ":00");
+            this.titleService.setTitle("Заявка от " + this.datetimeService.convertDateToUTS(this.startRent.getDate()) + "." + this.datetimeService.convertDateToUTS(this.startRent.getMonth() + 1)
+              + "." + this.startRent.getFullYear() + " в " + this.datetimeService.convertDateToUTS(this.startRent.getHours()) + ":00");
         }
       )
       .catch(

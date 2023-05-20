@@ -122,8 +122,11 @@ namespace Application.Services
                     return null;
                 if (request.AvailableTimes.Count <= 0)
                     return null;
+                DateTime startRent = request.AvailableTimes[0].Date;
+                DateTime endRent = request.AvailableTimes[request.AvailableTimes.Count - 1].Date;
                 AvailabilityRequestCommandForCustomer commandForCustomer = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request,
-                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId));
+                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), 
+                    await GetPhoneForCustomer(request.AvailableTimes[0].AdvertId), await GetLandLordName(request.AvailableTimes[0].AdvertId), startRent, endRent);
                 return commandForCustomer;
             }
             catch
@@ -147,8 +150,11 @@ namespace Application.Services
                     return null;
                 if (request.AvailableTimes.Count <= 0)
                     return null;
+                DateTime startRent = request.AvailableTimes[0].Date;
+                DateTime endRent = request.AvailableTimes[request.AvailableTimes.Count - 1].Date;
                 AvailabilityRequestCommandForLandlord commandForLandlord = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
-                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId));
+                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId), 
+                    await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId), startRent, endRent);
                 return commandForLandlord;
             }
             catch

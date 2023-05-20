@@ -23,7 +23,7 @@ namespace Application.CommandsConverters
         }
 
         public static AvailabilityRequestCommandForCustomer AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(AvailabilityRequest request,
-            List<Image> images, string advertName, string phone, string landlordName)
+            List<Image> images, string advertName, string phone, string landlordName, DateTime startRent, DateTime endRent)
         {
             if (request == null)
                 return null;
@@ -43,18 +43,13 @@ namespace Application.CommandsConverters
                     RelativePath = image.RelativePath,
                     AdvertId = image.AdvertId
                 }).ToList(),
-                AvailableTimeCommands = request.AvailableTimes.Select(availableTime => new AvailableTimeCommand
-                {
-                    Id = availableTime.Id,
-                    Date = availableTime.Date,
-                    AdvertId = availableTime.AdvertId,
-                    AvailabilityStateId = availableTime.AvailabilityStateId,
-                }).ToList()
+                StartRent = startRent,
+                EndRent = endRent,
             };
         }
         
         public static AvailabilityRequestCommandForLandlord AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(AvailabilityRequest request,
-            List<Image> images, string advertName, string phone, string customerName)
+            List<Image> images, string advertName, string phone, string customerName, DateTime startRent, DateTime endRent)
         {
             if (request == null)
                 return null;
@@ -73,13 +68,8 @@ namespace Application.CommandsConverters
                     RelativePath = image.RelativePath,
                     AdvertId = image.AdvertId
                 }).ToList(),
-                AvailableTimeCommands = request.AvailableTimes.Select(availableTime => new AvailableTimeCommand
-                {
-                    Id = availableTime.Id,
-                    Date = availableTime.Date,
-                    AdvertId = availableTime.AdvertId,
-                    AvailabilityStateId = availableTime.AvailabilityStateId,
-                }).ToList()
+                StartRent = startRent,
+                EndRent = endRent,
             };
         }
 

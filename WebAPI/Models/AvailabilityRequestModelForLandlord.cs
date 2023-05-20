@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebAPI.Models
 {
@@ -11,6 +12,7 @@ namespace WebAPI.Models
         public string CustomerName { get; set; }
         public int UserId { get; set; }
         public List<ImageModel> Images { get; set; }
-        public List<AvailableTimeModel> AvailableTimeModels { get; set; }
+        public DateTime StartRent { get; set; }
+        public DateTime EndRent { get; set; }
     }
 }

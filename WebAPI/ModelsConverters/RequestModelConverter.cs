@@ -27,13 +27,8 @@ namespace WebAPI.ModelsConverters
                     RelativePath = image.RelativePath,
                     AdvertId = image.AdvertId
                 }).ToList(),
-                AvailableTimeModels = command.AvailableTimeCommands.Select(model => new AvailableTimeModel
-                {
-                    Id = model.Id,
-                    Date = model.Date,
-                    AdvertId = model.AdvertId,
-                    AvailabilityStateId = model.AvailabilityStateId
-                }).ToList()
+                StartRent = command.StartRent,
+                EndRent = command.EndRent,
             };
         }
 
@@ -56,13 +51,8 @@ namespace WebAPI.ModelsConverters
                     RelativePath = image.RelativePath,
                     AdvertId = image.AdvertId
                 }).ToList(),
-                AvailableTimeModels = command.AvailableTimeCommands.Select(model => new AvailableTimeModel
-                {
-                    Id = model.Id,
-                    Date = model.Date,
-                    AdvertId = model.AdvertId,
-                    AvailabilityStateId = model.AvailabilityStateId
-                }).ToList()
+                StartRent = command.StartRent,
+                EndRent = command.EndRent,
             };
         }
 

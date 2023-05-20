@@ -15,6 +15,7 @@ namespace Application.Commands
         public int UserId { get; set; }
         public string Phone { get; set; }
         public List<ImageCommand> Images { get; set; }
-        public List<AvailableTimeCommand> AvailableTimeCommands { get; set; }
+        public DateTime StartRent { get; set; }
+        public DateTime EndRent { get; set; }
     }
 }

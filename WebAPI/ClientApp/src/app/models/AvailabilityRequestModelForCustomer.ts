@@ -10,10 +10,11 @@ export class AvailabilityRequestModelForCustomer {
     requestStateId: number;
     userId: number;
     images: ImageModel[];
-    availableTimeModels: AvailableTimeModel[];
+    startRent: Date;
+    endRent: Date;
 
     public constructor(_id: number, _advertName: string, _address: string, _landlordName: string, _phone: string, _requestStateId: number, _userId: number, 
-        _images: ImageModel[], _availableTimeModels: AvailableTimeModel[]) {
+        _images: ImageModel[], _startRent: Date, _endRent: Date) {
         this.id = _id;
         this.advertName = _advertName;
         this.address = _address;
@@ -22,6 +23,7 @@ export class AvailabilityRequestModelForCustomer {
         this.requestStateId = _requestStateId;
         this.userId = _userId;
         this.images = _images;
-        this.availableTimeModels = _availableTimeModels;
+        this.startRent = _startRent;
+        this.endRent = _endRent;
     }
 }

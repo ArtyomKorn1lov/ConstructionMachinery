@@ -11,6 +11,7 @@ import { TokenService } from 'src/app/services/token.service';
 import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-notice.component';
+import { AvailableTimeModel } from 'src/app/models/AvailableTimeModel';
 
 @Component({
   selector: 'app-lease-registration',
@@ -20,11 +21,13 @@ import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-n
 export class LeaseRegistrationComponent implements OnInit {
 
   public leaseTimes: AvailableDayModel[] = [];
+  public lastTimes: AvailableTimeModel[] = [];
   public address: string = "";
   public invalidAddress: boolean = false;
   public messageAddress: string | undefined;
   public currentTimeIndex: number | undefined;
   public currentTimeId: number | undefined;
+  public endTimeIndex: number | undefined;
   public invalidCurrentTimeId: boolean = false;
   public messageCurrentTimeId: string | undefined;
   public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
@@ -53,6 +56,26 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public resetValidFlag(): boolean {
     return false;
+  }
+
+  public createEndList(): void {
+    if (this.currentTimeIndex == undefined) {
+      return;
+    }
+    let index = this.leaseTimes[this.currentTimeIndex].times.findIndex(item => item.id == this.currentTimeId);
+    this.lastTimes = this.leaseTimes[this.currentTimeIndex].times.slice(index);
+    this.cutTimeData();
+  }
+
+  private cutTimeData(): void {
+    let curItem = this.lastTimes[0];
+    for (let count = 1; count < this.lastTimes.length; count++) {
+      if ((this.lastTimes[count].date.getHours() - curItem.date.getHours()) > 1) {
+        this.lastTimes = this.lastTimes.slice(0, count);
+        return;
+      }
+      curItem = this.lastTimes[count];
+    }
   }
 
   private validateRequest(): boolean {
@@ -96,8 +119,16 @@ export class LeaseRegistrationComponent implements OnInit {
       this.spinnerFlag = false;
       return;
     }
+    if (this.endTimeIndex == 0 || this.endTimeIndex == undefined) {
+      this.spinnerFlag = false;
+      return;
+    }
+    this.lastTimes = this.lastTimes.slice(0, this.endTimeIndex + 1);
+    this.spinnerFlag = false;
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
-    modelTime.push(new AvailableTimeModelForCreateRequest(this.currentTimeId, 3));
+    for(let count = 0; count < this.lastTimes.length; count++) {
+      modelTime.push(new AvailableTimeModelForCreateRequest(this.lastTimes[count].id, 3));
+    }
     this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
     await this.requestService.create(this.request)
       .then(

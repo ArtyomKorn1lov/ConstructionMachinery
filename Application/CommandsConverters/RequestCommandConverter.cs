@@ -10,13 +10,15 @@ namespace Application.CommandsConverters
 {
     public static class RequestCommandConverter
     {
-        public static AvailabilityRequest AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(AvailabilityRequestCommandCreate request)
+        public static AvailabilityRequest AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(AvailabilityRequestCommandCreate request, int sum)
         {
             if (request == null)
                 return null;
             return new AvailabilityRequest
             {
                 Address = request.Address,
+                Sum = sum,
+                Conditions = request.Conditions,
                 RequestStateId = request.RequestStateId,
                 UserId = request.UserId
             };
@@ -31,7 +33,11 @@ namespace Application.CommandsConverters
             {
                 Id = request.Id,
                 AdvertName = advertName,
+                Created = request.Created,
+                Updated = request.Updated,
                 Address = request.Address,
+                Sum = request.Sum,
+                Conditions = request.Conditions,
                 Phone = phone,
                 LandlordName = landlordName,
                 RequestStateId = request.RequestStateId,
@@ -56,7 +62,11 @@ namespace Application.CommandsConverters
             return new AvailabilityRequestCommandForLandlord
             {
                 Id = request.Id,
+                Created = request.Created,
+                Updated = request.Updated,
                 Address = request.Address,
+                Sum = request.Sum,
+                Conditions = request.Conditions,
                 AdvertName = advertName,
                 Phone = phone,
                 CustomerName = customerName,

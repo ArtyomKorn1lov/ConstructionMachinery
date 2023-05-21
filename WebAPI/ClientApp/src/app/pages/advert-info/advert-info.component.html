@@ -70,10 +70,10 @@
                 </div>
             </div>
             <div class="content__info">
-                <div *ngIf="advert.availableDays.length != 0" class="vector  -mobile"></div>
-                <div *ngIf="advert.availableDays.length != 0" class="title-info">
+                <div class="vector  -mobile"></div>
+                <div class="title-info">
                     <h5 class="medium-header -title">Доступное время</h5>
-                    <div *ngIf="advert.availableDays.length != 0" class="vector -desktop -width"></div>
+                    <div class="vector -desktop -width"></div>
                     <div class="day-list" *ngFor="let day of advert.availableDays">
                         <h5 class="medium-header -title">
                             {{datetimeService.convertDateToUTS(day.date.getDate())}}.{{datetimeService.convertDateToUTS(day.date.getMonth()+1)}}.{{day.date.getFullYear()}}
@@ -89,6 +89,7 @@
                             </div>
                         </div>
                     </div>
+                    <h4 *ngIf="advert.availableDays.length == 0" class="big-header -notice">Объявление устарело и в данный момент не является актуальным!<br>Просьба арендодателя обновить объявление или снять его с публикации.</h4>
                 </div>
                 <div class="vector -mobile"></div>
                 <button (click)="leaseRegistration()" *ngIf="page == 'list' && advert.availableDays.length != 0"

@@ -93,7 +93,7 @@
 
   &__arrow {
     display: none;
-    background-color: #fff;
+    background-color: var(--color-primary-text);
     border-radius: 50%;
     cursor: pointer;
     height: 40px;

@@ -160,6 +160,7 @@ export class AdvertCreateComponent implements OnInit {
       || this.pts == undefined || this.vin == undefined || this.price == undefined)
       return;
     const issure = new Date(this.dateIssure);
+    this.description = this.description.trim();
     let advert = new AdvertModelCreate(this.name, issure, this.pts, this.vin, this.description, this.price, 0, new Date(), new Date(), 0, 0);
     this.advertService.setAdvertCreateInService(advert);
     this.imageService.setImagesInService(this.images, this.filesBase64);

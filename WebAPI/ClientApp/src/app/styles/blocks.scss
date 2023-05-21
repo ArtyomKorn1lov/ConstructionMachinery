@@ -76,12 +76,15 @@
 .request-info {
     margin-top: 15px;
     display: flex;
-    align-items: center;
 }
 
 .request-info__title {
     width: 100px;
     margin-right: 15px;
+}
+
+.request-info__section {
+    flex: 1;
 }
 
 .filter-group {

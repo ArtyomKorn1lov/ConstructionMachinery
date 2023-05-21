@@ -22,15 +22,21 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public leaseTimes: AvailableDayModel[] = [];
   public lastTimes: AvailableTimeModel[] = [];
+  public price: number = 0;
   public address: string = "";
-  public invalidAddress: boolean = false;
-  public messageAddress: string | undefined;
+  public conditions: string = "";
   public currentTimeIndex: number | undefined;
   public currentTimeId: number | undefined;
   public endTimeIndex: number | undefined;
+  public invalidAddress: boolean = false;
+  public messageAddress: string | undefined;
+  public invalidCurrentTimeIndex: boolean = false;
+  public messageCurrentTimeIndex: string | undefined;
   public invalidCurrentTimeId: boolean = false;
   public messageCurrentTimeId: string | undefined;
-  public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", 0, 0, []);
+  public invalidEndTimeIndex: boolean = false;
+  public messageEndTimeIndex: string | undefined;
+  public request: AvailabilityRequestModelCreate = new AvailabilityRequestModelCreate("", "", 0, 0, []);
   public spinnerFlag = false;
   private listRoute: string = '/advert-list';
 
@@ -56,6 +62,15 @@ export class LeaseRegistrationComponent implements OnInit {
 
   public resetValidFlag(): boolean {
     return false;
+  }
+
+  public resetLastTimes(): void {
+    this.lastTimes = [];
+    this.currentTimeId = undefined;
+  }
+
+  public convertToNumber(string: any): number {
+    return Number(string);
   }
 
   public createEndList(): void {
@@ -91,12 +106,30 @@ export class LeaseRegistrationComponent implements OnInit {
         toScroll = false;
       }
     }
-    if (this.currentTimeId == 0 || this.currentTimeId == undefined) {
-      this.messageCurrentTimeId = "Выберете время доставки";
-      this.invalidCurrentTimeId = true;
+    if (this.currentTimeIndex == undefined) {
+      this.messageCurrentTimeIndex = "Выберете день работ";
+      this.invalidCurrentTimeIndex = true;
       valid = false;
       if (toScroll) {
         document.getElementById("time")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.currentTimeId == 0 || this.currentTimeId == undefined) {
+      this.messageCurrentTimeId = "Выберете начало работы";
+      this.invalidCurrentTimeId = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("startTime")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.endTimeIndex == undefined) {
+      this.messageEndTimeIndex = "Выберете конец работы";
+      this.invalidEndTimeIndex = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("endTime")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
         toScroll = false;
       }
     }
@@ -119,17 +152,19 @@ export class LeaseRegistrationComponent implements OnInit {
       this.spinnerFlag = false;
       return;
     }
-    if (this.endTimeIndex == 0 || this.endTimeIndex == undefined) {
+    if (this.endTimeIndex == undefined) {
       this.spinnerFlag = false;
       return;
     }
-    this.lastTimes = this.lastTimes.slice(0, this.endTimeIndex + 1);
+    this.lastTimes = this.lastTimes.slice(0, this.convertToNumber(this.endTimeIndex) + 1);
+    console.log(this.lastTimes);
     this.spinnerFlag = false;
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     for(let count = 0; count < this.lastTimes.length; count++) {
       modelTime.push(new AvailableTimeModelForCreateRequest(this.lastTimes[count].id, 3));
     }
-    this.request = new AvailabilityRequestModelCreate(this.address, 3, 0, modelTime);
+    this.conditions = this.conditions.trim();
+    this.request = new AvailabilityRequestModelCreate(this.address, this.conditions, 3, 0, modelTime);
     await this.requestService.create(this.request)
       .then(
         (data) => {
@@ -178,7 +213,8 @@ export class LeaseRegistrationComponent implements OnInit {
     await this.requestService.getAvailableTimesByAdvertId(id)
       .then(
         (data) => {
-          this.leaseTimes = this.convertToNormalDate(data);
+          this.price = data.price;
+          this.leaseTimes = this.convertToNormalDate(data.availableDayModels);
         }
       )
       .catch(

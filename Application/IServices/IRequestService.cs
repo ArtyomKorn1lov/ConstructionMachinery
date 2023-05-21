@@ -14,8 +14,8 @@ namespace Application.IServices
         Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id, int userId, int page);
         Task<List<AvailabilityRequestListCommand>> GetListForLandlord(int userId, int page);
         Task<int> GetLastRequestId();
-        Task<List<AvailiableDayCommand>> GetAvailableTimesByAdvertId(int id, int userId);
-        Task<bool> Create(AvailabilityRequestCommandCreate request);
+        Task<LeaseRequestCommand> GetAvailableTimesByAdvertId(int id, int userId);
+        Task<bool> Create(AvailabilityRequestCommandCreate request, int timeId, int count);
         Task<bool> UpdateTimes(int requestId, List<AvailableTimeCommandForCreateRequest> times);
         Task<bool> Confirm(int id, int stateId, int userId);
         Task<bool> Remove(int id, int userId);

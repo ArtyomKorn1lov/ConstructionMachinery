@@ -65,7 +65,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<bool> Create(AvailabilityRequestCommandCreate request)
+        public async Task<bool> Create(AvailabilityRequestCommandCreate request, int timeId, int count)
         {
             try
             {
@@ -73,7 +73,15 @@ namespace Application.Services
                     return false;
                 if (request.Address == null || request.Address.Trim() == "")
                     return false;
-                AvailabilityRequest entityRequest = RequestCommandConverter.AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(request);
+                if (timeId <= 0)
+                    return false;
+                if (count <= 0)
+                    return false;
+                Advert advert = await _advertRepository.GetAdvertByTimeId(timeId);
+                int sum = advert.Price * count;
+                AvailabilityRequest entityRequest = RequestCommandConverter.AvailabilityRequestCommandCreateConvertToAvailabilityRequestEntity(request, sum);
+                entityRequest.Created = DateTime.Now;
+                entityRequest.Updated = entityRequest.Created;
                 await _requestRepository.Create(entityRequest);
                 return true;
             }
@@ -221,7 +229,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<AvailiableDayCommand>> GetAvailableTimesByAdvertId(int id, int userId)
+        public async Task<LeaseRequestCommand> GetAvailableTimesByAdvertId(int id, int userId)
         {
             try
             {
@@ -238,7 +246,12 @@ namespace Application.Services
                 List<AvailableTimeCommand> commands = times.Select(time => RequestCommandConverter.EntityConvertToAvailableTimeCommand(time)).ToList();
                 List<AvailiableDayCommand> dayCommands = _advertService.PackageToDayCommands(commands);
                 dayCommands = _advertService.SortDateCommmands(dayCommands);
-                return dayCommands;
+                LeaseRequestCommand leaseCommand = new LeaseRequestCommand
+                {
+                    Price = advert.Price,
+                    AvailiableDayCommands = dayCommands
+                };
+                return leaseCommand;
             }
             catch
             {

@@ -54,7 +54,7 @@ namespace Infrastructure.Repositories
                 .Include(availabilityRequest => availabilityRequest.AvailableTimes)
                 .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time => time.AdvertId == id))
                 .Where(availabilityRequest => availabilityRequest.UserId == userId)
-                .OrderBy(availabilityRequest => availabilityRequest.Id)
+                .OrderBy(availabilityRequest => availabilityRequest.Updated)
                 .Skip(page * TAKE_COUNT).Take(TAKE_COUNT)
                 .ToListAsync();
         }
@@ -66,7 +66,7 @@ namespace Infrastructure.Repositories
                 .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time =>
                 _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.AvailableTimes.Any(times => times.Id == time.Id)).UserId == userId))
                 .Where(availabilityRequest => availabilityRequest.RequestStateId == 3)
-                .OrderBy(availabilityRequest => availabilityRequest.Id)
+                .OrderBy(availabilityRequest => availabilityRequest.Updated)
                 .Skip(page * TAKE_COUNT).Take(TAKE_COUNT)
                 .ToListAsync();
         }

@@ -16,7 +16,11 @@ namespace Infrastructure.Configurations
             builder.ToTable(nameof(AvailabilityRequest));
 
             builder.HasKey(availabilityRequest => availabilityRequest.Id);
+            builder.Property(availabilityRequest => availabilityRequest.Created).IsRequired();
+            builder.Property(availabilityRequest => availabilityRequest.Updated);
             builder.Property(availabilityRequest => availabilityRequest.Address).IsRequired();
+            builder.Property(availabilityRequest => availabilityRequest.Conditions);
+            builder.Property(availabilityRequest => availabilityRequest.Sum).IsRequired();
             builder.Property(availabilityRequest => availabilityRequest.IsAvailable).IsRequired();
             builder.HasMany(availabilityRequest => availabilityRequest.AvailableTimes).WithOne()
                 .HasForeignKey(availableTime => availableTime.AvailabilityRequestId).OnDelete(DeleteBehavior.NoAction);

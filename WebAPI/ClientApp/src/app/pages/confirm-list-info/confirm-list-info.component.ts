@@ -19,9 +19,8 @@ import { DialogNoticeComponent } from 'src/app/components/dialog-notice/dialog-n
 })
 export class ConfirmListInfoComponent implements OnInit {
 
-  public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", "", "", "", 0, [new ImageModel(0, "", "", 0)], new Date(), new Date());
-  public startRent: Date = new Date();
-  public endRent: Date = new Date();
+  public request: AvailabilityRequestModelForLandlord = new AvailabilityRequestModelForLandlord(0, "", new Date(), new Date(),
+    "", "", 0, "", "", 0, [new ImageModel(0, "", "", 0)], new Date(), new Date());
   public spinnerFlag = false;
   private privateAreaRoute: string = "private-area";
   private confirmListRoute = "confirm-list";
@@ -90,12 +89,14 @@ export class ConfirmListInfoComponent implements OnInit {
       .then(
         (data) => {
           this.request = data;
-          this.startRent = new Date(this.request.startRent);
-          this.endRent = new Date(this.request.endRent);
+          this.request.created = new Date(this.request.created);
+          this.request.updated = new Date(this.request.updated);
+          this.request.startRent = new Date(this.request.startRent);
+          this.request.endRent = new Date(this.request.endRent);
           if (data != null)
-            this.titleService.setTitle("Заявка от " + this.datetimeService.convertDateToUTS(this.startRent.getDate()) + "."
-              + this.datetimeService.convertDateToUTS(this.startRent.getMonth() + 1) + "." + this.startRent.getFullYear()
-              + " в " + this.datetimeService.convertDateToUTS(this.startRent.getHours()) + ":00");
+            this.titleService.setTitle("Заявка от " + this.datetimeService.convertDateToUTS(this.request.startRent.getDate()) + "."
+              + this.datetimeService.convertDateToUTS(this.request.startRent.getMonth() + 1) + "." + this.request.startRent.getFullYear()
+              + " в " + this.datetimeService.convertDateToUTS(this.request.startRent.getHours()) + ":00");
         }
       )
       .catch(

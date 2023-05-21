@@ -15,30 +15,69 @@
                     <div class="request-info__title">
                         <h5 class="medium-header -title">Заказчик:</h5>
                     </div>
-                    <h5 class="medium-header -title">{{request.customerName}}</h5>
+                    <div class="request-info__section">
+                        <h5 class="medium-header -title">{{request.customerName}}</h5>
+                    </div>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header -title">Время:</h5>
+                        <h5 class="medium-header -title">Создано:</h5>
                     </div>
-                    <h5 *ngIf="startRent.getHours() == endRent.getHours()" class="medium-header -title">
-                        {{datetimeService.convertDateToUTS(startRent.getDate())}}.{{datetimeService.convertDateToUTS(startRent.getMonth()+1)}}.{{startRent.getFullYear()}}
-                        в {{datetimeService.convertDateToUTS(startRent.getHours())}}:00</h5>
-                    <h5 *ngIf="startRent.getHours() != endRent.getHours()" class="medium-header -title">
-                        {{datetimeService.convertDateToUTS(startRent.getDate())}}.{{datetimeService.convertDateToUTS(startRent.getMonth()+1)}}.{{startRent.getFullYear()}}
-                        с {{datetimeService.convertDateToUTS(startRent.getHours())}}:00 до {{datetimeService.convertDateToUTS(endRent.getHours())}}:00</h5>
+                    <div class="request-info__section">
+                        <h5 class="medium-header -title">
+                            {{datetimeService.convertDateToUTS(request.created.getDate())}}.{{datetimeService.convertDateToUTS(request.created.getMonth()+1)}}.{{request.created.getFullYear()}}
+                            в
+                            {{datetimeService.convertDateToUTS(request.created.getHours())}}:{{datetimeService.convertDateToUTS(request.created.getMinutes())}}
+                        </h5>
+                    </div>
+                </div>
+                <div class="request-info">
+                    <div class="request-info__title">
+                        <h5 class="medium-header -title">Время аренды:</h5>
+                    </div>
+                    <div class="request-info__section">
+                        <h5 *ngIf="request.startRent.getHours() == request.endRent.getHours()"
+                            class="medium-header -title">
+                            {{datetimeService.convertDateToUTS(request.startRent.getDate())}}.{{datetimeService.convertDateToUTS(request.startRent.getMonth()+1)}}.{{request.startRent.getFullYear()}}
+                            в {{datetimeService.convertDateToUTS(request.startRent.getHours())}}:00</h5>
+                        <h5 *ngIf="request.startRent.getHours() != request.endRent.getHours()"
+                            class="medium-header -title">
+                            {{datetimeService.convertDateToUTS(request.startRent.getDate())}}.{{datetimeService.convertDateToUTS(request.startRent.getMonth()+1)}}.{{request.startRent.getFullYear()}}
+                            с {{datetimeService.convertDateToUTS(request.startRent.getHours())}}:00 до
+                            {{datetimeService.convertDateToUTS(request.endRent.getHours())}}:00</h5>
+                    </div>
+                </div>
+                <div class="request-info">
+                    <div class="request-info__title">
+                        <h5 class="medium-header -title">Стоимость работы:</h5>
+                    </div>
+                    <div class="request-info__section">
+                        <h5 class="medium-header -title">{{request.sum}} ₽</h5>
+                    </div>
+                </div>
+                <div class="request-info">
+                    <div class="request-info__title">
+                        <h5 class="medium-header -title">Условия:</h5>
+                    </div>
+                    <div class="request-info__section">
+                        <h5 class="medium-header -title">{{request.conditions}}</h5>
+                    </div>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
                         <h5 class="medium-header -title">Адрес доставки:</h5>
                     </div>
-                    <h5 class="medium-header -title">{{request.address}}</h5>
+                    <div class="request-info__section">
+                        <h5 class="medium-header -title">{{request.address}}</h5>
+                    </div>
                 </div>
                 <div class="request-info">
                     <div class="request-info__title">
                         <h5 class="medium-header -title">Телефон:</h5>
                     </div>
-                    <h5 class="medium-header -title">{{request.phone}}</h5>
+                    <div class="request-info__section">
+                        <h5 class="medium-header -title">{{request.phone}}</h5>
+                    </div>
                 </div>
             </div>
             <div class="vector"></div>

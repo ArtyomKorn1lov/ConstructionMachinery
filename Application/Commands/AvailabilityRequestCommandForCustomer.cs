@@ -10,7 +10,11 @@ namespace Application.Commands
     {
         public int Id { get; set; }
         public string AdvertName { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
         public string Address { get; set; }
+        public string Conditions { get; set; }
+        public int Sum { get; set; }
         public int RequestStateId { get; set; }
         public string LandlordName { get; set; }
         public int UserId { get; set; }

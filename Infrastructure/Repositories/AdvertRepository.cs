@@ -97,6 +97,11 @@ namespace Infrastructure.Repositories
             return await _constructionMachineryDbContext.Set<Advert>().MaxAsync(advert => advert.Id);
         }
 
+        public async Task<Advert> GetAdvertByTimeId(int id)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>().FirstOrDefaultAsync(advert => advert.AvailableTimes.Any(time => time.Id == id));
+        }
+
         public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id, int page)
         {
             return await _constructionMachineryDbContext.Set<Advert>()

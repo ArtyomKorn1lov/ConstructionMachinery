@@ -41,6 +41,12 @@
     max-width: 450px;
 }
 
+@media (max-width: 315px) {
+    .request-info {
+        flex-direction: column;
+    }
+}
+
 @media (min-width: 450px) {
     .edit-button {
         width: 400px;
@@ -66,7 +72,11 @@
 
     .back-container {
         width: 100%;
-        max-width: 1190px;
+        padding: 15px 0;
+    }
+
+    .back-container img {
+        margin-left: 25px;
     }
 
     .content__elements {

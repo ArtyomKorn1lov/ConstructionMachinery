@@ -6,7 +6,7 @@ import { AvailabilityRequestModelForCustomer } from 'src/app/models/Availability
 import { AvailabilityRequestModelForLandlord } from '../models/AvailabilityRequestModelForLandlord';
 import { AvailabilityRequestModelCreate } from '../models/AvailabilityRequestModelCreate';
 import { ConfirmModel } from '../models/ConfirmModel';
-import { AvailableDayModel } from '../models/AvailableDayModel';
+import { LeaseRequestModel } from '../models/LeaseRequestModel';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +37,8 @@ export class RequestService {
     return await lastValueFrom(this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`));
   }
 
-  public async getAvailableTimesByAdvertId(id: number): Promise<AvailableDayModel[]> {
-    return await lastValueFrom(this.http.get<AvailableDayModel[]>(`api/request/times/${id}`));
+  public async getAvailableTimesByAdvertId(id: number): Promise<LeaseRequestModel> {
+    return await lastValueFrom(this.http.get<LeaseRequestModel>(`api/request/lease/${id}`));
   }
 
   public async create(request: AvailabilityRequestModelCreate): Promise<string> {

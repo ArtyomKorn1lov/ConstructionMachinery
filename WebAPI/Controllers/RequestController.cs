@@ -75,14 +75,13 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("times/{id}")]
-        public async Task<List<AvailableDayModel>> GetAvailableTimesByAdvertId(int id)
+        [HttpGet("lease/{id}")]
+        public async Task<LeaseRequestModel> GetAvailableTimesByAdvertId(int id)
         {
-            List<AvailiableDayCommand> commands = await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(User.Identity.Name));
-            List<AvailableDayModel> models = commands.Select(command => RequestModelConverter.CommandConvertToAvailableDayModel(command)).ToList();
-            if (models == null)
+            LeaseRequestModel model = RequestModelConverter.LeaseRequestCommandConvertToModel(await _requestService.GetAvailableTimesByAdvertId(id, await _accountService.GetIdByEmail(User.Identity.Name)));
+            if (model == null)
                 return null;
-            return models;
+            return model;
         }
 
         [Authorize]
@@ -93,9 +92,12 @@ namespace WebAPI.Controllers
             {
                 if (model == null)
                     return BadRequest("error");
+                if (model.AvailableTimeModelForCreateRequests.Count == 0)
+                    return BadRequest("error");
                 model.UserId = await _accountService.GetIdByEmail(User.Identity.Name);
                 model.RequestStateId = 3;
-                if (!await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model)))
+                if (!await _requestService.Create(RequestModelConverter.AvailabilityRequestModelCreateConvertCommand(model), model.AvailableTimeModelForCreateRequests[0].Id, 
+                    model.AvailableTimeModelForCreateRequests.Count))
                     return BadRequest("error");
                 await _unitOfWork.Commit();
                 int requestId = await _requestService.GetLastRequestId();

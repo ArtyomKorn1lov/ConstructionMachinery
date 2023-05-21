@@ -3,6 +3,12 @@
     margin-bottom: 5px;
 }
 
+.big-header.-notice {
+    color: var(--color-invalid-text);
+    padding: 20px;
+    text-align: center;
+}
+
 .vector {
     border: 1px solid rgba(22, 22, 22, 0.3);
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);

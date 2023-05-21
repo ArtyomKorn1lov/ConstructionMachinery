@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -115,6 +116,7 @@ export function tokenGetter() {
     MatProgressSpinnerModule,
     NgxMaterialTimepickerModule,
     MatDialogModule,
+    MatSelectModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([

@@ -175,6 +175,7 @@ export class AdvertEditComponent implements OnInit {
       return;
     }
     const issure = new Date(this.dateIssure);
+    this.advertUpdate.description = this.advertUpdate.description.trim();
     this.advertUpdate.dateIssue = issure;
     this.advertService.setAdvertUpdateInService(this.advertUpdate);
     this.imageService.setImagesInService(this.images, this.filesBase64);

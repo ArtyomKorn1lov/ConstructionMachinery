@@ -15,7 +15,11 @@ namespace WebAPI.ModelsConverters
             {
                 Id = command.Id,
                 AdvertName = command.AdvertName,
+                Created = command.Created,
+                Updated = command.Updated,  
                 Address = command.Address,
+                Conditions = command.Conditions,
+                Sum = command.Sum,
                 Phone = command.Phone,
                 LandlordName = command.LandlordName,
                 RequestStateId = command.RequestStateId,
@@ -40,7 +44,11 @@ namespace WebAPI.ModelsConverters
             {
                 Id = command.Id,
                 AdvertName = command.AdvertName,
+                Created = command.Created,
+                Updated = command.Updated,
                 Address = command.Address,
+                Conditions = command.Conditions,
+                Sum = command.Sum,
                 Phone = command.Phone,
                 CustomerName = command.CustomerName,
                 UserId = command.UserId,
@@ -63,6 +71,7 @@ namespace WebAPI.ModelsConverters
             return new AvailabilityRequestCommandCreate
             {
                 Address = model.Address,
+                Conditions = model.Conditions,
                 RequestStateId = model.RequestStateId,
                 UserId = model.UserId
             };
@@ -111,6 +120,27 @@ namespace WebAPI.ModelsConverters
                     Date = availableTime.Date,
                     AdvertId = availableTime.AdvertId,
                     AvailabilityStateId = availableTime.AvailabilityStateId
+                }).ToList()
+            };
+        }
+
+        public static LeaseRequestModel LeaseRequestCommandConvertToModel(LeaseRequestCommand command)
+        {
+            if (command == null)
+                return null;
+            return new LeaseRequestModel
+            {
+                Price = command.Price,
+                AvailableDayModels = command.AvailiableDayCommands.Select(avaliableDay => new AvailableDayModel
+                {
+                    Date = avaliableDay.Date,
+                    Times = avaliableDay.Times.Select(avaliableTime => new AvailableTimeModel
+                    {
+                        Id = avaliableTime.Id,
+                        AdvertId = avaliableTime.AdvertId,
+                        Date = avaliableTime.Date,
+                        AvailabilityStateId = avaliableTime.AvailabilityStateId
+                    }).ToList()
                 }).ToList()
             };
         }

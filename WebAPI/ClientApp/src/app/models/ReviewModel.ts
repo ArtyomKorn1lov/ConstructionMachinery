@@ -1,11 +1,11 @@
 export class ReviewModel {
-    id: number;
-    description: string;
-    date: Date;
-    name: string;
-    userId: number;
-    isAuthorized: boolean;
-    reviewStateId: number;
+    public id: number;
+    public description: string;
+    public date: Date;
+    public name: string;
+    public userId: number;
+    public isAuthorized: boolean;
+    public reviewStateId: number;
 
     public constructor(_id: number, _description: string, _date: Date, _name: string, _userId: number, _isAuthorized: boolean, _reviewStateId: number) {
         this.id = _id;

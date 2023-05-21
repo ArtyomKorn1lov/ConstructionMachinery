@@ -1,11 +1,11 @@
 import { AvailableTimeModelForCreateRequest } from "./AvailableTimeModelForCreateRequest";
 
 export class AvailabilityRequestModelCreate {
-    address: string;
-    conditions: string;
-    requestStateId: number;
-    userId: number;
-    availableTimeModelForCreateRequests: AvailableTimeModelForCreateRequest[];
+    public address: string;
+    public conditions: string;
+    public requestStateId: number;
+    public userId: number;
+    public availableTimeModelForCreateRequests: AvailableTimeModelForCreateRequest[];
 
     public constructor(_address: string, _conditions: string, _requestStateId: number, _userId: number, _availableTimeModelForCreateRequests: AvailableTimeModelForCreateRequest[]) {
         this.address = _address;

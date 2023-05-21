@@ -1,6 +1,6 @@
 export class ConfirmModel {
-    id: number;
-    requestStateId: number;
+    public id: number;
+    public requestStateId: number;
 
     public constructor(_id: number, _requestStateId: number) {
         this.id = _id;

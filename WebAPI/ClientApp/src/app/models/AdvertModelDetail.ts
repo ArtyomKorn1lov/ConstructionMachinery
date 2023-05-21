@@ -2,18 +2,18 @@ import { AvailableDayModel } from "./AvailableDayModel";
 import { ImageModel } from "./ImageModel";
 
 export class AdvertModelDetail {
-    id: number;
-    name: string;
-    dateIssue: Date;
-    pts: string;
-    vin: string;
-    description: string;
-    publishDate: Date;
-    editDate: Date;
-    price: number
-    userName: string;
-    images: ImageModel[];
-    availableDays: AvailableDayModel[];
+    public id: number;
+    public name: string;
+    public dateIssue: Date;
+    public pts: string;
+    public vin: string;
+    public description: string;
+    public publishDate: Date;
+    public editDate: Date;
+    public price: number
+    public userName: string;
+    public images: ImageModel[];
+    public availableDays: AvailableDayModel[];
 
     public constructor(_id: number, _name: string, _dateIssue: Date, _pts: string, _vin: string, _description: string, _publishDate: Date, _editDate: Date, _price: number, _userName: string, _images: ImageModel[], _availableDays: AvailableDayModel[]) {
         this.id = _id;

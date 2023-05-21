@@ -1,8 +1,8 @@
 export class MailModel {
-    name: string;
-    email: string;
-    phone: string;
-    description: string;
+    public name: string;
+    public email: string;
+    public phone: string;
+    public description: string;
 
     public constructor(_name: string, _email: string, _phone: string, _description: string) {
         this.name = _name;

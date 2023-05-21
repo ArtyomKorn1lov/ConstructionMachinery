@@ -1,7 +1,7 @@
 import { TechniqueType } from "./TechniqueTypeModel";
 
 export class TechniqueTypeList {
-    techniqueList: TechniqueType[] = [];
+    public techniqueList: TechniqueType[] = [];
 
     public constructor() {
         this.techniqueList.push(new TechniqueType("assets/type1.png", "Автовышки", "Автовышка"));

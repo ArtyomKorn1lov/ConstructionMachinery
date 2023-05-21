@@ -1,19 +1,19 @@
 import { ImageModel } from "./ImageModel";
 
 export class AvailabilityRequestModelForLandlord {
-    id: number;
-    advertName: string;
-    created: Date;
-    updated: Date;
-    address: string;
-    conditions: string;
-    sum: number;
-    phone: string;
-    customerName: string;
-    userId: number;
-    images: ImageModel[];
-    startRent: Date;
-    endRent: Date;
+    public id: number;
+    public advertName: string;
+    public created: Date;
+    public updated: Date;
+    public address: string;
+    public conditions: string;
+    public sum: number;
+    public phone: string;
+    public customerName: string;
+    public userId: number;
+    public images: ImageModel[];
+    public startRent: Date;
+    public endRent: Date;
 
     public constructor(_id: number, _advertName: string, _created: Date, _updated: Date, _address: string, _conditions: string, _sum: number, 
         _phone: string, _customerName: string, _userId: number, _images: ImageModel[], _startRent: Date, _endRent: Date) {

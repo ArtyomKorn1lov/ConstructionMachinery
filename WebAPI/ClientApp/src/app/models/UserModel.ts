@@ -1,10 +1,10 @@
 export class UserModel {
-    id: number;
-    name: string;
-    email: string;
-    address: string;
-    created: Date;
-    phone: string;
+    public id: number;
+    public name: string;
+    public email: string;
+    public address: string;
+    public created: Date;
+    public phone: string;
 
     public constructor(_id: number, _name: string, _email: string, _address: string, _created: Date, _phone: string) {
         this.id = _id;

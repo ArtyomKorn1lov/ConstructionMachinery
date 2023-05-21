@@ -1,15 +1,15 @@
 export class AdvertModelCreate {
-    name: string;
-    dateIssue: Date;
-    pts: string;
-    vin: string;
-    description: string;
-    price: number;
-    userId: number;
-    startDate: Date;
-    endDate: Date;
-    startTime: number;
-    endTime: number;
+    public name: string;
+    public dateIssue: Date;
+    public pts: string;
+    public vin: string;
+    public description: string;
+    public price: number;
+    public userId: number;
+    public startDate: Date;
+    public endDate: Date;
+    public startTime: number;
+    public endTime: number;
 
     public constructor(_name: string, _dateIssue: Date, _pts: string, _vin: string, _description: string, _price: number, _userId: number, _startDate: Date, _endDate: Date, _startTime: number, _endTime: number) {
         this.name = _name;

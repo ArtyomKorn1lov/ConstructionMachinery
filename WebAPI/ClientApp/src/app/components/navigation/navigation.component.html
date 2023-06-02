@@ -1,5 +1,5 @@
 <div class="navigation">
-    <a (click)="sidenavEvent()" [routerLink]="['/advert-list']" class="navigation__hyperlink">Объявления</a>
+    <a (click)="sidenavEvent()" (click)="eventfind.emit()" [routerLink]="['/advert-list']" class="navigation__hyperlink">Объявления</a>
     <div class="navigation__vector"></div>
     <a *ngIf="accountService.userFlag" (click)="sidenavEvent()" [routerLink]="['/private-area']" class="navigation__hyperlink">Личный кабинет</a>
     <div *ngIf="accountService.userFlag" class="navigation__vector"></div>

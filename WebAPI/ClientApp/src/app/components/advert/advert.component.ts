@@ -8,7 +8,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
-import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
+import { Observable, distinctUntilChanged, lastValueFrom, map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-advert',
@@ -24,16 +24,22 @@ export class AdvertComponent implements OnInit {
   private listRoute: string = "advert-list";
   private myRoute: string = "my-adverts";
   private filter: string = "all";
+  private currentSearch = "";
   @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,
     private route: ActivatedRoute, private imageService: ImageService, public accountService: AccountService, private tokenService: TokenService) { }
 
   public async sortByParam(param: string): Promise<void> {
-    this.advertList = [];
-    this.advertService.advertLenght = 0;
+    this.resetAllParams();
     this.filter = param;
+  }
+
+  public resetAllParams(): void {
+    this.advertService.advertLenght = 0;
+    this.filter = "all";
     this.pagination = 0;
+    this.advertList = [];
     this.scrollFlag = true;
   }
 
@@ -57,9 +63,8 @@ export class AdvertComponent implements OnInit {
 
   public async loadNewElements(): Promise<void> {
     length = this.advertList.length;
+    const searchString = this.route.snapshot.queryParamMap.get('search');
     if (this.page == 'list') {
-      await this.route.queryParams.subscribe(async params => {
-        const searchString = params['search'];
         if (searchString == undefined) {
           if (this.filter == "all")
             await this.advertService.getAll(this.pagination)
@@ -275,7 +280,6 @@ export class AdvertComponent implements OnInit {
               );
         }
         this.advertService.advertLenght = this.advertList.length;
-      });
     }
     if (this.page == 'my') {
       const tokenResult = await this.tokenService.tokenVerify();

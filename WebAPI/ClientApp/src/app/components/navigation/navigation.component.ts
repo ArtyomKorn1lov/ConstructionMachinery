@@ -9,6 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 export class NavigationComponent implements OnInit {
 
   @Output() event = new EventEmitter();
+  @Output() eventfind = new EventEmitter();
 
   constructor(public accountService: AccountService) { }
 

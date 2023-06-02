@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="header__top-menu">
-        <a [routerLink]="['/advert-list']" class="big-header -menu">Объявления</a>
+        <a (click)="eventfind.emit()" [routerLink]="['/advert-list']" class="big-header -menu">Объявления</a>
         <a [routerLink]="['/private-area']" *ngIf="accountService.userFlag" class="big-header -menu">Личный кабинет</a>
         <a [routerLink]="['/contacts']" class="big-header -menu">Контакты</a>
         <a [routerLink]="['/company']" class="big-header -menu">О компании</a>

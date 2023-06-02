@@ -10,6 +10,16 @@
     display: none;
 }
 
+.big-header.-line {
+    border-bottom: 3px solid rgba(22, 22, 22, 0.3);
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.big-header.-selected {
+    color: var(--color-primary-button)
+}
+
 @media (min-width: 500px) {
 
     .content__filter {
@@ -45,6 +55,11 @@
 
     .list-section__category {
         display: block;
+
+        &.-hide {
+            width: 0;
+            margin-right: 0;
+        }
     }
 
     .category__content {

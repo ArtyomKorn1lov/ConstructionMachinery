@@ -1,9 +1,9 @@
 <mat-drawer-container style="display: flex;" class="page">
     <mat-drawer #drawer mode="over" class="sidenav">
-        <app-navigarion (event)="drawer.toggle()"></app-navigarion>
+        <app-navigarion (event)="drawer.toggle()" (eventfind)="findAdvert()"></app-navigarion>
     </mat-drawer>
     <mat-drawer-content style="display: flex;">
-        <app-header class="flex-centered" (event)="drawer.toggle()"></app-header>
+        <app-header class="flex-centered" (event)="drawer.toggle()" (eventfind)="findAdvert()"></app-header>
         <div class="page__element">
             <router-outlet></router-outlet>
         </div>

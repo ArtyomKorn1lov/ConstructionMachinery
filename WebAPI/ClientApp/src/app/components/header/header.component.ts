@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   @Output() event = new EventEmitter();
+  @Output() eventfind = new EventEmitter();
   public visibility: boolean = false;
   public searchForm = new FormGroup({
     search: new FormControl<string>("")
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit {
           search: this.searchForm.value.search
         }
       });
+      this.eventfind.emit();
     }
   }
 

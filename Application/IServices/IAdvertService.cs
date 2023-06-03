@@ -11,8 +11,8 @@ namespace Application.IServices
     {
         List<AvailiableDayCommand> PackageToDayCommands(List<AvailableTimeCommand> availableTimeCommands);
         List<AvailiableDayCommand> SortDateCommmands(List<AvailiableDayCommand> availiableDayCommands);
-        Task<List<AdvertCommandList>> GetAll(int page);
-        Task<List<AdvertCommandList>> GetAllWithoutUserId(int id, int page);
+        Task<List<AdvertCommandList>> GetAll(FilterCommand filter, string name, string sort, int page);
+        Task<List<AdvertCommandList>> GetAllWithoutUserId(FilterCommand filter, string name, string sort, int id, int page);
         Task<AdvertCommandInfo> GetById(int id);
         Task<AdvertCommandDetail> GetDetailAdvert(int id);
         Task<bool> Create(AdvertCommandCreate advert);
@@ -20,7 +20,7 @@ namespace Application.IServices
         Task<bool> Remove(int id);
         Task<List<AdvertCommandList>> GetByName(string name, int page);
         Task<List<AdvertCommandList>> GetByNameWithoutUserId(string name, int id, int page);
-        Task<List<AdvertCommandList>> GetByUserId(int id, int page);
+        Task<List<AdvertCommandList>> GetByUserId(FilterCommand filter, string name, string sort, int id, int page);
         Task<List<AdvertCommandList>> GetSortByPriceMaxByUserId(int id, int page);
         Task<List<AdvertCommandList>> GetSortByPriceMinByUserId(int id, int page);
         Task<List<AdvertCommandList>> GetSortByRatingMaxByUserId(int id, int page);

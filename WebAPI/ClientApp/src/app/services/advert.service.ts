@@ -8,6 +8,7 @@ import { AdvertModelForRequest } from '../models/AdvertModelForRequest';
 import { AdvertModelUpdate } from '../models/AdvertModelUpdate';
 import { Router } from '@angular/router';
 import { AdvertModelDetail } from '../models/AdvertModelDetail';
+import { FilterModel } from '../models/FilterModel';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +46,10 @@ export class AdvertService {
     return true;
   }
 
-  public async getAll(page: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${page}`));
+  public async getAll(startPublishDate: Date, endPublishDate: Date, startDate: Date, endDate: Date, startTime: number, endTime: number, startPrice: number, endPrice: number,
+    keyWord: string, name: string, sort: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${startPublishDate.toDateString()}/${endPublishDate.toDateString()}/${startDate.toDateString()}/${endDate.toDateString()}/${startTime}/${endTime}
+    /${startPrice}/${endPrice}/${keyWord}/${name}/${sort}/${page}`));
   }
 
   public async getById(id: number): Promise<AdvertModelInfo> {
@@ -61,8 +64,10 @@ export class AdvertService {
     return await lastValueFrom(this.http.post(`api/advert/create`, advert, { responseType: 'text' }));
   }
 
-  public async getByUser(page: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${page}`));
+  public async getByUser(startPublishDate: Date, endPublishDate: Date, startDate: Date, endDate: Date, startTime: number, endTime: number, startPrice: number, endPrice: number,
+    keyWord: string, name: string, sort: string, page: number): Promise<AdvertModelList[]> {
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${startPublishDate.toDateString()}/${endPublishDate.toDateString()}/${startDate.toDateString()}/${endDate.toDateString()}/${startTime}/${endTime}
+    /${startPrice}/${endPrice}/${keyWord}/${name}/${sort}/${page}`));
   }
 
   public async remove(id: number): Promise<string> {
@@ -121,7 +126,7 @@ export class AdvertService {
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-rating-min/${name}/${page}`));
   }
 
-  public async GetSortByDateMinByName(name: string,page: number): Promise<AdvertModelList[]> {
+  public async GetSortByDateMinByName(name: string, page: number): Promise<AdvertModelList[]> {
     return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-date-min/${name}/${page}`));
   }
 

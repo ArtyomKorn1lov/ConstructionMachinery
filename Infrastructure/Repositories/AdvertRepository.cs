@@ -24,15 +24,415 @@ namespace Infrastructure.Repositories
             await _constructionMachineryDbContext.Set<Advert>().AddAsync(advert);
         }
 
-        public async Task<List<Advert>> GetAll(int page)
+        public async Task<List<Advert>> GetAll(Filter filter, string name, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderByDescending(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetAllWithoutUserId(int id, int page)
+        public async Task<List<Advert>> GetAllWithoutUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Include(advert => advert.Images).OrderByDescending(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
@@ -66,10 +466,225 @@ namespace Infrastructure.Repositories
                 .Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetByUserId(int id, int page)
+        public async Task<List<Advert>> GetByUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId == id).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
@@ -114,64 +729,2092 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByPriceMax(int page)
+        public async Task<List<Advert>> GetSortByPriceMax(Filter filter, string name, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderBy(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByPriceMin(int page)
+        public async Task<List<Advert>> GetSortByPriceMin(Filter filter, string name, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderByDescending(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByPriceMaxWithoutUserId(int page, int id)
+        public async Task<List<Advert>> GetSortByPriceMaxWithoutUserId(Filter filter, string name, int page, int id)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByPriceMinWithoutUserId(int page, int id)
+        public async Task<List<Advert>> GetSortByPriceMinWithoutUserId(Filter filter, string name, int page, int id)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByDateMin(int page)
+        public async Task<List<Advert>> GetSortByDateMin(Filter filter, string name, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByDateMinWithoutUserId(int page, int id)
+        public async Task<List<Advert>> GetSortByDateMinWithoutUserId(Filter filter, string name, int page, int id)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByRatingMax(int page)
+        public async Task<List<Advert>> GetSortByRatingMax(Filter filter, string name, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByRatingMin(int page)
+        public async Task<List<Advert>> GetSortByRatingMin(Filter filter, string name, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByRatingMaxWithoutUserId(int page, int id)
+        public async Task<List<Advert>> GetSortByRatingMaxWithoutUserId(Filter filter, string name, int page, int id)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
                 .Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByRatingMinWithoutUserId(int page, int id)
+        public async Task<List<Advert>> GetSortByRatingMinWithoutUserId(Filter filter, string name, int page, int id)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
                 .Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
@@ -248,35 +2891,1065 @@ namespace Infrastructure.Repositories
                 .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByPriceMaxByUserId(int id, int page)
+        public async Task<List<Advert>> GetSortByPriceMaxByUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderBy(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByPriceMinByUserId(int id, int page)
+        public async Task<List<Advert>> GetSortByPriceMinByUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderByDescending(advert => advert.Price).Where(advert => advert.UserId == id).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByRatingMaxByUserId(int id, int page)
+        public async Task<List<Advert>> GetSortByRatingMaxByUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId == id).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByRatingMinByUserId(int id, int page)
+        public async Task<List<Advert>> GetSortByRatingMinByUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId == id).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
-        public async Task<List<Advert>> GetSortByDateMinByUserId(int id, int page)
+        public async Task<List<Advert>> GetSortByDateMinByUserId(Filter filter, string name, int id, int page)
         {
+            //1-0001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //2-0010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //3-0100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //4-1000
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //5-0011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //6-0101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //7-1001
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //8-0110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //9-1010
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //10-1100
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //11-0111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime == 0 || filter.EndTime == 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //12-1011
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //13-1101
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //14-1110
+            if ((filter.StartPrice == 0 || filter.EndPrice == 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //15-1111
+            if ((filter.StartPrice != 0 && filter.EndPrice != 0)
+                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                || (filter.StartTime != 0 && filter.EndTime != 0))
+            {
+                return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
+                .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
+                .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
+                .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page * TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
+            }
+            //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderBy(advert => advert.EditDate).Where(advert => advert.UserId == id).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
     }

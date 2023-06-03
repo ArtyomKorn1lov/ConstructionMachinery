@@ -8,7 +8,8 @@ import { ImageService } from 'src/app/services/image.service';
 import { DatetimeService } from 'src/app/services/datetime.service';
 import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
-import { Observable, distinctUntilChanged, lastValueFrom, map, mergeMap } from 'rxjs';
+import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
+import { FilterModel } from 'src/app/models/FilterModel';
 
 @Component({
   selector: 'app-advert',
@@ -64,10 +65,11 @@ export class AdvertComponent implements OnInit {
   public async loadNewElements(): Promise<void> {
     length = this.advertList.length;
     const searchString = this.route.snapshot.queryParamMap.get('search');
+    /*
     if (this.page == 'list') {
         if (searchString == undefined) {
           if (this.filter == "all")
-            await this.advertService.getAll(this.pagination)
+            await this.advertService.getAll(new Date(), new Date(), new Date(), new Date(), 14, 20, 5, 300, "первое", "name", this.filter, this.pagination)
               .then(
                 (data) => {
                   this.advertList = this.advertList.concat(data);
@@ -142,7 +144,7 @@ export class AdvertComponent implements OnInit {
                 }
               );
           if (this.filter == "max_date")
-            await this.advertService.getAll(this.pagination)
+            await this.advertService.getAll(new Date(), new Date(), new Date(), new Date(), 14, 20, 5, 300, "первое", "name", this.filter, this.pagination)
               .then(
                 (data) => {
                   this.advertList = this.advertList.concat(data);
@@ -286,7 +288,7 @@ export class AdvertComponent implements OnInit {
       if (!tokenResult)
         this.router.navigate(["/authorize"]);
       if (this.filter == "all")
-        await this.advertService.getByUser(this.pagination)
+        await this.advertService.getByUser(new Date(), new Date(), new Date(), new Date(), 14, 20, 5, 300, "первое", "name", this.filter, this.pagination)
           .then(
             (data) => {
               this.advertList = this.advertList.concat(data);
@@ -361,7 +363,7 @@ export class AdvertComponent implements OnInit {
             }
           );
       if (this.filter == "max_date")
-        await this.advertService.getByUser(this.pagination)
+        await this.advertService.getByUser(new Date(), new Date(), new Date(), new Date(), 14, 20, 5, 300, "первое", "name", this.filter, this.pagination)
           .then(
             (data) => {
               this.advertList = this.advertList.concat(data);
@@ -392,6 +394,7 @@ export class AdvertComponent implements OnInit {
           );
       this.advertService.advertLenght = this.advertList.length;
     }
+    */
     this.pagination++;
     this.convertToNormalDate();
   }

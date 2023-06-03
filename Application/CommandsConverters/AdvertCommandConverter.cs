@@ -192,5 +192,23 @@ namespace Application.CommandsConverters
                 }).ToList(),
             };
         }
+
+        public static Filter FilterCommandConvertToEntity(FilterCommand command)
+        {
+            if (command == null)
+                return null;
+            return new Filter
+            {
+                StartPublishDate = command.StartPublishDate,
+                EndPublishDate = command.EndPublishDate,
+                StartDate = command.StartDate,
+                EndDate = command.EndDate,
+                StartTime = command.StartTime,
+                EndTime = command.EndTime,
+                StartPrice = command.StartPrice,
+                EndPrice = command.EndPrice,
+                KeyWord = command.KeyWord,
+            };
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Commands;
+using System.Collections.Generic;
 using System.Linq;
 using WebAPI.Models;
 
@@ -189,6 +190,24 @@ namespace WebAPI.ModelsConverters
                     RelativePath = image.RelativePath,
                     AdvertId = image.AdvertId
                 }).ToList(),
+            };
+        }
+
+        public static FilterCommand FilterModelConvertCommand(FilterModel model)
+        {
+            if (model == null)
+                return null;
+            return new FilterCommand
+            {
+                StartPublishDate = model.StartPublishDate,
+                EndPublishDate = model.EndPublishDate,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+                StartPrice = model.StartPrice,
+                EndPrice = model.EndPrice,
+                KeyWord = model.KeyWord,
             };
         }
     }

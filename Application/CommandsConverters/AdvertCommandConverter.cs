@@ -199,10 +199,10 @@ namespace Application.CommandsConverters
                 return null;
             return new Filter
             {
-                StartPublishDate = command.StartPublishDate,
-                EndPublishDate = command.EndPublishDate,
-                StartDate = command.StartDate,
-                EndDate = command.EndDate,
+                StartPublishDate = DateTime.Parse(command.StartPublishDate),
+                EndPublishDate = DateTime.Parse(command.EndPublishDate),
+                StartDate = DateTime.Parse(command.StartDate),
+                EndDate = DateTime.Parse(command.EndDate),
                 StartTime = command.StartTime,
                 EndTime = command.EndTime,
                 StartPrice = command.StartPrice,

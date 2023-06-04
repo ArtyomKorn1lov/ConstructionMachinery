@@ -20,6 +20,58 @@
     color: var(--color-primary-button)
 }
 
+.date-picker {
+    margin-top: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 0 0 8px 0;
+
+    &__element {
+        color: var(--color-primary-text);
+    }
+}
+
+.authorize-input {
+    margin-top: 12px;
+    
+    &.-left {
+        margin-right: 20px;
+    }
+}
+
+.time-picker {
+    display: flex;
+}
+
+.time-picker .authorize-input {
+    width: 100%;
+}
+
+.date-picker + .small-header {
+    margin-top: 12px;
+}
+
+.time-picker + .small-header {
+    margin-top: 12px;
+}
+
+.secondary-authorize {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.-filterhide {
+    display: none;
+}
+
+.valid-container {
+    margin-bottom: 12px;
+}
+
+.edit-button {
+    margin-top: 12px;
+}
+
 @media (min-width: 500px) {
 
     .content__filter {
@@ -94,6 +146,7 @@
         flex-direction: column;
         margin-right: 0;
         margin-bottom: 10px;
+        padding: 20px;
     }
 
     .filter {
@@ -111,6 +164,7 @@
 
         &.-desktop {
             display: block;
+            text-align: end;
             margin-bottom: 13px;
         }
     }
@@ -120,7 +174,7 @@
     .filter-group {
         justify-content: space-between;
         flex-direction: row;
-        align-items: center;
+        align-items: end;
     }
 
     .property-filter {

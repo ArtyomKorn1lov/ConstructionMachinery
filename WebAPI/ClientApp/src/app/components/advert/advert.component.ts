@@ -64,7 +64,87 @@ export class AdvertComponent implements OnInit {
 
   public async loadNewElements(): Promise<void> {
     length = this.advertList.length;
-    const searchString = this.route.snapshot.queryParamMap.get('search');
+    let searchString = " ";
+    const getSearchString = this.route.snapshot.queryParamMap.get('search');
+    if (getSearchString != undefined) {
+      searchString = getSearchString;
+    }
+    console.log(searchString);
+    let startPublish = " ";
+    const getStartPublish = this.route.snapshot.queryParamMap.get('startPublish');
+    if (getStartPublish != undefined) {
+      startPublish = getStartPublish;
+    }
+    console.log(startPublish);
+    let endPublish = " ";
+    const getEndPublish = this.route.snapshot.queryParamMap.get('endPublish');
+    if (getEndPublish != undefined) {
+      endPublish = getEndPublish;
+    }
+    console.log(endPublish);
+    let startDate = " ";
+    const getStartDate = this.route.snapshot.queryParamMap.get('startDate');
+    if (getStartDate != undefined) {
+      startDate = getStartDate;
+    }
+    console.log(startDate);
+    let endDate = " ";
+    const getEndDate = this.route.snapshot.queryParamMap.get('endDate');
+    if (getEndDate != undefined) {
+      endDate = getEndDate;
+    }
+    console.log(endDate);
+    let startTime = 0;
+    const getStartTime = this.route.snapshot.queryParamMap.get('startTime');
+    if (getStartTime != undefined) {
+      startTime = parseInt(getStartTime);
+    }
+    console.log(startTime);
+    let endTime = 0;
+    const getEndTime = this.route.snapshot.queryParamMap.get('endTime');
+    if (getEndTime != undefined) {
+      endTime = parseInt(getEndTime);
+    }
+    console.log(endTime);
+    let startPrice = 0;
+    const getStartPrice = this.route.snapshot.queryParamMap.get('startPrice');
+    if (getStartPrice != undefined) {
+      startPrice = parseInt(getStartPrice);
+    }
+    console.log(startPrice);
+    let endPrice = 0;
+    const getEndPrice = this.route.snapshot.queryParamMap.get('endPrice');
+    if (getEndPrice != undefined) {
+      endPrice = parseInt(getEndPrice);
+    }
+    console.log(endPrice);
+    let description = " ";
+    const getDescription = this.route.snapshot.queryParamMap.get('description');
+    if (getDescription != undefined) {
+      description = getDescription;
+    }
+    console.log(description);
+    if (this.page == 'list') {
+      await this.advertService.getAll(startPublish, endPublish, startDate, endDate, startTime, endTime,
+        startPrice, endPrice, description, searchString, this.filter, this.pagination)
+        .then(
+          (data) => {
+            this.advertList = this.advertList.concat(data);
+            this.convertToNormalDate();
+            this.scrollFlag = this.advertService.checkLenght(length, this.advertList.length);
+            this.changeFlagState();
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
+      this.advertService.advertLenght = this.advertList.length;
+    }
+    if (this.page == 'my') {
+
+    }
     /*
     if (this.page == 'list') {
         if (searchString == undefined) {

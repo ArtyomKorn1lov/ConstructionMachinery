@@ -46,9 +46,9 @@ export class AdvertService {
     return true;
   }
 
-  public async getAll(startPublishDate: Date, endPublishDate: Date, startDate: Date, endDate: Date, startTime: number, endTime: number, startPrice: number, endPrice: number,
+  public async getAll(startPublishDate: string, endPublishDate: string, startDate: string, endDate: string, startTime: number, endTime: number, startPrice: number, endPrice: number,
     keyWord: string, name: string, sort: string, page: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${startPublishDate.toDateString()}/${endPublishDate.toDateString()}/${startDate.toDateString()}/${endDate.toDateString()}/${startTime}/${endTime}
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/adverts/${startPublishDate}/${endPublishDate}/${startDate}/${endDate}/${startTime}/${endTime}
     /${startPrice}/${endPrice}/${keyWord}/${name}/${sort}/${page}`));
   }
 
@@ -64,9 +64,9 @@ export class AdvertService {
     return await lastValueFrom(this.http.post(`api/advert/create`, advert, { responseType: 'text' }));
   }
 
-  public async getByUser(startPublishDate: Date, endPublishDate: Date, startDate: Date, endDate: Date, startTime: number, endTime: number, startPrice: number, endPrice: number,
+  public async getByUser(startPublishDate: string, endPublishDate: string, startDate: string, endDate: string, startTime: number, endTime: number, startPrice: number, endPrice: number,
     keyWord: string, name: string, sort: string, page: number): Promise<AdvertModelList[]> {
-    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${startPublishDate.toDateString()}/${endPublishDate.toDateString()}/${startDate.toDateString()}/${endDate.toDateString()}/${startTime}/${endTime}
+    return await lastValueFrom(this.http.get<AdvertModelList[]>(`api/advert/by-user/${startPublishDate}/${endPublishDate}/${startDate}/${endDate}/${startTime}/${endTime}
     /${startPrice}/${endPrice}/${keyWord}/${name}/${sort}/${page}`));
   }
 

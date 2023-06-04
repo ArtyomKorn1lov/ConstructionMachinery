@@ -5,10 +5,10 @@ namespace WebAPI.Models
 {
     public class FilterModel
     {
-        public DateTime StartPublishDate { get; set; }
-        public DateTime EndPublishDate { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string StartPublishDate { get; set; }
+        public string EndPublishDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public int StartTime { get; set; }
         public int EndTime { get; set; }
         public int StartPrice { get; set; }

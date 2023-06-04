@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
 
         [HttpGet("adverts/{startPublishDate}/{endPublishDate}/{startDate}/{endDate}/{startTime}/{endTime}/{startPrice}/{endPrice}/{keyWord}/{name}/{sort}/{page}")]
         [DisableRequestSizeLimit]
-        public async Task<List<AdvertModelList>> GetAll(DateTime startPublishDate, DateTime endPublishDate, DateTime startDate, DateTime endDate,
+        public async Task<List<AdvertModelList>> GetAll(string startPublishDate, string endPublishDate, string startDate, string endDate,
            int startTime, int endTime, int startPrice, int endPrice, string keyWord, string name, string sort, int page)
         {
             FilterModel filterModel = new FilterModel
@@ -91,7 +91,7 @@ namespace WebAPI.Controllers
         [Authorize]
         [HttpGet("by-user/{startPublishDate}/{endPublishDate}/{startDate}/{endDate}/{startTime}/{endTime}/{startPrice}/{endPrice}/{keyWord}/{name}/{sort}/{page}")]
         [DisableRequestSizeLimit]
-        public async Task<List<AdvertModelList>> GetByUser(DateTime startPublishDate, DateTime endPublishDate, DateTime startDate, DateTime endDate,
+        public async Task<List<AdvertModelList>> GetByUser(string startPublishDate, string endPublishDate, string startDate, string endDate,
            int startTime, int endTime, int startPrice, int endPrice, string keyWord, string name, string sort, int page)
         {
             FilterModel filterModel = new FilterModel

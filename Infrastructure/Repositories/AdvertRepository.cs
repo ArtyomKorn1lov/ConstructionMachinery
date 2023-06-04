@@ -28,9 +28,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -40,9 +40,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -52,9 +52,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -64,9 +64,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -76,9 +76,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -89,9 +89,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -102,9 +102,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -115,9 +115,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -128,9 +128,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -141,9 +141,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -154,9 +154,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -168,9 +168,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -182,9 +182,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -196,9 +196,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -210,9 +210,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -234,9 +234,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -246,9 +246,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -258,9 +258,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -270,9 +270,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -282,9 +282,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -295,9 +295,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -308,9 +308,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -321,9 +321,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -334,9 +334,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -347,9 +347,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -360,9 +360,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -374,9 +374,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -388,9 +388,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -402,9 +402,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -416,9 +416,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Where(advert => advert.UserId != id).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -470,9 +470,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -483,9 +483,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -496,9 +496,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -509,9 +509,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -522,9 +522,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -536,9 +536,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -550,9 +550,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -564,9 +564,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -578,9 +578,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -592,9 +592,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -606,9 +606,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -621,9 +621,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -636,9 +636,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -651,9 +651,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -666,9 +666,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>()
                 .Include(advert => advert.Images).Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate)
@@ -733,9 +733,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -745,9 +745,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -757,9 +757,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -769,9 +769,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -781,9 +781,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -794,9 +794,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -807,9 +807,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -820,9 +820,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -833,9 +833,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -846,9 +846,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -859,9 +859,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -873,9 +873,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -887,9 +887,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -901,9 +901,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -915,9 +915,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -939,9 +939,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -951,9 +951,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -963,9 +963,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -975,9 +975,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -987,9 +987,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1000,9 +1000,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1013,9 +1013,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1026,9 +1026,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1039,9 +1039,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1052,9 +1052,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1065,9 +1065,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1079,9 +1079,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1093,9 +1093,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1107,9 +1107,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1121,9 +1121,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1145,9 +1145,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1157,9 +1157,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1169,9 +1169,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1181,9 +1181,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -1193,9 +1193,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1206,9 +1206,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1219,9 +1219,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1232,9 +1232,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1245,9 +1245,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1258,9 +1258,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1271,9 +1271,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1285,9 +1285,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1299,9 +1299,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1313,9 +1313,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1327,9 +1327,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1351,9 +1351,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1363,9 +1363,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1375,9 +1375,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1387,9 +1387,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -1399,9 +1399,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1412,9 +1412,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1425,9 +1425,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1438,9 +1438,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1451,9 +1451,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1464,9 +1464,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1477,9 +1477,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1491,9 +1491,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1505,9 +1505,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1519,9 +1519,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1533,9 +1533,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1557,9 +1557,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1569,9 +1569,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1581,9 +1581,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1593,9 +1593,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -1605,9 +1605,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1618,9 +1618,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1631,9 +1631,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1644,9 +1644,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1657,9 +1657,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1670,9 +1670,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1683,9 +1683,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1697,9 +1697,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1711,9 +1711,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1725,9 +1725,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1739,9 +1739,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1761,9 +1761,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1773,9 +1773,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1785,9 +1785,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1797,9 +1797,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -1809,9 +1809,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1822,9 +1822,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1835,9 +1835,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1848,9 +1848,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1861,9 +1861,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1874,9 +1874,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -1887,9 +1887,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1901,9 +1901,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1915,9 +1915,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1929,9 +1929,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1943,9 +1943,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1967,9 +1967,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -1979,9 +1979,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -1991,9 +1991,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2003,9 +2003,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -2015,9 +2015,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2028,9 +2028,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2041,9 +2041,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2054,9 +2054,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2067,9 +2067,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2080,9 +2080,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2093,9 +2093,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2107,9 +2107,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2121,9 +2121,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2135,9 +2135,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2149,9 +2149,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2173,9 +2173,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2185,9 +2185,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2197,9 +2197,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2209,9 +2209,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -2221,9 +2221,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2234,9 +2234,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2247,9 +2247,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2260,9 +2260,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2273,9 +2273,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2286,9 +2286,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2299,9 +2299,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2313,9 +2313,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2327,9 +2327,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2341,9 +2341,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2355,9 +2355,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2379,9 +2379,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2392,9 +2392,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2405,9 +2405,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2418,9 +2418,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -2431,9 +2431,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2445,9 +2445,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2459,9 +2459,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2473,9 +2473,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2487,9 +2487,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2501,9 +2501,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2515,9 +2515,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2530,9 +2530,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2545,9 +2545,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2560,9 +2560,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2575,9 +2575,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2601,9 +2601,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2614,9 +2614,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2627,9 +2627,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2640,9 +2640,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -2653,9 +2653,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2667,9 +2667,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2681,9 +2681,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2695,9 +2695,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2709,9 +2709,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2723,9 +2723,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2737,9 +2737,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2752,9 +2752,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2767,9 +2767,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2782,9 +2782,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2797,9 +2797,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2895,9 +2895,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2907,9 +2907,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2919,9 +2919,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -2931,9 +2931,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -2943,9 +2943,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2956,9 +2956,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2969,9 +2969,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -2982,9 +2982,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -2995,9 +2995,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3008,9 +3008,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -3021,9 +3021,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3035,9 +3035,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3049,9 +3049,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3063,9 +3063,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3077,9 +3077,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3101,9 +3101,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3113,9 +3113,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3125,9 +3125,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -3137,9 +3137,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -3149,9 +3149,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3162,9 +3162,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3175,9 +3175,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3188,9 +3188,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3201,9 +3201,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3214,9 +3214,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -3227,9 +3227,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3241,9 +3241,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3255,9 +3255,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3269,9 +3269,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3283,9 +3283,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3307,9 +3307,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3320,9 +3320,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3333,9 +3333,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3346,9 +3346,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3359,9 +3359,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3373,9 +3373,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3387,9 +3387,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3401,9 +3401,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3415,9 +3415,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3429,9 +3429,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3443,9 +3443,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3458,9 +3458,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3473,9 +3473,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3488,9 +3488,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3503,9 +3503,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3529,9 +3529,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3542,9 +3542,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3555,9 +3555,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3568,9 +3568,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3581,9 +3581,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3595,9 +3595,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3609,9 +3609,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3623,9 +3623,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3637,9 +3637,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3651,9 +3651,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3665,9 +3665,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3680,9 +3680,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3695,9 +3695,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3710,9 +3710,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3725,9 +3725,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
@@ -3751,9 +3751,9 @@ namespace Infrastructure.Repositories
         {
             //1-0001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3763,9 +3763,9 @@ namespace Infrastructure.Repositories
             }
             //2-0010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3775,9 +3775,9 @@ namespace Infrastructure.Repositories
             }
             //3-0100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -3787,9 +3787,9 @@ namespace Infrastructure.Repositories
             }
             //4-1000
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date.Hour >= filter.StartTime && time.Date.Hour <= filter.EndTime) && time.AvailabilityStateId == 1))
@@ -3799,9 +3799,9 @@ namespace Infrastructure.Repositories
             }
             //5-0011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3812,9 +3812,9 @@ namespace Infrastructure.Repositories
             }
             //6-0101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3825,9 +3825,9 @@ namespace Infrastructure.Repositories
             }
             //7-1001
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3838,9 +3838,9 @@ namespace Infrastructure.Repositories
             }
             //8-0110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3851,9 +3851,9 @@ namespace Infrastructure.Repositories
             }
             //9-1010
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3864,9 +3864,9 @@ namespace Infrastructure.Repositories
             }
             //10-1100
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.AvailableTimes.Any(time => (time.Date >= filter.StartDate && time.Date <= filter.EndDate) && time.AvailabilityStateId == 1))
@@ -3877,9 +3877,9 @@ namespace Infrastructure.Repositories
             }
             //11-0111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime == 0 || filter.EndTime == 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime == 0 || filter.EndTime == 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3891,9 +3891,9 @@ namespace Infrastructure.Repositories
             }
             //12-1011
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate == DateTime.MinValue || filter.EndDate == DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3905,9 +3905,9 @@ namespace Infrastructure.Repositories
             }
             //13-1101
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate == DateTime.MinValue || filter.EndPublishDate == DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)
@@ -3919,9 +3919,9 @@ namespace Infrastructure.Repositories
             }
             //14-1110
             if ((filter.StartPrice == 0 || filter.EndPrice == 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.EditDate >= filter.StartPublishDate && advert.EditDate <= filter.EndPublishDate)
@@ -3933,9 +3933,9 @@ namespace Infrastructure.Repositories
             }
             //15-1111
             if ((filter.StartPrice != 0 && filter.EndPrice != 0)
-                || (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
-                || (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
-                || (filter.StartTime != 0 && filter.EndTime != 0))
+                && (filter.StartPublishDate != DateTime.MinValue && filter.EndPublishDate != DateTime.MinValue)
+                && (filter.StartDate != DateTime.MinValue && filter.EndDate != DateTime.MinValue)
+                && (filter.StartTime != 0 && filter.EndTime != 0))
             {
                 return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
                 .Where(advert => advert.Price >= filter.StartPrice && advert.Price <= filter.EndPrice)

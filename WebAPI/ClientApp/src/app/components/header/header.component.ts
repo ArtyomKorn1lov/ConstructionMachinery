@@ -40,7 +40,8 @@ export class HeaderComponent implements OnInit {
       this.router.navigate([this.targetRoute], {
         queryParams: {
           search: this.searchForm.value.search
-        }
+        },
+        queryParamsHandling: 'merge'
       });
       this.eventfind.emit();
     }

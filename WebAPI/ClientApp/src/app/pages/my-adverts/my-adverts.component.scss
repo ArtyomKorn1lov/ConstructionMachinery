@@ -15,6 +15,62 @@
     display: none;
 }
 
+.date-picker {
+    margin-top: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 0 0 8px 0;
+
+    &__element {
+        color: var(--color-primary-text);
+    }
+}
+
+.authorize-input {
+    margin-top: 12px;
+    
+    &.-left {
+        margin-right: 20px;
+    }
+}
+
+.time-picker {
+    display: flex;
+}
+
+.time-picker .authorize-input {
+    width: 100%;
+}
+
+.date-picker + .small-header {
+    margin-top: 12px;
+}
+
+.time-picker + .small-header {
+    margin-top: 12px;
+}
+
+.secondary-authorize {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.-filterhide {
+    display: none;
+}
+
+.valid-container {
+    margin-bottom: 12px;
+}
+
+.edit-button {
+    margin-top: 12px;
+}
+
+.primary-authorize.-filter {
+    margin-top: 12px;
+}
+
 @media (min-width: 500px) {
 
     .list-section__content {
@@ -56,6 +112,8 @@
         display: flex;
         flex: 3;
         margin-right: 20px;
+        flex-direction: column;
+        padding: 20px;
     }
 
     .list-section__content {

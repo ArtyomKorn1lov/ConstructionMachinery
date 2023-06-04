@@ -80,7 +80,7 @@
                                         <img class="valid-container__image" src="assets/valid_mark.png">
                                         <p class="valid-container__text">{{messagePrice}}</p>
                                     </div>
-                                    <h5 [ngClass]="{ '-filterhide' : !filterFlag }" class="small-header">Описание объявления:</h5>
+                                    <h5 [ngClass]="{ '-filterhide' : !filterFlag }" class="small-header">Ключевое описание:</h5>
                                     <input [ngClass]="{ '-filterhide' : !filterFlag }" [(ngModel)]="description" name="description" class="authorize-input" 
                                         type="text" placeholder="Введите описание" maxlength="100">
                                     <button [ngClass]="{ '-filterhide' : !filterFlag }" (click)="setFilter()" class="primary-authorize">

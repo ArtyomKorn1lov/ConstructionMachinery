@@ -452,20 +452,6 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(advert => advert.Id == id);
         }
 
-        public async Task<List<Advert>> GetByName(string name, int page)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%")).OrderByDescending(advert => advert.EditDate)
-                .Include(advert => advert.Reviews).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetByNameWithoutUserId(string name, int id, int page)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%") && advert.UserId != id)
-                .Include(advert => advert.Reviews).OrderByDescending(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
         public async Task<List<Advert>> GetByUserId(Filter filter, string name, int id, int page)
         {
             //1-0001
@@ -2817,78 +2803,6 @@ namespace Infrastructure.Repositories
                 .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
                 .Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByPriceMaxByName(int page, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .OrderBy(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByPriceMinByName(int page, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .OrderByDescending(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByPriceMaxWithoutUserIdByName(int page, int id, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByPriceMinWithoutUserIdByName(int page, int id, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Price).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByRatingMaxByName(int page, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByRatingMinByName(int page, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId)).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByRatingMaxWithoutUserIdByName(int page, int id, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .Where(advert => advert.UserId != id).OrderByDescending(advert => advert.Reviews.Average(review => review.ReviewStateId))
-                .Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByRatingMinWithoutUserIdByName(int page, int id, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .Where(advert => advert.UserId != id).OrderBy(advert => advert.Reviews.Average(review => review.ReviewStateId))
-                .Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByDateMinByName(int page, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .OrderBy(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
-        }
-
-        public async Task<List<Advert>> GetSortByDateMinWithoutUserIdByName(int page, int id, string name)
-        {
-            return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
-                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
-                .Where(advert => advert.UserId != id).OrderBy(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 
         public async Task<List<Advert>> GetSortByPriceMaxByUserId(Filter filter, string name, int id, int page)

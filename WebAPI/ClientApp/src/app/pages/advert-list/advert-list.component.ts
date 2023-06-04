@@ -81,7 +81,7 @@ export class AdvertListComponent implements OnInit {
   private targetRoute = "/advert-list";
 
   constructor(private accountService: AccountService, private dialog: MatDialog, public titleService: Title, public advertService: AdvertService,
-    private appComponent: AppComponent, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder,) {
+    private appComponent: AppComponent, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) {
     this.titleService.setTitle("Список объявлений");
     this.findAdvert = this.findAdvert.bind(this);
     eventSubscriber(appComponent.executeAction, this.findAdvert);

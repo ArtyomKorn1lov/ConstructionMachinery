@@ -50,7 +50,6 @@ import { ReviewEditComponent } from './pages/review-edit/review-edit.component';
 import { ContactsComponent } from './pages/contacts/contacts.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-import { DialogFilterComponent } from './components/dialog-filter/dialog-filter.component';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { DialogNoticeComponent } from './components/dialog-notice/dialog-notice.component';
 
@@ -93,7 +92,6 @@ export function tokenGetter() {
     ContactsComponent,
     CompanyComponent,
     UserProfileComponent,
-    DialogFilterComponent,
     DialogConfirmComponent,
     DialogNoticeComponent,
   ],

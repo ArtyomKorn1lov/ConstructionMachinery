@@ -6,8 +6,8 @@
         </div>
         <div class="content__elements">
             <div class="list-section">
-                <form class="property-filter">
-                    <h5 class="big-header">Фильтр по свойствам:</h5>
+                <form *ngIf="filterPosition" class="property-filter">
+                    <h5 class="big-header -center">Фильтр по свойствам:</h5>
                     <button (click)="filterFlag = !filterFlag" class="secondary-authorize">
                         <h5 *ngIf="filterFlag" class="medium-header">Скрыть</h5>
                         <h5 *ngIf="!filterFlag" class="medium-header">Развернуть</h5>
@@ -93,10 +93,85 @@
                         <select (change)="selectEvent()" class="select-filter" [(ngModel)]="filterState">
                             <option class="select-filter__option" *ngFor="let filter of filters;" ngValue={{filter.param}}>{{filter.name}}</option>
                         </select>
-                        <div class="filter">
+                        <div (click)="filterFlag = !filterFlag" class="filter">
                             <img class="filter__image" src="assets/clarity_filter-solid.png">
                         </div>
                     </div>
+                    <form *ngIf="!filterPosition && filterFlag" class="property-filter -mobile">
+                        <h5 class="big-header -center -mobile">Фильтр по свойствам:</h5>
+                        <h5 class="small-header">Название техники:</h5>
+                        <input [(ngModel)]="search" name="search" class="authorize-input" 
+                            type="text" placeholder="Введите название техники" maxlength="100">
+                        <h5 class="small-header">Диапазон дат публикации:</h5>
+                        <mat-form-field [ngClass]=" { '-filterhide' : !filterFlag }" id="publishPicker" class="date-picker" appearance="fill">
+                            <mat-label class="date-picker__element">Введите диапазон дней</mat-label>
+                            <mat-date-range-input [formGroup]="rangePublish" [rangePicker]="picker">
+                                <input class="date-picker__element" matStartDate formControlName="startPublish" placeholder="Начальный день">
+                                <input class="date-picker__element" matEndDate formControlName="endPublish" placeholder="Конечный">
+                            </mat-date-range-input>
+                            <mat-hint class="date-picker__element">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker" (click)="invalidPublish = resetValidFlag()"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                            <mat-error *ngIf="rangePublish.controls.startPublish.errors != null">Ошибка в начальной дате</mat-error>
+                            <mat-error *ngIf="rangePublish.controls.endPublish.errors != null && rangePublish.controls.startPublish.errors == null">
+                                Ошибка в конечной дате</mat-error>
+                        </mat-form-field>
+                        <div class="valid-container" *ngIf="invalidPublish">
+                            <img class="valid-container__image" src="assets/valid_mark.png">
+                            <p class="valid-container__text">{{messagePublish}}</p>
+                        </div>
+                        <h5 class="small-header">Диапазон дат аренды:</h5>
+                        <mat-form-field id="datePicker" class="date-picker" appearance="fill">
+                            <mat-label class="date-picker__element">Введите диапазон дней</mat-label>
+                            <mat-date-range-input [formGroup]="rangeDate" [rangePicker]="pickerDate">
+                                <input class="date-picker__element" matStartDate formControlName="start" placeholder="Начальный день">
+                                <input class="date-picker__element" matEndDate formControlName="end" placeholder="Конечный">
+                            </mat-date-range-input>
+                            <mat-hint class="date-picker__element">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="pickerDate" (click)="invalidDate = resetValidFlag()"></mat-datepicker-toggle>
+                            <mat-date-range-picker #pickerDate></mat-date-range-picker>
+                            <mat-error *ngIf="rangeDate.controls.start.errors != null">Ошибка в начальной дате</mat-error>
+                            <mat-error *ngIf="rangeDate.controls.end.errors != null && rangeDate.controls.start.errors == null">Ошибка в
+                                конечной дате</mat-error>
+                        </mat-form-field>
+                        <div class="valid-container" *ngIf="invalidDate">
+                            <img class="valid-container__image" src="assets/valid_mark.png">
+                            <p class="valid-container__text">{{messageDate}}</p>
+                        </div>
+                        <h5 class="small-header">Диапазон времени аренды:</h5>
+                        <div class="time-picker" id="timePicker">
+                            <input [ngxTimepicker]="startPicker" [format]="24" [(ngModel)]="startTime" readonly name="startTime" 
+                            (click)="invalidTime = resetValidFlag()" class="authorize-input -left" type="time">
+                            <ngx-material-timepicker #startPicker></ngx-material-timepicker>
+                            <input [ngxTimepicker]="endPicker" [format]="24" [(ngModel)]="endTime" readonly name="endTime" 
+                            (click)="invalidTime = resetValidFlag()" class="authorize-input" type="time">
+                            <ngx-material-timepicker #endPicker></ngx-material-timepicker>
+                        </div>
+                        <div class="valid-container" *ngIf="invalidTime">
+                            <img class="valid-container__image" src="assets/valid_mark.png">
+                            <p class="valid-container__text">{{messageTime}}</p>
+                        </div>
+                        <h5 class="small-header">Цена времени аренды в час:</h5>
+                        <div class="time-picker" id="pricePicker">
+                            <input [(ngModel)]="startPrice" name="startPrice" (click)="invalidPrice = resetValidFlag()" maxlength="12" (keypress)="numberOnly($event)"
+                                class="authorize-input -left" type="text">
+                            <input [(ngModel)]="endPrice" name="endPrice" (click)="invalidPrice = resetValidFlag()" maxlength="12" (keypress)="numberOnly($event)"
+                                class="authorize-input" type="text">
+                        </div>
+                        <div class="valid-container" *ngIf="invalidPrice">
+                            <img class="valid-container__image" src="assets/valid_mark.png">
+                            <p class="valid-container__text">{{messagePrice}}</p>
+                        </div>
+                        <h5 class="small-header">Ключевое описание:</h5>
+                        <input [(ngModel)]="description" name="description" class="authorize-input" 
+                            type="text" placeholder="Введите описание" maxlength="100">
+                        <button (click)="setFilter()" class="primary-authorize -filter">
+                            <h5 class="medium-header">Найти</h5>
+                        </button>
+                        <button (click)="resetFilter()" class="edit-button">
+                            <h5 class="medium-header">Сбросить</h5>
+                        </button>
+                    </form>
                     <p class="micro-text -desktop">Показано {{advertService.advertLenght}} объявлений</p>
                 </div>
             </div>

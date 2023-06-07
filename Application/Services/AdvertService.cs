@@ -181,15 +181,15 @@ namespace Application.Services
                     filterCommand.EndDate = DateTime.MinValue.ToString();
                 }
                 Filter filter = AdvertCommandConverter.FilterCommandConvertToEntity(filterCommand);
-                if (filter.StartPublishDate < filter.EndPublishDate)
+                if (filter.StartPublishDate > filter.EndPublishDate)
                 {
                     return null;
                 }
-                if (filter.StartDate < filter.EndDate)
+                if (filter.StartDate > filter.EndDate)
                 {
                     return null;
                 }
-                if (filter.StartPrice < filter.EndPrice)
+                if (filter.StartPrice > filter.EndPrice)
                 {
                     return null;
                 }
@@ -260,15 +260,15 @@ namespace Application.Services
                     filterCommand.EndDate = DateTime.MinValue.ToString();
                 }
                 Filter filter = AdvertCommandConverter.FilterCommandConvertToEntity(filterCommand);
-                if (filter.StartPublishDate < filter.EndPublishDate)
+                if (filter.StartPublishDate > filter.EndPublishDate)
                 {
                     return null;
                 }
-                if (filter.StartDate < filter.EndDate)
+                if (filter.StartDate > filter.EndDate)
                 {
                     return null;
                 }
-                if (filter.StartPrice < filter.EndPrice)
+                if (filter.StartPrice > filter.EndPrice)
                 {
                     return null;
                 }
@@ -388,15 +388,15 @@ namespace Application.Services
                     filterCommand.EndDate = DateTime.MinValue.ToString();
                 }
                 Filter filter = AdvertCommandConverter.FilterCommandConvertToEntity(filterCommand);
-                if (filter.StartPublishDate < filter.EndPublishDate)
+                if (filter.StartPublishDate > filter.EndPublishDate)
                 {
                     return null;
                 }
-                if (filter.StartDate < filter.EndDate)
+                if (filter.StartDate > filter.EndDate)
                 {
                     return null;
                 }
-                if (filter.StartPrice < filter.EndPrice)
+                if (filter.StartPrice > filter.EndPrice)
                 {
                     return null;
                 }

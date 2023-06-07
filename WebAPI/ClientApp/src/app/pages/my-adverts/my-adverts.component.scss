@@ -28,7 +28,7 @@
 
 .authorize-input {
     margin-top: 12px;
-    
+
     &.-left {
         margin-right: 20px;
     }
@@ -42,11 +42,11 @@
     width: 100%;
 }
 
-.date-picker + .small-header {
+.date-picker+.small-header {
     margin-top: 12px;
 }
 
-.time-picker + .small-header {
+.time-picker+.small-header {
     margin-top: 12px;
 }
 
@@ -69,6 +69,29 @@
 
 .primary-authorize.-filter {
     margin-top: 12px;
+}
+
+.property-filter {
+    display: flex;
+    flex: 3;
+    margin-right: 20px;
+    flex-direction: column;
+    padding: 20px;
+
+    &.-mobile {
+        padding: 10px;
+        margin-top: 10px;
+        margin-right: 0;
+    }
+}
+
+.big-header.-center {
+    &.-center {
+        text-align: center;
+    }
+    &.-mobile {
+        margin-bottom: 10px;
+    }
 }
 
 @media (min-width: 500px) {
@@ -106,14 +129,6 @@
         background: #373737;
         box-shadow: 0px 0px 59px 8px rgba(0, 0, 0, 0.4);
         border-radius: 5px;
-    }
-
-    .property-filter {
-        display: flex;
-        flex: 3;
-        margin-right: 20px;
-        flex-direction: column;
-        padding: 20px;
     }
 
     .list-section__content {

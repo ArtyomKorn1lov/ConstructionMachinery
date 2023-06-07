@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { AdvertComponent } from 'src/app/components/advert/advert.component';
-import { DialogFilterComponent } from 'src/app/components/dialog-filter/dialog-filter.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Filter } from 'src/app/models/Filter';
 import { Title } from '@angular/platform-browser';
@@ -70,10 +69,11 @@ export class MyAdvertsComponent implements OnInit {
   public invalidPrice: boolean = false;
   public description: string | undefined;
   public filterFlag = false;
+  public filterPosition = false;
   @ViewChild(AdvertComponent) child: AdvertComponent | undefined;
   private targetRoute = "/my-adverts";
 
-  constructor(private accountService: AccountService, private dialog: MatDialog, public titleService: Title, public advertService: AdvertService, 
+  constructor(private accountService: AccountService, private dialog: MatDialog, public titleService: Title, public advertService: AdvertService,
     private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) {
     this.titleService.setTitle("Мои объявления");
   }
@@ -90,6 +90,24 @@ export class MyAdvertsComponent implements OnInit {
     let valid = true;
     let toScroll = true;
     const oneDay = 1000 * 60 * 60 * 24;
+    if (this.rangePublish.controls.startPublish.errors != null || this.rangePublish.controls.endPublish.errors != null) {
+      this.messagePublish = "Неверный диапазон дат";
+      this.invalidPublish = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("publishPicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
+    if (this.rangeDate.controls.start.errors != null || this.rangeDate.controls.end.errors != null) {
+      this.messageDate = "Неверный диапазон дат";
+      this.invalidDate = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("datePicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
     if (this.rangePublish.value.startPublish != null && this.rangePublish.value.endPublish != null) {
       const startPublish = new Date(this.rangePublish.value.startPublish);
       const endPublish = new Date(this.rangePublish.value.endPublish);
@@ -146,6 +164,15 @@ export class MyAdvertsComponent implements OnInit {
         }
       }
     }
+    if (this.startPrice != undefined && this.endPrice?.trim() == "") {
+      this.messagePrice = "Неверный ценовой диапазон";
+      this.invalidPrice = true;
+      valid = false;
+      if (toScroll) {
+        document.getElementById("pricePicker")?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+        toScroll = false;
+      }
+    }
     return valid;
   }
 
@@ -153,11 +180,16 @@ export class MyAdvertsComponent implements OnInit {
     if (!this.validateFilter()) {
       return;
     }
-    let search = this.search?.trim();
+    let search = " ";
+    if (this.search != null || this.search != undefined) {
+      if (this.search?.trim() != "") {
+        search = this.search?.trim();
+      }
+    }
     let startPublish = " ";
     if (this.rangePublish.value.startPublish != null || this.rangePublish.value.startPublish != undefined) {
       startPublish = this.rangePublish.value.startPublish.toDateString();
-    } 
+    }
     let endPublish = " ";
     if (this.rangePublish.value.endPublish != null || this.rangePublish.value.endPublish != undefined) {
       endPublish = this.rangePublish.value.endPublish.toDateString();
@@ -180,13 +212,22 @@ export class MyAdvertsComponent implements OnInit {
     }
     let startPrice = 0;
     if (this.startPrice != null || this.startPrice != undefined) {
-      startPrice = parseInt(this.startPrice);
+      if (!isNaN(parseInt(this.startPrice))) {
+        startPrice = parseInt(this.startPrice);
+      }
     }
     let endPrice = 0;
     if (this.endPrice != null || this.endPrice != undefined) {
-      endPrice = parseInt(this.endPrice);
+      if (!isNaN(parseInt(this.endPrice))) {
+        endPrice = parseInt(this.endPrice);
+      }
     }
-    let description = this.description?.trim();
+    let description = " ";
+    if (this.description != null || this.description != undefined) {
+      if (this.description?.trim() != "") {
+        description = this.description?.trim();
+      }
+    }
     this.router.navigate([this.targetRoute], {
       queryParams: {
         search: search,
@@ -211,16 +252,6 @@ export class MyAdvertsComponent implements OnInit {
     this.resetAllParams();
   }
 
-  public openFilterDialog(): void {
-    const dialogRef = this.dialog.open(DialogFilterComponent);
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result == undefined)
-        return;
-      this.filters = result.data;
-      await this.child?.sortByParam(this.filters[0].param);
-    });
-  }
-
   public numberOnly(event: any): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -229,12 +260,31 @@ export class MyAdvertsComponent implements OnInit {
     return true;
   }
 
+  public resizeEvent = async (event: any): Promise<void> => {
+    this.checkPosition(event.target.outerWidth);
+  };
+
+  private checkPosition(width: number): void {
+    if (width < 780) {
+      this.filterPosition = false;
+    }
+    else {
+      this.filterPosition = true;
+    }
+  }
+
   public async ngOnInit(): Promise<void> {
+    window.addEventListener('resize', this.resizeEvent, true);
+    this.checkPosition(window.innerWidth);
     const startPublish = this.route.snapshot.queryParamMap.get('startPublish');
     if (startPublish != undefined) {
       this.getFilterParams();
     }
     await this.accountService.getAuthoriseModel();
+  }
+
+  public ngOnDestroy(): void {
+    window.removeEventListener('resize', this.resizeEvent, true);
   }
 
   private getFilterParams(): void {
@@ -283,7 +333,7 @@ export class MyAdvertsComponent implements OnInit {
       }
     }
     if (description != null) {
-      if (description == "") {
+      if (description.trim() == "") {
         this.description = undefined;
       }
       else {
@@ -291,7 +341,7 @@ export class MyAdvertsComponent implements OnInit {
       }
     }
     if (search != null) {
-      if (search == "") {
+      if (search.trim() == "") {
         this.search = undefined;
       }
       else {

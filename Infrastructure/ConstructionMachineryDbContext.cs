@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Configurations;
+using Domain.Entities;
 
 namespace Infrastructure
 {
@@ -28,6 +29,65 @@ namespace Infrastructure
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new ReviewStateConfiguration());
             builder.ApplyConfiguration(new MailConfiguration());
+
+            builder.Entity<ReviewState>().HasData(
+                new ReviewState
+                {
+                    Id = 1,
+                    State = "1",
+                },
+                new ReviewState
+                {
+                    Id = 2,
+                    State = "2",
+                },
+                new ReviewState
+                {
+                    Id = 3,
+                    State = "3",
+                },
+                new ReviewState
+                {
+                    Id = 4,
+                    State = "4",
+                },
+                new ReviewState
+                {
+                    Id = 5,
+                    State = "5",
+                });
+            builder.Entity<RequestState>().HasData(
+                new RequestState
+                {
+                    Id = 1,
+                    State = "success"
+                },
+                new RequestState
+                {
+                    Id = 2,
+                    State = "denied"
+                },
+                new RequestState
+                {
+                    Id = 3,
+                    State = "expected"
+                });
+            builder.Entity<AvailabilityState>().HasData(
+                new AvailabilityState
+                {
+                    Id = 1,
+                    State = "free"
+                },
+                new AvailabilityState
+                {
+                    Id = 2,
+                    State = "private"
+                },
+                new AvailabilityState
+                {
+                    Id = 3,
+                    State = "expected"
+                });
         }
     }
 }

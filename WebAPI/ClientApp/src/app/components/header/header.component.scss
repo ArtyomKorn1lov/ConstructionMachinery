@@ -21,6 +21,7 @@
         flex: 1;
         display: flex;
         justify-content: center;
+        cursor: pointer;
 
         &.-mini {
             display: none;
@@ -32,6 +33,7 @@
         display: flex;
         justify-content: end;
         align-items: center;
+        cursor: pointer;
     }
 
     &__search {
@@ -52,6 +54,7 @@
         height: 20px;
         margin-right: 10px;
         order: -1;
+        cursor: pointer;
     }
 
     &__search-input {
@@ -84,6 +87,7 @@
 
 .account-attention {
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .account-ellipse {
@@ -102,6 +106,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .primary-text.-register {

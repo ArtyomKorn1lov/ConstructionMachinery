@@ -14,7 +14,7 @@
                     <div class="content__filter">
                         <div class="filter__section">
                             <div class="filter-group">
-                                <form *ngIf="filterPosition" class="property-filter">
+                                <form class="property-filter">
                                     <h5 class="big-header -center">Фильтр по свойствам:</h5>
                                     <button (click)="filterFlag = !filterFlag" class="secondary-authorize">
                                         <h5 *ngIf="filterFlag" class="medium-header">Скрыть</h5>
@@ -99,7 +99,7 @@
                                     <img class="filter__image" src="assets/clarity_filter-solid.png">
                                 </div>
                             </div>
-                            <form *ngIf="!filterPosition && filterFlag" class="property-filter -mobile">
+                            <form *ngIf="filterFlag" class="property-filter -mobile">
                                 <h5 class="big-header -center -mobile">Фильтр по свойствам:</h5>
                                 <h5 class="small-header">Диапазон дат публикации:</h5>
                                 <mat-form-field [ngClass]=" { '-filterhide' : !filterFlag }" id="publishPicker" class="date-picker" appearance="fill">

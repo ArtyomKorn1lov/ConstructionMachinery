@@ -130,6 +130,7 @@ namespace Application.Services
                     return null;
                 if (request.AvailableTimes.Count <= 0)
                     return null;
+                request.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
                 DateTime startRent = request.AvailableTimes[0].Date;
                 DateTime endRent = request.AvailableTimes[request.AvailableTimes.Count - 1].Date;
                 AvailabilityRequestCommandForCustomer commandForCustomer = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForCustomer(request,
@@ -158,6 +159,7 @@ namespace Application.Services
                     return null;
                 if (request.AvailableTimes.Count <= 0)
                     return null;
+                request.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
                 DateTime startRent = request.AvailableTimes[0].Date;
                 DateTime endRent = request.AvailableTimes[request.AvailableTimes.Count - 1].Date;
                 AvailabilityRequestCommandForLandlord commandForLandlord = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
@@ -183,6 +185,7 @@ namespace Application.Services
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
                 foreach (AvailabilityRequest request in requests)
                 {
+                    request.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
                     commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request, request.AvailableTimes[0].Date,
                          await GetAdvertNameById(id), await _imageRepository.GetByAdvertId(id)));
                 }
@@ -206,6 +209,7 @@ namespace Application.Services
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
                 foreach (AvailabilityRequest request in requests)
                 {
+                    request.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
                     commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request, request.AvailableTimes[0].Date,
                         await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId)));
                 }

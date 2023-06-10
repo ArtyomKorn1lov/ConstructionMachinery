@@ -157,7 +157,6 @@ export class LeaseRegistrationComponent implements OnInit {
       return;
     }
     this.lastTimes = this.lastTimes.slice(0, this.convertToNumber(this.endTimeIndex) + 1);
-    console.log(this.lastTimes);
     this.spinnerFlag = false;
     let modelTime: AvailableTimeModelForCreateRequest[] = [];
     for(let count = 0; count < this.lastTimes.length; count++) {

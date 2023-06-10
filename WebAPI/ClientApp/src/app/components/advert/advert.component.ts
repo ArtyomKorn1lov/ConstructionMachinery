@@ -25,7 +25,6 @@ export class AdvertComponent implements OnInit {
   private listRoute: string = "advert-list";
   private myRoute: string = "my-adverts";
   private filter: string = "all";
-  private currentSearch = "";
   @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private router: Router,

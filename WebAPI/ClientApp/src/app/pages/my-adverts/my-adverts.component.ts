@@ -260,31 +260,12 @@ export class MyAdvertsComponent implements OnInit {
     return true;
   }
 
-  public resizeEvent = async (event: any): Promise<void> => {
-    this.checkPosition(event.target.outerWidth);
-  };
-
-  private checkPosition(width: number): void {
-    if (width < 780) {
-      this.filterPosition = false;
-    }
-    else {
-      this.filterPosition = true;
-    }
-  }
-
   public async ngOnInit(): Promise<void> {
-    window.addEventListener('resize', this.resizeEvent, true);
-    this.checkPosition(window.innerWidth);
     const startPublish = this.route.snapshot.queryParamMap.get('startPublish');
     if (startPublish != undefined) {
       this.getFilterParams();
     }
     await this.accountService.getAuthoriseModel();
-  }
-
-  public ngOnDestroy(): void {
-    window.removeEventListener('resize', this.resizeEvent, true);
   }
 
   private getFilterParams(): void {
@@ -298,55 +279,35 @@ export class MyAdvertsComponent implements OnInit {
     const startPrice = this.route.snapshot.queryParamMap.get('startPrice');
     const endPrice = this.route.snapshot.queryParamMap.get('endPrice');
     const description = this.route.snapshot.queryParamMap.get('description');
-    if (startPublish != null) {
+    if (startPublish != null && startPublish.trim() != "") {
       this.rangePublish.get("startPublish")?.setValue(new Date(startPublish));
     }
-    if (endPublish != null) {
+    if (endPublish != null && endPublish.trim() != "") {
       this.rangePublish.get("endPublish")?.setValue(new Date(endPublish));
     }
-    if (startDate != null) {
+    if (startDate != null && startDate.trim() != "") {
       this.rangeDate.get("start")?.setValue(new Date(startDate));
     }
-    if (endDate != null) {
+    if (endDate != null && endDate.trim() != "") {
       this.rangeDate.get("end")?.setValue(new Date(endDate));
     }
-    if (startTime != null) {
+    if (startTime != null && startTime.trim() != "") {
       this.startTime = startTime;
     }
-    if (endTime != null) {
+    if (endTime != null && endTime.trim() != "") {
       this.endTime = endTime;
     }
-    if (startPrice != null) {
-      if (parseInt(startPrice) == 0) {
-        this.startPrice = undefined;
-      }
-      else {
+    if (startPrice != null && parseInt(startPrice) != 0) {
         this.startPrice = startPrice;
-      }
     }
-    if (endPrice != null) {
-      if (parseInt(endPrice) == 0) {
-        this.endPrice = undefined;
-      }
-      else {
+    if (endPrice != null && parseInt(endPrice) != 0) {
         this.endPrice = endPrice;
-      }
     }
-    if (description != null) {
-      if (description.trim() == "") {
-        this.description = undefined;
-      }
-      else {
+    if (description != null && description.trim() != "") {
         this.description = description;
-      }
     }
-    if (search != null) {
-      if (search.trim() == "") {
-        this.search = undefined;
-      }
-      else {
+    if (search != null && search.trim() != "") {
         this.search = search;
-      }
     }
   }
 

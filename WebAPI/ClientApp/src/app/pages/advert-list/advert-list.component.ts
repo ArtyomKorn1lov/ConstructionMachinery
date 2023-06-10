@@ -74,7 +74,6 @@ export class AdvertListComponent implements OnInit {
   public invalidPrice: boolean = false;
   public description: string | undefined;
   public filterFlag = false;
-  public filterPosition = false;
   @ViewChild(AdvertComponent) child: AdvertComponent | undefined;
   @ViewChildren("observeMenu") observeMenu!: QueryList<ElementRef>;
   private targetRoute = "/advert-list";
@@ -299,22 +298,7 @@ export class AdvertListComponent implements OnInit {
     return true;
   }
 
-  public resizeEvent = async (event: any): Promise<void> => {
-    this.checkPosition(event.target.outerWidth);
-  };
-
-  private checkPosition(width: number): void {
-    if (width < 780) {
-      this.filterPosition = false;
-    }
-    else {
-      this.filterPosition = true;
-    }
-  }
-
   public async ngOnInit(): Promise<void> {
-    window.addEventListener('resize', this.resizeEvent, true);
-    this.checkPosition(window.innerWidth);
     const searchString = this.route.snapshot.queryParamMap.get('search');
     if (searchString != undefined) {
       this.getStartParams(searchString);
@@ -328,7 +312,6 @@ export class AdvertListComponent implements OnInit {
 
   public ngOnDestroy(): void {
     eventSubscriber(this.appComponent.executeAction, this.findAdvert, true);
-    window.removeEventListener('resize', this.resizeEvent, true);
   }
 
   public async ngAfterViewInit(): Promise<void> {
@@ -406,47 +389,32 @@ export class AdvertListComponent implements OnInit {
     const startPrice = this.route.snapshot.queryParamMap.get('startPrice');
     const endPrice = this.route.snapshot.queryParamMap.get('endPrice');
     const description = this.route.snapshot.queryParamMap.get('description');
-    if (startPublish != null) {
+    if (startPublish != null && startPublish.trim() != "") {
       this.rangePublish.get("startPublish")?.setValue(new Date(startPublish));
     }
-    if (endPublish != null) {
+    if (endPublish != null && endPublish.trim() != "") {
       this.rangePublish.get("endPublish")?.setValue(new Date(endPublish));
     }
-    if (startDate != null) {
+    if (startDate != null && startDate.trim() != "") {
       this.rangeDate.get("start")?.setValue(new Date(startDate));
     }
-    if (endDate != null) {
+    if (endDate != null && endDate.trim() != "") {
       this.rangeDate.get("end")?.setValue(new Date(endDate));
     }
-    if (startTime != null) {
+    if (startTime != null && startTime.trim() != "") {
       this.startTime = startTime;
     }
-    if (endTime != null) {
+    if (endTime != null && endTime.trim() != "") {
       this.endTime = endTime;
     }
-    if (startPrice != null) {
-      if (parseInt(startPrice) == 0) {
-        this.startPrice = undefined;
-      }
-      else {
+    if (startPrice != null && parseInt(startPrice) != 0) {
         this.startPrice = startPrice;
-      }
     }
-    if (endPrice != null) {
-      if (parseInt(endPrice) == 0) {
-        this.endPrice = undefined;
-      }
-      else {
+    if (endPrice != null && parseInt(endPrice) != 0) {
         this.endPrice = endPrice;
-      }
     }
-    if (description?.trim() != null) {
-      if (description == "") {
-        this.description = undefined;
-      }
-      else {
+    if (description != null && description.trim() != "") {
         this.description = description;
-      }
     }
   }
 

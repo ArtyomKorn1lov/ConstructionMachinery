@@ -93,9 +93,6 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button *ngIf="!spinnerFlag && request.requestStateId == 3" (click)="cancel()" class="primary-authorize">
-                <h5 class="medium-header -title">Редактировать заявку</h5>
-            </button>
             <button *ngIf="!spinnerFlag" (click)="cancel()" class="edit-button">
                 <h5 *ngIf="request.requestStateId != 2" class="medium-header -title">Отменить заявку</h5>
                 <h5 *ngIf="request.requestStateId == 2" class="medium-header -title">Очистить</h5>

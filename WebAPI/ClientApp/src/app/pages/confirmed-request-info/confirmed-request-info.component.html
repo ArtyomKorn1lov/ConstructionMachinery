@@ -2,7 +2,7 @@
     <div class="content">
         <div (click)="back()" class="back-container">
             <img src="assets/back-cursor.png">
-            <h5 class="medium-header -back">Исходящая заявка</h5>
+            <h5 class="medium-header -back">Редактирование заявки</h5>
         </div>
         <h4 class="big-header -content">Заявка на аренду</h4>
         <div *ngIf="request.images.length != 0" class="content__gallery">
@@ -10,13 +10,13 @@
         </div>
         <div class="content__elements">
             <div class="title-info">
-                <h4 class="big-header">{{request.advertName}}</h4>
+                <h5 class="big-header">{{request.advertName}}</h5>
                 <div class="request-info">
                     <div class="request-info__title">
-                        <h5 class="medium-header -title">Арендодатель:</h5>
+                        <h5 class="medium-header -title">Заказчик:</h5>
                     </div>
                     <div class="request-info__section">
-                        <h5 class="medium-header -title">{{request.landlordName}}</h5>
+                        <h5 class="medium-header -title">{{request.customerName}}</h5>
                     </div>
                 </div>
                 <div class="request-info">
@@ -45,18 +45,6 @@
                             {{datetimeService.convertDateToUTS(request.startRent.getDate())}}.{{datetimeService.convertDateToUTS(request.startRent.getMonth()+1)}}.{{request.startRent.getFullYear()}}
                             с {{datetimeService.convertDateToUTS(request.startRent.getHours())}}:00 до
                             {{datetimeService.convertDateToUTS(request.endRent.getHours())}}:00</h5>
-                    </div>
-                </div>
-                <div class="request-info">
-                    <div class="request-info__title">
-                        <h5 class="medium-header -title">Состояние заявки:</h5>
-                    </div>
-                    <div class="request-info__section">
-                        <h5 *ngIf="request.requestStateId == 3" class="medium-header -title -yellow">Ожидается
-                            подтверждение
-                        </h5>
-                        <h5 *ngIf="request.requestStateId == 2" class="medium-header -title -red">Отказано</h5>
-                        <h5 *ngIf="request.requestStateId == 1" class="medium-header -title -green">Подтверждено</h5>
                     </div>
                 </div>
                 <div class="request-info">
@@ -93,12 +81,8 @@
                 </div>
             </div>
             <div class="vector"></div>
-            <button *ngIf="!spinnerFlag && request.requestStateId == 3" (click)="cancel()" class="primary-authorize">
-                <h5 class="medium-header -title">Редактировать заявку</h5>
-            </button>
-            <button *ngIf="!spinnerFlag" (click)="cancel()" class="edit-button">
-                <h5 *ngIf="request.requestStateId != 2" class="medium-header -title">Отменить заявку</h5>
-                <h5 *ngIf="request.requestStateId == 2" class="medium-header -title">Очистить</h5>
+            <button *ngIf="!spinnerFlag" (click)="confirm(2)" class="edit-button">
+                <h5 class="medium-header">Отказать в аренде</h5>
             </button>
             <div *ngIf="spinnerFlag" class="load-spinner">
                 <mat-spinner></mat-spinner>

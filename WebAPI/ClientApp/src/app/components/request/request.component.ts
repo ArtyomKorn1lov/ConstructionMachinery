@@ -21,6 +21,7 @@ export class RequestComponent implements OnInit {
   private confirmInfoRoute = "confirm-list";
   private requestInfoRoute = "advert-request/my-requests";
   private advertRequestRoute = "advert-request";
+  private requestLandlordInfoRoute = "my-adverts-confirmed/requests-confirmed";
   @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private requestService: RequestService, private router: Router,
@@ -39,12 +40,19 @@ export class RequestComponent implements OnInit {
   }
 
   public navigateToInfo(id: number): void {
-    if (this.page == 'in')
+    if (this.page == 'in') {
       this.router.navigate([this.requestInfoRoute, id], {
         queryParams: { backUrl: this.router.url }
       });
-    if (this.page == 'out')
+    }
+    if (this.page == 'out') {
       this.router.navigate([this.confirmInfoRoute, id]);
+    }
+    if (this.page == 'conf') {
+      this.router.navigate([this.requestLandlordInfoRoute, id], {
+        queryParams: { backUrl: this.router.url }
+      });
+    }
   }
 
   public async loadNewElements(): Promise<void> {
@@ -69,7 +77,7 @@ export class RequestComponent implements OnInit {
           }
         );
     }
-    if (this.page == 'out')
+    if (this.page == 'out') {
       await this.requestService.getListForLandlord(this.pagination)
         .then(
           (data) => {
@@ -85,6 +93,24 @@ export class RequestComponent implements OnInit {
             console.log(error);
           }
         );
+    }
+    if (this.page == "conf") {
+      await this.requestService.getListForLandlordConfirm(this.getIdByQueryParams(), this.pagination)
+        .then(
+          (data) => {
+            this.requests = this.requests.concat(data);
+            this.dateConvert();
+            this.scrollFlag = this.requestService.checkLenght(length, this.requests.length);
+            this.changeFlagState();
+            this.pagination++;
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error);
+          }
+        );
+    }
   }
 
   public dateConvert(): void {

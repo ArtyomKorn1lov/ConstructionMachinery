@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { AdvertModelForRequest } from 'src/app/models/AdvertModelForRequest';
 import { AdvertService } from 'src/app/services/advert.service';
 import { Router } from '@angular/router';
@@ -13,20 +13,29 @@ import { Observable, distinctUntilChanged, map, mergeMap } from 'rxjs';
   styleUrls: ['./advert-request.component.scss']
 })
 export class AdvertRequestComponent implements OnInit {
-
+  
+  @Input() page: string | undefined;
   public adverts: AdvertModelForRequest[] = [];
   public pagination: number = 0;
   public scrollFlag = true;
   private requestListRoute = "advert-request/my-requests";
+  private requestLandlordRoute = "my-adverts-confirmed/requests-confirmed";
   @ViewChildren("lazySpinner") lazySpinner!: QueryList<ElementRef>;
 
   constructor(public datetimeService: DatetimeService, private advertService: AdvertService, private requestService: RequestService,
     private router: Router, private tokenService: TokenService) { }
 
   public navigateToRequest(id: number): void {
-    this.router.navigate([this.requestListRoute], {
-      queryParams: { id: id }
-    });
+    if (this.page == "customer") {
+      this.router.navigate([this.requestListRoute], {
+        queryParams: { id: id }
+      });
+    }
+    if (this.page == "landlord") {
+      this.router.navigate([this.requestLandlordRoute], {
+        queryParams: { id: id }
+      });
+    }
   }
 
   public dateConvert(): void {
@@ -40,7 +49,8 @@ export class AdvertRequestComponent implements OnInit {
     const tokenResult = await this.tokenService.tokenVerify();
     if (!tokenResult)
       this.router.navigate(["/authorize"]);
-    await this.advertService.getForRequestCustomer(this.pagination)
+    if (this.page == "customer") {
+      await this.advertService.getForRequestCustomer(this.pagination)
       .then(
         (data) => {
           this.adverts = this.adverts.concat(data);
@@ -55,6 +65,24 @@ export class AdvertRequestComponent implements OnInit {
           console.log(error);
         }
       );
+    }
+    if (this.page == "landlord") {
+      await this.advertService.getForRequestLandlord(this.pagination)
+      .then(
+        (data) => {
+          this.adverts = this.adverts.concat(data);
+          this.dateConvert();
+          this.scrollFlag = this.advertService.checkLenght(length, this.adverts.length);
+          this.changeFlagState();
+          this.pagination++;
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }
 
   public async changeFlagState(): Promise<void> {

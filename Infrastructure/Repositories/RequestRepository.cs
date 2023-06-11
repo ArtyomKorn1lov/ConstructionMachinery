@@ -71,6 +71,19 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<AvailabilityRequest>> GetByUserIdForLandlordConfirm(int id, int userId, int page)
+        {
+            return await _constructionMachineryDbContext.Set<AvailabilityRequest>()
+                .Include(availabilityRequest => availabilityRequest.AvailableTimes)
+                .Where(availabilityRequest => availabilityRequest.AvailableTimes.Any(time =>
+                time.AdvertId == id &&
+                _constructionMachineryDbContext.Set<Advert>().FirstOrDefault(advert => advert.AvailableTimes.Any(times => times.Id == time.Id)).UserId == userId))
+                .Where(availabilityRequest => availabilityRequest.RequestStateId == 1)
+                .OrderBy(availabilityRequest => availabilityRequest.Updated)
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT)
+                .ToListAsync();
+        }
+
         public async Task<int> GetLastRequestId()
         {
             return await _constructionMachineryDbContext.Set<AvailabilityRequest>().MaxAsync(request => request.Id);

@@ -715,6 +715,17 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id, int page)
+        {
+            return await _constructionMachineryDbContext.Set<Advert>()
+                .Include(advert => advert.Images)
+                .Include(advert => advert.AvailableTimes)
+                .Where(advert => advert.AvailableTimes.Any(time => time.AvailabilityStateId == 2) && advert.UserId == id)
+                .OrderBy(advert => advert.EditDate)
+                .Skip(page * TAKE_COUNT).Take(TAKE_COUNT)
+                .ToListAsync();
+        }
+
         public async Task<List<Advert>> GetSortByPriceMax(Filter filter, string name, int page)
         {
             //1-0001
@@ -1740,6 +1751,8 @@ namespace Infrastructure.Repositories
             }
             //16-0000
             return await _constructionMachineryDbContext.Set<Advert>().Include(advert => advert.Images).Include(advert => advert.Reviews)
+                .Where(advert => EF.Functions.Like(advert.Name, "%" + name + "%"))
+                .Where(advert => EF.Functions.Like(advert.Description, "%" + filter.KeyWord + "%"))
                 .OrderBy(advert => advert.EditDate).Skip(page*TAKE_COUNT).Take(TAKE_COUNT).ToListAsync();
         }
 

@@ -52,6 +52,9 @@ import { CompanyComponent } from './pages/company/company.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { DialogNoticeComponent } from './components/dialog-notice/dialog-notice.component';
+import { AdvertConfirmRequestComponent } from './pages/advert-confirm-request/advert-confirm-request.component';
+import { ConfirmedRequestComponent } from './pages/confirmed-request/confirmed-request.component';
+import { ConfirmedRequestInfoComponent } from './pages/confirmed-request-info/confirmed-request-info.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -94,6 +97,9 @@ export function tokenGetter() {
     UserProfileComponent,
     DialogConfirmComponent,
     DialogNoticeComponent,
+    AdvertConfirmRequestComponent,
+    ConfirmedRequestComponent,
+    ConfirmedRequestInfoComponent,
   ],
   imports: [
     JwtModule.forRoot({
@@ -142,7 +148,10 @@ export function tokenGetter() {
       { path: 'review-edit', component: ReviewEditComponent, canActivate: [AuthGuard] },
       { path: 'contacts', component: ContactsComponent },
       { path: 'company', component: CompanyComponent },
-      { path: 'user-profile', component: UserProfileComponent }
+      { path: 'user-profile', component: UserProfileComponent },
+      { path: 'my-adverts-confirmed', component: AdvertConfirmRequestComponent, canActivate: [AuthGuard] },
+      { path: 'my-adverts-confirmed/requests-confirmed', component: ConfirmedRequestComponent, canActivate: [AuthGuard] },
+      { path: 'my-adverts-confirmed/requests-confirmed/:id', component: ConfirmedRequestInfoComponent, canActivate: [AuthGuard] },
     ]),
     BrowserAnimationsModule,
   ],

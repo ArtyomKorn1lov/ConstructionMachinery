@@ -26,6 +26,7 @@ namespace Domain.IRepositories
         Task<Advert> GetForUpdate(int id);
         Task<int> GetLastAdvertId();
         Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForCustomer(int id, int page);
+        Task<List<Advert>> GetUserAdvertsWithPendingConfirmationForLandlord(int id, int page);
         Task<List<Advert>> GetSortByPriceMax(Filter filter, string name, int page);
         Task<List<Advert>> GetSortByPriceMin(Filter filter, string name, int page);
         Task<List<Advert>> GetSortByPriceMaxWithoutUserId(Filter filter, string name, int page, int id);

@@ -454,6 +454,22 @@ namespace Application.Services
             }
         }
 
+        public async Task<List<AdvertCommandForRequest>> GetForRequestLandlord(int id, int page)
+        {
+            try
+            {
+                if (id <= 0 || page < 0)
+                    return null;
+                List<Advert> adverts = await _advertRepository.GetUserAdvertsWithPendingConfirmationForLandlord(id, page);
+                List<AdvertCommandForRequest> commands = adverts.Select(advert => AdvertCommandConverter.AdvertConvertToAdvertCommandForRequest(advert)).ToList();
+                return commands;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<AdvertCommandUpdate> GetForUpdate(int id, int userId)
         {
             try

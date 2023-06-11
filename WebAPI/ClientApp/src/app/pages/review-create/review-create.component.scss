@@ -16,16 +16,17 @@
     }
 }
 
-.content__elements {
-    align-items: center;
-}
-
 .content__fields {
     display: flex;
     flex-direction: column;
 }
 
 @media (min-width: 600px) {
+
+    .content__elements {
+        align-items: center;
+    }
+
     .content__fields {
         width: 500px;
         margin-top: 30px;

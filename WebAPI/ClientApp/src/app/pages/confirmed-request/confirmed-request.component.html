@@ -1,11 +1,11 @@
 <div class="flex-centered">
     <div class="content">
-        <div [routerLink]="['/private-area']" class="back-container">
+        <div [routerLink]="['/my-adverts-confirmed']" class="back-container">
             <img src="assets/back-cursor.png">
             <h5 class="medium-header -back">{{this.titleService.getTitle()}}</h5>
         </div>
         <div class="content__elements">
-            <app-advert-request [page]="'customer'"></app-advert-request>
+            <app-request [page]="'conf'"></app-request>
         </div>
     </div>
 </div>

@@ -129,6 +129,18 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
+        [HttpGet("adverts-for-request-landlord/{page}")]
+        public async Task<List<AdvertModelForRequest>> GetForRequestLandlord(int page)
+        {
+            List<AdvertCommandForRequest> advertCommands = await _advertService.GetForRequestLandlord(await _accountService.GetIdByEmail(HttpContext.User.Identity.Name), page);
+            List<AdvertModelForRequest> advertModels = advertCommands.Select(advertCommand =>
+                AdvertModelConverter.AdvertCommandForRequestConvertModel(advertCommand)).ToList();
+            if (advertModels == null)
+                return null;
+            return advertModels;
+        }
+
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> Create(AdvertModelCreate advertModel)
         {

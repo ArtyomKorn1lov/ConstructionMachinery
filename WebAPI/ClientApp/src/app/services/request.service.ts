@@ -29,12 +29,20 @@ export class RequestService {
     return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord/${page}`));
   }
 
+  public async getListForLandlordConfirm(id: number, page: number): Promise<AvailabilityRequestModel[]> {
+    return await lastValueFrom(this.http.get<AvailabilityRequestModel[]>(`api/request/for-landlord-confirm/${id}/${page}`));
+  }
+
   public async getForCustomer(id: number): Promise<AvailabilityRequestModelForCustomer> {
     return await lastValueFrom(this.http.get<AvailabilityRequestModelForCustomer>(`api/request/customer/${id}`));
   }
 
   public async getForLandLord(id: number): Promise<AvailabilityRequestModelForLandlord> {
     return await lastValueFrom(this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord/${id}`));
+  }
+
+  public async getForLandLordConfirm(id: number): Promise<AvailabilityRequestModelForLandlord> {
+    return await lastValueFrom(this.http.get<AvailabilityRequestModelForLandlord>(`api/request/landlord-confirm/${id}`));
   }
 
   public async getAvailableTimesByAdvertId(id: number): Promise<LeaseRequestModel> {

@@ -46,7 +46,17 @@ namespace WebAPI.Controllers
             AvailabilityRequestModelForLandlord model = RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command);
             if (model == null)
                 return null;
-            await _unitOfWork.Commit();
+            return model;
+        }
+
+        [Authorize]
+        [HttpGet("landlord-confirm/{id}")]
+        public async Task<AvailabilityRequestModelForLandlord> GetForLandlordConfirm(int id)
+        {
+            AvailabilityRequestCommandForLandlord command = await _requestService.GetForLandlordConfirm(id, await _accountService.GetIdByEmail(User.Identity.Name));
+            AvailabilityRequestModelForLandlord model = RequestModelConverter.AvailabilityRequestCommandForLandlordConvertModel(command);
+            if (model == null)
+                return null;
             return model;
         }
 
@@ -54,7 +64,8 @@ namespace WebAPI.Controllers
         [HttpGet("for-customer/{id}/{page}")]
         public async Task<List<AvailabilityRequestListModel>> GetListForCustomer(int id, int page)
         {
-            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, await _accountService.GetIdByEmail(User.Identity.Name), page);
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForCustomer(id, 
+                await _accountService.GetIdByEmail(User.Identity.Name), page);
             List<AvailabilityRequestListModel> models = commands.Select(command =>
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)
@@ -67,6 +78,19 @@ namespace WebAPI.Controllers
         public async Task<List<AvailabilityRequestListModel>> GetListForLandlord(int page)
         {
             List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlord(await _accountService.GetIdByEmail(User.Identity.Name), page);
+            List<AvailabilityRequestListModel> models = commands.Select(command =>
+                RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
+            if (models == null)
+                return null;
+            return models;
+        }
+
+        [Authorize]
+        [HttpGet("for-landlord-confirm/{id}/{page}")]
+        public async Task<List<AvailabilityRequestListModel>> GetListForLandlordConfirm(int id, int page)
+        {
+            List<AvailabilityRequestListCommand> commands = await _requestService.GetListForLandlordConfirm(id, 
+                await _accountService.GetIdByEmail(User.Identity.Name), page);
             List<AvailabilityRequestListModel> models = commands.Select(command =>
                 RequestModelConverter.AvailabilityRequestListCommandConvertAvailabilityRequestListModel(command)).ToList();
             if (models == null)

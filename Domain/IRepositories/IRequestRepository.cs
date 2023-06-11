@@ -11,6 +11,7 @@ namespace Domain.IRepositories
     {
         Task<List<AvailabilityRequest>> GetByAdvertIdUserIdForCustomer(int id, int userId, int page);
         Task<List<AvailabilityRequest>> GetByUserIdForLandlord(int userId, int page);
+        Task<List<AvailabilityRequest>> GetByUserIdForLandlordConfirm(int id, int userId, int page);
         Task<List<AvailableTime>> GetTimesForRequestByAdvertId(int id);
         Task<List<AvailableTime>> GetTimesForRemoveRequestByAdvertId(int id);
         Task<int> GetLastRequestId();

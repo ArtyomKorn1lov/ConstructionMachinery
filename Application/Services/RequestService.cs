@@ -173,6 +173,35 @@ namespace Application.Services
             }
         }
 
+        public async Task<AvailabilityRequestCommandForLandlord> GetForLandlordConfirm(int id, int userId)
+        {
+            try
+            {
+                if (id <= 0 || userId <= 0)
+                    return null;
+                AvailabilityRequest request = await _requestRepository.GetById(id);
+                if (request == null)
+                    return null;
+                if (await GetUserIdByAdvertId(request.AvailableTimes[0].AdvertId) != userId)
+                    return null;
+                if (request.RequestStateId != 1)
+                    return null;
+                if (request.AvailableTimes.Count <= 0)
+                    return null;
+                request.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+                DateTime startRent = request.AvailableTimes[0].Date;
+                DateTime endRent = request.AvailableTimes[request.AvailableTimes.Count - 1].Date;
+                AvailabilityRequestCommandForLandlord commandForLandlord = RequestCommandConverter.AvailabilityRequestEntityConvertToAvailabilityRequestCommandForLandlord(request,
+                    await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId), await GetAdvertNameById(request.AvailableTimes[0].AdvertId),
+                    await GetPhoneForLandlord(request.UserId), await GetCustomerName(request.UserId), startRent, endRent);
+                return commandForLandlord;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<List<AvailabilityRequestListCommand>> GetListForCustomer(int id, int userId, int page)
         {
             try
@@ -204,6 +233,30 @@ namespace Application.Services
                 if (userId <= 0 || page < 0)
                     return null;
                 List<AvailabilityRequest> requests = await _requestRepository.GetByUserIdForLandlord(userId, page);
+                if (requests == null)
+                    return null;
+                List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();
+                foreach (AvailabilityRequest request in requests)
+                {
+                    request.AvailableTimes.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+                    commands.Add(RequestCommandConverter.EntityConvertToAvailabilityRequestListCommand(request, request.AvailableTimes[0].Date,
+                        await GetAdvertNameById(request.AvailableTimes[0].AdvertId), await _imageRepository.GetByAdvertId(request.AvailableTimes[0].AdvertId)));
+                }
+                return commands;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<AvailabilityRequestListCommand>> GetListForLandlordConfirm(int id, int userId, int page)
+        {
+            try
+            {
+                if (id <= 0 || userId <= 0 || page < 0)
+                    return null;
+                List<AvailabilityRequest> requests = await _requestRepository.GetByUserIdForLandlordConfirm(id, userId, page);
                 if (requests == null)
                     return null;
                 List<AvailabilityRequestListCommand> commands = new List<AvailabilityRequestListCommand>();

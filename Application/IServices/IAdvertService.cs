@@ -23,5 +23,6 @@ namespace Application.IServices
         Task<int> GetUserIdByAdvert(int id);
         Task<int> GetLastAdvertId();
         Task<List<AdvertCommandForRequest>> GetForRequestCustomer(int id, int page);
+        Task<List<AdvertCommandForRequest>> GetForRequestLandlord(int id, int page);
     }
 }
